@@ -3,8 +3,19 @@
   width: 5rem;
 }
 
+.overflow {
+  overflow: hidden;
+}
+
 .catalog-profile-pic {
   height: 15rem;
+  transition: all .5s ease-in-out;
+}
+
+.catalog-profile-pic:hover {
+  -ms-transform: scale(1.2);
+  -webkit-transform: scale(1.2);
+  transform: scale(1.2);
 }
 
 .main-business-pic {
