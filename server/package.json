@@ -1,0 +1,41 @@
+{
+  "name": "weconnect",
+  "version": "1.0.0",
+  "description": "Platform that connects businesses with individuals",
+  "main": "app.js",
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {
+    "body-parser": "^1.18.2",
+    "express": "^4.16.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-stage-2": "^6.24.1",
+    "eslint": "^4.18.2",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-plugin-import": "^2.9.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.7.0"
+  },
+  "scripts": {
+    "start": "babel-node ./app.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Orelongz/WeConnect.git"
+  },
+  "keywords": [
+    "connect",
+    "business"
+  ],
+  "author": "Longe Pelumi",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Orelongz/WeConnect/issues"
+  },
+  "homepage": "https://github.com/Orelongz/WeConnect#readme"
+}
