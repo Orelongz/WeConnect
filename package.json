@@ -27,7 +27,8 @@
     "nyc": "^11.4.1"
   },
   "scripts": {
-    "start": "babel-node ./server/app.js"
+    "start": "babel-node ./server/app.js",
+    "lint": "eslint --fix server/"
   },
   "repository": {
     "type": "git",
