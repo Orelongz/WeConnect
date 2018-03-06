@@ -7,6 +7,7 @@
     "test": "test"
   },
   "dependencies": {
+    "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "express": "^4.16.2"
   },
@@ -28,7 +29,12 @@
   },
   "scripts": {
     "start": "babel-node ./server/app.js",
-    "lint": "eslint --fix server/"
+    "lint": "eslint --fix server/ test/",
+    "test": "nyc --reporter=html --reporter=text mocha test/server/ --exit --compilers js:babel-register",
+    "coverage": "nyc report --reporter=text-lcov | coveralls",
+    "report-coverage": "cat ./coverage/lcov.info | coveralls",
+    "check-coverage": "nyc check-coverage --lines 70 --per-file",
+    "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test"
   },
   "repository": {
     "type": "git",
