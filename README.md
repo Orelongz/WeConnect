@@ -1,6 +1,6 @@
 # WeConnect
-[![Build Status](https://travis-ci.org/Orelongz/WeConnect.svg?branch=develop)](https://travis-ci.org/Orelongz/WeConnect)
-[![Coverage Status](https://coveralls.io/repos/github/Orelongz/WeConnect/badge.svg?branch=develop)](https://coveralls.io/github/Orelongz/WeConnect?branch=develop)
+[![Build Status](https://travis-ci.org/Orelongz/WeConnect.svg?branch=feature/155756901/user-login)](https://travis-ci.org/Orelongz/WeConnect?branch=feature/155756901/user-login)
+[![Coverage Status](https://coveralls.io/repos/github/Orelongz/WeConnect/badge.svg?branch=feature/155756901/user-login)](https://coveralls.io/github/Orelongz/WeConnect?branch=feature/155756901/user-login)
 [![Maintainability](https://api.codeclimate.com/v1/badges/dbf93139a748aaefefcb/maintainability)](https://codeclimate.com/github/Orelongz/WeConnect/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/dbf93139a748aaefefcb/test_coverage)](https://codeclimate.com/github/Orelongz/WeConnect/test_coverage)
 
@@ -9,3 +9,23 @@ WeConnect provides a platform that brings businesses and individuals together. T
 
 # Live Template View
 https://orelongz.github.io/WeConnect/
+
+<h3>API ENDPOINTS</h3>
+<hr>
+<table>
+  <tr>
+      <th>Request</th>
+      <th>End Point</th>
+      <th>Action</th>
+  </tr>
+  <tr>
+      <td>POST</td>
+      <td>/api/v1/auth/signup</td>
+      <td>Register a user</td>
+  </tr>
+  <tr>
+      <td>POST</td>
+      <td>/api/v1/auth/signin</td>
+      <td>Login user</td>
+  </tr>
+</table>

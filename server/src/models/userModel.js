@@ -9,7 +9,7 @@ export default class User {
   * @param {Object} userDetails user details
   */
   constructor(userDetails) {
-    this.first = userDetails.firstname;
+    this.firstname = userDetails.firstname;
     this.lastname = userDetails.lastname;
     this.email = userDetails.email;
     this.password = userDetails.hashedPassword;
