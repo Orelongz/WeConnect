@@ -172,7 +172,7 @@ describe('Business controller tests', () => {
     });
   });
 
-  describe('Given that a user sends a GET request to /api/v1/businesses/:businessId', () => {
+  describe('Given that a user sends a GET request to /api/v1/businesses/', () => {
     it('should return 200 status code and retrieve business with the businessId', (done) => {
       chai.request(app)
         .get('/api/v1/businesses/2')
@@ -197,6 +197,23 @@ describe('Business controller tests', () => {
           assert.isString(
             res.body.message,
             'Business not found'
+          );
+          done();
+        });
+    });
+  });
+
+  describe('Given that a user sends a GET request to /api/v1/businesses/', () => {
+    it('should return 200 status code and retrieve all business in the database', (done) => {
+      chai.request(app)
+        .get('/api/v1/businesses/')
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.allBusinesses.should.be.a('array');
+          assert.isString(
+            res.body.message,
+            'All Businesses'
           );
           done();
         });

@@ -156,10 +156,23 @@ const getBusiness = (req, res) => {
   });
 };
 
+/**
+ * getAllBusinesses()
+ * @desc retrieve the details of a registered business
+ * @param {Object} req request object
+ * @param {Object} res response object
+ * @return {Object} message, business
+ */
+const getAllBusinesses = (req, res) => res.status(200).json({
+  message: 'All Businesses',
+  allBusinesses
+});
+
 export {
   createBusiness,
   updateBusiness,
   deleteBusiness,
   getBusiness,
+  getAllBusinesses,
   allBusinesses
 };
