@@ -1,6 +1,6 @@
 # WeConnect
-[![Build Status](https://travis-ci.org/Orelongz/WeConnect.svg?branch=feature/155515858/register-business)](https://travis-ci.org/Orelongz/WeConnect?branch=feature/155515858/user-register-business)
-[![Coverage Status](https://coveralls.io/repos/github/Orelongz/WeConnect/badge.svg?branch=feature/155515858/register-business)](https://coveralls.io/github/Orelongz/WeConnect?branch=feature/155756901/user-login)
+[![Build Status](https://travis-ci.org/Orelongz/WeConnect.svg?branch=feature/155516196/update-business)](https://travis-ci.org/Orelongz/WeConnect?branch=feature/155516196/update-business)
+[![Coverage Status](https://coveralls.io/repos/github/Orelongz/WeConnect/badge.svg?branch=feature/155516196/update-business)](https://coveralls.io/github/Orelongz/WeConnect?branch=feature/155516196/update-business)
 [![Maintainability](https://api.codeclimate.com/v1/badges/dbf93139a748aaefefcb/maintainability)](https://codeclimate.com/github/Orelongz/WeConnect/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/dbf93139a748aaefefcb/test_coverage)](https://codeclimate.com/github/Orelongz/WeConnect/test_coverage)
 

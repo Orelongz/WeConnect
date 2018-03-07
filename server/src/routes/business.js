@@ -1,9 +1,11 @@
 import express from 'express';
-import { createBusiness } from './../controllers/businessController';
-import registerBusinessValidation from './../middlewares/businessMiddleware';
+import { createBusiness, updateBusiness } from './../controllers/businessController';
+import businessValidation from './../middlewares/businessMiddleware';
 
 const router = express.Router();
 
-router.post('/', registerBusinessValidation, createBusiness);
+router.post('/', businessValidation, createBusiness);
+
+router.put('/:businessId', businessValidation, updateBusiness);
 
 export default router;

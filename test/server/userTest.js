@@ -2,7 +2,6 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from './../../server/app';
 import { dummySignup, dummySignin } from './../helpers/dummy';
-import User from './../../server/src/models/userModel';
 
 const { assert } = chai;
 

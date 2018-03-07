@@ -1,5 +1,12 @@
-
-const registerBusinessValidation = (req, res, next) => {
+/**
+ * businessValidation()
+ * @desc handles validation of business input fields
+ * @param {Object} req request object
+ * @param {Object} res response object
+ * @param {Object} next Express next middleware function
+ * @return {*} error, void
+ */
+const businessValidation = (req, res, next) => {
   const error = [];
   const {
     businessName, category, address, city, state, phoneNumber, about
@@ -31,4 +38,4 @@ const registerBusinessValidation = (req, res, next) => {
   return next();
 };
 
-export default registerBusinessValidation;
+export default businessValidation;
