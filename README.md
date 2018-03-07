@@ -28,10 +28,14 @@ https://orelongz.github.io/WeConnect/
       <td>/api/v1/auth/signin</td>
       <td>Login user</td>
   </tr>
-  
   <tr>
       <td>POST</td>
       <td>/api/v1/businesses</td>
       <td>Register a business</td>
+  </tr>
+  <tr>
+      <td>POST</td>
+      <td>/api/v1/businesses/:businessId</td>
+      <td>Update a business profile</td>
   </tr>
 </table>
