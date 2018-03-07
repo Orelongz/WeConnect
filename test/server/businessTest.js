@@ -171,4 +171,35 @@ describe('Business controller tests', () => {
         });
     });
   });
+
+  describe('Given that a user sends a GET request to /api/v1/businesses/:businessId', () => {
+    it('should return 200 status code and retrieve business with the businessId', (done) => {
+      chai.request(app)
+        .get('/api/v1/businesses/2')
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.business.should.be.a('object');
+          assert.isString(
+            res.body.message,
+            'Business was successfully found'
+          );
+          done();
+        });
+    });
+
+    it('should return 404 status code when businessId is not in the database', (done) => {
+      chai.request(app)
+        .get('/api/v1/businesses/1')
+        .end((err, res) => {
+          res.should.have.status(404);
+          res.body.should.be.a('object');
+          assert.isString(
+            res.body.message,
+            'Business not found'
+          );
+          done();
+        });
+    });
+  });
 });

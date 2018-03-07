@@ -6,7 +6,6 @@ const allBusinesses = [];
  * handleUpdate()
  * @desc handles update of business
  * @param {Object} req request object
- * @param {Object} res response object
  * @return {Object} theBusiness
  */
 const handleUpdate = (req) => {
@@ -38,7 +37,6 @@ const handleUpdate = (req) => {
  * handleUpdate()
  * @desc handles creation new business from model
  * @param {Object} req request object
- * @param {Object} res response object
  * @return {Object} theBusiness
  */
 const handleCreate = (req) => {
@@ -133,4 +131,35 @@ const deleteBusiness = (req, res) => {
   });
 };
 
-export { createBusiness, updateBusiness, deleteBusiness, allBusinesses };
+/**
+ * getBusiness()
+ * @desc retrieve the details of a registered business
+ * @param {Object} req request object
+ * @param {Object} res response object
+ * @return {Object} message, business
+ */
+const getBusiness = (req, res) => {
+  let theBusiness;
+  allBusinesses.forEach((business) => {
+    if (business.businessId === Number(req.params.businessId)) {
+      theBusiness = business;
+    }
+  });
+  if (!theBusiness) {
+    return res.status(404).json({
+      message: 'Business not found'
+    });
+  }
+  return res.status(200).json({
+    message: 'Business was successfully found',
+    business: theBusiness
+  });
+};
+
+export {
+  createBusiness,
+  updateBusiness,
+  deleteBusiness,
+  getBusiness,
+  allBusinesses
+};
