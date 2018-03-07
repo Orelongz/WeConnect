@@ -1,6 +1,6 @@
 # WeConnect
-[![Build Status](https://travis-ci.org/Orelongz/WeConnect.svg?branch=feature/155516758/get-all-businesses)](https://travis-ci.org/Orelongz/WeConnect?branch=feature/155516758/get-all-businesses)
-[![Coverage Status](https://coveralls.io/repos/github/Orelongz/WeConnect/badge.svg?branch=feature/155516758/get-all-businesses)](https://coveralls.io/github/Orelongz/WeConnect?branch=feature/155516758/get-all-businesses)
+[![Build Status](https://travis-ci.org/Orelongz/WeConnect.svg?branch=feature/155516548/add-review)](https://travis-ci.org/Orelongz/WeConnect?branch=feature/155516548/add-review)
+[![Coverage Status](https://coveralls.io/repos/github/Orelongz/WeConnect/badge.svg?branch=feature/155516548/add-review)](https://coveralls.io/github/Orelongz/WeConnect?branch=feature/155516548/add-review)
 [![Maintainability](https://api.codeclimate.com/v1/badges/dbf93139a748aaefefcb/maintainability)](https://codeclimate.com/github/Orelongz/WeConnect/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/dbf93139a748aaefefcb/test_coverage)](https://codeclimate.com/github/Orelongz/WeConnect/test_coverage)
 
@@ -52,5 +52,10 @@ https://orelongz.github.io/WeConnect/
       <td>GET</td>
       <td>/api/v1/businesses/</td>
       <td>Get all businesses</td>
+  </tr>
+  <tr>
+      <td>POST</td>
+      <td>/api/v1/businesses/:businessId/reviews</td>
+      <td>Add a review to a businesses</td>
   </tr>
 </table>

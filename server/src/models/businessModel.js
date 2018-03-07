@@ -19,6 +19,7 @@ export default class Business {
     this.postalAddress = businessDetails.postalAdress || '';
     this.workHours = businessDetails.workHours || '';
     this.about = businessDetails.about;
+    this.reviews = [];
     this.businessId = Business.getCounter();
     this.createdAt = new Date().toLocaleString();
     this.updatedAt = new Date().toLocaleString();
@@ -27,7 +28,7 @@ export default class Business {
   /**
   * getCounter()
   * @desc returns an integer for every new instance of business created
-  * @param {void} empty
+  * @param {*} empty
   * @return {int} this.counter businessId
   */
   static getCounter() {

@@ -123,4 +123,19 @@ const dummyBusiness = {
   },
 };
 
-export { dummySignup, dummySignin, dummyBusiness };
+const dummyReview = {
+  validReview1: {
+    review: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. I Class aptent .',
+  },
+  validReview2: {
+    review: 'nteger nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus',
+  },
+  inValidReview1: { review: '    ' }
+};
+
+export {
+  dummySignup,
+  dummySignin,
+  dummyBusiness,
+  dummyReview
+};

@@ -22,7 +22,7 @@ export default class User {
   /**
   * getCounter()
   * @desc returns an integer for every new instance of user created
-  * @param {void} empty
+  * @param {*} empty
   * @return {this.counter} integer
   */
   static getCounter() {
