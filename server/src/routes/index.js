@@ -3,11 +3,16 @@ import {
   signup,
   login
 } from './../controllers/userController';
+import {
+  signUpValidation,
+  signInValidation,
+  validateEmail
+} from './../middlewares/userMiddleware';
 
-const router = express.Router({ mergeParams: true });
+const router = express.Router();
 
-router.post('/auth/signup', signup);
+router.post('/auth/signup', signUpValidation, validateEmail, signup);
 
-router.post('/auth/login', login);
+router.post('/auth/login', signInValidation, login);
 
 export default router;

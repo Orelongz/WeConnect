@@ -14,3 +14,4 @@ script:
 after_success:
   - npm run coverage
   - npm run report-coverage
+  - npm run coveralls

@@ -2,13 +2,14 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from './../../server/app';
 import { dummySignup, dummySignin } from './../helpers/dummy';
+import User from './../../server/src/models/userModel';
 
 const { assert } = chai;
 
 chai.should();
 chai.use(chaiHttp);
 
-describe('User controller tests', () => {
+describe('User/ index routes tests', () => {
   describe('Given that a user sends a POST request to /api/v1/auth/signup', () => {
     it('should return 201 status code and create new user', (done) => {
       chai.request(app)
@@ -32,7 +33,7 @@ describe('User controller tests', () => {
         });
     });
 
-    it('should return 406 status code password is different from confirmPassword', (done) => {
+    it('should return 406 status code when password is different from confirmPassword', (done) => {
       chai.request(app)
         .post('/api/v1/auth/signup')
         .type('form')

@@ -1,6 +1,6 @@
 # WeConnect
-[![Build Status](https://travis-ci.org/Orelongz/WeConnect.svg?branch=feature/155756901/user-login)](https://travis-ci.org/Orelongz/WeConnect?branch=feature/155756901/user-login)
-[![Coverage Status](https://coveralls.io/repos/github/Orelongz/WeConnect/badge.svg?branch=feature/155756901/user-login)](https://coveralls.io/github/Orelongz/WeConnect?branch=feature/155756901/user-login)
+[![Build Status](https://travis-ci.org/Orelongz/WeConnect.svg?branch=feature/155515858/user-register-business)](https://travis-ci.org/Orelongz/WeConnect?branch=feature/155515858/user-register-business)
+[![Coverage Status](https://coveralls.io/repos/github/Orelongz/WeConnect/badge.svg?branch=feature/155515858/user-register-business)](https://coveralls.io/github/Orelongz/WeConnect?branch=feature/155756901/user-login)
 [![Maintainability](https://api.codeclimate.com/v1/badges/dbf93139a748aaefefcb/maintainability)](https://codeclimate.com/github/Orelongz/WeConnect/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/dbf93139a748aaefefcb/test_coverage)](https://codeclimate.com/github/Orelongz/WeConnect/test_coverage)
 
@@ -27,5 +27,11 @@ https://orelongz.github.io/WeConnect/
       <td>POST</td>
       <td>/api/v1/auth/signin</td>
       <td>Login user</td>
+  </tr>
+  
+  <tr>
+      <td>POST</td>
+      <td>/api/v1/businesses</td>
+      <td>Register a business</td>
   </tr>
 </table>

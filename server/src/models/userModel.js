@@ -13,6 +13,7 @@ export default class User {
     this.lastname = userDetails.lastname;
     this.email = userDetails.email;
     this.password = userDetails.hashedPassword;
+    this.businesses = [];
     this.userId = User.getCounter();
     this.createdAt = new Date().toLocaleString();
     this.updatedAt = new Date().toLocaleString();
@@ -21,6 +22,7 @@ export default class User {
   /**
   * getCounter()
   * @desc returns an integer for every new instance of user created
+  * @param {void} empty
   * @return {this.counter} integer
   */
   static getCounter() {
