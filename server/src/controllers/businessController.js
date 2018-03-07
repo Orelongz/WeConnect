@@ -107,6 +107,13 @@ const updateBusiness = (req, res) => {
   return res.status(404).json({ message: 'Business not found' });
 };
 
+/**
+ * deleteBusiness()
+ * @desc deletes an existing business profile
+ * @param {Object} req request object
+ * @param {Object} res response object
+ * @return {Object} message, business
+ */
 const deleteBusiness = (req, res) => {
   let theBusiness;
   allBusinesses.forEach((business, index) => {
