@@ -45,7 +45,7 @@ const handleCreate = (req) => {
     state, phoneNumber, postalAddress, workHours, about
   } = req.body;
 
-  const business = new Business({
+  const theBusiness = new Business({
     businessName,
     businessImage,
     category,
@@ -57,7 +57,7 @@ const handleCreate = (req) => {
     workHours,
     about
   });
-  return business;
+  return theBusiness;
 };
 
 /**
@@ -70,20 +70,20 @@ const handleCreate = (req) => {
 const createBusiness = (req, res) => {
   const { businessName } = req.body;
 
-  let business = allBusinesses.find(eachBusiness => eachBusiness.businessName === businessName);
+  let theBusiness = allBusinesses.find(business => business.businessName === businessName);
 
-  if (business) {
+  if (theBusiness) {
     return res.status(409).json({
       message: `${businessName} already exists as a business name`
     });
   }
 
-  business = handleCreate(req);
-  allBusinesses.push(business);
+  theBusiness = handleCreate(req);
+  allBusinesses.push(theBusiness);
 
   return res.status(201).json({
     message: 'Business successfully created',
-    business
+    business: theBusiness
   });
 };
 
@@ -156,6 +156,16 @@ const getBusiness = (req, res) => {
   });
 };
 
+const handleLocationSearch = (req, businesses) => {
+  const { location } = req.query;
+  if (location) {
+    return businesses.filter(business => (
+      (business.city.toLowerCase() === location.toLowerCase()) ||
+      (business.state.toLowerCase() === location.toLowerCase())
+    ));
+  }
+};
+
 /**
  * getAllBusinesses()
  * @desc retrieve the details of a registered business
@@ -163,10 +173,24 @@ const getBusiness = (req, res) => {
  * @param {Object} res response object
  * @return {Object} message, business
  */
-const getAllBusinesses = (req, res) => res.status(200).json({
-  message: 'All Businesses',
-  allBusinesses
-});
+const getAllBusinesses = (req, res) => {
+  const theBusinesses = handleLocationSearch(req, allBusinesses);
+  if (!theBusinesses) {
+    return res.status(200).json({
+      message: 'All Businesses',
+      business: allBusinesses
+    });
+  }
+  if (theBusinesses.length === 0) {
+    return res.status(200).json({
+      message: 'There are no businesses with the location'
+    });
+  }
+  return res.status(200).json({
+    message: 'Businesses found',
+    business: theBusinesses
+  });
+};
 
 export {
   createBusiness,

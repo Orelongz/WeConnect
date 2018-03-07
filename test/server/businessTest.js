@@ -172,7 +172,7 @@ describe('Business controller tests', () => {
     });
   });
 
-  describe('Given that a user sends a GET request to /api/v1/businesses/', () => {
+  describe('Given that a user sends a GET request to /api/v1/businesses/:businessId', () => {
     it('should return 200 status code and retrieve business with the businessId', (done) => {
       chai.request(app)
         .get('/api/v1/businesses/2')
@@ -210,10 +210,43 @@ describe('Business controller tests', () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
-          res.body.allBusinesses.should.be.a('array');
+          res.body.business.should.be.a('array');
           assert.isString(
             res.body.message,
             'All Businesses'
+          );
+          done();
+        });
+    });
+
+    it('should return 200 status code and retrieve all businesses with the given location', (done) => {
+      chai.request(app)
+        .get('/api/v1/businesses/?location=yaba')
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.business.should.be.a('array');
+          assert.isString(
+            res.body.message,
+            'Businesses found'
+          );
+          done();
+        });
+    });
+
+    it('should return 200 status code and no list if the location is not availabe', (done) => {
+      chai.request(app)
+        .get('/api/v1/businesses/?location=abia')
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          assert.isUndefined(
+            res.body.business,
+            'No business with abia as the location'
+          );
+          assert.isString(
+            res.body.message,
+            'There are no businesses with the location'
           );
           done();
         });
