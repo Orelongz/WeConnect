@@ -107,4 +107,23 @@ const updateBusiness = (req, res) => {
   return res.status(404).json({ message: 'Business not found' });
 };
 
-export { createBusiness, updateBusiness, allBusinesses };
+const deleteBusiness = (req, res) => {
+  let theBusiness;
+  allBusinesses.forEach((business, index) => {
+    if (business.businessId === Number(req.params.businessId)) {
+      theBusiness = business;
+      allBusinesses.splice(index, 1);
+    }
+  });
+  if (!theBusiness) {
+    return res.status(404).json({
+      message: 'Business not found'
+    });
+  }
+  return res.status(200).json({
+    message: 'Business was successfully deleted',
+    business: theBusiness
+  });
+};
+
+export { createBusiness, updateBusiness, deleteBusiness, allBusinesses };
