@@ -1,5 +1,13 @@
 import validator from 'validator';
 
+/**
+ * signUpValidation()
+ * @desc handles validation of signup input fields
+ * @param {Object} req request object
+ * @param {Object} res response object
+ * @param {Object} next Express next middleware function
+ * @return {*} error, void
+ */
 const signUpValidation = (req, res, next) => {
   const error = [];
   const {
@@ -26,6 +34,14 @@ const signUpValidation = (req, res, next) => {
   return next();
 };
 
+/**
+ * signInValidation()
+ * @desc handles validation of signin input fields
+ * @param {Object} req request object
+ * @param {Object} res response object
+ * @param {Object} next Express next middleware function
+ * @return {*} error, void
+ */
 const signInValidation = (req, res, next) => {
   const error = [];
   const { email, password } = req.body;

@@ -11,8 +11,10 @@ import {
 
 const router = express.Router();
 
+// Register a user
 router.post('/auth/signup', signUpValidation, validateEmail, signup);
 
+// Login a user
 router.post('/auth/login', signInValidation, login);
 
 export default router;
