@@ -1,6 +1,6 @@
 # WeConnect
-[![Build Status](https://travis-ci.org/Orelongz/WeConnect.svg?branch=feature/155517128/location-filter)](https://travis-ci.org/Orelongz/WeConnect?branch=feature/155517128/location-filter)
-[![Coverage Status](https://coveralls.io/repos/github/Orelongz/WeConnect/badge.svg?branch=feature/155517128/location-filter)](https://coveralls.io/github/Orelongz/WeConnect?branch=feature/155517128/location-filter)
+[![Build Status](https://travis-ci.org/Orelongz/WeConnect.svg?branch=feature/155517217/category-filter)](https://travis-ci.org/Orelongz/WeConnect?branch=feature/155517217/category-filter)
+[![Coverage Status](https://coveralls.io/repos/github/Orelongz/WeConnect/badge.svg?branch=feature/155517217/category-filter)](https://coveralls.io/github/Orelongz/WeConnect?branch=feature/155517217/category-filter)
 [![Maintainability](https://api.codeclimate.com/v1/badges/dbf93139a748aaefefcb/maintainability)](https://codeclimate.com/github/Orelongz/WeConnect/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/dbf93139a748aaefefcb/test_coverage)](https://codeclimate.com/github/Orelongz/WeConnect/test_coverage)
 
@@ -65,7 +65,17 @@ https://orelongz.github.io/WeConnect/
   </tr>
   <tr>
       <td>GET</td>
-      <td>/api/v1/businesses?location=<location></td>
+      <td>/api/v1/businesses?location=:location</td>
       <td>Get businesses with a location</td>
+  </tr>
+  </tr>
+      <td>GET</td>
+      <td>/api/v1/businesses?category=:category</td>
+      <td>Get businesses with a category</td>
+  </tr>
+  <tr>
+      <td>GET</td>
+      <td>/api/v1/businesses?category=category&location=location</td>
+      <td>Get businesses with a category and location</td>
   </tr>
 </table>

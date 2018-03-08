@@ -251,5 +251,35 @@ describe('Business controller tests', () => {
           done();
         });
     });
+
+    it('should return 200 status code and retrieve all businesses within the given category', (done) => {
+      chai.request(app)
+        .get('/api/v1/businesses/?category=bar')
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.business.should.be.a('array');
+          assert.isString(
+            res.body.message,
+            'Businesses found'
+          );
+          done();
+        });
+    });
+
+    it('should return 200 status code and retrieve all businesses within the given category and location', (done) => {
+      chai.request(app)
+        .get('/api/v1/businesses/?category=bar&location=enugu')
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.business.should.be.a('array');
+          assert.isString(
+            res.body.message,
+            'Businesses found'
+          );
+          done();
+        });
+    });
   });
 });

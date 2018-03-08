@@ -3,6 +3,66 @@ import Business from './../models/businessModel';
 const allBusinesses = [];
 
 /**
+ * handleLocationSearch()
+ * @desc checks businesses by location
+ * @param {Object} req request object
+ * @param {Array} businesses allBusinesses array
+ * @return {Array} business
+ */
+const handleLocationSearch = (req, businesses) => {
+  const { location } = req.query;
+  if (location) {
+    return businesses.filter(business => (
+      (business.city.toLowerCase() === location.toLowerCase()) ||
+      (business.state.toLowerCase() === location.toLowerCase())
+    ));
+  }
+};
+
+/**
+ * handleCategorySearch()
+ * @desc checks businesses by category
+ * @param {Object} req request object
+ * @param {Array} businesses allBusinesses array
+ * @return {Array} business
+ */
+const handleCategorySearch = (req, businesses) => {
+  const { category } = req.query;
+  if (category) {
+    return businesses.filter(business => (
+      business.category.toLowerCase() === category.toLowerCase()
+    ));
+  }
+};
+
+/**
+ * handleCreate()
+ * @desc handles creation new business from model
+ * @param {Object} req request object
+ * @return {Object} theBusiness
+ */
+const handleCreate = (req) => {
+  const {
+    businessName, businessImage, category, address, city,
+    state, phoneNumber, postalAddress, workHours, about
+  } = req.body;
+
+  const theBusiness = new Business({
+    businessName,
+    businessImage,
+    category,
+    address,
+    city,
+    state,
+    phoneNumber,
+    postalAddress,
+    workHours,
+    about
+  });
+  return theBusiness;
+};
+
+/**
  * handleUpdate()
  * @desc handles update of business
  * @param {Object} req request object
@@ -29,33 +89,6 @@ const handleUpdate = (req) => {
       business.updatedAt = new Date().toLocaleString();
       theBusiness = business;
     }
-  });
-  return theBusiness;
-};
-
-/**
- * handleUpdate()
- * @desc handles creation new business from model
- * @param {Object} req request object
- * @return {Object} theBusiness
- */
-const handleCreate = (req) => {
-  const {
-    businessName, businessImage, category, address, city,
-    state, phoneNumber, postalAddress, workHours, about
-  } = req.body;
-
-  const theBusiness = new Business({
-    businessName,
-    businessImage,
-    category,
-    address,
-    city,
-    state,
-    phoneNumber,
-    postalAddress,
-    workHours,
-    about
   });
   return theBusiness;
 };
@@ -156,16 +189,6 @@ const getBusiness = (req, res) => {
   });
 };
 
-const handleLocationSearch = (req, businesses) => {
-  const { location } = req.query;
-  if (location) {
-    return businesses.filter(business => (
-      (business.city.toLowerCase() === location.toLowerCase()) ||
-      (business.state.toLowerCase() === location.toLowerCase())
-    ));
-  }
-};
-
 /**
  * getAllBusinesses()
  * @desc retrieve the details of a registered business
@@ -174,7 +197,12 @@ const handleLocationSearch = (req, businesses) => {
  * @return {Object} message, business
  */
 const getAllBusinesses = (req, res) => {
-  const theBusinesses = handleLocationSearch(req, allBusinesses);
+  const location = handleLocationSearch(req, allBusinesses);
+  const category = handleCategorySearch(req, allBusinesses);
+  let theBusinesses;
+  if (location || category) {
+    theBusinesses = [...(location || []), ...(category || [])];
+  }
   if (!theBusinesses) {
     return res.status(200).json({
       message: 'All Businesses',
