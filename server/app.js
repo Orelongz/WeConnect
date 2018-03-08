@@ -13,6 +13,11 @@ app.use('/api/v1', indexRoute);
 app.use('/api/v1/businesses', businessRoute);
 app.use('/api/v1/businesses/:businessId/reviews', reviewRoute);
 
-app.listen(8080);
+app.get('/', (req, res) => res.status(200).json({
+  message: 'Welcome to weconnet'
+}));
+app.all('*', (req, res) => res.status(404).json({
+  message: 'Page not Found',
+}));
 
 export default app;

@@ -211,7 +211,7 @@ const getAllBusinesses = (req, res) => {
   }
   if (theBusinesses.length === 0) {
     return res.status(200).json({
-      message: 'There are no businesses with the location'
+      message: 'There are no businesses matching your search'
     });
   }
   return res.status(200).json({

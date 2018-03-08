@@ -246,7 +246,7 @@ describe('Business controller tests', () => {
           );
           assert.isString(
             res.body.message,
-            'There are no businesses with the location'
+            'There are no businesses matching your search'
           );
           done();
         });

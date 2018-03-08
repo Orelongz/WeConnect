@@ -29,7 +29,7 @@
     "nyc": "^11.4.1"
   },
   "scripts": {
-    "start": "babel-node ./server/app.js",
+    "start": "babel-node ./server/bin/www",
     "lint": "eslint --fix server/ test/",
     "test": "nyc --reporter=html --reporter=text mocha test/server/ --exit --compilers js:babel-register",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
