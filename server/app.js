@@ -17,7 +17,7 @@ app.get('/', (req, res) => res.status(200).json({
   message: 'Welcome to WeConnect'
 }));
 app.all('*', (req, res) => res.status(404).json({
-  message: 'Page not Found',
+  message: 'Page not Found'
 }));
 
 export default app;

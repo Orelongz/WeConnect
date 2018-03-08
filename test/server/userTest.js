@@ -8,7 +8,7 @@ const { assert } = chai;
 chai.should();
 chai.use(chaiHttp);
 
-describe('User/ index routes tests', () => {
+describe('User controller tests', () => {
   describe('Given that a user sends a POST request to /api/v1/auth/signup', () => {
     it('should return 201 status code and create new user', (done) => {
       chai.request(app)
