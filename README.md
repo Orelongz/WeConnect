@@ -10,6 +10,9 @@ WeConnect provides a platform that brings businesses and individuals together. T
 # Live Template View
 https://orelongz.github.io/WeConnect/
 
+# Hosted Endpoint on Heroku
+https://orelongz.herokuapp.com/
+
 <h3>API ENDPOINTS</h3>
 <hr>
 <table>
