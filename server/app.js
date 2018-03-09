@@ -1,11 +1,18 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import swaggerUi from 'swagger-ui-express';
 import indexRoute from './src/routes/index';
 import businessRoute from './src/routes/business';
 import reviewRoute from './src/routes/review';
+import swaggerDocument from './../swagger.json';
 
 const app = express();
 
+app.use(
+  '/api-docs',
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerDocument)
+);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
