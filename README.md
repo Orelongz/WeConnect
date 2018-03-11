@@ -1,23 +1,60 @@
-# WeConnect
 [![Build Status](https://travis-ci.org/Orelongz/WeConnect.svg?branch=chore/155835381/api-doc)](https://travis-ci.org/Orelongz/WeConnect?branch=chore/155835381/api-doc)
 [![Coverage Status](https://coveralls.io/repos/github/Orelongz/WeConnect/badge.svg?branch=chore/155835381/api-doc)](https://coveralls.io/github/Orelongz/WeConnect?branch=chore/155835381/api-doc)
-[![Maintainability](https://api.codeclimate.com/v1/badges/dbf93139a748aaefefcb/maintainability)](https://codeclimate.com/github/Orelongz/WeConnect/maintainability)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/dbf93139a748aaefefcb/test_coverage)](https://codeclimate.com/github/Orelongz/WeConnect/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/dbf93139a748aaefefcb/maintainability?branch=chore/155835381/api-doc)](https://codeclimate.com/github/Orelongz/WeConnect/maintainability?branch=chore/155835381/api-doc)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/dbf93139a748aaefefcb/test_coverage?branch=chore/155835381/api-doc)](https://codeclimate.com/github/Orelongz/WeConnect/test_coverage?branch=chore/155835381/api-doc)
 
-# About WeConnect
+# WeConnect
 WeConnect provides a platform that brings businesses and individuals together. This platform creates awareness for businesses and gives the users the ability to write reviews about the businesses they have interacted with.
 
-# View live Template
-https://orelongz.github.io/WeConnect/
+## Contents
+- [View live Template](#view-live-template)
+- [Features](#features)
+- [Technology Used](#technology-used)
+- [Getting Started](#getting-started)
+- [API Endpoints](#api-endpoints)
+- [Hosted Endpoints on Heroku](#hosted-endpoints-on-heroku)
+- [API documentation on Heroku](#api-documentation-on-heroku)
 
-# Hosted Endpoint on Heroku
-https://orelongz.herokuapp.com/
+## View live Template
+View the templates through this [link](https://orelongz.github.io/WeConnect/)
 
-# API documentation on Heroku
-https://orelongz.herokuapp.com/api-docs/
+## Features
+* Users can register on the application
+* Users can login to the application
+* Users can register a business
+* Users can update and delete businesses they registered
+* Users can view a business
+* Users can view all businesses
+* Users can view businesses by their category or location
+* Users can add reviews to a business
+* Users can view all reviews for a business
 
-<h3>API ENDPOINTS</h3>
-<hr>
+## Technology Used
+* HTML
+* CSS
+* Bootstrap4
+* Express
+* NodeJS
+
+## Getting Started
+Get the app running locally in the following way:
+```
+# Clone the Repo
+git clone https://github.com/Orelongz/WeConnect.git
+
+# Install dependencies
+npm install
+
+# Run tests
+npm run test
+
+# Run the application
+npm run start
+```
+The server would be live at `http://localhost:8000`,
+Swagger API documentation at `http://localhost:8000/api-docs/`
+
+## API Endpoints
 <table>
   <tr>
       <th>Request</th>
@@ -71,12 +108,12 @@ https://orelongz.herokuapp.com/api-docs/
   </tr>
   <tr>
       <td>GET</td>
-      <td>/api/v1/businesses?location=:location</td>
+      <td>/api/v1/businesses?location=location</td>
       <td>Get businesses with a location</td>
   </tr>
   </tr>
       <td>GET</td>
-      <td>/api/v1/businesses?category=:category</td>
+      <td>/api/v1/businesses?category=category</td>
       <td>Get businesses with a category</td>
   </tr>
   <tr>
@@ -85,3 +122,9 @@ https://orelongz.herokuapp.com/api-docs/
       <td>Get businesses with a category and location</td>
   </tr>
 </table>
+
+## Hosted Endpoints on Heroku
+View hosted endpoints on Heroku through this [link](https://orelongz.herokuapp.com/)
+
+## API documentation on Heroku
+View swagger API documentation of endpoints on Heroku through this [link](https://orelongz.herokuapp.com/api-docs/)
