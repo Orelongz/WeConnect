@@ -7,10 +7,12 @@ export default class Review {
   * constructor()
   * @desc recieves parameters to initialize Review class
   * @param {Object} review the review given
+  * @param {Object} businessId businessId of business
   */
-  constructor(review) {
+  constructor(review, businessId) {
     this.review = review;
     this.reviewId = Review.getCounter();
+    this.businessId = businessId;
     this.createdAt = new Date().toLocaleString();
     this.updatedAt = new Date().toLocaleString();
   }

@@ -47,7 +47,7 @@ const handleCreate = (req) => {
     state, phoneNumber, postalAddress, workHours, about
   } = req.body;
 
-  const theBusiness = new Business({
+  return new Business({
     businessName,
     businessImage,
     category,
@@ -59,7 +59,6 @@ const handleCreate = (req) => {
     workHours,
     about
   });
-  return theBusiness;
 };
 
 /**
@@ -73,20 +72,24 @@ const handleUpdate = (req) => {
     businessName, businessImage, category, address, city,
     state, phoneNumber, postalAddress, workHours, about
   } = req.body;
+
+  const update = {
+    businessName,
+    businessImage,
+    category,
+    address,
+    city,
+    state,
+    phoneNumber,
+    postalAddress,
+    workHours,
+    about,
+    updatedAt: new Date().toLocaleString()
+  };
   let theBusiness;
   allBusinesses.forEach((business) => {
     if (business.businessId === Number(req.params.businessId)) {
-      business.businessName = businessName;
-      business.businessImage = businessImage;
-      business.category = category;
-      business.address = address;
-      business.city = city;
-      business.state = state;
-      business.phoneNumber = phoneNumber;
-      business.postalAddress = postalAddress;
-      business.workHours = workHours;
-      business.about = about;
-      business.updatedAt = new Date().toLocaleString();
+      business = { ...business, ...update };
       theBusiness = business;
     }
   });

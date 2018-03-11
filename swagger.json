@@ -38,6 +38,7 @@
         "description": "This endpoint uses a post request to register a new user",
         "operationId": "signup",
         "consumes": [
+          "application/x-www-form-urlencoded",
           "application/json"
         ],
         "produces": [
@@ -50,7 +51,7 @@
             "description": "Create user object",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/User"
+              "$ref": "#/definitions/userSignup"
             }
           }
         ],
@@ -58,17 +59,26 @@
           "200": {
             "description": "User successfully created",
             "schema": {
-              "$ref": "#/definitions/signup"
+              "$ref": "#/definitions/signupResponse"
             }
           },
           "400": {
-            "description": "Invalid email address"
+            "description": "Invalid email address",
+            "schema": {
+              "$ref": "#/definitions/wrongEmail"
+            }
           },
           "406": {
-            "description": "Invalid Input"
+            "description": "Invalid Input",
+            "schema": {
+              "$ref": "#/definitions/invalidInput"
+            }
           },
           "409": {
-            "description": "Existing email"
+            "description": "Existing email",
+            "schema": {
+              "$ref": "#/definitions/existingEmail"
+            }
           }
         }
       }
@@ -106,7 +116,10 @@
             }
           },
           "401": {
-            "description": "Wrong password"
+            "description": "Wrong password",
+            "schema": {
+              "$ref": "#/definitions/wrongPassword"
+            }
           },
           "404": {
             "description": "User not found",
@@ -115,43 +128,15 @@
             }
           },
           "406": {
-            "description": "Invalid Input"
+            "description": "Invalid Input",
+            "schema": {
+              "$ref": "#/definitions/invalidInput"
+            }
           }
         }
       }
     },
     "/businesses": {
-      "get": {
-        "tags": [
-          "Business"
-        ],
-        "summary": "Get all businesses",
-        "description": "Gets all businesses",
-        "operationId": "getAllBusinesses",
-        "consumes": [
-          "application/json"
-        ],
-        "produces": [
-          "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "x-access-token",
-            "in": "header",
-            "description": "Token Authentication",
-            "required": false,
-            "type": "string"
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "All Businesses",
-            "schema": {
-              "$ref": "#/definitions/getAllBusinesses"
-            }
-          }
-        }
-      },
       "post": {
         "tags": [
           "Business"
@@ -160,7 +145,7 @@
         "description": "Add business to database.",
         "operationId": "createBusiness",
         "produces": [
-          "application/xml",
+          "application/x-www-form-urlencoded",
           "application/json"
         ],
         "parameters": [
@@ -185,14 +170,51 @@
           "201": {
             "description": "Business successfully created",
             "schema": {
-              "$ref": "#/definitions/createBusiness"
+              "$ref": "#/definitions/createBusinessRes"
             }
           },
           "406": {
-            "description": "Invalid Input"
+            "description": "Invalid Input",
+            "schema": {
+              "$ref": "#/definitions/invalidInput"
+            }
           },
           "409": {
-            "description": "Business exists"
+            "description": "Business name exists",
+            "schema": {
+              "$ref": "#/definitions/existingBusiness"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Business"
+        ],
+        "summary": "Get all businesses",
+        "description": "Gets all businesses",
+        "operationId": "getAllBusinesses",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Businesses found",
+            "schema": {
+              "$ref": "#/definitions/getAllBusinesses"
+            }
           }
         }
       }
@@ -248,7 +270,8 @@
         "description": "Updates business profile",
         "operationId": "updateBusiness",
         "consumes": [
-          "application/x-www-form-urlencoded"
+          "application/x-www-form-urlencoded",
+          "application/json"
         ],
         "produces": [
           "application/json"
@@ -275,7 +298,7 @@
             "description": "Updated business object",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/Business"
+              "$ref": "#/definitions/updateBusiness"
             }
           }
         ],
@@ -283,7 +306,7 @@
           "200": {
             "description": "Business successfully updated",
             "schema": {
-              "$ref": "#/definitions/updateBusiness"
+              "$ref": "#/definitions/updatedBusiness"
             }
           },
           "404": {
@@ -299,7 +322,7 @@
           "Business"
         ],
         "summary": "Remove a business",
-        "description": "",
+        "description": "Deletes a business",
         "operationId": "deleteBusiness",
         "produces": [
           "application/json"
@@ -337,6 +360,124 @@
         }
       }
     },
+    "/businesses/?location=location": {
+      "get": {
+        "tags": [
+          "Business"
+        ],
+        "summary": "Search businesses by location",
+        "description": "This endpoint searches businesses by their location",
+        "operationId": "getAllBusinesses",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "location",
+            "in": "query",
+            "description": "Business category",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "User successfully created",
+            "schema": {
+              "$ref": "#/definitions/businessSearch"
+            }
+          }
+        }
+      }
+    },
+    "/businesses/?category=category": {
+      "get": {
+        "tags": [
+          "Business"
+        ],
+        "summary": "Search businesses by category",
+        "description": "This endpoint searches businesses by their category",
+        "operationId": "getAllBusinesses",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "description": "Business category",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Businesses found",
+            "schema": {
+              "$ref": "#/definitions/businessSearch"
+            }
+          }
+        }
+      }
+    },
+    "/businesses/?location=location&category=category": {
+      "get": {
+        "tags": [
+          "Business"
+        ],
+        "summary": "Search businesses by location and category",
+        "description": "This endpoint searches businesses by their location and category",
+        "operationId": "getAllBusinesses",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "location",
+            "in": "query",
+            "description": "Business category",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "category",
+            "in": "query",
+            "description": "Business category",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Businesses found",
+            "schema": {
+              "$ref": "#/definitions/businessSearch"
+            }
+          }
+        }
+      }
+    },
     "/businesses/{businessId}/reviews": {
       "post": {
         "tags": [
@@ -345,6 +486,10 @@
         "summary": "Add a review for a business",
         "description": "Add a review record for a business.",
         "operationId": "addReview",
+        "consumes": [
+          "application/x-www-form-urlencoded",
+          "application/json"
+        ],
         "produces": [
           "application/json"
         ],
@@ -362,15 +507,6 @@
             "description": "business to add review to",
             "required": true,
             "type": "integer"
-          },
-          {
-            "in": "body",
-            "name": "body",
-            "description": "Created review object",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/Review"
-            }
           }
         ],
         "responses": {
@@ -387,7 +523,10 @@
             }
           },
           "406": {
-            "description": "Invalid Input"
+            "description": "Invalid Input",
+            "schema": {
+              "$ref": "#/definitions/invalidInput"
+            }
           }
         }
       },
@@ -412,7 +551,7 @@
           {
             "name": "businessId",
             "in": "path",
-            "description": "business to add review to",
+            "description": "Business to be reviewed",
             "required": true,
             "type": "integer"
           }
@@ -452,7 +591,139 @@
         },
         "password": {
           "type": "string",
+          "password": "Tobiword"
+        },
+        "userId": {
+          "type": "integer",
+          "uniqueItems": true,
+          "example": 1
+        },
+        "businesses": {
+          "type": "array"
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "3/10/2018, 10:40:17 PM"
+        },
+        "updateAt": {
+          "type": "string",
+          "example": "3/10/2018, 10:40:17 PM"
+        }
+      }
+    },
+    "userSignup": {
+      "type": "object",
+      "required": [
+        "firstname",
+        "lastname",
+        "email",
+        "password",
+        "confirmPassword"
+      ],
+      "properties": {
+        "firstname": {
+          "type": "string",
+          "example": "Tobiloba"
+        },
+        "lastname": {
+          "type": "string",
+          "example": "Emmanuel"
+        },
+        "email": {
+          "type": "string",
+          "example": "tobiemm@yahoo.com"
+        },
+        "password": {
+          "type": "string",
           "example": "Tobiword"
+        },
+        "confirmPassword": {
+          "type": "string",
+          "example": "Tobiword"
+        }
+      }
+    },
+    "signupResponse": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "User successfully created"
+        },
+        "user": {
+          "type": "object",
+          "$ref": "#/definitions/User"
+        }
+      }
+    },
+    "wrongEmail": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Please enter a valid email address"
+        }
+      }
+    },
+    "invalidInput": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "array",
+          "example": ["Error 1", "Error 2", "Error 3"]
+        }
+      }
+    },
+    "existingEmail": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "This email already has an account"
+        }
+      }
+    },
+    "userLogin": {
+      "type": "object",
+      "required": [
+        "email",
+        "password"
+      ],
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "tobiemm@yahoo.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "Tobiword"
+        }
+      }
+    },
+    "login": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Welcome Tobiloba Emmanuel"
+        }
+      }
+    },
+    "wrongPassword": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Wrong password"
+        }
+      }
+    },
+    "UserNotFound": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Email not found"
         }
       }
     },
@@ -460,39 +731,226 @@
       "type": "object",
       "properties": {
         "businessName": {
-          "type": "string"
+          "type": "string",
+          "example": "Coffee Shop"
         },
         "businessImage": {
-          "type": "string"
+          "type": "string",
+          "example": "https://images.unsplash.com/photo-1513866518382-c6e2c749de1a?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=77739345ea1b858247d0d2a23b3bb328&auto=format&fit=crop&w=711&q=80"
         },
         "category": {
-          "type": "string"
+          "type": "string",
+          "example": "Resturant"
         },
         "address": {
-          "type": "string"
+          "type": "string",
+          "example": "10, Folorunsho Street"
         },
         "city": {
-          "type": "string"
+          "type": "string",
+          "example": "Egbeda"
         },
         "state": {
-          "type": "string"
+          "type": "string",
+          "example": "Lagos"
         },
         "phoneNumber": {
-          "type": "string"
+          "type": "string",
+          "example": "07037439325"
         },
         "postalAddress": {
-          "type": "string"
+          "type": "string",
+          "example": "P.O Box 115, Ikeja, Lagos"
         },
         "workHours": {
-          "type": "string"
+          "type": "string",
+          "example": "8am to 4pm"
         },
         "about": {
-          "type": "string"
+          "type": "string",
+          "example": "Lorem ipsum dolor sit amet, consectetur adipisicing elit"
         },
         "reviews": {
           "type": "array",
+          "example": [1, 2, 3]
+        },
+        "createdAt": {
+          "type": "string",
+          "example": "3/10/2018, 10:40:17 PM"
+        },
+        "updateAt": {
+          "type": "string",
+          "example": "3/10/2018, 10:40:17 PM"
+        }
+      }
+    },
+    "getAllBusinesses": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "All Businesses"
+        },
+        "business": {
+          "type": "array",
           "items": {
-            "$ref": "#/definitions/Review"
+            "$ref": "#/definitions/Business"
+          }
+        }
+      }
+    },
+    "createBusiness": {
+      "type": "object",
+      "required": [
+        "businessName",
+        "category",
+        "address",
+        "city",
+        "state",
+        "phoneNumber",
+        "about"
+      ],
+      "properties": {
+        "businessName": {
+          "type": "string",
+          "example": "Coffee Shop"
+        },
+        "businessImage": {
+          "type": "string",
+          "example": "https://images.unsplash.com/photo-1513866518382-c6e2c749de1a?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=77739345ea1b858247d0d2a23b3bb328&auto=format&fit=crop&w=711&q=80"
+        },
+        "category": {
+          "type": "string",
+          "example": "Resturant"
+        },
+        "address": {
+          "type": "string",
+          "example": "10, Folorunsho Street"
+        },
+        "city": {
+          "type": "string",
+          "example": "Egbeda"
+        },
+        "state": {
+          "type": "string",
+          "example": "Lagos"
+        },
+        "phoneNumber": {
+          "type": "string",
+          "example": "07037439325"
+        },
+        "postalAddress": {
+          "type": "string",
+          "example": "P.O Box 115, Ikeja, Lagos"
+        },
+        "workHours": {
+          "type": "string",
+          "example": "8am to 4pm"
+        },
+        "about": {
+          "type": "string",
+          "example": "Lorem ipsum dolor sit amet, consectetur adipisicing elit"
+        }
+      }
+    },
+    "createBusinessRes": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example":"Business successfully created"
+        },
+        "business": {
+          "type": "object",
+          "$ref": "#/definitions/Business"
+        }
+      }
+    },
+    "BusinessNotFound": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Business Not Found!"
+        }
+      }
+    },
+    "existingBusiness": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Coffee Shop already exists as a business name"
+        }
+      }
+    },
+    "getBusiness": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Business was successfully found"
+        },
+        "business": {
+          "type": "object",
+          "$ref": "#/definitions/Business"
+        }
+      }
+    },
+    "updateBusiness": {
+      "type": "object",
+      "properties": {
+        "address": {
+          "type": "string",
+          "example": "10, Folorunsho Street"
+        },
+        "city": {
+          "type": "string",
+          "example": "Egbeda"
+        },
+        "about": {
+          "type": "string",
+          "example": "Lorem ipsum dolor sit amet, consectetur adipisicing elit"
+        }
+      }
+    },
+    "updatedBusiness": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Business successfully updated"
+        },
+        "business": {
+          "type": "object",
+          "$ref": "#/definitions/Business"
+        }
+      }
+    },
+    "deleteBusiness": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Business was successfully deleted"
+        },
+        "business": {
+          "type": "object",
+          "$ref": "#/definitions/Business"
+        }
+      }
+    },
+    "businessSearch": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Businesses found"
+        },
+        "business": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Business"
           }
         }
       }
@@ -501,157 +959,64 @@
       "type": "object",
       "properties": {
         "review": {
-          "type": "string"
-        }
-      }
-    },
-    "userLogin": {
-      "type": "object",
-      "properties": {
-        "email": {
           "type": "string",
-          "example": "iamhere@gmail.com"
+          "example": "T'was nice doing business with you guys"
         },
-        "password": {
-          "type": "string",
-          "example": "password"
-        }
-      }
-    },
-    "signup": {
-      "type": "object",
-      "required": [
-        "message"
-      ],
-      "properties": {
-        "message": {
-          "type": "string",
-          "example": "User successfully created"
-        }
-      }
-    },
-    "login": {
-      "type": "object",
-      "required": [
-        "message"
-      ],
-      "properties": {
-        "message": {
-          "type": "string",
-          "example": "Login successful"
-        }
-      }
-    },
-    "UserNotFound": {
-      "type": "object",
-      "required": [
-        "message"
-      ],
-      "properties": {
-        "message": {
-          "type": "string",
-          "example": "User does not exist"
-        }
-      }
-    },
-    "BusinessNotFound": {
-      "type": "object",
-      "required": [
-        "status",
-        "message"
-      ],
-      "properties": {
-        "status": {
-          "type": "string",
-          "example": "fail"
+        "reviewId": {
+          "type": "integer",
+          "example": 1
         },
-        "message": {
+        "businessId":{
+          "type": "integer",
+          "example": 1
+        },
+        "createdAt": {
           "type": "string",
-          "example": "Business Not Found!"
-        }
-      }
-    },
-    "createBusiness": {
-      "type": "object",
-      "required": [
-        "message"
-      ],
-      "properties": {
-        "message": {
+          "example": "3/10/2018, 10:40:17 PM"
+        },
+        "updateAt": {
           "type": "string",
-          "example": "Business successfully created"
-        }
-      }
-    },
-    "updateBusiness": {
-      "type": "object",
-      "required": [
-        "message"
-      ],
-      "properties": {
-        "message": {
-          "type": "string",
-          "example": "Business successfully updated"
-        }
-      }
-    },
-    "deleteBusiness": {
-      "type": "object",
-      "required": [
-        "message"
-      ],
-      "properties": {
-        "message": {
-          "type": "string",
-          "example": "Business was successfully deleted"
-        }
-      }
-    },
-    "getBusiness": {
-      "type": "object",
-      "required": [
-        "message"
-      ],
-      "properties": {
-        "message": {
-          "type": "string",
-          "example": "Business was successfully found"
-        }
-      }
-    },
-    "getAllBusinesses": {
-      "type": "object",
-      "required": [
-        "message"
-      ],
-      "properties": {
-        "message": {
-          "type": "string",
-          "example": "All Businesses"
+          "example": "3/10/2018, 10:40:17 PM"
         }
       }
     },
     "addReview": {
       "type": "object",
       "required": [
-        "message"
+        "review"
       ],
+      "properties": {
+        "review": {
+          "type": "string",
+          "example": "T'was nice doing business with you guys"
+        }
+      }
+    },
+    "addReviewRes": {
+      "type": "object",
       "properties": {
         "message": {
           "type": "string",
           "example": "Review was successfully added"
+        },
+        "review": {
+          "type": "object",
+          "$ref": "#/definitions/Review"
         }
       }
     },
     "getBusinessReview": {
       "type": "object",
-      "required": [
-        "message"
-      ],
       "properties": {
         "message": {
           "type": "string",
           "example": "Reviews found"
+        },
+        "reviews": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Review"
+          }
         }
       }
     }

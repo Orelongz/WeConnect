@@ -178,7 +178,7 @@ describe('User controller tests', () => {
           res.body.should.be.a('object');
           assert.strictEqual(
             res.body.message,
-            'Password does not match the email provided',
+            'Wrong password',
             'Password does not match the email in database'
           );
           done();

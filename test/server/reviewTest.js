@@ -18,15 +18,15 @@ describe('Review controller tests', () => {
         .end((err, res) => {
           res.should.have.status(201);
           res.body.should.be.a('object');
-          res.body.business.reviews.should.be.a('array');
+          res.body.review.should.be.a('object');
           assert.isString(
             res.body.message,
             'Review was successfully added'
           );
           assert.deepEqual(
-            res.body.business.reviews[0].review,
+            res.body.review.review,
             dummyReview.validReview1.review,
-            'The first review'
+            'The created review object'
           );
           done();
         });

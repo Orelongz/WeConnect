@@ -1,6 +1,6 @@
 # WeConnect
-[![Build Status](https://travis-ci.org/Orelongz/WeConnect.svg?branch=feature/155517217/category-filter)](https://travis-ci.org/Orelongz/WeConnect?branch=feature/155517217/category-filter)
-[![Coverage Status](https://coveralls.io/repos/github/Orelongz/WeConnect/badge.svg?branch=feature/155517217/category-filter)](https://coveralls.io/github/Orelongz/WeConnect?branch=feature/155517217/category-filter)
+[![Build Status](https://travis-ci.org/Orelongz/WeConnect.svg?branch=chore/155835381/api-doc)](https://travis-ci.org/Orelongz/WeConnect?branch=chore/155835381/api-doc)
+[![Coverage Status](https://coveralls.io/repos/github/Orelongz/WeConnect/badge.svg?branch=chore/155835381/api-doc)](https://coveralls.io/github/Orelongz/WeConnect?branch=chore/155835381/api-doc)
 [![Maintainability](https://api.codeclimate.com/v1/badges/dbf93139a748aaefefcb/maintainability)](https://codeclimate.com/github/Orelongz/WeConnect/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/dbf93139a748aaefefcb/test_coverage)](https://codeclimate.com/github/Orelongz/WeConnect/test_coverage)
 
@@ -12,6 +12,9 @@ https://orelongz.github.io/WeConnect/
 
 # Hosted Endpoint on Heroku
 https://orelongz.herokuapp.com/
+
+# API documentation on Heroku
+https://orelongz.herokuapp.com/api-docs/
 
 <h3>API ENDPOINTS</h3>
 <hr>

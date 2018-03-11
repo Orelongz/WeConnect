@@ -51,7 +51,7 @@ const login = (req, res) => {
   }
   if (!bcrypt.compareSync(password, user.password)) {
     return res.status(401).json({
-      message: 'Password does not match the email provided'
+      message: 'Wrong password'
     });
   }
   return res.status(202).json({

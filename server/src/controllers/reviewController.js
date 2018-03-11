@@ -1,6 +1,7 @@
 import Review from './../models/reviewModel';
 import { allBusinesses } from './businessController';
 
+const allReviews = [];
 /**
  * addReview()
  * @desc adds a review to a business
@@ -9,24 +10,25 @@ import { allBusinesses } from './businessController';
  * @return {Object} message, business(containing the review)
  */
 const addReview = (req, res) => {
-  let theBusiness;
+  let theReview;
   const { businessId } = req.params;
   const { review } = req.body;
+
   allBusinesses.forEach((business) => {
     if (business.businessId === Number(businessId)) {
-      const theReview = new Review(review);
-      business.reviews.push(theReview);
-      theBusiness = business;
+      theReview = new Review(review, businessId);
+      allReviews.push(theReview);
+      business.reviews.push(theReview.reviewId);
     }
   });
-  if (!theBusiness) {
+  if (!theReview) {
     return res.status(404).json({
       message: 'Business was not found'
     });
   }
   return res.status(201).json({
     message: 'Review was successfully added',
-    business: theBusiness
+    review: theReview
   });
 };
 
@@ -46,7 +48,8 @@ const getBusinessReview = (req, res) => {
       message: 'Business was not found'
     });
   }
-  const { reviews } = theBusiness;
+
+  const reviews = allReviews.filter(eachReview => eachReview.businessId === businessId);
   return res.status(200).json({
     message: 'Reviews found',
     reviews
