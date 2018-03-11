@@ -124,7 +124,7 @@ Swagger API documentation at `http://localhost:8000/api-docs/`
 </table>
 
 ## Hosted Endpoints on Heroku
-View hosted endpoints on Heroku through this [link](https://orelongz.herokuapp.com/)
+View hosted endpoints on Heroku through this [link](https://weconnect-orelongz.herokuapp.com/)
 
 ## API documentation on Heroku
-View swagger API documentation of endpoints on Heroku through this [link](https://orelongz.herokuapp.com/api-docs/)
+View swagger API documentation of endpoints on Heroku through this [link](https://weconnect-orelongz.herokuapp.com/api-docs/)
