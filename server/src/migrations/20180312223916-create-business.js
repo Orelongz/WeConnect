@@ -15,7 +15,9 @@ module.exports = {
       allowNul: true
     },
     category: {
-      type: Sequelize.STRING,
+      type: Sequelize.ENUM,
+      values: ['uncategorized', 'resturant', 'bar', 'cinema', 'cafe', 'services'],
+      defautValue: 'uncategorized',
       allowNull: false
     },
     address: {
