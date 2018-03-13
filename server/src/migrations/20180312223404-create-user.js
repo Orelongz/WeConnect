@@ -4,7 +4,7 @@ module.exports = {
       allowNull: false,
       primaryKey: true,
       type: Sequelize.UUID,
-      defautValue: Sequelize.UUIDV4
+      defaultValue: Sequelize.UUIDV4
     },
     firstname: {
       type: Sequelize.STRING,
@@ -16,9 +16,10 @@ module.exports = {
     },
     email: {
       type: Sequelize.STRING,
-      allowNull: false
+      allowNull: false,
+      unique: true
     },
-    password: {
+    hashedPassword: {
       type: Sequelize.STRING,
       allowNull: false
     },

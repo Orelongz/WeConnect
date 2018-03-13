@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       allowNull: false,
       primaryKey: true,
-      defautValue: DataTypes.UUIDV4
+      defaultValue: DataTypes.UUIDV4
     },
     firstname: {
       type: DataTypes.STRING,
@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: {
         args: true,
-        msg: 'Email already exists'
+        msg: 'This email already has an account'
       },
       validate: {
         isEmail: {
@@ -40,25 +40,19 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    password: {
+    hashedPassword: {
       type: DataTypes.STRING,
-      allowNull: false,
-      validate: {
-        len: {
-          args: [8, 30],
-          msg: 'Password length should be at least 8 and at most 30'
-        }
-      }
+      allowNull: false
     }
   });
   // associations can be defined here
   User.associate = (models) => {
     User.hasMany(models.Business, {
-      foreignKey: 'UserId',
+      foreignKey: 'userId',
       onDelete: 'CASCADE'
     });
     User.hasMany(models.Review, {
-      foreignKey: 'UserId',
+      foreignKey: 'userId',
       onDelete: 'CASCADE'
     });
   };

@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       allowNull: false,
       primaryKey: true,
-      defautValue: DataTypes.UUIDV4
+      defaultValue: DataTypes.UUIDV4
     },
     businessName: {
       type: DataTypes.STRING,
@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
     category: {
       type: DataTypes.ENUM,
       values: ['uncategorized', 'resturant', 'bar', 'cinema', 'cafe', 'services'],
-      defautValue: 'uncategorized',
+      defaultValue: 'uncategorized',
       allowNull: false
     },
     address: {
@@ -70,11 +70,11 @@ module.exports = (sequelize, DataTypes) => {
   // associations can be defined here
   Business.associate = (models) => {
     Business.belongsTo(models.User, {
-      foreignKey: 'UserId',
+      foreignKey: 'userId',
       onDelete: 'CASCADE'
     });
-    Business.hasMany(models.Reviews, {
-      foreignKey: 'BusinessId',
+    Business.hasMany(models.Review, {
+      foreignKey: 'businessId',
       onDelete: 'CASCADE'
     });
   };

@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.UUID,
       allowNull: false,
       primaryKey: true,
-      defautValue: DataTypes.UUIDV4
+      defaultValue: DataTypes.UUIDV4
     },
     review: {
       type: DataTypes.TEXT,
@@ -14,11 +14,11 @@ module.exports = (sequelize, DataTypes) => {
   // associations can be defined here
   Review.associate = (models) => {
     Review.belongsTo(models.User, {
-      foreignKey: 'UserId',
+      foreignKey: 'userId',
       onDelete: 'CASCADE'
     });
     Review.belongsTo(models.Business, {
-      foreignKey: 'UserId',
+      foreignKey: 'businessId',
       onDelete: 'CASCADE'
     });
   };

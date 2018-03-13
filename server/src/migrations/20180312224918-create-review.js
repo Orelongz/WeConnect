@@ -4,9 +4,9 @@ module.exports = {
       allowNull: false,
       primaryKey: true,
       type: Sequelize.UUID,
-      defautValue: Sequelize.UUIDV4
+      defaultValue: Sequelize.UUIDV4
     },
-    UserId: {
+    userId: {
       type: Sequelize.UUID,
       onDelete: 'CASCADE',
       references: {
@@ -14,7 +14,7 @@ module.exports = {
         key: 'id'
       }
     },
-    BusinessId: {
+    businessId: {
       type: Sequelize.UUID,
       onDelete: 'CASCADE',
       references: {

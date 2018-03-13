@@ -4,9 +4,9 @@ module.exports = {
       allowNull: false,
       primaryKey: true,
       type: Sequelize.UUID,
-      defautValue: Sequelize.UUIDV4
+      defaultValue: Sequelize.UUIDV4
     },
-    UserId: {
+    userId: {
       type: Sequelize.UUID,
       onDelete: 'CASCADE',
       references: {
@@ -25,7 +25,7 @@ module.exports = {
     category: {
       type: Sequelize.ENUM,
       values: ['uncategorized', 'resturant', 'bar', 'cinema', 'cafe', 'services'],
-      defautValue: 'uncategorized',
+      defaultValue: 'uncategorized',
       allowNull: false
     },
     address: {
