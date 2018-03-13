@@ -26,15 +26,33 @@ module.exports = (sequelize, DataTypes) => {
     },
     city: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        is: {
+          args: /^[a-z]+$/i,
+          message: 'Only letters are allowed'
+        }
+      }
     },
     state: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        is: {
+          args: /^[a-z]+$/i,
+          message: 'Only letters are allowed'
+        }
+      }
     },
     phoneNumber: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        is: {
+          args: /^\d*$/,
+          message: 'Only numbers are allowed'
+        }
+      }
     },
     postalAddress: {
       type: DataTypes.STRING,
@@ -45,15 +63,20 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true
     },
     about: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false
     }
-  }, {
-    classMethods: {
-      associate(models) {
-        // associations can be defined here
-      }
-    }
   });
+  // associations can be defined here
+  Business.associate = (models) => {
+    Business.belongsTo(models.User, {
+      foreignKey: 'UserId',
+      onDelete: 'CASCADE'
+    });
+    Business.hasMany(models.Reviews, {
+      foreignKey: 'BusinessId',
+      onDelete: 'CASCADE'
+    });
+  };
   return Business;
 };

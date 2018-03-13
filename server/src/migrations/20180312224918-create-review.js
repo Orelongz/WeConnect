@@ -6,8 +6,24 @@ module.exports = {
       type: Sequelize.UUID,
       defautValue: Sequelize.UUIDV4
     },
+    UserId: {
+      type: Sequelize.UUID,
+      onDelete: 'CASCADE',
+      references: {
+        model: 'Users',
+        key: 'id'
+      }
+    },
+    BusinessId: {
+      type: Sequelize.UUID,
+      onDelete: 'CASCADE',
+      references: {
+        model: 'Businesses',
+        key: 'id'
+      }
+    },
     review: {
-      type: Sequelize.STRING,
+      type: Sequelize.TEXT,
       allowNul: false
     },
     createdAt: {

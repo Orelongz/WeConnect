@@ -7,15 +7,20 @@ module.exports = (sequelize, DataTypes) => {
       defautValue: DataTypes.UUIDV4
     },
     review: {
-      type: DataTypes.STRING,
+      type: DataTypes.TEXT,
       allowNull: false
     }
-  }, {
-    classMethods: {
-      associate(models) {
-        // associations can be defined here
-      }
-    }
   });
+  // associations can be defined here
+  Review.associate = (models) => {
+    Review.belongsTo(models.User, {
+      foreignKey: 'UserId',
+      onDelete: 'CASCADE'
+    });
+    Review.belongsTo(models.Business, {
+      foreignKey: 'UserId',
+      onDelete: 'CASCADE'
+    });
+  };
   return Review;
 };

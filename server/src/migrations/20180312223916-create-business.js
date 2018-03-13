@@ -6,6 +6,14 @@ module.exports = {
       type: Sequelize.UUID,
       defautValue: Sequelize.UUIDV4
     },
+    UserId: {
+      type: Sequelize.UUID,
+      onDelete: 'CASCADE',
+      references: {
+        model: 'Users',
+        key: 'id'
+      }
+    },
     businessName: {
       type: Sequelize.STRING,
       allowNul: false
@@ -45,7 +53,7 @@ module.exports = {
       allowNull: true
     },
     about: {
-      type: Sequelize.STRING,
+      type: Sequelize.TEXT,
       allowNull: false
     },
     createdAt: {
