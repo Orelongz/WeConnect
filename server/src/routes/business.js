@@ -1,13 +1,9 @@
 import express from 'express';
-// import {
-//   createBusiness,
-//   updateBusiness,
-//   deleteBusiness,
-//   getBusiness,
-//   getAllBusinesses
-// } from './../controllers/businessController';
-// import businessValidation from './../middlewares/businessMiddleware';
+import businessController from './../controllers/businessController';
+import businessMiddleware from './../middlewares/businessMiddleware';
 
+const { createBusiness } = businessController;
+const { businessValidation } = businessMiddleware;
 const router = express.Router();
 
 // Get all businesses
@@ -17,7 +13,7 @@ const router = express.Router();
 // router.get('/:businessId', getBusiness);
 
 // Register a business
-// router.post('/', businessValidation, createBusiness);
+router.post('/', businessValidation, createBusiness);
 
 // Update a business
 // router.put('/:businessId', businessValidation, updateBusiness);

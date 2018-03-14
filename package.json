@@ -41,7 +41,7 @@
     "lint": "eslint --fix server/ test/",
     "migrate": "sequelize db:migrate && sequelize db:migrate --env test",
     "undo-migrate": "sequelize db:migrate:undo && sequelize db:migrate:undo --env test",    
-    "test": "cross-env NODE_ENV=test nyc --reporter=html --reporter=text mocha test/server/userTest.js test/server/indexTest.js --exit --compilers js:babel-register",
+    "test": "cross-env NODE_ENV=test nyc --reporter=html --reporter=text mocha test/server/userTest.js test/server/businessTest.js test/server/indexTest.js --exit --compilers js:babel-register",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
     "check-coverage": "nyc check-coverage --lines 70 --per-file",

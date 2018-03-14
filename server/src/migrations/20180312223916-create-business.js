@@ -16,16 +16,15 @@ module.exports = {
     },
     businessName: {
       type: Sequelize.STRING,
-      allowNul: false
+      allowNull: false,
+      unique: true
     },
     businessImage: {
       type: Sequelize.STRING,
-      allowNul: true
+      allowNull: true
     },
     category: {
-      type: Sequelize.ENUM,
-      values: ['uncategorized', 'resturant', 'bar', 'cinema', 'cafe', 'services'],
-      defaultValue: 'uncategorized',
+      type: Sequelize.STRING,
       allowNull: false
     },
     address: {

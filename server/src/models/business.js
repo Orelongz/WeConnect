@@ -8,16 +8,18 @@ module.exports = (sequelize, DataTypes) => {
     },
     businessName: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      unique: {
+        args: true,
+        msg: 'Business name already exists'
+      }
     },
     businessImage: {
       type: DataTypes.STRING,
       allowNull: true
     },
     category: {
-      type: DataTypes.ENUM,
-      values: ['uncategorized', 'resturant', 'bar', 'cinema', 'cafe', 'services'],
-      defaultValue: 'uncategorized',
+      type: DataTypes.STRING,
       allowNull: false
     },
     address: {
