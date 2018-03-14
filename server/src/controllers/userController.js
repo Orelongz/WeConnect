@@ -1,5 +1,5 @@
 import bcrypt from 'bcrypt';
-import db from './../models';
+import { db } from './../models';
 
 const { User } = db;
 
@@ -21,7 +21,7 @@ class userController {
     } = req.body;
 
     const hashedPassword = bcrypt.hashSync(password, 10);
-    User.create({
+    return User.create({
       firstname, lastname, email, hashedPassword
     })
       .then(user => res.status(201).json({

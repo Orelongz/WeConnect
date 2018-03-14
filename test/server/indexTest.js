@@ -2,9 +2,9 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from './../../server/app';
 
-const { assert } = chai;
+const { assert, should } = chai;
 
-chai.should();
+should();
 chai.use(chaiHttp);
 
 describe('Index routes tests', () => {
