@@ -5,7 +5,8 @@ import businessMiddleware from './../middlewares/businessMiddleware';
 const {
   createBusiness,
   updateBusiness,
-  deleteBusiness
+  deleteBusiness,
+  getBusiness
 } = businessController;
 const { businessValidation } = businessMiddleware;
 const router = express.Router();
@@ -14,7 +15,7 @@ const router = express.Router();
 // router.get('/', getAllBusinesses);
 
 // Get a business by businessId
-// router.get('/:businessId', getBusiness);
+router.get('/:businessId', getBusiness);
 
 // Register a business
 router.post('/', businessValidation, createBusiness);

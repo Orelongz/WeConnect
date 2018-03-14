@@ -158,32 +158,35 @@ export default class businessController {
           }));
       });
   }
-}
 
-// /**
-//  * getBusiness()
-//  * @desc retrieve the details of a registered business
-//  * @param {Object} req request object
-//  * @param {Object} res response object
-//  * @return {Object} message, business
-//  */
-// const getBusiness = (req, res) => {
-//   let theBusiness;
-//   allBusinesses.forEach((business) => {
-//     if (business.businessId === Number(req.params.businessId)) {
-//       theBusiness = business;
-//     }
-//   });
-//   if (!theBusiness) {
-//     return res.status(404).json({
-//       message: 'Business not found'
-//     });
-//   }
-//   return res.status(200).json({
-//     message: 'Business was successfully found',
-//     business: theBusiness
-//   });
-// };
+  /**
+   * getBusiness()
+   * @desc retrieve the details of a registered business
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @return {Object} message, business
+   */
+  static getBusiness(req, res) {
+    const { businessId } = req.params;
+
+    return Business.findOne({
+      where: {
+        businessId
+      }
+    })
+      .then((business) => {
+        if (!business) {
+          return res.status(404).json({
+            message: 'Business not found'
+          });
+        }
+        return res.status(200).json({
+          message: 'Business was successfully found',
+          business
+        });
+      });
+  }
+}
 
 // /**
 //  * getAllBusinesses()
