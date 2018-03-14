@@ -53,7 +53,7 @@ class userController {
             message: 'Email not found'
           });
         }
-        if (!bcrypt.compareSync(password, user.password)) {
+        if (!bcrypt.compareSync(password, user.hashedPassword)) {
           return res.status(401).json({
             message: 'Wrong password'
           });
@@ -61,8 +61,7 @@ class userController {
         return res.status(202).json({
           message: `Welcome ${user.firstname} ${user.lastname}`
         });
-      })
-      .catch(err => res.status(500).json({ err }));
+      });
   }
 }
 
