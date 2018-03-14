@@ -39,8 +39,8 @@
   "scripts": {
     "start": "babel-node ./server/bin/www",
     "lint": "eslint --fix server/ test/",
-    "migrate": "sequelize db:migrate && sequelize db:migrate --env test",
-    "undo-migrate": "sequelize db:migrate:undo && sequelize db:migrate:undo --env test",    
+    "dev-migrate": "sequelize db:migrate",
+    "test-migrate": "sequelize db:migrate:undo:all --env test && sequelize db:migrate --env test",
     "test": "cross-env NODE_ENV=test nyc --reporter=html --reporter=text mocha test/server/ --exit --compilers js:babel-register",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
