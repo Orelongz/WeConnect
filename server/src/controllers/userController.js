@@ -7,7 +7,7 @@ const { User } = db;
 * @class userController
 * @desc handles the user route
 */
-class userController {
+export default class userController {
   /**
    * signup()
    * @desc Registers a new user
@@ -64,5 +64,3 @@ class userController {
       });
   }
 }
-
-export default userController;

@@ -6,13 +6,14 @@ const {
   createBusiness,
   updateBusiness,
   deleteBusiness,
-  getBusiness
+  getBusiness,
+  getAllBusinesses
 } = businessController;
 const { businessValidation } = businessMiddleware;
 const router = express.Router();
 
 // Get all businesses
-// router.get('/', getAllBusinesses);
+router.get('/', getAllBusinesses);
 
 // Get a business by businessId
 router.get('/:businessId', getBusiness);

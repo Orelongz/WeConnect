@@ -29,38 +29,38 @@ const updateObject = (req) => {
   return update;
 };
 
-// /**
-//  * handleLocationSearch()
-//  * @desc checks businesses by location
-//  * @param {Object} req request object
-//  * @param {Array} businesses allBusinesses array
-//  * @return {Array} business
-//  */
-// const handleLocationSearch = (req, businesses) => {
-//   const { location } = req.query;
-//   if (location) {
-//     return businesses.filter(business => (
-//       (business.city.toLowerCase() === location.toLowerCase()) ||
-//       (business.state.toLowerCase() === location.toLowerCase())
-//     ));
-//   }
-// };
+/**
+ * handleLocationSearch()
+ * @desc checks businesses by location
+ * @param {Object} req request object
+ * @param {Array} businesses allBusinesses array
+ * @return {Array} business
+ */
+const handleLocationSearch = (req, businesses) => {
+  const { location } = req.query;
+  if (location) {
+    return businesses.filter(business => (
+      (business.city.toLowerCase() === location.toLowerCase()) ||
+      (business.state.toLowerCase() === location.toLowerCase())
+    ));
+  }
+};
 
-// /**
-//  * handleCategorySearch()
-//  * @desc checks businesses by category
-//  * @param {Object} req request object
-//  * @param {Array} businesses allBusinesses array
-//  * @return {Array} business
-//  */
-// const handleCategorySearch = (req, businesses) => {
-//   const { category } = req.query;
-//   if (category) {
-//     return businesses.filter(business => (
-//       business.category.toLowerCase() === category.toLowerCase()
-//     ));
-//   }
-// };
+/**
+ * handleCategorySearch()
+ * @desc checks businesses by category
+ * @param {Object} req request object
+ * @param {Array} businesses allBusinesses array
+ * @return {Array} business
+ */
+const handleCategorySearch = (req, businesses) => {
+  const { category } = req.query;
+  if (category) {
+    return businesses.filter(business => (
+      business.category.toLowerCase() === category.toLowerCase()
+    ));
+  }
+};
 
 /**
  * @class businessController
@@ -186,35 +186,35 @@ export default class businessController {
         });
       });
   }
-}
 
-// /**
-//  * getAllBusinesses()
-//  * @desc retrieve the details of a registered business
-//  * @param {Object} req request object
-//  * @param {Object} res response object
-//  * @return {Object} message, business
-//  */
-// const getAllBusinesses = (req, res) => {
-//   const location = handleLocationSearch(req, allBusinesses);
-//   const category = handleCategorySearch(req, allBusinesses);
-//   let theBusinesses;
-//   if (location || category) {
-//     theBusinesses = [...(location || []), ...(category || [])];
-//   }
-//   if (!theBusinesses) {
-//     return res.status(200).json({
-//       message: 'All Businesses',
-//       business: allBusinesses
-//     });
-//   }
-//   if (theBusinesses.length === 0) {
-//     return res.status(200).json({
-//       message: 'There are no businesses matching your search'
-//     });
-//   }
-//   return res.status(200).json({
-//     message: 'Businesses found',
-//     business: theBusinesses
-//   });
-// };
+  /**
+   * getAllBusinesses()
+   * @desc retrieve the details of a registered business
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @return {Object} message, business
+   */
+  static getAllBusinesses(req, res) {
+    return Business.all()
+      .then((businesses) => {
+        const location = handleLocationSearch(req, businesses);
+        const category = handleCategorySearch(req, businesses);
+        if (!location && !category) {
+          return res.status(200).json({
+            message: 'All Businesses',
+            businesses
+          });
+        }
+        const theBusinesses = [...(location || []), ...(category || [])];
+        if (theBusinesses.length === 0) {
+          return res.status(200).json({
+            message: 'There are no businesses matching your search'
+          });
+        }
+        return res.status(200).json({
+          message: 'Businesses found',
+          businesses: theBusinesses
+        });
+      });
+  }
+}

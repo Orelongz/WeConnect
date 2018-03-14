@@ -4,7 +4,7 @@ import swaggerUi from 'swagger-ui-express';
 import cors from 'cors';
 import indexRoute from './src/routes/index';
 import businessRoute from './src/routes/business';
-// import reviewRoute from './src/routes/review';
+import reviewRoute from './src/routes/review';
 import swaggerDocument from './../swagger.json';
 
 const app = express();
@@ -20,7 +20,7 @@ app.use(
 );
 app.use('/api/v1', indexRoute);
 app.use('/api/v1/businesses', businessRoute);
-// app.use('/api/v1/businesses/:businessId/reviews', reviewRoute);
+app.use('/api/v1/businesses/:businessId/reviews', reviewRoute);
 
 app.get('/', (req, res) => res.status(200).json({
   message: 'Welcome to WeConnect'

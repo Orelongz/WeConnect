@@ -1,13 +1,20 @@
 import express from 'express';
-// import { addReview, getBusinessReview } from './../controllers/reviewController';
-// import validateReview from './../middlewares/reviewMiddleware';
+import reviewController from './../controllers/reviewController';
+import reviewMiddleware from './../middlewares/reviewMiddleware';
 
+const { addReview } = reviewController;
+const { validateReview, businessExists } = reviewMiddleware;
 const router = express.Router({ mergeParams: true });
 
 // Get all reviews for a business
 // router.get('/', getBusinessReview);
 
 // Add review to a business
-// router.post('/', validateReview, addReview);
+router.post(
+  '/',
+  validateReview,
+  businessExists,
+  addReview
+);
 
 export default router;
