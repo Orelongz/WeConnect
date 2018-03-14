@@ -56,29 +56,29 @@ class userMiddleware {
     }
     return next();
   }
-}
 
-// /**
-//  * signInValidation()
-//  * @desc handles validation of signin input fields
-//  * @param {Object} req request object
-//  * @param {Object} res response object
-//  * @param {Object} next Express next middleware function
-//  * @return {*} error, void
-//  */
-// const signInValidation = (req, res, next) => {
-//   const error = [];
-//   const { email, password } = req.body;
-//   if (!email || email.trim() === '') {
-//     error.push('The email field cannot be empty');
-//   }
-//   if (!password || password.trim() === '') {
-//     error.push('The password field cannot be empty');
-//   }
-//   if (error.length > 0) {
-//     return res.status(406).json({ error });
-//   }
-//   return next();
-// };
+  /**
+   * signInValidation()
+   * @desc handles validation of signin input fields
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @param {Object} next Express next middleware function
+   * @return {*} error, void
+   */
+  static signInValidation(req, res, next) {
+    const error = [];
+    const { email, password } = req.body;
+    if (!email || email.trim() === '') {
+      error.push('The email field cannot be empty');
+    }
+    if (!password || password.trim() === '') {
+      error.push('The password field cannot be empty');
+    }
+    if (error.length > 0) {
+      return res.status(406).json({ error });
+    }
+    return next();
+  }
+}
 
 export default userMiddleware;

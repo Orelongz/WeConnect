@@ -3,11 +3,12 @@ import userController from './../controllers/userController';
 import userMiddleware from './../middlewares/userMiddleware';
 
 const router = express.Router();
+const { signup, login } = userController;
 const {
   signUpValidation,
-  validateEmail
+  validateEmail,
+  signInValidation
 } = userMiddleware;
-const { signup } = userController;
 
 // Register a user
 router.post(
@@ -18,6 +19,6 @@ router.post(
 );
 
 // Login a user
-// router.post('/auth/login', signInValidation, login);
+router.post('/auth/login', signInValidation, login);
 
 export default router;

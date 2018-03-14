@@ -32,6 +32,38 @@ class userController {
         message: err.errors[0].message
       }));
   }
+
+  /**
+   * login()
+   * @desc Logs in an authenticated user
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @return {Object} message, user
+   */
+  static login(req, res) {
+    const { email, password } = req.body;
+    return User.findOne({
+      where: {
+        email
+      }
+    })
+      .then((user) => {
+        if (!user) {
+          return res.status(404).json({
+            message: 'Email not found'
+          });
+        }
+        if (!bcrypt.compareSync(password, user.password)) {
+          return res.status(401).json({
+            message: 'Wrong password'
+          });
+        }
+        return res.status(202).json({
+          message: `Welcome ${user.firstname} ${user.lastname}`
+        });
+      })
+      .catch(err => res.status(500).json({ err }));
+  }
 }
 
 export default userController;
