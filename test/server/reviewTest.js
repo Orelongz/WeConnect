@@ -1,14 +1,21 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from './../../server/app';
+import { db } from './../../server/src/models';
 import { dummyReview } from './../helpers/dummy';
 
-const { assert } = chai;
+const { Review } = db;
+const { assert, should } = chai;
 
-chai.should();
+should();
 chai.use(chaiHttp);
 
 describe('Review controller tests', () => {
+  before((done) => {
+    Review.sync({ force: true })
+      .then(() => done())
+      .catch(err => done(err));
+  });
   describe('Given that a user sends a POST request to /api/v1/businesses/:businessId/reviews', () => {
     it('should return 201 status code and add review to business', (done) => {
       chai.request(app)
@@ -65,47 +72,47 @@ describe('Review controller tests', () => {
     });
   });
 
-  // describe('Given that a user sends a GET request to /api/v1/businesses/:businessId/reviews', () => {
-  //   before((done) => {
-  //     chai.request(app)
-  //       .post('/api/v1/businesses/3/reviews')
-  //       .type('form')
-  //       .send(dummyReview.validReview2)
-  //       .end(() => done());
-  //   });
+  describe('Given that a user sends a GET request to /api/v1/businesses/:businessId/reviews', () => {
+    before((done) => {
+      chai.request(app)
+        .post('/api/v1/businesses/3/reviews')
+        .type('form')
+        .send(dummyReview.validReview2)
+        .end(() => done());
+    });
 
-  //   it('should return 200 status code and retrieve all comments', (done) => {
-  //     chai.request(app)
-  //       .get('/api/v1/businesses/2/reviews')
-  //       .end((err, res) => {
-  //         res.should.have.status(200);
-  //         res.body.should.be.a('object');
-  //         res.body.reviews.should.be.a('array');
-  //         assert.isString(
-  //           res.body.message,
-  //           'Reviews found'
-  //         );
-  //         assert.equal(
-  //           res.body.reviews.length,
-  //           2,
-  //           'There are presently two reviews for this business'
-  //         );
-  //         done();
-  //       });
-  //   });
+    it('should return 200 status code and retrieve all comments', (done) => {
+      chai.request(app)
+        .get('/api/v1/businesses/3/reviews')
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.reviews.should.be.a('array');
+          assert.isString(
+            res.body.message,
+            'Reviews found'
+          );
+          assert.equal(
+            res.body.reviews.length,
+            2,
+            'There are presently two reviews for this business'
+          );
+          done();
+        });
+    });
 
-  //   it('should return 404 status code when businessId is not found', (done) => {
-  //     chai.request(app)
-  //       .get('/api/v1/businesses/7/reviews')
-  //       .end((err, res) => {
-  //         res.should.have.status(404);
-  //         res.body.should.be.a('object');
-  //         assert.isString(
-  //           res.body.message,
-  //           'Business was not found'
-  //         );
-  //         done();
-  //       });
-  //   });
-  // });
+    it('should return 404 status code when businessId is not found', (done) => {
+      chai.request(app)
+        .get('/api/v1/businesses/7/reviews')
+        .end((err, res) => {
+          res.should.have.status(404);
+          res.body.should.be.a('object');
+          assert.isString(
+            res.body.message,
+            'Business was not found'
+          );
+          done();
+        });
+    });
+  });
 });

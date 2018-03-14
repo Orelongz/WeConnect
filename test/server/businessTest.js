@@ -5,9 +5,9 @@ import { db } from './../../server/src/models';
 import { dummyBusiness } from './../helpers/dummy';
 
 const { Business } = db;
-const { assert } = chai;
+const { assert, should } = chai;
 
-chai.should();
+should();
 chai.use(chaiHttp);
 
 describe('Business controller tests', () => {
