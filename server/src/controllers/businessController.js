@@ -123,41 +123,42 @@ export default class businessController {
           });
         }
         return business.update({ ...update })
-          .then(() => {
-            res.status(200).json({
-              message: 'Business successfully updated',
-              business
-            });
+          .then(() => res.status(200).json({
+            message: 'Business successfully updated',
+            business
+          }));
+      });
+  }
+
+  /**
+   * deleteBusiness()
+   * @desc deletes an existing business profile
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @return {Object} message, business
+   */
+  static deleteBusiness(req, res) {
+    const { businessId } = req.params;
+
+    return Business.findOne({
+      where: {
+        businessId
+      }
+    })
+      .then((business) => {
+        if (!business) {
+          return res.status(404).json({
+            message: 'Business not found'
           });
+        }
+        return business.destroy()
+          .then(() => res.status(200).json({
+            message: 'Business was successfully deleted',
+            business
+          }));
       });
   }
 }
-
-// /**
-//  * deleteBusiness()
-//  * @desc deletes an existing business profile
-//  * @param {Object} req request object
-//  * @param {Object} res response object
-//  * @return {Object} message, business
-//  */
-// const deleteBusiness = (req, res) => {
-//   let theBusiness;
-//   allBusinesses.forEach((business, index) => {
-//     if (business.businessId === Number(req.params.businessId)) {
-//       theBusiness = business;
-//       allBusinesses.splice(index, 1);
-//     }
-//   });
-//   if (!theBusiness) {
-//     return res.status(404).json({
-//       message: 'Business not found'
-//     });
-//   }
-//   return res.status(200).json({
-//     message: 'Business was successfully deleted',
-//     business: theBusiness
-//   });
-// };
 
 // /**
 //  * getBusiness()
