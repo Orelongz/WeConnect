@@ -2,7 +2,7 @@ import express from 'express';
 import businessController from './../controllers/businessController';
 import businessMiddleware from './../middlewares/businessMiddleware';
 
-const { createBusiness } = businessController;
+const { createBusiness, updateBusiness } = businessController;
 const { businessValidation } = businessMiddleware;
 const router = express.Router();
 
@@ -16,7 +16,7 @@ const router = express.Router();
 router.post('/', businessValidation, createBusiness);
 
 // Update a business
-// router.put('/:businessId', businessValidation, updateBusiness);
+router.put('/:businessId', businessValidation, updateBusiness);
 
 // Remove a business
 // router.delete('/:businessId', deleteBusiness);

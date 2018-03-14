@@ -1,10 +1,10 @@
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
-    id: {
-      type: DataTypes.UUID,
+    userId: {
       allowNull: false,
+      autoIncrement: true,
       primaryKey: true,
-      defaultValue: DataTypes.UUIDV4
+      type: DataTypes.INTEGER
     },
     firstname: {
       type: DataTypes.STRING,

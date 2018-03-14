@@ -2,6 +2,33 @@ import { db } from './../models';
 
 const { Business } = db;
 
+/**
+ * updateObject()
+ * @desc handles update of business
+ * @param {Object} req request object
+ * @return {Object} theBusiness
+ */
+const updateObject = (req) => {
+  const {
+    businessName, businessImage, category, address, city,
+    state, phoneNumber, postalAddress, workHours, about
+  } = req.body;
+
+  const update = {
+    businessName,
+    businessImage,
+    category,
+    address,
+    city,
+    state,
+    phoneNumber,
+    postalAddress,
+    workHours,
+    about
+  };
+  return update;
+};
+
 // /**
 //  * handleLocationSearch()
 //  * @desc checks businesses by location
@@ -73,60 +100,38 @@ export default class businessController {
         message: err.errors[0].message
       }));
   }
+
+  /**
+   * updateBusiness()
+   * @desc updates an existing business profile
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @return {Object} message, business
+   */
+  static updateBusiness(req, res) {
+    const update = updateObject(req);
+    const { businessId } = req.params;
+    return Business.findOne({
+      where: {
+        businessId
+      }
+    })
+      .then((business) => {
+        if (!business) {
+          return res.status(404).json({
+            message: 'Business not found'
+          });
+        }
+        return business.update({ ...update })
+          .then(() => {
+            res.status(200).json({
+              message: 'Business successfully updated',
+              business
+            });
+          });
+      });
+  }
 }
-
-// /**
-//  * handleUpdate()
-//  * @desc handles update of business
-//  * @param {Object} req request object
-//  * @return {Object} theBusiness
-//  */
-// const handleUpdate = (req) => {
-//   const {
-//     businessName, businessImage, category, address, city,
-//     state, phoneNumber, postalAddress, workHours, about
-//   } = req.body;
-
-//   const update = {
-//     businessName,
-//     businessImage,
-//     category,
-//     address,
-//     city,
-//     state,
-//     phoneNumber,
-//     postalAddress,
-//     workHours,
-//     about,
-//     updatedAt: new Date().toLocaleString()
-//   };
-//   let theBusiness;
-//   allBusinesses.forEach((business) => {
-//     if (business.businessId === Number(req.params.businessId)) {
-//       business = { ...business, ...update };
-//       theBusiness = business;
-//     }
-//   });
-//   return theBusiness;
-// };
-
-// /**
-//  * updateBusiness()
-//  * @desc updates an existing business profile
-//  * @param {Object} req request object
-//  * @param {Object} res response object
-//  * @return {Object} message, business
-//  */
-// const updateBusiness = (req, res) => {
-//   const business = handleUpdate(req);
-//   if (business) {
-//     return res.status(200).json({
-//       message: 'Business successfully updated',
-//       business
-//     });
-//   }
-//   return res.status(404).json({ message: 'Business not found' });
-// };
 
 // /**
 //  * deleteBusiness()
