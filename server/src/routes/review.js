@@ -1,9 +1,9 @@
 import express from 'express';
-import reviewController from './../controllers/reviewController';
-import reviewMiddleware from './../middlewares/reviewMiddleware';
+import { ReviewController } from './../controllers';
+import { ReviewMiddleware } from './../middlewares';
 
-const { addReview, getBusinessReviews } = reviewController;
-const { validateReview, businessExists } = reviewMiddleware;
+const { addReview, getBusinessReviews } = ReviewController;
+const { validateReview, businessExists } = ReviewMiddleware;
 const router = express.Router({ mergeParams: true });
 
 // Get all reviews for a business

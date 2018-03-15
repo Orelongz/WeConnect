@@ -3,10 +3,10 @@ import { db } from './../models';
 const { Business } = db;
 
 /**
- * @class reviewMiddleware
- * @desc review middleware
+ * @class ReviewMiddleware
+ * @desc middleware for reviews
  */
-export default class reviewMiddleware {
+export default class ReviewMiddleware {
   /**
    * validateReview()
    * @desc handles validation of review input field

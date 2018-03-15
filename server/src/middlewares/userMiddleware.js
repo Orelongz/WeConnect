@@ -1,10 +1,10 @@
 import validator from 'validator';
 
 /**
- * @class userMiddleware
+ * @class UserMiddleware
  * @desc Middleware for user route
  */
-class userMiddleware {
+export default class UserMiddleware {
   /**
    * signUpValidation()
    * @desc handles validation of signup input fields
@@ -80,5 +80,3 @@ class userMiddleware {
     return next();
   }
 }
-
-export default userMiddleware;

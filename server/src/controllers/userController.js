@@ -1,14 +1,14 @@
 import bcrypt from 'bcrypt';
-import genToken from './../services/jwtService';
+import { jwtService } from './../middlewares';
 import { db } from './../models';
 
 const { User } = db;
-
+const { genToken } = jwtService;
 /**
 * @class userController
 * @desc handles the user route
 */
-export default class userController {
+export default class UserController {
   /**
    * signup()
    * @desc Registers a new user
@@ -43,6 +43,7 @@ export default class userController {
    */
   static login(req, res) {
     const { email, password } = req.body;
+
     return User.findOne({
       where: {
         email

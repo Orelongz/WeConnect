@@ -1,9 +1,9 @@
 
 /**
  * @class businessMiddleware
- * @desc middleware for businesses
+ * @desc middleware for business route
  */
-export default class businessMiddleware {
+export default class BusinessMiddleware {
   /**
    * businessValidation()
    * @desc handles validation of business input fields

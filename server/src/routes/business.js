@@ -1,6 +1,6 @@
 import express from 'express';
-import businessController from './../controllers/businessController';
-import businessMiddleware from './../middlewares/businessMiddleware';
+import { BusinessController } from './../controllers';
+import { BusinessMiddleware, jwtService } from './../middlewares';
 
 const {
   createBusiness,
@@ -8,8 +8,9 @@ const {
   deleteBusiness,
   getBusiness,
   getAllBusinesses
-} = businessController;
-const { businessValidation } = businessMiddleware;
+} = BusinessController;
+const { businessValidation } = BusinessMiddleware;
+const { validateToken } = jwtService;
 const router = express.Router();
 
 // Get all businesses
@@ -19,12 +20,26 @@ router.get('/', getAllBusinesses);
 router.get('/:businessId', getBusiness);
 
 // Register a business
-router.post('/', businessValidation, createBusiness);
+router.post(
+  '/',
+  validateToken,
+  businessValidation,
+  createBusiness
+);
 
 // Update a business
-router.put('/:businessId', businessValidation, updateBusiness);
+router.put(
+  '/:businessId',
+  validateToken,
+  businessValidation,
+  updateBusiness
+);
 
 // Remove a business
-router.delete('/:businessId', deleteBusiness);
+router.delete(
+  '/:businessId',
+  validateToken,
+  deleteBusiness
+);
 
 export default router;

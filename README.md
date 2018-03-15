@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/Orelongz/WeConnect.svg?branch=chore/155519524/jwt)](https://travis-ci.org/Orelongz/WeConnect?branch=chore/155519524/jwt)
-[![Coverage Status](https://coveralls.io/repos/github/Orelongz/WeConnect/badge.svg?branch=chore/155519524/jwt)](https://coveralls.io/github/Orelongz/WeConnect?branch=chore/155519524/jwt)
+[![Build Status](https://travis-ci.org/Orelongz/WeConnect.svg?branch=feature/155520429/secure-endpoints)](https://travis-ci.org/Orelongz/WeConnect?branch=feature/155520429/secure-endpoints)
+[![Coverage Status](https://coveralls.io/repos/github/Orelongz/WeConnect/badge.svg?branch=feature/155520429/secure-endpoints)](https://coveralls.io/github/Orelongz/WeConnect?branch=feature/155520429/secure-endpoints)
 [![Maintainability](https://api.codeclimate.com/v1/badges/dbf93139a748aaefefcb/maintainability)](https://codeclimate.com/github/Orelongz/WeConnect/maintainability?branch=chore/155835381/api-doc)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/dbf93139a748aaefefcb/test_coverage)](https://codeclimate.com/github/Orelongz/WeConnect/test_coverage)
 

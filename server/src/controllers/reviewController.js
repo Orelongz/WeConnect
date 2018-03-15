@@ -6,7 +6,7 @@ const { Review } = db;
  * @class reviewController
  * @desc handles reviews route
  */
-export default class reviewController {
+export default class ReviewController {
   /**
    * addReview()
    * @desc adds a review to a business

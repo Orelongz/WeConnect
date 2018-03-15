@@ -6,14 +6,17 @@ notifications:
 cache:
   directories:
     - node_modules
+env:
+  - SECRET=supersecret
+sudo: false
+dist: trusty
 services:
   - postgresql
 addons:
-  postgresql: "10"
+  postgresql: "9.6"
 before_script:
   - npm install
   - psql -c 'CREATE DATABASE weconnect_test;' -U postgres
-  - psql -c "CREATE USER pelumi_test WITH PASSWORD 'pass';" -U postgres
   - npm run test-migrate
 script:
   - npm run test
