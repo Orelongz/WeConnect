@@ -332,7 +332,7 @@ describe('Business controller tests', () => {
   describe('Given that a user sends a GET request to /api/v1/businesses/:businessId', () => {
     it('should return 200 status code and retrieve business with the businessId', (done) => {
       chai.request(app)
-        .get('/api/v1/businesses/3')
+        .get('/api/v1/businesses/2')
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
