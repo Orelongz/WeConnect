@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import genToken from './../services/jwtService';
 import { db } from './../models';
 
 const { User } = db;
@@ -58,9 +59,25 @@ export default class userController {
             message: 'Wrong password'
           });
         }
+        const token = genToken({ userId: user.userId });
         return res.status(202).json({
-          message: `Welcome ${user.firstname} ${user.lastname}`
+          message: `Welcome ${user.firstname} ${user.lastname}`,
+          token
         });
       });
+  }
+
+  /**
+   * logout()
+   * @desc Logs out an authenticated user
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @return {Object} message, user
+   */
+  static logout(req, res) {
+    return res.status(200).json({
+      message: 'You have been logged out',
+      token: null
+    });
   }
 }

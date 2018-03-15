@@ -125,9 +125,14 @@ describe('User controller tests', () => {
         .end((err, res) => {
           res.should.have.status(202);
           res.body.should.be.a('object');
+          res.body.token.should.be.a('string');
           assert.isNotNull(
             res.body.message,
             'Welcome message'
+          );
+          assert.exists(
+            res.body.token,
+            'Token should be assigned on login'
           );
           done();
         });
@@ -188,6 +193,22 @@ describe('User controller tests', () => {
             res.body.message,
             'Wrong password',
             'Password does not match the email in database'
+          );
+          done();
+        });
+    });
+  });
+
+  describe('Given that a user sends a GET request to /api/v1/auth/logout', () => {
+    it('should return 200 status code and log out the user', (done) => {
+      chai.request(app)
+        .get('/api/v1/auth/logout')
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          assert.isNull(
+            res.body.token,
+            'Token has been removed'
           );
           done();
         });
