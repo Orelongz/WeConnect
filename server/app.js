@@ -2,11 +2,9 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import swaggerUi from 'swagger-ui-express';
 import cors from 'cors';
-import {
-  userRoute,
-  businessRoute,
-  reviewRoute
-} from './src/routes';
+import userRoute from './src/routes/user';
+import businessRoute from './src/routes/business';
+import reviewRoute from './src/routes/review';
 import swaggerDocument from './../swagger.json';
 
 const app = express();

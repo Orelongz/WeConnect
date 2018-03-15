@@ -12,8 +12,6 @@ sudo: false
 dist: trusty
 services:
   - postgresql
-addons:
-  postgresql: "9.6"
 before_script:
   - npm install
   - psql -c 'CREATE DATABASE weconnect_test;' -U postgres
