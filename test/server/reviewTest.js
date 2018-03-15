@@ -2,10 +2,11 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from './../../server/app';
 import { db } from './../../server/src/models';
-import { dummyReview } from './../helpers/dummy';
+import { dummySignin, dummyReview } from './../helpers/dummy';
 
-const { User, Business, Review } = db;
+const { Review } = db;
 const { assert, should } = chai;
+let authtoken1;
 
 should();
 chai.use(chaiHttp);
@@ -13,15 +14,28 @@ chai.use(chaiHttp);
 describe('Review controller tests', () => {
   before((done) => {
     Review.sync({ force: true })
-      .then(() => Business.sync({ force: true }))
-      .then(() => User.sync({ force: true }))
       .then(() => done())
       .catch(err => done(err));
   });
   describe('Given that a user sends a POST request to /api/v1/businesses/:businessId/reviews', () => {
+    before((done) => {
+      chai.request(app)
+        .post('/api/v1/auth/login')
+        .type('form')
+        .send({
+          email: dummySignin.validUser1.email,
+          password: dummySignin.validUser1.password
+        })
+        .end((err, res) => {
+          authtoken1 = res.body.token;
+          done();
+        });
+    });
+
     it('should return 201 status code and add review to business', (done) => {
       chai.request(app)
-        .post('/api/v1/businesses/3/reviews')
+        .post('/api/v1/businesses/2/reviews')
+        .set('authorization', authtoken1)
         .type('form')
         .send(dummyReview.validReview1)
         .end((err, res) => {
@@ -41,9 +55,43 @@ describe('Review controller tests', () => {
         });
     });
 
+    it('should return 401 status code when a token is not valid', (done) => {
+      chai.request(app)
+        .post('/api/v1/businesses/2/reviews')
+        .set('authorization', 'authtokenIsAnInvalidString')
+        .type('form')
+        .send(dummyReview.validReview1)
+        .end((err, res) => {
+          res.should.have.status(401);
+          res.body.should.be.a('object');
+          assert.isString(
+            res.body.message,
+            'Invalid token'
+          );
+          done();
+        });
+    });
+
+    it('should return 401 status code when a token is not passed in', (done) => {
+      chai.request(app)
+        .post('/api/v1/businesses/2/reviews')
+        .type('form')
+        .send(dummyReview.validReview1)
+        .end((err, res) => {
+          res.should.have.status(401);
+          res.body.should.be.a('object');
+          assert.isString(
+            res.body.message,
+            'Please login'
+          );
+          done();
+        });
+    });
+
     it('should return 404 status code when businessId is not found', (done) => {
       chai.request(app)
         .post('/api/v1/businesses/7/reviews')
+        .set('authorization', authtoken1)
         .type('form')
         .send(dummyReview.validReview1)
         .end((err, res) => {
@@ -59,7 +107,8 @@ describe('Review controller tests', () => {
 
     it('should return 406 status code when review field is empty', (done) => {
       chai.request(app)
-        .post('/api/v1/businesses/1/reviews')
+        .post('/api/v1/businesses/2/reviews')
+        .set('authorization', authtoken1)
         .type('form')
         .send(dummyReview.inValidReview1)
         .end((err, res) => {
@@ -77,7 +126,8 @@ describe('Review controller tests', () => {
   describe('Given that a user sends a GET request to /api/v1/businesses/:businessId/reviews', () => {
     before((done) => {
       chai.request(app)
-        .post('/api/v1/businesses/3/reviews')
+        .post('/api/v1/businesses/2/reviews')
+        .set('authorization', authtoken1)
         .type('form')
         .send(dummyReview.validReview2)
         .end(() => done());
@@ -85,7 +135,7 @@ describe('Review controller tests', () => {
 
     it('should return 200 status code and retrieve all comments', (done) => {
       chai.request(app)
-        .get('/api/v1/businesses/3/reviews')
+        .get('/api/v1/businesses/2/reviews')
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
