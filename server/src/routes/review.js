@@ -1,6 +1,6 @@
 import express from 'express';
-import { ReviewController } from './../controllers';
-import { ReviewMiddleware } from './../middlewares';
+import ReviewController from './../controllers/reviewController';
+import ReviewMiddleware from './../middlewares/reviewMiddleware';
 import { validateToken } from './../services/jwtService';
 
 const { addReview, getBusinessReviews } = ReviewController;

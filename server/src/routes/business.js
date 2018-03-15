@@ -1,6 +1,6 @@
 import express from 'express';
-import { BusinessController } from './../controllers';
-import { BusinessMiddleware } from './../middlewares';
+import BusinessController from './../controllers/businessController';
+import BusinessMiddleware from './../middlewares/businessMiddleware';
 import { validateToken } from './../services/jwtService';
 
 const {
