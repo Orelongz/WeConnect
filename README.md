@@ -35,6 +35,8 @@ View the templates through this [link](https://orelongz.github.io/WeConnect/)
 * Bootstrap4
 * Express
 * NodeJS
+* postgreSQL
+* Sequelize
 
 ## Getting Started
 Get the app running locally in the following way:
