@@ -2,10 +2,12 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from './../../server/app';
 import { db } from './../../server/src/models';
-import { dummyBusiness } from './../helpers/dummy';
+import { dummySignin, dummyBusiness } from './../helpers/dummy';
 
 const { Business } = db;
 const { assert, should } = chai;
+let authtoken1;
+let authtoken2;
 
 should();
 chai.use(chaiHttp);
@@ -18,9 +20,24 @@ describe('Business controller tests', () => {
   });
 
   describe('Given that a user sends a POST request to /api/v1/businesses/', () => {
+    before((done) => {
+      chai.request(app)
+        .post('/api/v1/auth/login')
+        .type('form')
+        .send({
+          email: dummySignin.validUser1.email,
+          password: dummySignin.validUser1.password
+        })
+        .end((err, res) => {
+          authtoken1 = res.body.token;
+          done();
+        });
+    });
+
     it('should return 201 status code and create new business', (done) => {
       chai.request(app)
         .post('/api/v1/businesses/')
+        .set('authorization', authtoken1)
         .type('form')
         .send(dummyBusiness.validBusiness1)
         .end((err, res) => {
@@ -35,43 +52,10 @@ describe('Business controller tests', () => {
         });
     });
 
-    it('should return 409 status code when there is a duplicate business name', (done) => {
-      chai.request(app)
-        .post('/api/v1/businesses/')
-        .type('form')
-        .send(dummyBusiness.invalidBusiness1)
-        .end((err, res) => {
-          res.should.have.status(409);
-          res.body.should.be.a('object');
-          assert.strictEqual(
-            res.body.message,
-            'Business name already exists',
-            'duplicate business name'
-          );
-          done();
-        });
-    });
-
-    it('should return 406 status code when neccessary inputs are not passed in', (done) => {
-      chai.request(app)
-        .post('/api/v1/businesses/')
-        .type('form')
-        .send(dummyBusiness.invalidBusiness2)
-        .end((err, res) => {
-          res.should.have.status(406);
-          res.body.should.be.a('object');
-          res.body.error.should.be.a('array');
-          assert.isUndefined(
-            res.body.message,
-            'message is undefined'
-          );
-          done();
-        });
-    });
-
     it('should return 201 status code when unneccessary inputs are not passed in', (done) => {
       chai.request(app)
         .post('/api/v1/businesses/')
+        .set('authorization', authtoken1)
         .type('form')
         .send(dummyBusiness.validBusiness2)
         .end((err, res) => {
@@ -90,12 +74,96 @@ describe('Business controller tests', () => {
           done();
         });
     });
+
+    it('should return 401 status code when a token is not valid', (done) => {
+      chai.request(app)
+        .post('/api/v1/businesses/')
+        .set('authorization', 'authtokenIsAnInvalidString')
+        .type('form')
+        .send(dummyBusiness.validBusiness2)
+        .end((err, res) => {
+          res.should.have.status(401);
+          res.body.should.be.a('object');
+          assert.isString(
+            res.body.message,
+            'Invalid token'
+          );
+          done();
+        });
+    });
+
+    it('should return 401 status code when a token is not passed in', (done) => {
+      chai.request(app)
+        .post('/api/v1/businesses/')
+        .type('form')
+        .send(dummyBusiness.validBusiness2)
+        .end((err, res) => {
+          res.should.have.status(401);
+          res.body.should.be.a('object');
+          assert.isString(
+            res.body.message,
+            'Please login'
+          );
+          done();
+        });
+    });
+
+    it('should return 406 status code when neccessary inputs are not passed in', (done) => {
+      chai.request(app)
+        .post('/api/v1/businesses/')
+        .set('authorization', authtoken1)
+        .type('form')
+        .send(dummyBusiness.invalidBusiness2)
+        .end((err, res) => {
+          res.should.have.status(406);
+          res.body.should.be.a('object');
+          res.body.error.should.be.a('array');
+          assert.isUndefined(
+            res.body.message,
+            'message is undefined'
+          );
+          done();
+        });
+    });
+
+    it('should return 409 status code when there is a duplicate business name', (done) => {
+      chai.request(app)
+        .post('/api/v1/businesses/')
+        .set('authorization', authtoken1)
+        .type('form')
+        .send(dummyBusiness.invalidBusiness1)
+        .end((err, res) => {
+          res.should.have.status(409);
+          res.body.should.be.a('object');
+          assert.strictEqual(
+            res.body.message,
+            'Business name already exists',
+            'duplicate business name'
+          );
+          done();
+        });
+    });
   });
 
   describe('Given that a user sends a PUT request to /api/v1/businesses/:businessId', () => {
+    before((done) => {
+      chai.request(app)
+        .post('/api/v1/auth/login')
+        .type('form')
+        .send({
+          email: dummySignin.validUser2.email,
+          password: dummySignin.validUser2.password
+        })
+        .end((err, res) => {
+          authtoken2 = res.body.token;
+          done();
+        });
+    });
+
     it('should return 200 status code and update business with the businessId', (done) => {
       chai.request(app)
         .put('/api/v1/businesses/1')
+        .set('authorization', authtoken1)
         .type('form')
         .send(dummyBusiness.validBusinessUpdate1)
         .end((err, res) => {
@@ -115,9 +183,43 @@ describe('Business controller tests', () => {
         });
     });
 
+    it('should return 401 status code when user is not the owner of the business', (done) => {
+      chai.request(app)
+        .put('/api/v1/businesses/1')
+        .set('authorization', authtoken2)
+        .type('form')
+        .send(dummyBusiness.validBusinessUpdate1)
+        .end((err, res) => {
+          res.should.have.status(401);
+          res.body.should.be.a('object');
+          assert.isString(
+            res.body.message,
+            'Unauthorized access to content'
+          );
+          done();
+        });
+    });
+
+    it('should return 401 status code when a token is not passed in', (done) => {
+      chai.request(app)
+        .put('/api/v1/businesses/1')
+        .type('form')
+        .send(dummyBusiness.validBusinessUpdate1)
+        .end((err, res) => {
+          res.should.have.status(401);
+          res.body.should.be.a('object');
+          assert.isString(
+            res.body.message,
+            'Please login'
+          );
+          done();
+        });
+    });
+
     it('should return 404 status code when businessId is not in the database', (done) => {
       chai.request(app)
         .put('/api/v1/businesses/5')
+        .set('authorization', authtoken1)
         .type('form')
         .send(dummyBusiness.validBusinessUpdate1)
         .end((err, res) => {
@@ -134,6 +236,7 @@ describe('Business controller tests', () => {
     it('should return 406 status code when neccessary inputs are not passed in', (done) => {
       chai.request(app)
         .put('/api/v1/businesses/2')
+        .set('authorization', authtoken1)
         .type('form')
         .send(dummyBusiness.invalidBusiness2)
         .end((err, res) => {
@@ -153,6 +256,7 @@ describe('Business controller tests', () => {
     it('should return 200 status code and delete business with the businessId', (done) => {
       chai.request(app)
         .delete('/api/v1/businesses/1')
+        .set('authorization', authtoken1)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
@@ -165,9 +269,54 @@ describe('Business controller tests', () => {
         });
     });
 
+    it('should return 401 status code when user is not the owner of the business', (done) => {
+      chai.request(app)
+        .delete('/api/v1/businesses/2')
+        .set('authorization', authtoken2)
+        .end((err, res) => {
+          res.should.have.status(401);
+          res.body.should.be.a('object');
+          assert.isString(
+            res.body.message,
+            'Unauthorized access to content'
+          );
+          done();
+        });
+    });
+
+    it('should return 401 status code when a token is not valid', (done) => {
+      chai.request(app)
+        .delete('/api/v1/businesses/2')
+        .set('authorization', 'authtokenIsAnInvalidString')
+        .end((err, res) => {
+          res.should.have.status(401);
+          res.body.should.be.a('object');
+          assert.isString(
+            res.body.message,
+            'Invalid token'
+          );
+          done();
+        });
+    });
+
+    it('should return 401 status code when a token is not passed in', (done) => {
+      chai.request(app)
+        .delete('/api/v1/businesses/2')
+        .end((err, res) => {
+          res.should.have.status(401);
+          res.body.should.be.a('object');
+          assert.isString(
+            res.body.message,
+            'Please login'
+          );
+          done();
+        });
+    });
+
     it('should return 404 status code when businessId is not in the database', (done) => {
       chai.request(app)
         .delete('/api/v1/businesses/5')
+        .set('authorization', authtoken1)
         .end((err, res) => {
           res.should.have.status(404);
           res.body.should.be.a('object');

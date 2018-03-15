@@ -1,9 +1,9 @@
 import bcrypt from 'bcrypt';
-import { jwtService } from './../middlewares';
+import { genToken } from './../services/jwtService';
 import { db } from './../models';
 
 const { User } = db;
-const { genToken } = jwtService;
+
 /**
 * @class userController
 * @desc handles the user route

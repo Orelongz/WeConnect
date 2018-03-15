@@ -40,6 +40,28 @@ describe('User controller tests', () => {
         });
     });
 
+    it('should return 201 status code and create new user', (done) => {
+      chai.request(app)
+        .post('/api/v1/auth/signup')
+        .type('form')
+        .send(dummySignup.validUser2)
+        .end((err, res) => {
+          res.should.have.status(201);
+          res.body.should.be.a('object');
+          assert.notEqual(
+            res.body.user.password,
+            dummySignup.validUser2.password,
+            'Password has been hashed'
+          );
+          assert.strictEqual(
+            dummySignup.validUser2.password,
+            dummySignup.validUser2.confirmPassword,
+            'password and confirmPassword is the same'
+          );
+          done();
+        });
+    });
+
     it('should return 406 status code when password is different from confirmPassword', (done) => {
       chai.request(app)
         .post('/api/v1/auth/signup')

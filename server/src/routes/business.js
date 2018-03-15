@@ -1,6 +1,7 @@
 import express from 'express';
 import { BusinessController } from './../controllers';
-import { BusinessMiddleware, jwtService } from './../middlewares';
+import { BusinessMiddleware } from './../middlewares';
+import { validateToken } from './../services/jwtService';
 
 const {
   createBusiness,
@@ -10,7 +11,6 @@ const {
   getAllBusinesses
 } = BusinessController;
 const { businessValidation } = BusinessMiddleware;
-const { validateToken } = jwtService;
 const router = express.Router();
 
 // Get all businesses

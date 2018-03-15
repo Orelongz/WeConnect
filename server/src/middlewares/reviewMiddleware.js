@@ -44,7 +44,7 @@ export default class ReviewMiddleware {
       .then((business) => {
         if (!business) {
           return res.status(404).json({
-            message: 'Business was not found'
+            message: 'Business not found'
           });
         }
         return next();

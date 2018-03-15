@@ -41,12 +41,16 @@ const dummySignin = {
     email: 'chima.dauda@gmail.com',
     password: 'chimauda'
   },
+  validUser2: {
+    email: 'rick.orga@gmail.com',
+    password: 'passrick'
+  },
   invalidUser1: {
     email: '',
     password: ''
   },
   invalidUser2: {
-    email: 'rick.orga@gmail.com',
+    email: 'aunt.me@gmail.com',
     password: 'passrick'
   },
   invalidUser3: {

@@ -4,7 +4,7 @@ import app from './../../server/app';
 import { db } from './../../server/src/models';
 import { dummyReview } from './../helpers/dummy';
 
-const { Review } = db;
+const { User, Business, Review } = db;
 const { assert, should } = chai;
 
 should();
@@ -13,6 +13,8 @@ chai.use(chaiHttp);
 describe('Review controller tests', () => {
   before((done) => {
     Review.sync({ force: true })
+      .then(() => Business.sync({ force: true }))
+      .then(() => User.sync({ force: true }))
       .then(() => done())
       .catch(err => done(err));
   });

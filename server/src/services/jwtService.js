@@ -18,7 +18,7 @@ const genToken = payload => jwt.sign(payload, SECRET, { expiresIn: '24h' });
  * @param {Object} req request object
  * @param {Object} res response object
  * @param {Object} next Express next middleware function
- * @return {*} error, void
+ * @return {*} error, message
  */
 const validateToken = (req, res, next) => {
   const token = (
@@ -34,7 +34,7 @@ const validateToken = (req, res, next) => {
   jwt.verify(token, SECRET, (err, decoded) => {
     if (err) {
       return res.status(401).json({
-        err: 'Invalid token',
+        message: 'Invalid token',
       });
     }
     req.decoded = decoded;

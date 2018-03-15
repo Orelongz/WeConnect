@@ -1,12 +1,11 @@
 import { db } from './../models';
-import { BusinessServices, GenericMessages } from './../middlewares';
+import BusinessServices from './../services/businessService';
 
 const {
   businessObject,
   handleLocationSearch,
   handleCategorySearch
 } = BusinessServices;
-const { notFound, unauthorized } = GenericMessages;
 const { Business } = db;
 
 /**
@@ -24,7 +23,7 @@ export default class BusinessController {
   static createBusiness(req, res) {
     const businessDetails = businessObject(req);
 
-    return Business.create({ ...businessDetails, userId: req.userId })
+    return Business.create({ ...businessDetails })
       .then(business => res.status(201).json({
         message: 'Business successfully created',
         business
@@ -50,11 +49,15 @@ export default class BusinessController {
     })
       .then((business) => {
         if (!business) {
-          notFound(res, 'Business');
+          return res.status(404).json({
+            message: 'Business not found'
+          });
         }
-        const userId = req.decoded;
+        const { userId } = req.decoded;
         if (userId !== business.userId) {
-          unauthorized(res);
+          return res.status(401).json({
+            message: 'Unauthorized access to content'
+          });
         }
         const update = businessObject(req);
         return business.update({ ...update })
@@ -82,11 +85,15 @@ export default class BusinessController {
     })
       .then((business) => {
         if (!business) {
-          notFound(res, 'Business');
+          return res.status(404).json({
+            message: 'Business not found'
+          });
         }
-        const userId = req.decoded;
+        const { userId } = req.decoded;
         if (userId !== business.userId) {
-          unauthorized(res);
+          return res.status(401).json({
+            message: 'Unauthorized access to content'
+          });
         }
         return business.destroy()
           .then(() => res.status(200).json({
@@ -113,7 +120,9 @@ export default class BusinessController {
     })
       .then((business) => {
         if (!business) {
-          notFound(res, 'Business');
+          return res.status(404).json({
+            message: 'Business not found'
+          });
         }
         return res.status(200).json({
           message: 'Business was successfully found',
