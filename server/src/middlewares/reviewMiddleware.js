@@ -1,4 +1,5 @@
 import { db } from './../models';
+import { notFound } from './../services/genericMessages';
 
 const { Business } = db;
 
@@ -43,9 +44,7 @@ export default class ReviewMiddleware {
     })
       .then((business) => {
         if (!business) {
-          return res.status(404).json({
-            message: 'Business not found'
-          });
+          return notFound(res, 'Business');
         }
         return next();
       });

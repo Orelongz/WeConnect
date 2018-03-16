@@ -1,5 +1,9 @@
 import { db } from './../models';
 import BusinessServices from './../services/businessService';
+import {
+  notFound,
+  unauthorized
+} from './../services/genericMessages';
 
 const {
   businessObject,
@@ -49,15 +53,11 @@ export default class BusinessController {
     })
       .then((business) => {
         if (!business) {
-          return res.status(404).json({
-            message: 'Business not found'
-          });
+          return notFound(res, 'Business');
         }
         const { userId } = req.decoded;
         if (userId !== business.userId) {
-          return res.status(401).json({
-            message: 'Unauthorized access to content'
-          });
+          return unauthorized(res);
         }
         const update = businessObject(req);
         return business.update({ ...update })
@@ -85,15 +85,11 @@ export default class BusinessController {
     })
       .then((business) => {
         if (!business) {
-          return res.status(404).json({
-            message: 'Business not found'
-          });
+          return notFound(res, 'Business');
         }
         const { userId } = req.decoded;
         if (userId !== business.userId) {
-          return res.status(401).json({
-            message: 'Unauthorized access to content'
-          });
+          return unauthorized(res);
         }
         return business.destroy()
           .then(() => res.status(200).json({
@@ -120,9 +116,7 @@ export default class BusinessController {
     })
       .then((business) => {
         if (!business) {
-          return res.status(404).json({
-            message: 'Business not found'
-          });
+          return notFound(res, 'Business');
         }
         return res.status(200).json({
           message: 'Business was successfully found',

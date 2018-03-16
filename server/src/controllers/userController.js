@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import { genToken } from './../services/jwtService';
+import { notFound } from './../services/genericMessages';
 import { db } from './../models';
 
 const { User } = db;
@@ -48,9 +49,7 @@ export default class UserController {
     })
       .then((user) => {
         if (!user) {
-          return res.status(404).json({
-            message: 'Email not found'
-          });
+          return notFound(res, 'Email');
         }
         if (!bcrypt.compareSync(password, user.hashedPassword)) {
           return res.status(401).json({
