@@ -2,7 +2,7 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from './../../server/app';
 import { db } from './../../server/src/models';
-import { dummySignin, dummyReview } from './../helpers/dummy';
+import { userData, reviewData } from './../helpers/dummy';
 
 const { Review } = db;
 const { assert, should } = chai;
@@ -23,8 +23,8 @@ describe('Review controller tests', () => {
         .post('/api/v1/auth/login')
         .type('form')
         .send({
-          email: dummySignin.validUser1.email,
-          password: dummySignin.validUser1.password
+          email: userData.user1.email,
+          password: userData.user1.password
         })
         .end((err, res) => {
           authtoken1 = res.body.token;
@@ -37,7 +37,7 @@ describe('Review controller tests', () => {
         .post('/api/v1/businesses/2/reviews')
         .set('authorization', authtoken1)
         .type('form')
-        .send(dummyReview.validReview1)
+        .send(reviewData.review1)
         .end((err, res) => {
           res.should.have.status(201);
           res.body.should.be.a('object');
@@ -48,7 +48,7 @@ describe('Review controller tests', () => {
           );
           assert.deepEqual(
             res.body.review.review,
-            dummyReview.validReview1.review,
+            reviewData.review1.review,
             'The created review object'
           );
           done();
@@ -60,7 +60,7 @@ describe('Review controller tests', () => {
         .post('/api/v1/businesses/2/reviews')
         .set('authorization', 'authtokenIsAnInvalidString')
         .type('form')
-        .send(dummyReview.validReview1)
+        .send(reviewData.review1)
         .end((err, res) => {
           res.should.have.status(401);
           res.body.should.be.a('object');
@@ -76,7 +76,7 @@ describe('Review controller tests', () => {
       chai.request(app)
         .post('/api/v1/businesses/2/reviews')
         .type('form')
-        .send(dummyReview.validReview1)
+        .send(reviewData.review1)
         .end((err, res) => {
           res.should.have.status(401);
           res.body.should.be.a('object');
@@ -93,7 +93,7 @@ describe('Review controller tests', () => {
         .post('/api/v1/businesses/7/reviews')
         .set('authorization', authtoken1)
         .type('form')
-        .send(dummyReview.validReview1)
+        .send(reviewData.review1)
         .end((err, res) => {
           res.should.have.status(404);
           res.body.should.be.a('object');
@@ -110,7 +110,7 @@ describe('Review controller tests', () => {
         .post('/api/v1/businesses/2/reviews')
         .set('authorization', authtoken1)
         .type('form')
-        .send(dummyReview.inValidReview1)
+        .send(reviewData.review3)
         .end((err, res) => {
           res.should.have.status(406);
           res.body.should.be.a('object');
@@ -129,7 +129,7 @@ describe('Review controller tests', () => {
         .post('/api/v1/businesses/2/reviews')
         .set('authorization', authtoken1)
         .type('form')
-        .send(dummyReview.validReview2)
+        .send(reviewData.review2)
         .end(() => done());
     });
 

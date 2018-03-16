@@ -2,7 +2,7 @@ import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from './../../server/app';
 import { db } from './../../server/src/models';
-import { dummySignin, dummyBusiness } from './../helpers/dummy';
+import { userData, businessData } from './../helpers/dummy';
 
 const { Business } = db;
 const { assert, should } = chai;
@@ -25,8 +25,8 @@ describe('Business controller tests', () => {
         .post('/api/v1/auth/login')
         .type('form')
         .send({
-          email: dummySignin.validUser1.email,
-          password: dummySignin.validUser1.password
+          email: userData.user1.email,
+          password: userData.user1.password
         })
         .end((err, res) => {
           authtoken1 = res.body.token;
@@ -39,7 +39,7 @@ describe('Business controller tests', () => {
         .post('/api/v1/businesses/')
         .set('authorization', authtoken1)
         .type('form')
-        .send(dummyBusiness.validBusiness1)
+        .send(businessData.business1)
         .end((err, res) => {
           res.should.have.status(201);
           res.body.should.be.a('object');
@@ -57,7 +57,7 @@ describe('Business controller tests', () => {
         .post('/api/v1/businesses/')
         .set('authorization', authtoken1)
         .type('form')
-        .send(dummyBusiness.validBusiness2)
+        .send(businessData.business2)
         .end((err, res) => {
           res.should.have.status(201);
           res.body.should.be.a('object');
@@ -80,7 +80,7 @@ describe('Business controller tests', () => {
         .post('/api/v1/businesses/')
         .set('authorization', 'authtokenIsAnInvalidString')
         .type('form')
-        .send(dummyBusiness.validBusiness2)
+        .send(businessData.business2)
         .end((err, res) => {
           res.should.have.status(401);
           res.body.should.be.a('object');
@@ -96,7 +96,7 @@ describe('Business controller tests', () => {
       chai.request(app)
         .post('/api/v1/businesses/')
         .type('form')
-        .send(dummyBusiness.validBusiness2)
+        .send(businessData.business2)
         .end((err, res) => {
           res.should.have.status(401);
           res.body.should.be.a('object');
@@ -113,7 +113,7 @@ describe('Business controller tests', () => {
         .post('/api/v1/businesses/')
         .set('authorization', authtoken1)
         .type('form')
-        .send(dummyBusiness.invalidBusiness2)
+        .send(businessData.business4)
         .end((err, res) => {
           res.should.have.status(406);
           res.body.should.be.a('object');
@@ -131,7 +131,7 @@ describe('Business controller tests', () => {
         .post('/api/v1/businesses/')
         .set('authorization', authtoken1)
         .type('form')
-        .send(dummyBusiness.invalidBusiness1)
+        .send(businessData.business3)
         .end((err, res) => {
           res.should.have.status(409);
           res.body.should.be.a('object');
@@ -151,8 +151,8 @@ describe('Business controller tests', () => {
         .post('/api/v1/auth/login')
         .type('form')
         .send({
-          email: dummySignin.validUser2.email,
-          password: dummySignin.validUser2.password
+          email: userData.user2.email,
+          password: userData.user2.password
         })
         .end((err, res) => {
           authtoken2 = res.body.token;
@@ -165,7 +165,7 @@ describe('Business controller tests', () => {
         .put('/api/v1/businesses/1')
         .set('authorization', authtoken1)
         .type('form')
-        .send(dummyBusiness.validBusinessUpdate1)
+        .send(businessData.business5)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
@@ -188,7 +188,7 @@ describe('Business controller tests', () => {
         .put('/api/v1/businesses/1')
         .set('authorization', authtoken2)
         .type('form')
-        .send(dummyBusiness.validBusinessUpdate1)
+        .send(businessData.business1)
         .end((err, res) => {
           res.should.have.status(401);
           res.body.should.be.a('object');
@@ -204,7 +204,7 @@ describe('Business controller tests', () => {
       chai.request(app)
         .put('/api/v1/businesses/1')
         .type('form')
-        .send(dummyBusiness.validBusinessUpdate1)
+        .send(businessData.business1)
         .end((err, res) => {
           res.should.have.status(401);
           res.body.should.be.a('object');
@@ -221,7 +221,7 @@ describe('Business controller tests', () => {
         .put('/api/v1/businesses/5')
         .set('authorization', authtoken1)
         .type('form')
-        .send(dummyBusiness.validBusinessUpdate1)
+        .send(businessData.business1)
         .end((err, res) => {
           res.should.have.status(404);
           res.body.should.be.a('object');
@@ -238,7 +238,7 @@ describe('Business controller tests', () => {
         .put('/api/v1/businesses/2')
         .set('authorization', authtoken1)
         .type('form')
-        .send(dummyBusiness.invalidBusiness2)
+        .send(businessData.business4)
         .end((err, res) => {
           res.should.have.status(406);
           res.body.should.be.a('object');

@@ -1,4 +1,7 @@
 import validator from 'validator';
+import { db } from './../models';
+
+const { User } = db;
 
 /**
  * @class UserMiddleware
@@ -78,5 +81,29 @@ export default class UserMiddleware {
       return res.status(406).json({ error });
     }
     return next();
+  }
+
+  /**
+   * mailExists()
+   * @desc handles cases of duplicate mail addresses
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @param {Object} next Express next middleware function
+   * @return {*} error, void
+   */
+  static mailExists(req, res, next) {
+    const { email } = req.body;
+
+    User.findOne({
+      where: {
+        email
+      }
+    })
+      .then((user) => {
+        if (!user) return next();
+        return res.status(409).json({
+          message: 'This email already has an account'
+        });
+      });
   }
 }

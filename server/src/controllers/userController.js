@@ -28,9 +28,6 @@ export default class UserController {
       .then(user => res.status(201).json({
         message: 'User successfully created',
         user
-      }))
-      .catch(err => res.status(409).json({
-        message: err.errors[0].message
       }));
   }
 
@@ -65,6 +62,29 @@ export default class UserController {
           message: `Welcome ${user.firstname} ${user.lastname}`,
           token
         });
+      });
+  }
+
+  /**
+   * updateUserDetails()
+   * @desc updates the details of a user
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @return {Object} message, user
+   */
+  static updateUserDetails(req, res) {
+    const { userId } = req.decoded;
+
+    return User.findOne({
+      where: userId
+    })
+      .then((user) => {
+        const { firstname, lastname, email } = req.body;
+        return user.update({ firstname, lastname, email })
+          .then(() => res.status(200).json({
+            message: 'User details updated',
+            user
+          }));
       });
   }
 

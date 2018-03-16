@@ -26,6 +26,7 @@ const validateToken = (req, res, next) => {
     req.headers.authorization ||
     req.headers['x-access-token']
   );
+  console.log(token);
   if (!token) {
     return res.status(401).json({
       message: 'Please login'
