@@ -57,7 +57,7 @@ export default class UserController {
             message: 'Wrong password'
           });
         }
-        const token = genToken({ userId: user.userId });
+        const token = genToken({ userId: user.userId, userEmail: user.email });
         return res.status(202).json({
           message: `Welcome ${user.firstname} ${user.lastname}`,
           token

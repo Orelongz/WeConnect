@@ -100,10 +100,13 @@ export default class UserMiddleware {
       }
     })
       .then((user) => {
-        if (!user) return next();
-        return res.status(409).json({
-          message: 'This email already has an account'
-        });
+        if (req.decoded && req.decoded.userEmail === email) return next();
+        if (user) {
+          return res.status(409).json({
+            message: 'This email already has an account'
+          });
+        }
+        return next();
       });
   }
 }
