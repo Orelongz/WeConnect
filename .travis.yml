@@ -1,0 +1,26 @@
+language: node_js
+node_js:
+  - "6"
+notifications:
+  email: false
+cache:
+  directories:
+    - node_modules
+env:
+  - SECRET=supersecret
+sudo: false
+dist: trusty
+services:
+  - postgresql
+before_script:
+  - npm install
+  - psql -c 'CREATE DATABASE weconnect_test;' -U postgres
+  - psql -c "CREATE USER pelumi_test WITH PASSWORD 'pass';" -U postgres
+  - npm run test-migrate
+script:
+  - npm run test
+  - npm run check-coverage
+after_success:
+  - npm run coverage
+  - npm run report-coverage
+  - npm run coveralls
