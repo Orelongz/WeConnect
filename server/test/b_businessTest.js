@@ -1,8 +1,8 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import app from './../../server/app';
-import { db } from './../../server/src/models';
-import { userData, businessData } from './../helpers/dummy';
+import app from './../app';
+import { db } from './../src/models';
+import { userData, businessData } from './../mockData/serveMockData';
 
 const { Business } = db;
 const { assert, should } = chai;
@@ -15,8 +15,7 @@ chai.use(chaiHttp);
 describe('Business controller tests', () => {
   before((done) => {
     Business.sync({ force: true })
-      .then(() => done())
-      .catch(err => done(err));
+      .then(() => done());
   });
 
   describe('Given that a user sends a POST request to /api/v1/businesses/', () => {
@@ -434,6 +433,94 @@ describe('Business controller tests', () => {
           assert.isString(
             res.body.message,
             'Businesses found'
+          );
+          done();
+        });
+    });
+  });
+
+  describe('Given that a user sends a PUT request to /api/v1/businesses/change-ownership/:businessId/', () => {
+    it('should return a status of 200 when user supplies own email', (done) => {
+      chai.request(app)
+        .put('/api/v1/businesses/change-ownership/2')
+        .set('authorization', authtoken1)
+        .send({ email: userData.user1.email })
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          assert.equal(
+            res.body.message,
+            'The business is still yours'
+          );
+          done();
+        });
+    });
+
+    it('should return a status 200 and change the business ownership to a new user with the email passed in', (done) => {
+      // user1 transferring business2 to user2
+      chai.request(app)
+        .put('/api/v1/businesses/change-ownership/2')
+        .set('authorization', authtoken1)
+        .send({ email: userData.user2.email })
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          assert.equal(
+            res.body.message,
+            'Business ownership has been transferred to rick.orga@gmail.com',
+            'Business ownership transfer complete'
+          );
+          done();
+        });
+    });
+
+    it('should return a status 404 when user is not the owner of the business', (done) => {
+      // Ownership has been transferred to user2
+      chai.request(app)
+        .put('/api/v1/businesses/change-ownership/2')
+        .set('authorization', authtoken1)
+        .send({ email: userData.user6.email })
+        .end((err, res) => {
+          res.should.have.status(404);
+          res.body.should.be.a('object');
+          assert.equal(
+            res.body.message,
+            'Business not found',
+            'User does not own the business anymore'
+          );
+          done();
+        });
+    });
+
+    it('should return a status of 404 when business is not found', (done) => {
+      // user2 transferring business5 to user6
+      chai.request(app)
+        .put('/api/v1/businesses/change-ownership/5')
+        .set('authorization', authtoken2)
+        .send({ email: userData.user6.email })
+        .end((err, res) => {
+          res.should.have.status(404);
+          res.body.should.be.a('object');
+          assert.equal(
+            res.body.message,
+            'Business not found'
+          );
+          done();
+        });
+    });
+
+    it('should return a status 404 when an email is not in the database', (done) => {
+      chai.request(app)
+        .put('/api/v1/businesses/change-ownership/2')
+        .set('authorization', authtoken2)
+        .send({ email: userData.user3.email })
+        .end((err, res) => {
+          res.should.have.status(404);
+          res.body.should.be.a('object');
+          assert.equal(
+            res.body.message,
+            'User not found',
+            'Email is not in the database'
           );
           done();
         });

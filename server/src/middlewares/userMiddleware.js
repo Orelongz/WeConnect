@@ -1,5 +1,6 @@
 import validator from 'validator';
 import { db } from './../models';
+import { notFound } from './../services/genericMessages';
 
 const { User } = db;
 
@@ -106,6 +107,31 @@ export default class UserMiddleware {
             message: 'This email already has an account'
           });
         }
+        return next();
+      });
+  }
+
+  /**
+   * findUserByEmail()
+   * @desc checks businesses by category
+   * @param {Object} req request object
+   * @param {Array} res allBusinesses array
+   * @param {Object} next Express next middleware function
+   * @return {Array} business
+   */
+  static findUserByEmail(req, res, next) {
+    const { email } = req.body;
+
+    User.findOne({
+      where: {
+        email
+      }
+    })
+      .then((user) => {
+        if (!user) {
+          return notFound(res, 'User');
+        }
+        req.foundUser = user;
         return next();
       });
   }

@@ -155,4 +155,39 @@ export default class BusinessController {
         });
       });
   }
+
+  /**
+   * changeBusinessOwnership()
+   * @desc changes business ownership to a new user
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @return {Object} message, user
+   */
+  static changeBusinessOwnership(req, res) {
+    const { businessId } = req.params;
+    const { email } = req.body;
+    const ownerId = req.decoded.userId;
+
+    return Business.findOne({
+      where: {
+        businessId,
+        userId: ownerId
+      }
+    })
+      .then((business) => {
+        const { userId } = req.foundUser;
+        if (ownerId === userId) {
+          return res.status(200).json({
+            message: 'The business is still yours'
+          });
+        }
+        if (business) {
+          return business.update({ userId })
+            .then(() => res.status(200).json({
+              message: `Business ownership has been transferred to ${email}`
+            }));
+        }
+        return notFound(res, 'Business');
+      });
+  }
 }
