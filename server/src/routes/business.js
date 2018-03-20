@@ -1,6 +1,7 @@
 import express from 'express';
 import BusinessController from './../controllers/businessController';
 import BusinessMiddleware from './../middlewares/businessMiddleware';
+import UserMiddleware from './../middlewares/userMiddleware';
 import { validateToken } from './../services/jwtService';
 
 const {
@@ -8,9 +9,11 @@ const {
   updateBusiness,
   deleteBusiness,
   getBusiness,
-  getAllBusinesses
+  getAllBusinesses,
+  changeBusinessOwnership
 } = BusinessController;
 const { businessValidation } = BusinessMiddleware;
+const { findUserByEmail } = UserMiddleware;
 const router = express.Router();
 
 // Get all businesses
@@ -40,6 +43,15 @@ router.delete(
   '/:businessId',
   validateToken,
   deleteBusiness
+);
+
+
+// Route to transfer business ownership
+router.put(
+  '/change-ownership/:businessId',
+  validateToken,
+  findUserByEmail,
+  changeBusinessOwnership
 );
 
 export default router;

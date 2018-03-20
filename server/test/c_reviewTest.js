@@ -1,8 +1,8 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import app from './../../server/app';
-import { db } from './../../server/src/models';
-import { userData, reviewData } from './../helpers/dummy';
+import app from './../app';
+import { db } from './../src/models';
+import { userData, reviewData } from './../mockData/serveMockData';
 
 const { Review } = db;
 const { assert, should } = chai;
@@ -14,8 +14,7 @@ chai.use(chaiHttp);
 describe('Review controller tests', () => {
   before((done) => {
     Review.sync({ force: true })
-      .then(() => done())
-      .catch(err => done(err));
+      .then(() => done());
   });
   describe('Given that a user sends a POST request to /api/v1/businesses/:businessId/reviews', () => {
     before((done) => {

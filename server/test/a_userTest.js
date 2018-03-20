@@ -1,8 +1,8 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import app from './../../server/app';
-import { db } from './../../server/src/models';
-import { userData } from './../helpers/dummy';
+import app from './../app';
+import { db } from './../src/models';
+import { userData } from './../mockData/serveMockData';
 
 const { User } = db;
 const { assert, should } = chai;
@@ -15,8 +15,7 @@ chai.use(chaiHttp);
 describe('User controller tests', () => {
   before((done) => {
     User.sync({ force: true })
-      .then(() => done())
-      .catch(err => done(err));
+      .then(() => done());
   });
 
   describe('Given that a user sends a POST request to /api/v1/auth/signup', () => {

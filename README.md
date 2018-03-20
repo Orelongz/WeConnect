@@ -1,7 +1,6 @@
-[![Build Status](https://travis-ci.org/Orelongz/WeConnect.svg?branch=feature/155520429/secure-endpoints)](https://travis-ci.org/Orelongz/WeConnect?branch=feature/155520429/secure-endpoints)
-[![Coverage Status](https://coveralls.io/repos/github/Orelongz/WeConnect/badge.svg?branch=feature/155520429/secure-endpoints)](https://coveralls.io/github/Orelongz/WeConnect?branch=feature/155520429/secure-endpoints)
-[![Maintainability](https://api.codeclimate.com/v1/badges/dbf93139a748aaefefcb/maintainability)](https://codeclimate.com/github/Orelongz/WeConnect/maintainability?branch=chore/155835381/api-doc)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/dbf93139a748aaefefcb/test_coverage)](https://codeclimate.com/github/Orelongz/WeConnect/test_coverage)
+[![Build Status](https://travis-ci.org/Orelongz/WeConnect.svg?branch=develop)](https://travis-ci.org/Orelongz/WeConnect?branch=develop)
+[![Coverage Status](https://coveralls.io/repos/github/Orelongz/WeConnect/badge.svg?branch=develop)](https://coveralls.io/github/Orelongz/WeConnect?branch=develop)
+[![Maintainability](https://api.codeclimate.com/v1/badges/dbf93139a748aaefefcb/maintainability)](https://codeclimate.com/github/Orelongz/WeConnect/maintainability)
 
 # WeConnect
 WeConnect provides a platform that brings businesses and individuals together. This platform creates awareness for businesses and gives the users the ability to write reviews about the businesses they have interacted with.
@@ -19,15 +18,16 @@ WeConnect provides a platform that brings businesses and individuals together. T
 View the templates through this [link](https://orelongz.github.io/WeConnect/)
 
 ## Features
-* Users can register on the application
-* Users can login to the application
-* Users can register a business
-* Users can update and delete businesses they registered
-* Users can view a business
-* Users can view all businesses
-* Users can view businesses by their category or location
-* Users can add reviews to a business
-* Users can view all reviews for a business
+* A user can register on the application
+* A user can login to the application
+* A user can register a business
+* A user can update and delete businesses they registered
+* A user can view a business
+* A user can view all businesses
+* A user can view businesses by their category or location
+* A user can add reviews to a business
+* A user can view all reviews for a business
+* A user can transfer his business to another user
 
 ## Technology Used
 * HTML
@@ -48,10 +48,14 @@ git clone https://github.com/Orelongz/WeConnect.git
 npm install
 
 # Run tests
-npm run test
+> Create the database needed
+> npm run test-migrate
+> npm run test
 
 # Run the application
-npm run start
+> Create the database needed
+> npm run migrate
+> npm run start
 ```
 The server would be live at `http://localhost:8000`,
 Swagger API documentation at `http://localhost:8000/api-docs/`
@@ -72,6 +76,16 @@ Swagger API documentation at `http://localhost:8000/api-docs/`
       <td>POST</td>
       <td>/api/v1/auth/signin</td>
       <td>Login user</td>
+  </tr>
+  <tr>
+      <td>PUT</td>
+      <td>/api/v1/auth/user</td>
+      <td>Edits the details of an user</td>
+  </tr>
+  <tr>
+      <td>GET</td>
+      <td>/api/v1/auth/logout</td>
+      <td>Logs out a logged in user</td>
   </tr>
   <tr>
       <td>POST</td>
@@ -97,6 +111,11 @@ Swagger API documentation at `http://localhost:8000/api-docs/`
       <td>GET</td>
       <td>/api/v1/businesses/</td>
       <td>Get all businesses</td>
+  </tr>
+  <tr>
+      <td>PUT</td>
+      <td>/api/v1/businesses//change-ownership/:businessId</td>
+      <td>Transfers business ownership to another user</td>
   </tr>
   <tr>
       <td>POST</td>
