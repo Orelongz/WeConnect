@@ -32,3 +32,11 @@
   background-size: cover;
   background-position: 50% 55%;
 }
+
+.h200 {
+  height: 200px;
+}
+
+.checked {
+  color: orange;
+}
