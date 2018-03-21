@@ -21,10 +21,6 @@ html, body {
   transform: scale(1.2);
 }
 
-.main-business-pic {
-  height: 25rem;
-}
-
 .compact-pic {
   height: 10rem;
 }
