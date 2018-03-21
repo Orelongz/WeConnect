@@ -1,3 +1,6 @@
+html, body {
+  height: 100%;
+}
 
 .small-profile-pic {
   width: 5rem;
@@ -39,4 +42,20 @@
 
 .checked {
   color: orange;
+}
+
+.footer {
+  width:100%;
+	position:absolute;
+	bottom:0;
+	left:0;
+}
+
+.holder {
+  min-height:100%;
+  position:relative;
+}
+
+.pb-main {
+  padding-bottom: 75px;
 }

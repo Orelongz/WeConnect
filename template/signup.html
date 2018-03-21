@@ -15,73 +15,75 @@
   <link rel="stylesheet" href="weconnect.css">
 </head>
 
-<body class="bg-light">
-  <header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container">
-        <a class="navbar-brand" href="index.html">WeConnect</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="business-catalog.html">All Businesses</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="signin.html">Signin</a>
-            </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="signup.html">Signup<span class="sr-only">(current)</span></a>
-            </li>
-          </ul>
+<body>
+  <div class="bg-light holder">
+    <header class="mb-5">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+          <a class="navbar-brand" href="index.html">WeConnect</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="business-catalog.html">All Businesses</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="signin.html">Signin</a>
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link" href="signup.html">Signup<span class="sr-only">(current)</span></a>
+              </li>
+            </ul>
+          </div>
         </div>
-      </div>
-    </nav>
-  </header>
+      </nav>
+    </header>
 
-  <main class="mt-4">
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="card col-xs-10 col-sm-8 col-md-6 col-lg-4">
-          <div class="container">
-            <h2 class="text-center my-4">Create your account</h2>
-            <form >
-              <div class="form-group">
-                <label for="firstName">First Name</label>
-                <input type="text" class="form-control" id="firstName" placeholder="Firstname">
+    <main class="pb-main">
+      <div class="container">
+        <div class="row justify-content-center">
+          <div class="card col-xs-10 col-sm-8 col-md-6 col-lg-4">
+            <div class="container">
+              <h2 class="text-center my-4">Create your account</h2>
+              <form >
+                <div class="form-group">
+                  <label for="firstName">First Name</label>
+                  <input type="text" class="form-control" id="firstName" placeholder="Firstname">
+                </div>
+                <div class="form-group">
+                  <label for="lastName">Last Name</label>
+                  <input type="text" class="form-control" id="lastName" placeholder="Lastname">
+                </div>
+                <div class="form-group">
+                  <label for="password">Password</label>
+                  <input type="password" class="form-control" id="password" placeholder="Password">
+                </div>
+                <div class="form-group">
+                  <label for="confirmPassword">Password</label>
+                  <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password">
+                </div>
+                <p class="text-center small">By clicking Join Now, you agree to WeConnect <a href="#">User Agreement</a> and <a href="#">Privacy Policy</a></p>
+                <button class="btn btn-primary w-100"><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;Join Now</button>
+              </form>
+              <div class="d-inline-block pull-right pt-2">
+                <p class="small">Already a member? <a href="signin.html">Sign in</a></p>
               </div>
-              <div class="form-group">
-                <label for="lastName">Last Name</label>
-                <input type="text" class="form-control" id="lastName" placeholder="Lastname">
-              </div>
-              <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" class="form-control" id="password" placeholder="Password">
-              </div>
-              <div class="form-group">
-                <label for="confirmPassword">Password</label>
-                <input type="password" class="form-control" id="confirmPassword" placeholder="Confirm Password">
-              </div>
-              <p class="text-center small">By clicking Join Now, you agree to WeConnect <a href="#">User Agreement</a> and <a href="#">Privacy Policy</a></p>
-              <button class="btn btn-primary w-100"><i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;Join Now</button>
-            </form>
-            <div class="d-inline-block pull-right pt-2">
-              <p class="small">Already a member? <a href="signin.html">Sign in</a></p>
             </div>
           </div>
         </div>
       </div>
-    </div>
-  </main>
+    </main>
 
-  <footer class="mt-4 py-3 navbar-dark bg-dark">
-    <div class="container text-center text-white">
-        <p class="d-inline">Copyright &copy; 2018&nbsp;</p>
-        <p class="d-inline border-left">&nbsp; Made with <span class="text-danger">&#9829;</span> by Longe Pelumi</p>
-        
-    </div>
-  </footer>
+    <footer class="footer py-2 bg-dark">
+      <div class="container text-center text-white">
+          <p class="d-inline">Copyright &copy; 2018&nbsp;</p>
+          <p class="d-inline border-left">&nbsp; Made with <span class="text-danger">&#9829;</span> by Longe Pelumi</p>
+          
+      </div>
+    </footer>
+  </div>
 
   <script src=""></script>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
