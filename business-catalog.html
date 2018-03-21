@@ -16,270 +16,272 @@
 </head>
 
 <body>
-  <header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="holder">
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+          <a class="navbar-brand" href="index.html">WeConnect</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item active">
+                <a class="nav-link" href="business-catalog.html">All Business<span class="sr-only">(current)</span></a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="register-business.html">Register Business</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="index.html">Log out</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
+
+    <section class="header d-flex justify-content-center mb-4">
+      <div class="col-xs-12 col-md-6 align-self-center text-white">
+        <h1 class="text-center">Businesses Around Me</h1>
+        <form class=" input-group">
+          <input type="text" class="form-control" placeholder="Search..." >
+          <select class="input-group-append" id="search">
+            <option value="0" selected>By Name</option>
+            <option value="1">By location</option>
+            <option value="2">By category</option>
+          </select>
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="button">Search</button>
+          </div>
+        </form>
+      </div>     
+    </section>
+
+    <main class="pb-main">
       <div class="container">
-        <a class="navbar-brand" href="index.html">WeConnect</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item active">
-              <a class="nav-link" href="business-catalog.html">All Business<span class="sr-only">(current)</span></a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="register-business.html">Register Business</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="index.html">Log out</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-  </header>
+        <div class="row">
 
-  <section class="header d-flex justify-content-center">
-    <div class="col-xs-12 col-md-6 align-self-center text-white">
-      <h1 class="text-center">Businesses Around Me</h1>
-      <form class=" input-group">
-        <input type="text" class="form-control" placeholder="Search..." >
-        <select class="input-group-append" id="search">
-          <option value="0" selected>By Name</option>
-          <option value="1">By location</option>
-          <option value="2">By category</option>
-        </select>
-        <div class="input-group-append">
-          <button class="btn btn-primary" type="button">Search</button>
-        </div>
-      </form>
-    </div>     
-  </section>
-
-  <main class="mt-4">
-    <div class="container">
-      <div class="row">
-
-        <div class="col-sm-12 col-md-3">
-          <h4>Filter By:</h4>
-          <div class="form-group">
-            <label for="business-category">Category</label>
-            <select class="form-control" id="business-category">
-              <option value="0" selected>--Select--</option>
-              <option value="1">RESTURANTS</option>
-              <option value="2">CINEMAS</option>
-              <option value="3">CAFE</option>
-              <option value="4">BARS</option>
-              <option value="5">RECREATIONAL</option>
-            </select>
+          <div class="col-sm-12 col-md-3">
+            <h4>Filter By:</h4>
+            <div class="form-group">
+              <label for="business-category">Category</label>
+              <select class="form-control" id="business-category">
+                <option value="0" selected>--Select--</option>
+                <option value="1">RESTURANTS</option>
+                <option value="2">CINEMAS</option>
+                <option value="3">CAFE</option>
+                <option value="4">BARS</option>
+                <option value="5">RECREATIONAL</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="business-location">Location</label>
+              <select class="form-control" id="business-location">
+                <option value="0" selected>--Select--</option>
+                <option value="1">LAGOS</option>
+                <option value="2">ABUJA</option>
+                <option value="3">JOS</option>
+                <option value="4">ENUGU</option>
+                <option value="5">RIVERS</option>
+              </select>
+            </div>
           </div>
-          <div class="form-group">
-            <label for="business-location">Location</label>
-            <select class="form-control" id="business-location">
-              <option value="0" selected>--Select--</option>
-              <option value="1">LAGOS</option>
-              <option value="2">ABUJA</option>
-              <option value="3">JOS</option>
-              <option value="4">ENUGU</option>
-              <option value="5">RIVERS</option>
-            </select>
-          </div>
-        </div>
 
-        <div class="col-sm-12 col-md-9">
-          <h1 class="text-center">All Businesses</h1>
-          <div class="row">
+          <div class="col-sm-12 col-md-9">
+            <h1 class="text-center">All Businesses</h1>
+            <div class="row">
 
-            <div class="col-xs-12 col-sm-6 col-lg-4 mt-4">
-              <div class="card" >
-                <a href="business-profile.html" class="overflow">
-                  <img src="https://images.unsplash.com/photo-1516342139563-831b7018ad7c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=302934101a5a783c9792ce6e69be5976&auto=format&fit=crop&w=668&q=80" alt="coffee shop" class="card-img-top catalog-profile-pic" >
-                </a>
-                <div class="card-body">
-                  <h5 card-title>Coffee Shop</h5>
-                  <div class="card-text">
-                    <p class="mb-0">Category: bar</p>
-                    <p class="mb-0">Tel: 0907879879</p>
-                    <div class="d-inline-block mb-0">
-                      <span class="fa fa-star checked"></span>
-                      <span class="fa fa-star checked"></span>
-                      <span class="fa fa-star checked"></span>
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
+              <div class="col-xs-12 col-sm-6 col-lg-4 mt-4">
+                <div class="card" >
+                  <a href="business-profile.html" class="overflow">
+                    <img src="https://images.unsplash.com/photo-1516342139563-831b7018ad7c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=302934101a5a783c9792ce6e69be5976&auto=format&fit=crop&w=668&q=80" alt="coffee shop" class="card-img-top catalog-profile-pic" >
+                  </a>
+                  <div class="card-body">
+                    <h5 card-title>Coffee Shop</h5>
+                    <div class="card-text">
+                      <p class="mb-0">Category: bar</p>
+                      <p class="mb-0">Tel: 0907879879</p>
+                      <div class="d-inline-block mb-0">
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star checked"></span>
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
+
+              <div class="col-xs-12 col-sm-6 col-lg-4 mt-4">
+                <div class="card" >
+                  <a href="business-profile.html" class="overflow">
+                    <img src="https://images.unsplash.com/photo-1516342139563-831b7018ad7c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=302934101a5a783c9792ce6e69be5976&auto=format&fit=crop&w=668&q=80" alt="coffee shop" class="card-img-top catalog-profile-pic" >
+                  </a>
+                  <div class="card-body">
+                    <h5 card-title>Coffee Shop</h5>
+                    <div class="card-text">
+                      <p class="mb-0">Category: Restaurant</p>
+                      <p class="mb-0">Tel: 0907879879</p>
+                      <div class="d-inline-block mb-0">
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xs-12 col-sm-6 col-lg-4 mt-4">
+                <div class="card" >
+                  <a href="business-profile.html" class="overflow">
+                    <img src="https://images.unsplash.com/photo-1516342139563-831b7018ad7c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=302934101a5a783c9792ce6e69be5976&auto=format&fit=crop&w=668&q=80" alt="coffee shop" class="card-img-top catalog-profile-pic" >
+                  </a>
+                  <div class="card-body">
+                    <h5 card-title>Coffee Shop</h5>
+                    <div class="card-text">
+                      <p class="mb-0">Category: Restaurant</p>
+                      <p class="mb-0">Tel: 0907879879</p>
+                      <div class="d-inline-block mb-0">
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xs-12 col-sm-6 col-lg-4 mt-4">
+                <div class="card" >
+                  <a href="business-profile.html" class="overflow">
+                    <img src="https://images.unsplash.com/photo-1516342139563-831b7018ad7c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=302934101a5a783c9792ce6e69be5976&auto=format&fit=crop&w=668&q=80" alt="coffee shop" class="card-img-top catalog-profile-pic" >
+                  </a>
+                  <div class="card-body">
+                    <h5 card-title>Coffee Shop</h5>
+                    <div class="card-text">
+                      <p class="mb-0">Category: Restaurant</p>
+                      <p class="mb-0">Tel: 0907879879</p>
+                      <div class="d-inline-block mb-0">
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xs-12 col-sm-6 col-lg-4 mt-4">
+                <div class="card" >
+                  <a href="business-profile.html" class="overflow">
+                    <img src="https://images.unsplash.com/photo-1516342139563-831b7018ad7c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=302934101a5a783c9792ce6e69be5976&auto=format&fit=crop&w=668&q=80" alt="coffee shop" class="card-img-top catalog-profile-pic" >
+                  </a>
+                  <div class="card-body">
+                    <h5 card-title>Coffee Shop</h5>
+                    <div class="card-text">
+                      <p class="mb-0">Category: Restaurant</p>
+                      <p class="mb-0">Tel: 0907879879</p>
+                      <div class="d-inline-block mb-0">
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xs-12 col-sm-6 col-lg-4 mt-4">
+                <div class="card" >
+                  <a href="business-profile.html" class="overflow">
+                    <img src="https://images.unsplash.com/photo-1516342139563-831b7018ad7c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=302934101a5a783c9792ce6e69be5976&auto=format&fit=crop&w=668&q=80" alt="coffee shop" class="card-img-top catalog-profile-pic" >
+                  </a>
+                  <div class="card-body">
+                    <h5 card-title>Coffee Shop</h5>
+                    <div class="card-text">
+                      <p class="mb-0">Category: Restaurant</p>
+                      <p class="mb-0">Tel: 0907879879</p>
+                      <div class="d-inline-block mb-0">
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-xs-12 col-sm-6 col-lg-4 mt-4">
+                <div class="card" >
+                  <a href="business-profile.html" class="overflow">
+                    <img src="https://images.unsplash.com/photo-1516342139563-831b7018ad7c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=302934101a5a783c9792ce6e69be5976&auto=format&fit=crop&w=668&q=80" alt="coffee shop" class="card-img-top catalog-profile-pic" >
+                  </a>
+                  <div class="card-body">
+                    <h5 card-title>Coffee Shop</h5>
+                    <div class="card-text">
+                      <p class="mb-0">Category: Restaurant</p>
+                      <p class="mb-0">Tel: 0907879879</p>
+                      <div class="d-inline-block mb-0">
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div> 
+
+              <div class="col-xs-12 col-sm-6 col-lg-4 mt-4">
+                <div class="card" >
+                  <a href="business-profile.html" class="overflow">
+                    <img src="https://images.unsplash.com/photo-1516342139563-831b7018ad7c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=302934101a5a783c9792ce6e69be5976&auto=format&fit=crop&w=668&q=80" alt="coffee shop" class="card-img-top catalog-profile-pic" >
+                  </a>
+                  <div class="card-body">
+                    <h5 card-title>Coffee Shop</h5>
+                    <div class="card-text">
+                      <p class="mb-0">Category: Restaurant</p>
+                      <p class="mb-0">Tel: 0907879879</p>
+                      <div class="d-inline-block mb-0">
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div>
-
-            <div class="col-xs-12 col-sm-6 col-lg-4 mt-4">
-              <div class="card" >
-                <a href="business-profile.html" class="overflow">
-                  <img src="https://images.unsplash.com/photo-1516342139563-831b7018ad7c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=302934101a5a783c9792ce6e69be5976&auto=format&fit=crop&w=668&q=80" alt="coffee shop" class="card-img-top catalog-profile-pic" >
-                </a>
-                <div class="card-body">
-                  <h5 card-title>Coffee Shop</h5>
-                  <div class="card-text">
-                    <p class="mb-0">Category: Restaurant</p>
-                    <p class="mb-0">Tel: 0907879879</p>
-                    <div class="d-inline-block mb-0">
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-xs-12 col-sm-6 col-lg-4 mt-4">
-              <div class="card" >
-                <a href="business-profile.html" class="overflow">
-                  <img src="https://images.unsplash.com/photo-1516342139563-831b7018ad7c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=302934101a5a783c9792ce6e69be5976&auto=format&fit=crop&w=668&q=80" alt="coffee shop" class="card-img-top catalog-profile-pic" >
-                </a>
-                <div class="card-body">
-                  <h5 card-title>Coffee Shop</h5>
-                  <div class="card-text">
-                    <p class="mb-0">Category: Restaurant</p>
-                    <p class="mb-0">Tel: 0907879879</p>
-                    <div class="d-inline-block mb-0">
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-xs-12 col-sm-6 col-lg-4 mt-4">
-              <div class="card" >
-                <a href="business-profile.html" class="overflow">
-                  <img src="https://images.unsplash.com/photo-1516342139563-831b7018ad7c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=302934101a5a783c9792ce6e69be5976&auto=format&fit=crop&w=668&q=80" alt="coffee shop" class="card-img-top catalog-profile-pic" >
-                </a>
-                <div class="card-body">
-                  <h5 card-title>Coffee Shop</h5>
-                  <div class="card-text">
-                    <p class="mb-0">Category: Restaurant</p>
-                    <p class="mb-0">Tel: 0907879879</p>
-                    <div class="d-inline-block mb-0">
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-xs-12 col-sm-6 col-lg-4 mt-4">
-              <div class="card" >
-                <a href="business-profile.html" class="overflow">
-                  <img src="https://images.unsplash.com/photo-1516342139563-831b7018ad7c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=302934101a5a783c9792ce6e69be5976&auto=format&fit=crop&w=668&q=80" alt="coffee shop" class="card-img-top catalog-profile-pic" >
-                </a>
-                <div class="card-body">
-                  <h5 card-title>Coffee Shop</h5>
-                  <div class="card-text">
-                    <p class="mb-0">Category: Restaurant</p>
-                    <p class="mb-0">Tel: 0907879879</p>
-                    <div class="d-inline-block mb-0">
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-xs-12 col-sm-6 col-lg-4 mt-4">
-              <div class="card" >
-                <a href="business-profile.html" class="overflow">
-                  <img src="https://images.unsplash.com/photo-1516342139563-831b7018ad7c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=302934101a5a783c9792ce6e69be5976&auto=format&fit=crop&w=668&q=80" alt="coffee shop" class="card-img-top catalog-profile-pic" >
-                </a>
-                <div class="card-body">
-                  <h5 card-title>Coffee Shop</h5>
-                  <div class="card-text">
-                    <p class="mb-0">Category: Restaurant</p>
-                    <p class="mb-0">Tel: 0907879879</p>
-                    <div class="d-inline-block mb-0">
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="col-xs-12 col-sm-6 col-lg-4 mt-4">
-              <div class="card" >
-                <a href="business-profile.html" class="overflow">
-                  <img src="https://images.unsplash.com/photo-1516342139563-831b7018ad7c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=302934101a5a783c9792ce6e69be5976&auto=format&fit=crop&w=668&q=80" alt="coffee shop" class="card-img-top catalog-profile-pic" >
-                </a>
-                <div class="card-body">
-                  <h5 card-title>Coffee Shop</h5>
-                  <div class="card-text">
-                    <p class="mb-0">Category: Restaurant</p>
-                    <p class="mb-0">Tel: 0907879879</p>
-                    <div class="d-inline-block mb-0">
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div> 
-
-            <div class="col-xs-12 col-sm-6 col-lg-4 mt-4">
-              <div class="card" >
-                <a href="business-profile.html" class="overflow">
-                  <img src="https://images.unsplash.com/photo-1516342139563-831b7018ad7c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=302934101a5a783c9792ce6e69be5976&auto=format&fit=crop&w=668&q=80" alt="coffee shop" class="card-img-top catalog-profile-pic" >
-                </a>
-                <div class="card-body">
-                  <h5 card-title>Coffee Shop</h5>
-                  <div class="card-text">
-                    <p class="mb-0">Category: Restaurant</p>
-                    <p class="mb-0">Tel: 0907879879</p>
-                    <div class="d-inline-block mb-0">
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
           </div>
         </div>
       </div>
-    </div>
-  </main>
+    </main>
 
-  <footer class="mt-4 py-3 navbar-dark bg-dark">
-    <div class="container text-center text-white">
-        <p class="d-inline">Copyright &copy; 2018&nbsp;</p>
-        <p class="d-inline border-left">&nbsp; Made with <span class="text-danger">&#9829;</span> by Longe Pelumi</p>
-        
-    </div>
-  </footer>
+    <footer class="footer py-2 bg-dark">
+      <div class="container text-center text-white">
+          <p class="d-inline">Copyright &copy; 2018&nbsp;</p>
+          <p class="d-inline border-left">&nbsp; Made with <span class="text-danger">&#9829;</span> by Longe Pelumi</p>
+          
+      </div>
+    </footer>
+  </div>
 
   <script src=""></script>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

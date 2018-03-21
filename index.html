@@ -15,178 +15,180 @@
   <link rel="stylesheet" href="weconnect.css">
 </head>
 
-<body class="bg-light">
-  <header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container">
-        <a class="navbar-brand" href="index.html">WeConnect</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="business-catalog.html">All Business</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="signup.html">Sign up</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="signin.html">Sign In</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-  </header>
-
-  <section class="header d-flex justify-content-center">
-    <div class="col-xs-12 col-md-6 align-self-center text-white">
-      <h1 class="text-center">Welcome to WeConnect</h1>
-      <form class=" input-group">
-        <input type="text" class="form-control" placeholder="Search..." >
-        <select class="input-group-append" id="search">
-          <option value="0" selected>By Name</option>
-          <option value="1">By location</option>
-          <option value="2">By category</option>
-        </select>
-        <div class="input-group-append">
-          <button class="btn btn-primary" type="button">Search</button>
-        </div>
-      </form>
-    </div>     
-  </section>
-
-  <main class="mt-4">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12 col-lg-2"></div>
-        <div class="col-md-12 col-lg-8 text-center">
-
-          <section id="about" class="mt-4 border-bottom pb-4">
-            <h3 class="text-center pt-3">About Us</h3>
-            <article class="lead">At WeConnect, we are all about giving people easy access to businesses and services just in one click</article>
-            <div class="row">
-              <div class="col-sm-12 col-md-4 mt-3">
-                <div class="card">
-                  <img src="https://images-na.ssl-images-amazon.com/images/I/61M2ls4U%2BiL.png" class="compact-pic p-3">
-                  <div class="card-body">
-                    <p class="card-text">View/ Register a business</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-4 mt-3">
-                <div class="card">
-                  <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWW0d9IQvzsJzyZx9uLDlHrITTqMLwRElLQjxM5IA9mpu2tf3_5w" class="compact-pic">
-                  <div class="card-body">
-                    <p class="card-text">Get in touch with a business</p>
-                  </div>
-                </div>
-              </div>
-              <div class="col-sm-12 col-md-4 mt-3">
-                <div class="card">
-                  <img src="http://api.ning.com/files/VrpMXk5gFE1k0TaxhueybvE2t7Tx-16c1X613sfzTmbw0C9XszGtbyhhVdmkQ8OEPlJ97IBlxxK9jI9HQncabc9sn8rwZGgt/walmartsmiley.jpg" class="compact-pic">
-                  <div class="card-body">
-                    <p class="card-text">Happy customer/ business owner</p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <section id="feedback" class="mt-4 border-bottom pb-4">
-            <h3 class="text-center pt-3">What Our People Think</h3>
-            <article class="lead">With our sole aim of making business owners and customers happy, here are a few comments from business owners on the site</article>
-            <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
-              <div class="carousel-inner mt-3 h200">
-
-                <div class="media carousel-item active">
-                  <img src="https://i.stack.imgur.com/34AD2.jpg" class="img-thumbnail rounded-circle small-profile-pic mr-3 align-self-center">
-                  <blockquote class="media-body blockquote text-center">
-                    <p class="mb-0">I joined a few days back and already seeing results in my resturant</p>
-                    <footer class="blockquote-footer">Favor</footer>
-                  </blockquote>
-                </div>
-
-                <div class="media carousel-item">
-                  <img src="https://i.stack.imgur.com/34AD2.jpg" class="img-thumbnail rounded-circle small-profile-pic mr-3 align-self-center">
-                  <blockquote class="media-body blockquote text-center">
-                    <p class="mb-0">Thanks a lot guys. On joining weconnect my business went from being relatively unknown to getting orders in other states of the country.</p>
-                    <footer class="blockquote-footer">Joshua</footer>
-                  </blockquote>
-                </div>
-
-                <div class="media carousel-item">
-                  <img src="https://i.stack.imgur.com/34AD2.jpg" class="img-thumbnail rounded-circle small-profile-pic mr-3 align-self-center">
-                  <blockquote class="media-body blockquote text-center">
-                    <p class="mb-0">WeConnect offered me a wonderful platform to showcase my business.</p>
-                    <footer class="blockquote-footer">Levi</footer>
-                  </blockquote>
-                </div>
-
-              </div>
-            </div>
-          </section>
-
-        </div>
-        <div class="col-md-12 col-lg-2"></div>
-      </div>
-
-      <section id="contact" class="mt-4">
+<body>
+  <div class="bg-light holder">
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-          <div class="row">
-            <div class="col-xs-12 col-md-6 col-lg-7">
-              <div class="container card mt-5 py-3">
-                <h3 class="text-center">Contact Us</h3>
-                <form>
-                  <div class="form-row">
-                    <div class="col">
-                      <label for="name">Name</label>
-                      <input type="text" class="form-control" placeholder="Name" id="name">
-                    </div>
-                    <div class="col">
-                      <label for="email">Email</label>
-                      <input type="email" class="form-control" placeholder="email">
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label for="name">Message</label>
-                    <textarea type="text" class="form-control" placeholder="Message" id="message" rows="4"></textarea>
-                  </div>
-                  <a href="#" type="submit" class="btn btn-primary">Send</a>
-                </form>
-              </div>
-              </div>
+          <a class="navbar-brand" href="index.html">WeConnect</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="business-catalog.html">All Business</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="signup.html">Sign up</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="signin.html">Sign In</a>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+    </header>
 
-            <div class="col-xs-12 col-md-6 col-lg-5">
-              <div class="container card mt-5 py-3">
-                <div id="address">
-                  <h3 class="text-center">Our Address</h3>
-                  <div class="mt-4">
-                    <i class="fa fa-home fa-2x" aria-hidden="true"></i>&nbsp; 345, heart closed, Kenturky Road, Nigeria
+    <section class="header d-flex justify-content-center mb-4">
+      <div class="col-xs-12 col-md-6 align-self-center text-white">
+        <h1 class="text-center">Welcome to WeConnect</h1>
+        <form class=" input-group">
+          <input type="text" class="form-control" placeholder="Search..." >
+          <select class="input-group-append" id="search">
+            <option value="0" selected>By Name</option>
+            <option value="1">By location</option>
+            <option value="2">By category</option>
+          </select>
+          <div class="input-group-append">
+            <button class="btn btn-primary" type="button">Search</button>
+          </div>
+        </form>
+      </div>     
+    </section>
+
+    <main class="pb-main">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 col-lg-2"></div>
+          <div class="col-md-12 col-lg-8 text-center">
+
+            <section id="about" class="mt-4 border-bottom pb-4">
+              <h3 class="text-center pt-3">About Us</h3>
+              <article class="lead">At WeConnect, we are all about giving people easy access to businesses and services just in one click</article>
+              <div class="row">
+                <div class="col-sm-12 col-md-4 mt-3">
+                  <div class="card">
+                    <img src="https://images-na.ssl-images-amazon.com/images/I/61M2ls4U%2BiL.png" class="compact-pic p-3">
+                    <div class="card-body">
+                      <p class="card-text">View/ Register a business</p>
+                    </div>
                   </div>
-                  <div class="mt-3">
-                    <i class="fa fa-envelope-o fa-lg" aria-hidden="true"></i>&nbsp; weconnect@domain.com
+                </div>
+                <div class="col-sm-12 col-md-4 mt-3">
+                  <div class="card">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWW0d9IQvzsJzyZx9uLDlHrITTqMLwRElLQjxM5IA9mpu2tf3_5w" class="compact-pic">
+                    <div class="card-body">
+                      <p class="card-text">Get in touch with a business</p>
+                    </div>
                   </div>
-                  <div class="mt-3">
-                    <i class="fa fa-mobile fa-2x" aria-hidden="true"></i>&nbsp; +234-999-403-98
+                </div>
+                <div class="col-sm-12 col-md-4 mt-3">
+                  <div class="card">
+                    <img src="http://api.ning.com/files/VrpMXk5gFE1k0TaxhueybvE2t7Tx-16c1X613sfzTmbw0C9XszGtbyhhVdmkQ8OEPlJ97IBlxxK9jI9HQncabc9sn8rwZGgt/walmartsmiley.jpg" class="compact-pic">
+                    <div class="card-body">
+                      <p class="card-text">Happy customer/ business owner</p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
+            </section>
 
-          </div>        
+            <section id="feedback" class="mt-4 border-bottom pb-4">
+              <h3 class="text-center pt-3">What Our People Think</h3>
+              <article class="lead">With our sole aim of making business owners and customers happy, here are a few comments from business owners on the site</article>
+              <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner mt-3 h200">
+
+                  <div class="media carousel-item active">
+                    <img src="https://i.stack.imgur.com/34AD2.jpg" class="img-thumbnail rounded-circle small-profile-pic mr-3 align-self-center">
+                    <blockquote class="media-body blockquote text-center">
+                      <p class="mb-0">I joined a few days back and already seeing results in my resturant</p>
+                      <footer class="blockquote-footer">Favor</footer>
+                    </blockquote>
+                  </div>
+
+                  <div class="media carousel-item">
+                    <img src="https://i.stack.imgur.com/34AD2.jpg" class="img-thumbnail rounded-circle small-profile-pic mr-3 align-self-center">
+                    <blockquote class="media-body blockquote text-center">
+                      <p class="mb-0">Thanks a lot guys. On joining weconnect my business went from being relatively unknown to getting orders in other states of the country.</p>
+                      <footer class="blockquote-footer">Joshua</footer>
+                    </blockquote>
+                  </div>
+
+                  <div class="media carousel-item">
+                    <img src="https://i.stack.imgur.com/34AD2.jpg" class="img-thumbnail rounded-circle small-profile-pic mr-3 align-self-center">
+                    <blockquote class="media-body blockquote text-center">
+                      <p class="mb-0">WeConnect offered me a wonderful platform to showcase my business.</p>
+                      <footer class="blockquote-footer">Levi</footer>
+                    </blockquote>
+                  </div>
+
+                </div>
+              </div>
+            </section>
+
+          </div>
+          <div class="col-md-12 col-lg-2"></div>
         </div>
-      </section>
-    </div>    
-  </main>
 
-  <footer class="mt-4 py-3 navbar-dark bg-dark">
-    <div class="container text-center text-white">
-        <p class="d-inline">Copyright &copy; 2018&nbsp;</p>
-        <p class="d-inline border-left">&nbsp; Made with <span class="text-danger">&#9829;</span> by Longe Pelumi</p>
-    </div>
-  </footer>
+        <section id="contact" class="mt-4">
+          <div class="container">
+            <div class="row">
+              <div class="col-xs-12 col-md-6 col-lg-7">
+                <div class="container card mt-5 py-3">
+                  <h3 class="text-center">Contact Us</h3>
+                  <form>
+                    <div class="form-row">
+                      <div class="col">
+                        <label for="name">Name</label>
+                        <input type="text" class="form-control" placeholder="Name" id="name">
+                      </div>
+                      <div class="col">
+                        <label for="email">Email</label>
+                        <input type="email" class="form-control" placeholder="email">
+                      </div>
+                    </div>
+                    <div class="form-group">
+                      <label for="name">Message</label>
+                      <textarea type="text" class="form-control" placeholder="Message" id="message" rows="4"></textarea>
+                    </div>
+                    <a href="#" type="submit" class="btn btn-primary">Send</a>
+                  </form>
+                </div>
+                </div>
+
+              <div class="col-xs-12 col-md-6 col-lg-5">
+                <div class="container card mt-5 py-3">
+                  <div id="address">
+                    <h3 class="text-center">Our Address</h3>
+                    <div class="mt-4">
+                      <i class="fa fa-home fa-2x" aria-hidden="true"></i>&nbsp; 345, heart closed, Kenturky Road, Nigeria
+                    </div>
+                    <div class="mt-3">
+                      <i class="fa fa-envelope-o fa-lg" aria-hidden="true"></i>&nbsp; weconnect@domain.com
+                    </div>
+                    <div class="mt-3">
+                      <i class="fa fa-mobile fa-2x" aria-hidden="true"></i>&nbsp; +234-999-403-98
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>        
+          </div>
+        </section>
+      </div>    
+    </main>
+
+    <footer class="footer py-2 bg-dark">
+      <div class="container text-center text-white">
+          <p class="d-inline">Copyright &copy; 2018&nbsp;</p>
+          <p class="d-inline border-left">&nbsp; Made with <span class="text-danger">&#9829;</span> by Longe Pelumi</p>
+      </div>
+    </footer>
+  </div>
 
   <script src=""></script>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>

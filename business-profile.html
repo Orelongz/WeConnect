@@ -16,171 +16,173 @@
 </head>
 
 <body>
-  <header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <div class="container">
-        <a class="navbar-brand" href="index.html">WeConnect</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNavDropdown">
-          <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="business-catalog.html">All Businesses</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="register-business.html">Register Business</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="index.html">Log out</a>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
-  </header>
-
-  <main>
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12 col-lg-4 mt-4">
-          <div class="card">
-            <div class="card-header font-weight-bold bg-secondary text-white">
-              Coffee Shop
-            </div>
-            <ul class="list-group list-group-flush">
-              <li class="list-group-item">
-                  <i class="fa fa-home fa-lg" aria-hidden="true"></i>
-                  No 3, Street, City, Lagos
+  <div class="holder">
+    <header>
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+          <a class="navbar-brand" href="index.html">WeConnect</a>
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <ul class="navbar-nav ml-auto">
+              <li class="nav-item">
+                <a class="nav-link" href="business-catalog.html">All Businesses</a>
               </li>
-              <li class="list-group-item">
-                  <i class="fa fa-clock-o fa-lg" aria-hidden="true"></i>
-                  9am to 5pm
+              <li class="nav-item">
+                <a class="nav-link" href="register-business.html">Register Business</a>
               </li>
-              <li class="list-group-item">
-                  <i class="fa fa-mobile fa-lg" aria-hidden="true"></i>
-                  0907879879
+              <li class="nav-item">
+                <a class="nav-link" href="index.html">Log out</a>
               </li>
             </ul>
           </div>
-
-          <div id="map"></div>
         </div>
-        <div class="col-md-12 col-lg-8 mt-4">
-          <div class="card">
-            <img src="https://images.unsplash.com/photo-1516342139563-831b7018ad7c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=302934101a5a783c9792ce6e69be5976&auto=format&fit=crop&w=668&q=80" alt="coffee shop" class="w-100 main-business-pic">
-            <div class="card-body">
-              <div>
-                <h1>About Coffee shop</h1>
-                <article class="text-justify">
-                  <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-                  </p>
-                  <p>
-                    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor.
-                  </p>
-                  <p>
-                    in reprehenderit in voluptate velit esse llum dolore eu fugiat nulla pariatur. epteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                  </p>
-                </article>
+      </nav>
+    </header>
+
+    <main class="pb-main">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 col-lg-4 mt-4">
+            <div class="card">
+              <div class="card-header font-weight-bold bg-secondary text-white">
+                Coffee Shop
               </div>
-              <div>
-                <a href="edit-business-profile.html" class="btn btn-primary">Edit</a>
-                <a href="#" class="btn btn-danger pull-right">Delete</a>
-              </div>
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <i class="fa fa-home fa-lg" aria-hidden="true"></i>
+                    No 3, Street, City, Lagos
+                </li>
+                <li class="list-group-item">
+                    <i class="fa fa-clock-o fa-lg" aria-hidden="true"></i>
+                    9am to 5pm
+                </li>
+                <li class="list-group-item">
+                    <i class="fa fa-mobile fa-lg" aria-hidden="true"></i>
+                    0907879879
+                </li>
+              </ul>
             </div>
+
+            <div id="map"></div>
           </div>
-
-          <form class="card form-group mt-5">
-            <div class="container pt-3">
-
-              <div class="media">
-                <img src="https://i.stack.imgur.com/34AD2.jpg" class="img-thumbnail rounded-circle small-profile-pic mr-3" >
-                <div class="media-body">
-                  <div>
-                    <label for="review">Write a review: </label>
-                    <textarea class="form-control" id="review"></textarea>
-                  </div>
-
-                  <div class="pt-3">
-                    <div class="d-inline">
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                      <span class="fa fa-star-o"></span>
-                    </div>
-                    <a href="#" class="btn btn-primary btn-sm pull-right">POST</a>
-                  </div>
+          <div class="col-md-12 col-lg-8 mt-4">
+            <div class="card">
+              <img src="https://images.unsplash.com/photo-1516342139563-831b7018ad7c?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=302934101a5a783c9792ce6e69be5976&auto=format&fit=crop&w=668&q=80" alt="coffee shop" class="w-100 main-business-pic">
+              <div class="card-body">
+                <div>
+                  <h1>About Coffee shop</h1>
+                  <article class="text-justify">
+                    <p>
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+                    </p>
+                    <p>
+                      Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor.
+                    </p>
+                    <p>
+                      in reprehenderit in voluptate velit esse llum dolore eu fugiat nulla pariatur. epteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                    </p>
+                  </article>
+                </div>
+                <div>
+                  <a href="edit-business-profile.html" class="btn btn-primary">Edit</a>
+                  <a href="#" class="btn btn-danger pull-right">Delete</a>
                 </div>
               </div>
+            </div>
 
-              <ul class="list-unstyled">
-                <li class="media border-top pt-3 mt-3">
-                  <img src="https://i.stack.imgur.com/34AD2.jpg" class="img-thumbnail rounded-circle small-profile-pic mr-3">
+            <form class="card form-group mt-5">
+              <div class="container pt-3">
+
+                <div class="media">
+                  <img src="https://i.stack.imgur.com/34AD2.jpg" class="img-thumbnail rounded-circle small-profile-pic mr-3" >
                   <div class="media-body">
                     <div>
-                      <h5 class="d-inline">Hammed</h5>
-                      <div class="d-inline pull-right">
+                      <label for="review">Write a review: </label>
+                      <textarea class="form-control" id="review"></textarea>
+                    </div>
+
+                    <div class="pt-3">
+                      <div class="d-inline">
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                        <span class="fa fa-star-o"></span>
+                      </div>
+                      <a href="#" class="btn btn-primary btn-sm pull-right">POST</a>
+                    </div>
+                  </div>
+                </div>
+
+                <ul class="list-unstyled">
+                  <li class="media border-top pt-3 mt-3">
+                    <img src="https://i.stack.imgur.com/34AD2.jpg" class="img-thumbnail rounded-circle small-profile-pic mr-3">
+                    <div class="media-body">
+                      <div>
+                        <h5 class="d-inline">Hammed</h5>
+                        <div class="d-inline pull-right">
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star checked"></span>
+                            <span class="fa fa-star-o"></span>
+                          </div>
+                      </div>
+                      <p>They serve the best coffee ever.</p>
+                    </div>
+                  </li>
+                  <li class="media border-top pt-3 mt-3">
+                    <img src="https://i.stack.imgur.com/34AD2.jpg" class="img-thumbnail rounded-circle small-profile-pic mr-3">
+                    <div class="media-body">
+                      <div>
+                        <h5 class="d-inline">Tobi</h5>
+                        <div class="d-inline pull-right">
+                          <span class="fa fa-star checked"></span>
+                          <span class="fa fa-star checked"></span>
+                          <span class="fa fa-star-o"></span>
+                          <span class="fa fa-star-o"></span>
+                          <span class="fa fa-star-o"></span>
+                        </div>
+                      </div>
+                      <p>They need to improve their service. I got in and spent over 5 mins waiting to get my coffee. Not cool.</p>
+                    </div>
+                  </li>
+                  <li class="media border-top pt-3 mt-3">
+                    <img src="https://i.stack.imgur.com/34AD2.jpg" class="img-thumbnail rounded-circle small-profile-pic mr-3">
+                    <div class="media-body">
+                      <div>
+                        <h5 class="d-inline">Cynthia</h5>
+                        <div class="d-inline pull-right">
                           <span class="fa fa-star checked"></span>
                           <span class="fa fa-star checked"></span>
                           <span class="fa fa-star checked"></span>
                           <span class="fa fa-star checked"></span>
                           <span class="fa fa-star-o"></span>
                         </div>
-                    </div>
-                    <p>They serve the best coffee ever.</p>
-                  </div>
-                </li>
-                <li class="media border-top pt-3 mt-3">
-                  <img src="https://i.stack.imgur.com/34AD2.jpg" class="img-thumbnail rounded-circle small-profile-pic mr-3">
-                  <div class="media-body">
-                    <div>
-                      <h5 class="d-inline">Tobi</h5>
-                      <div class="d-inline pull-right">
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star-o"></span>
-                        <span class="fa fa-star-o"></span>
-                        <span class="fa fa-star-o"></span>
                       </div>
+                      <p>I kind of agree with Tobi, but they still make a very nice coffee though</p>
                     </div>
-                    <p>They need to improve their service. I got in and spent over 5 mins waiting to get my coffee. Not cool.</p>
-                  </div>
-                </li>
-                <li class="media border-top pt-3 mt-3">
-                  <img src="https://i.stack.imgur.com/34AD2.jpg" class="img-thumbnail rounded-circle small-profile-pic mr-3">
-                  <div class="media-body">
-                    <div>
-                      <h5 class="d-inline">Cynthia</h5>
-                      <div class="d-inline pull-right">
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star checked"></span>
-                        <span class="fa fa-star-o"></span>
-                      </div>
-                    </div>
-                    <p>I kind of agree with Tobi, but they still make a very nice coffee though</p>
-                  </div>
-                </li>
-              </ul>
+                  </li>
+                </ul>
 
-            </div>
-          </form>
+              </div>
+            </form>
 
+          </div>
         </div>
+
       </div>
+    </main>
 
-    </div>
-  </main>
-
-  <footer class="mt-5 py-3 navbar-dark bg-dark">
-    <div class="container text-center text-white">
-      <p class="d-inline">Copyright &copy; 2018&nbsp;</p>
-      <p class="d-inline border-left">&nbsp; Made with <span class="text-danger">&#9829;</span> by Longe Pelumi</p>
-    </div>
-  </footer>
+    <footer class="footer py-2 bg-dark">
+      <div class="container text-center text-white">
+        <p class="d-inline">Copyright &copy; 2018&nbsp;</p>
+        <p class="d-inline border-left">&nbsp; Made with <span class="text-danger">&#9829;</span> by Longe Pelumi</p>
+      </div>
+    </footer>
+  </div>
 
   <script src=""></script>
   <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
