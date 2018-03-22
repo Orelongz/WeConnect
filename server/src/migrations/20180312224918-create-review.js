@@ -7,7 +7,7 @@ module.exports = {
       defaultValue: Sequelize.UUIDV4
     },
     userId: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.UUID,
       onDelete: 'CASCADE',
       references: {
         model: 'Users',
@@ -15,7 +15,7 @@ module.exports = {
       }
     },
     businessId: {
-      type: Sequelize.INTEGER,
+      type: Sequelize.UUID,
       onDelete: 'CASCADE',
       references: {
         model: 'Businesses',

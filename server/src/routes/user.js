@@ -14,7 +14,8 @@ const {
   signUpValidation,
   validateEmail,
   signInValidation,
-  mailExists
+  mailExists,
+  findUserByEmail
 } = UserMiddleware;
 
 // Register a user
@@ -27,7 +28,12 @@ router.post(
 );
 
 // Login a user
-router.post('/auth/login', signInValidation, login);
+router.post(
+  '/auth/login',
+  signInValidation,
+  findUserByEmail,
+  login
+);
 
 // Edits user details
 router.put(

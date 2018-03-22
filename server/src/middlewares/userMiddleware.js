@@ -101,7 +101,7 @@ export default class UserMiddleware {
       }
     })
       .then((user) => {
-        if (req.decoded && req.decoded.userEmail === email) return next();
+        if (req.decoded && req.decoded.email === email) return next();
         if (user) {
           return res.status(409).json({
             message: 'This email already has an account'
@@ -129,7 +129,7 @@ export default class UserMiddleware {
     })
       .then((user) => {
         if (!user) {
-          return notFound(res, 'User');
+          return notFound(res, 'Email');
         }
         req.foundUser = user;
         return next();

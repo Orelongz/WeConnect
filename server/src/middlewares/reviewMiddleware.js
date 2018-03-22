@@ -1,3 +1,4 @@
+import validator from 'validator';
 import { db } from './../models';
 import { notFound } from './../services/genericMessages';
 
@@ -37,9 +38,13 @@ export default class ReviewMiddleware {
   static businessExists(req, res, next) {
     const { businessId } = req.params;
 
+    if (!validator.isUUID(businessId)) {
+      return notFound(res, 'Business');
+    }
+
     return Business.findOne({
       where: {
-        businessId
+        id: businessId
       }
     })
       .then((business) => {

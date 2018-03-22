@@ -15,7 +15,7 @@ export default class BusinessServices {
       businessName, businessImage, category, address, city,
       state, phoneNumber, postalAddress, workHours, about
     } = req.body;
-    const { userId } = req.decoded;
+    const { id } = req.decoded;
 
     const business = {
       businessName,
@@ -28,7 +28,7 @@ export default class BusinessServices {
       postalAddress,
       workHours,
       about,
-      userId
+      userId: id
     };
     return business;
   }
