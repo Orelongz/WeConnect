@@ -1,17 +1,17 @@
 module.exports = {
   up: (queryInterface, Sequelize) => queryInterface.createTable('Reviews', {
-    reviewId: {
+    id: {
       allowNull: false,
-      autoIncrement: true,
       primaryKey: true,
-      type: Sequelize.INTEGER
+      type: Sequelize.UUID,
+      defaultValue: Sequelize.UUIDV4
     },
     userId: {
       type: Sequelize.INTEGER,
       onDelete: 'CASCADE',
       references: {
         model: 'Users',
-        key: 'userId'
+        key: 'id'
       }
     },
     businessId: {
@@ -19,7 +19,7 @@ module.exports = {
       onDelete: 'CASCADE',
       references: {
         model: 'Businesses',
-        key: 'businessId'
+        key: 'id'
       }
     },
     review: {
