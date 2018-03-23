@@ -26,10 +26,16 @@ export default class UserController {
     return User.create({
       firstname, lastname, email, hashedPassword
     })
-      .then(user => res.status(201).json({
-        message: 'User successfully created',
-        user
-      }));
+      .then((user) => {
+        const token = genToken({ id: user.id, email: user.email });
+        return res.status(201).json({
+          message: 'User successfully created',
+          user: {
+            firstname, lastname, email
+          },
+          token
+        });
+      });
   }
 
   /**
@@ -40,28 +46,19 @@ export default class UserController {
    * @return {Object} message, user
    */
   static login(req, res) {
-    const { email, password } = req.body;
+    const { password } = req.body;
+    const user = req.foundUser;
 
-    return User.findOne({
-      where: {
-        email
-      }
-    })
-      .then((user) => {
-        if (!user) {
-          return notFound(res, 'Email');
-        }
-        if (!bcrypt.compareSync(password, user.hashedPassword)) {
-          return res.status(401).json({
-            message: 'Wrong password'
-          });
-        }
-        const token = genToken({ userId: user.userId, userEmail: user.email });
-        return res.status(202).json({
-          message: `Welcome ${user.firstname} ${user.lastname}`,
-          token
-        });
+    if (!bcrypt.compareSync(password, user.hashedPassword)) {
+      return res.status(401).json({
+        message: 'Wrong password'
       });
+    }
+    const token = genToken({ id: user.id, email: user.email });
+    return res.status(202).json({
+      message: `Welcome ${user.firstname} ${user.lastname}`,
+      token
+    });
   }
 
   /**
@@ -72,17 +69,19 @@ export default class UserController {
    * @return {Object} message, user
    */
   static updateUserDetails(req, res) {
-    const { userId } = req.decoded;
+    const { id } = req.decoded;
 
     return User.findOne({
-      where: userId
+      where: { id }
     })
       .then((user) => {
         const { firstname, lastname, email } = req.body;
         return user.update({ firstname, lastname, email })
           .then(() => res.status(200).json({
             message: 'User details updated',
-            user
+            user: {
+              firstname, lastname, email
+            }
           }));
       });
   }

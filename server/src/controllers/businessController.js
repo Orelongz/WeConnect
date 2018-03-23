@@ -1,3 +1,4 @@
+import validator from 'validator';
 import { db } from './../models';
 import BusinessServices from './../services/businessService';
 import {
@@ -46,17 +47,22 @@ export default class BusinessController {
    */
   static updateBusiness(req, res) {
     const { businessId } = req.params;
+
+    if (!validator.isUUID(businessId)) {
+      return notFound(res, 'Business');
+    }
+
     return Business.findOne({
       where: {
-        businessId
+        id: businessId
       }
     })
       .then((business) => {
         if (!business) {
           return notFound(res, 'Business');
         }
-        const { userId } = req.decoded;
-        if (userId !== business.userId) {
+        const { id } = req.decoded;
+        if (id !== business.userId) {
           return unauthorized(res);
         }
         const update = businessObject(req);
@@ -78,17 +84,21 @@ export default class BusinessController {
   static deleteBusiness(req, res) {
     const { businessId } = req.params;
 
+    if (!validator.isUUID(businessId)) {
+      return notFound(res, 'Business');
+    }
+
     return Business.findOne({
       where: {
-        businessId
+        id: businessId
       }
     })
       .then((business) => {
         if (!business) {
           return notFound(res, 'Business');
         }
-        const { userId } = req.decoded;
-        if (userId !== business.userId) {
+        const { id } = req.decoded;
+        if (id !== business.userId) {
           return unauthorized(res);
         }
         return business.destroy()
@@ -109,9 +119,13 @@ export default class BusinessController {
   static getBusiness(req, res) {
     const { businessId } = req.params;
 
+    if (!validator.isUUID(businessId)) {
+      return notFound(res, 'Business');
+    }
+
     return Business.findOne({
       where: {
-        businessId
+        id: businessId
       }
     })
       .then((business) => {
@@ -165,24 +179,29 @@ export default class BusinessController {
    */
   static changeBusinessOwnership(req, res) {
     const { businessId } = req.params;
-    const { email } = req.body;
-    const ownerId = req.decoded.userId;
+
+    if (!validator.isUUID(businessId)) {
+      return notFound(res, 'Business');
+    }
+
+    const ownerId = req.decoded.id;
 
     return Business.findOne({
       where: {
-        businessId,
+        id: businessId,
         userId: ownerId
       }
     })
       .then((business) => {
-        const { userId } = req.foundUser;
-        if (ownerId === userId) {
+        const { id } = req.foundUser;
+        if (ownerId === id) {
           return res.status(200).json({
             message: 'The business is still yours'
           });
         }
         if (business) {
-          return business.update({ userId })
+          const { email } = req.body;
+          return business.update({ userId: id })
             .then(() => res.status(200).json({
               message: `Business ownership has been transferred to ${email}`
             }));

@@ -19,14 +19,14 @@ export default class ReviewController {
     const { review } = req.body;
 
     return Review.create({ review, businessId })
-      .then(thereview => res.status(201).json({
+      .then(theReview => res.status(201).json({
         message: 'Review was successfully added',
-        review: thereview
+        review: theReview
       }));
   }
 
   /**
-   * getBusinessReview()
+   * getBusinessReviews()
    * @desc adds a review to a business
    * @param {Object} req request object
    * @param {Object} res response object
