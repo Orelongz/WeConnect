@@ -102,6 +102,23 @@ describe('Review controller tests', () => {
 
     it('should return 404 status code when businessId is not found', (done) => {
       chai.request(app)
+        .post('/api/v1/businesses/756581de-2e7a-11e8-b467-0ed5f89f718b/reviews')
+        .set('authorization', authtoken1)
+        .type('form')
+        .send(reviewData.review1)
+        .end((err, res) => {
+          res.should.have.status(404);
+          res.body.should.be.a('object');
+          assert.isString(
+            res.body.message,
+            'Business was not found'
+          );
+          done();
+        });
+    });
+
+    it('should return 404 status code when businessId is not a uuid', (done) => {
+      chai.request(app)
         .post('/api/v1/businesses/anyInvalidBusinessId/reviews')
         .set('authorization', authtoken1)
         .type('form')
@@ -168,6 +185,20 @@ describe('Review controller tests', () => {
     it('should return 404 status code when businessId is not found', (done) => {
       chai.request(app)
         .get('/api/v1/businesses/anyInvalidBusinessId/reviews')
+        .end((err, res) => {
+          res.should.have.status(404);
+          res.body.should.be.a('object');
+          assert.isString(
+            res.body.message,
+            'Business was not found'
+          );
+          done();
+        });
+    });
+
+    it('should return 404 status code when businessId is not found', (done) => {
+      chai.request(app)
+        .get('/api/v1/businesses/756581de-2e7a-11e8-b467-0ed5f89f718b/reviews')
         .end((err, res) => {
           res.should.have.status(404);
           res.body.should.be.a('object');

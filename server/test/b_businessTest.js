@@ -219,9 +219,26 @@ describe('Business controller tests', () => {
         });
     });
 
-    it('should return 404 status code when businessId is not in the database', (done) => {
+    it('should return 404 status code when businessId is not a uuid', (done) => {
       chai.request(app)
         .put('/api/v1/businesses/anyInvalidBusinessIdString')
+        .set('authorization', authtoken1)
+        .type('form')
+        .send(businessData.business1)
+        .end((err, res) => {
+          res.should.have.status(404);
+          res.body.should.be.a('object');
+          assert.isString(
+            res.body.message,
+            'Business not found'
+          );
+          done();
+        });
+    });
+
+    it('should return 404 status code when businessId is not valid', (done) => {
+      chai.request(app)
+        .put('/api/v1/businesses/756581de-2e7a-11e8-b467-0ed5f89f718b')
         .set('authorization', authtoken1)
         .type('form')
         .send(businessData.business1)
@@ -316,10 +333,26 @@ describe('Business controller tests', () => {
         });
     });
 
-    it('should return 404 status code when businessId is not in the database', (done) => {
+    it('should return 404 status code when businessId is not a uuid', (done) => {
       chai.request(app)
         .delete('/api/v1/businesses/anyInvalidBusinessIdString')
         .set('authorization', authtoken1)
+        .end((err, res) => {
+          res.should.have.status(404);
+          res.body.should.be.a('object');
+          assert.isString(
+            res.body.message,
+            'Business not found'
+          );
+          done();
+        });
+    });
+
+    it('should return 404 status code when businessId is not valid', (done) => {
+      chai.request(app)
+        .delete('/api/v1/businesses/756581de-2e7a-11e8-b467-0ed5f89f718b')
+        .set('authorization', authtoken1)
+        .type('form')
         .end((err, res) => {
           res.should.have.status(404);
           res.body.should.be.a('object');
@@ -343,6 +376,20 @@ describe('Business controller tests', () => {
           assert.isString(
             res.body.message,
             'Business was successfully found'
+          );
+          done();
+        });
+    });
+
+    it('should return 404 status code when businessId is not a uuid', (done) => {
+      chai.request(app)
+        .get('/api/v1/businesses/anyInvalidBusinessIdString')
+        .end((err, res) => {
+          res.should.have.status(404);
+          res.body.should.be.a('object');
+          assert.isString(
+            res.body.message,
+            'Business not found'
           );
           done();
         });
@@ -496,7 +543,7 @@ describe('Business controller tests', () => {
         });
     });
 
-    it('should return a status of 404 when business is not found', (done) => {
+    it('should return a status 404 when business is not found', (done) => {
       // user1 transferring business1 to user6
       chai.request(app)
         .put(`/api/v1/businesses/change-ownership/${businessId1}`) // busines deleted previously
@@ -506,6 +553,40 @@ describe('Business controller tests', () => {
           res.should.have.status(404);
           res.body.should.be.a('object');
           assert.equal(
+            res.body.message,
+            'Business not found'
+          );
+          done();
+        });
+    });
+
+    // it('should return a status 404 status code when businessId is not in the database', (done) => {
+    //   chai.request(app)
+    //     .put('/api/v1/businesses/change-ownership/756581de-2e7a-11e8-b467-0ed5f89f718b')
+    //     .set('authorization', authtoken2)
+    //     .type('form')
+    //     .send({ email: userData.user3.email })
+    //     .end((err, res) => {
+    //       res.should.have.status(404);
+    //       res.body.should.be.a('object');
+    //       assert.isString(
+    //         res.body.message,
+    //         'Business not found'
+    //       );
+    //       done();
+    //     });
+    // });
+
+    it('should return a status 404 status code when businessId is not a uuid', (done) => {
+      chai.request(app)
+        .put('/api/v1/businesses/change-ownership/anyInvalidBusinessIdString')
+        .set('authorization', authtoken2)
+        .type('form')
+        .send({ email: userData.user3.email })
+        .end((err, res) => {
+          res.should.have.status(404);
+          res.body.should.be.a('object');
+          assert.isString(
             res.body.message,
             'Business not found'
           );
