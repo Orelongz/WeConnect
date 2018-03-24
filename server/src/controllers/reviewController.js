@@ -30,7 +30,7 @@ export default class ReviewController {
 
   /**
    * getBusinessReviews() getUserReview
-   * @desc adds a review to a business
+   * @desc retrieves all reviews for a business
    * @param {Object} req request object
    * @param {Object} res response object
    * @return {Object} message, reviews
@@ -51,10 +51,10 @@ export default class ReviewController {
 
   /**
    * getUserReview
-   * @desc adds a review to a business
+   * @desc retrives a review for a business
    * @param {Object} req request object
    * @param {Object} res response object
-   * @return {Object} message, reviews
+   * @return {Object} message, review
    */
   static getReview(req, res) {
     const { businessId, reviewId } = req.params;
@@ -78,6 +78,42 @@ export default class ReviewController {
             message: 'Review found',
             review
           });
+        }
+        return notFound(res, 'Review');
+      });
+  }
+
+  /**
+   * editReview
+   * @desc edits a review for a business
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @return {Object} message, review
+   */
+  static editReview(req, res) {
+    const { businessId, reviewId } = req.params;
+
+    if (!validator.isUUID(reviewId)) {
+      return notFound(res, 'Review');
+    }
+
+    const userId = req.decoded.id;
+
+    return Review.findOne({
+      where: {
+        id: reviewId,
+        businessId,
+        userId
+      }
+    })
+      .then((theReview) => {
+        if (theReview) {
+          const { review } = req.body;
+          return theReview.update({ ...review })
+            .then(() => res.status(200).json({
+              message: 'Review updated',
+              review: theReview
+            }));
         }
         return notFound(res, 'Review');
       });

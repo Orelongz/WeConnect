@@ -317,4 +317,125 @@ describe('Review controller tests', () => {
         });
     });
   });
+
+  describe('Given that a user sends a PUT request to /api/v1/businesses/:businessId/reviews/:reviewId', () => {
+    it('should return a status 200 if review, business and user exists', (done) => {
+      chai.request(app)
+        .put(`/api/v1/businesses/${businessId1}/reviews/${reviewId1}`)
+        .set('authorization', authtoken1)
+        .send(reviewData.review4)
+        .end((err, res) => {
+          res.should.have.status(200);
+          assert.equal(
+            res.body.message,
+            'Review updated',
+            'Review was found and updated'
+          );
+          done();
+        });
+    });
+
+    it('should return a status 401 if token is not passed in', (done) => {
+      chai.request(app)
+        .put(`/api/v1/businesses/${businessId1}/reviews/${reviewId1}`)
+        .end((err, res) => {
+          res.should.have.status(401);
+          assert.equal(
+            res.body.message,
+            'Please login'
+          );
+          done();
+        });
+    });
+
+    it('should return a status 401 if an invalid token is passed in', (done) => {
+      chai.request(app)
+        .put(`/api/v1/businesses/${businessId1}/reviews/${reviewId1}`)
+        .set('authorization', 'anyInvalidTokenString')
+        .end((err, res) => {
+          res.should.have.status(401);
+          assert.equal(
+            res.body.message,
+            'Invalid token'
+          );
+          done();
+        });
+    });
+
+    it('should return a status 404 if businesId not in the database', (done) => {
+      chai.request(app)
+        .put(`/api/v1/businesses/f64f2940-fae4-11e7-8c5f-ef356f279131/reviews/${reviewId1}`)
+        .set('authorization', authtoken1)
+        .send(reviewData.review4)
+        .end((err, res) => {
+          res.should.have.status(404);
+          assert.equal(
+            res.body.message,
+            'Business not found'
+          );
+          done();
+        });
+    });
+
+    it('should return a status 404 if businesId is not uuid', (done) => {
+      chai.request(app)
+        .put(`/api/v1/businesses/anyInvalidBusinessIdString/reviews/${reviewId1}`)
+        .set('authorization', authtoken1)
+        .send(reviewData.review4)
+        .end((err, res) => {
+          res.should.have.status(404);
+          assert.equal(
+            res.body.message,
+            'Business not found'
+          );
+          done();
+        });
+    });
+
+    it('should return a status 404 if reviewId is not in the database', (done) => {
+      chai.request(app)
+        .put(`/api/v1/businesses/${businessId1}/reviews/f64f2940-fae4-11e7-8c5f-ef356f279131`)
+        .set('authorization', authtoken1)
+        .send(reviewData.review4)
+        .end((err, res) => {
+          res.should.have.status(404);
+          assert.equal(
+            res.body.message,
+            'Review not found'
+          );
+          done();
+        });
+    });
+
+    it('should return a status 404 if reviewId is not uuid', (done) => {
+      chai.request(app)
+        .put(`/api/v1/businesses/${businessId1}/reviews/anyInvalidReviewIdString`)
+        .set('authorization', authtoken1)
+        .send(reviewData.review4)
+        .end((err, res) => {
+          res.should.have.status(404);
+          assert.equal(
+            res.body.message,
+            'Review not found'
+          );
+          done();
+        });
+    });
+
+    it('should return a status 406 if review field is empty', (done) => {
+      chai.request(app)
+        .put(`/api/v1/businesses/${businessId1}/reviews/${reviewId1}`)
+        .set('authorization', authtoken1)
+        .send(reviewData.review3)
+        .end((err, res) => {
+          res.should.have.status(406);
+          assert.equal(
+            res.body.message,
+            'The review input field cannot be empty',
+            'Review cannot be empty'
+          );
+          done();
+        });
+    });
+  });
 });

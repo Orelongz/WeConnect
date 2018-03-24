@@ -6,7 +6,8 @@ import { validateToken } from './../services/jwtService';
 const {
   addReview,
   getBusinessReviews,
-  getReview
+  getReview,
+  editReview
 } = ReviewController;
 const { validateReview, businessExists } = ReviewMiddleware;
 const router = express.Router({ mergeParams: true });
@@ -18,6 +19,15 @@ router.get(
   getBusinessReviews
 );
 
+// Add review to a business
+router.post(
+  '/',
+  validateToken,
+  businessExists,
+  validateReview,
+  addReview
+);
+
 // Get user review
 router.get(
   '/:reviewId',
@@ -26,13 +36,13 @@ router.get(
   getReview
 );
 
-// Add review to a business
-router.post(
-  '/',
+// Edit user review
+router.put(
+  '/:reviewId',
   validateToken,
-  validateReview,
   businessExists,
-  addReview
+  validateReview,
+  editReview
 );
 
 export default router;
