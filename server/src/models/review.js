@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const Review = sequelize.define('Review', {
-    reviewId: {
+    id: {
       allowNull: false,
       primaryKey: true,
       type: DataTypes.UUID,
