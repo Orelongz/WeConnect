@@ -209,4 +209,25 @@ export default class BusinessController {
         return notFound(res, 'Business');
       });
   }
+
+  /**
+   * getUserBusinesses()
+   * @desc gets the businesses of a logged in user
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @return {Object} message, business
+   */
+  static getUserBusinesses(req, res) {
+    const { id } = req.decoded;
+
+    return Business.all({
+      where: {
+        userId: id
+      }
+    })
+      .then(businesses => res.status(200).json({
+        message: 'Your businesses',
+        businesses
+      }));
+  }
 }

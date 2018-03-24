@@ -1,6 +1,5 @@
 import bcrypt from 'bcrypt';
 import { genToken } from './../services/jwtService';
-import { notFound } from './../services/genericMessages';
 import { db } from './../models';
 
 const { User } = db;

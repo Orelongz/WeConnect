@@ -10,7 +10,8 @@ const {
   deleteBusiness,
   getBusiness,
   getAllBusinesses,
-  changeBusinessOwnership
+  changeBusinessOwnership,
+  getUserBusinesses
 } = BusinessController;
 const { businessValidation } = BusinessMiddleware;
 const { findUserByEmail } = UserMiddleware;
@@ -18,6 +19,13 @@ const router = express.Router();
 
 // Get all businesses
 router.get('/', getAllBusinesses);
+
+// Route to get all user businesses
+router.get(
+  '/user',
+  validateToken,
+  getUserBusinesses
+);
 
 // Get a business by businessId
 router.get('/:businessId', getBusiness);
@@ -44,7 +52,6 @@ router.delete(
   validateToken,
   deleteBusiness
 );
-
 
 // Route to transfer business ownership
 router.put(

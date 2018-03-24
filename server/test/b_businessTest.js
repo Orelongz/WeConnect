@@ -560,29 +560,29 @@ describe('Business controller tests', () => {
         });
     });
 
-    // it('should return a status 404 status code when businessId is not in the database', (done) => {
-    //   chai.request(app)
-    //     .put('/api/v1/businesses/change-ownership/756581de-2e7a-11e8-b467-0ed5f89f718b')
-    //     .set('authorization', authtoken2)
-    //     .type('form')
-    //     .send({ email: userData.user3.email })
-    //     .end((err, res) => {
-    //       res.should.have.status(404);
-    //       res.body.should.be.a('object');
-    //       assert.isString(
-    //         res.body.message,
-    //         'Business not found'
-    //       );
-    //       done();
-    //     });
-    // });
+    it('should return a status 404 status code when businessId is not in the database', (done) => {
+      chai.request(app)
+        .put('/api/v1/businesses/change-ownership/756581de-2e7a-11e8-b467-0ed5f89f718b')
+        .set('authorization', authtoken2)
+        .type('form')
+        .send({ email: userData.user1.email })
+        .end((err, res) => {
+          res.should.have.status(404);
+          res.body.should.be.a('object');
+          assert.isString(
+            res.body.message,
+            'Business not found'
+          );
+          done();
+        });
+    });
 
     it('should return a status 404 status code when businessId is not a uuid', (done) => {
       chai.request(app)
         .put('/api/v1/businesses/change-ownership/anyInvalidBusinessIdString')
         .set('authorization', authtoken2)
         .type('form')
-        .send({ email: userData.user3.email })
+        .send({ email: userData.user1.email })
         .end((err, res) => {
           res.should.have.status(404);
           res.body.should.be.a('object');
@@ -606,6 +606,53 @@ describe('Business controller tests', () => {
             res.body.message,
             'Email not found',
             'Email is not in the database'
+          );
+          done();
+        });
+    });
+  });
+
+  describe('Given that a user sends a GET request to /api/v1/businesses/user', () => {
+    it('should return a status of 200 when user is logged in', (done) => {
+      chai.request(app)
+        .get('/api/v1/businesses/user')
+        .set('authorization', authtoken1)
+        .end((err, res) => {
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.businesses.should.be.a('array');
+          assert.equal(
+            res.body.message,
+            'Your businesses'
+          );
+          done();
+        });
+    });
+
+    it('should return a status of 401 when user is not logged in', (done) => {
+      chai.request(app)
+        .get('/api/v1/businesses/user')
+        .end((err, res) => {
+          res.should.have.status(401);
+          res.body.should.be.a('object');
+          assert.equal(
+            res.body.message,
+            'Please login'
+          );
+          done();
+        });
+    });
+
+    it('should return a status of 401 when an invalid token is passed in', (done) => {
+      chai.request(app)
+        .get('/api/v1/businesses/user')
+        .set('authorization', 'anyInvalidTokenString')
+        .end((err, res) => {
+          res.should.have.status(401);
+          res.body.should.be.a('object');
+          assert.equal(
+            res.body.message,
+            'Invalid token'
           );
           done();
         });
