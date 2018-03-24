@@ -1,4 +1,6 @@
+import validator from 'validator';
 import { db } from './../models';
+import { notFound } from './../services/genericMessages';
 
 const { Review } = db;
 
@@ -15,10 +17,11 @@ export default class ReviewController {
    * @return {Object} message, business(containing the review)
    */
   static addReview(req, res) {
+    const userId = req.decoded.id;
     const { businessId } = req.params;
     const { review } = req.body;
 
-    return Review.create({ review, businessId })
+    return Review.create({ review, businessId, userId })
       .then(theReview => res.status(201).json({
         message: 'Review was successfully added',
         review: theReview
@@ -26,7 +29,7 @@ export default class ReviewController {
   }
 
   /**
-   * getBusinessReviews()
+   * getBusinessReviews() getUserReview
    * @desc adds a review to a business
    * @param {Object} req request object
    * @param {Object} res response object
@@ -44,5 +47,39 @@ export default class ReviewController {
         message: 'Reviews found',
         reviews
       }));
+  }
+
+  /**
+   * getUserReview
+   * @desc adds a review to a business
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @return {Object} message, reviews
+   */
+  static getReview(req, res) {
+    const { businessId, reviewId } = req.params;
+
+    if (!validator.isUUID(reviewId)) {
+      return notFound(res, 'Review');
+    }
+
+    const userId = req.decoded.id;
+
+    return Review.findOne({
+      where: {
+        id: reviewId,
+        businessId,
+        userId
+      }
+    })
+      .then((review) => {
+        if (review) {
+          return res.status(200).json({
+            message: 'Review found',
+            review
+          });
+        }
+        return notFound(res, 'Review');
+      });
   }
 }

@@ -3,7 +3,11 @@ import ReviewController from './../controllers/reviewController';
 import ReviewMiddleware from './../middlewares/reviewMiddleware';
 import { validateToken } from './../services/jwtService';
 
-const { addReview, getBusinessReviews } = ReviewController;
+const {
+  addReview,
+  getBusinessReviews,
+  getReview
+} = ReviewController;
 const { validateReview, businessExists } = ReviewMiddleware;
 const router = express.Router({ mergeParams: true });
 
@@ -12,6 +16,14 @@ router.get(
   '/',
   businessExists,
   getBusinessReviews
+);
+
+// Get user review
+router.get(
+  '/:reviewId',
+  validateToken,
+  businessExists,
+  getReview
 );
 
 // Add review to a business

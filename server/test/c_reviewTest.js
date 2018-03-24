@@ -8,6 +8,7 @@ const { Review } = db;
 const { assert, should } = chai;
 let authtoken1;
 let businessId1;
+let reviewId1;
 
 should();
 chai.use(chaiHttp);
@@ -17,6 +18,7 @@ describe('Review controller tests', () => {
     Review.sync({ force: true })
       .then(() => done());
   });
+
   describe('Given that a user sends a POST request to /api/v1/businesses/:businessId/reviews', () => {
     before((done) => {
       chai.request(app)
@@ -63,6 +65,7 @@ describe('Review controller tests', () => {
             reviewData.review1.review,
             'The created review object'
           );
+          reviewId1 = res.body.review.id;
           done();
         });
     });
@@ -205,6 +208,110 @@ describe('Review controller tests', () => {
           assert.isString(
             res.body.message,
             'Business was not found'
+          );
+          done();
+        });
+    });
+  });
+
+  describe('Given that a user sends a GET request to /api/v1/businesses/:businessId/reviews/:reviewId', () => {
+    it('should return a status 200 if review, business and user exists', (done) => {
+      chai.request(app)
+        .get(`/api/v1/businesses/${businessId1}/reviews/${reviewId1}`)
+        .set('authorization', authtoken1)
+        .end((err, res) => {
+          res.should.have.status(200);
+          assert.equal(
+            res.body.message,
+            'Review found',
+            'Review was found'
+          );
+          assert.isNotNull(
+            res.body.review,
+            'Review was found'
+          );
+          done();
+        });
+    });
+
+    it('should return a status 401 if token is not passed in', (done) => {
+      chai.request(app)
+        .get(`/api/v1/businesses/${businessId1}/reviews/${reviewId1}`)
+        .end((err, res) => {
+          res.should.have.status(401);
+          assert.equal(
+            res.body.message,
+            'Please login'
+          );
+          done();
+        });
+    });
+
+    it('should return a status 401 if an invalid token is passed in', (done) => {
+      chai.request(app)
+        .get(`/api/v1/businesses/${businessId1}/reviews/${reviewId1}`)
+        .set('authorization', 'anyInvalidTokenString')
+        .end((err, res) => {
+          res.should.have.status(401);
+          assert.equal(
+            res.body.message,
+            'Invalid token'
+          );
+          done();
+        });
+    });
+
+    it('should return a status 404 if businesId not in the database', (done) => {
+      chai.request(app)
+        .get(`/api/v1/businesses/f64f2940-fae4-11e7-8c5f-ef356f279131/reviews/${reviewId1}`)
+        .set('authorization', authtoken1)
+        .end((err, res) => {
+          res.should.have.status(404);
+          assert.equal(
+            res.body.message,
+            'Business not found'
+          );
+          done();
+        });
+    });
+
+    it('should return a status 404 if businesId is not uuid', (done) => {
+      chai.request(app)
+        .get(`/api/v1/businesses/anyInvalidBusinessIdString/reviews/${reviewId1}`)
+        .set('authorization', authtoken1)
+        .end((err, res) => {
+          res.should.have.status(404);
+          assert.equal(
+            res.body.message,
+            'Business not found'
+          );
+          done();
+        });
+    });
+
+    it('should return a status 404 if reviewId is not in the database', (done) => {
+      chai.request(app)
+        .get(`/api/v1/businesses/${businessId1}/reviews/f64f2940-fae4-11e7-8c5f-ef356f279131`)
+        .set('authorization', authtoken1)
+        .end((err, res) => {
+          res.should.have.status(404);
+          assert.equal(
+            res.body.message,
+            'Review not found'
+          );
+          done();
+        });
+    });
+
+    it('should return a status 404 if reviewId is not uuid', (done) => {
+      chai.request(app)
+        .get(`/api/v1/businesses/${businessId1}/reviews/anyInvalidReviewIdString`)
+        .set('authorization', authtoken1)
+        .end((err, res) => {
+          res.should.have.status(404);
+          assert.equal(
+            res.body.message,
+            'Review not found'
           );
           done();
         });
