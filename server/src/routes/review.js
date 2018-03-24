@@ -7,7 +7,8 @@ const {
   addReview,
   getBusinessReviews,
   getReview,
-  editReview
+  editReview,
+  deleteReview
 } = ReviewController;
 const { validateReview, businessExists } = ReviewMiddleware;
 const router = express.Router({ mergeParams: true });
@@ -43,6 +44,14 @@ router.put(
   businessExists,
   validateReview,
   editReview
+);
+
+// Delete user review
+router.delete(
+  '/:reviewId',
+  validateToken,
+  businessExists,
+  deleteReview
 );
 
 export default router;
