@@ -118,4 +118,39 @@ export default class ReviewController {
         return notFound(res, 'Review');
       });
   }
+
+  /**
+   * deleteReview
+   * @desc deletes a review for a business
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @return {Object} message, review
+   */
+  static deleteReview(req, res) {
+    const { businessId, reviewId } = req.params;
+
+    if (!validator.isUUID(reviewId)) {
+      return notFound(res, 'Review');
+    }
+
+    const userId = req.decoded.id;
+
+    return Review.findOne({
+      where: {
+        id: reviewId,
+        businessId,
+        userId
+      }
+    })
+      .then((theReview) => {
+        if (theReview) {
+          return theReview.destroy()
+            .then(() => res.status(200).json({
+              message: 'Review deleted',
+              review: theReview
+            }));
+        }
+        return notFound(res, 'Review');
+      });
+  }
 }
