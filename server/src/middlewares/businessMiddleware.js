@@ -1,4 +1,8 @@
+import validator from 'validator';
+import { db } from './../models';
+import { notFound } from './../services/genericMessages';
 
+const { Business } = db;
 /**
  * @class businessMiddleware
  * @desc middleware for business route
@@ -42,5 +46,62 @@ export default class BusinessMiddleware {
       return res.status(406).json({ error });
     }
     return next();
+  }
+
+  /**
+   * findBusinessByName()
+   * @desc finds a business by its Id
+   * @param {Object} req request object
+   * @param {Array} res allBusinesses array
+   * @param {Object} next Express next middleware function
+   * @return {Array} business
+   */
+  static findBusiness(req, res, next) {
+    const { businessId } = req.params;
+
+    if (!validator.isUUID(businessId)) {
+      return notFound(res, 'Business');
+    }
+
+    Business.findOne({
+      where: {
+        id: businessId
+      }
+    })
+      .then((business) => {
+        if (!business) {
+          return notFound(res, 'Business');
+        }
+        req.foundBusiness = business;
+        return next();
+      });
+  }
+
+  /**
+   * businessNameExist()
+   * @desc finds a business by its Id
+   * @param {Object} req request object
+   * @param {Array} res allBusinesses array
+   * @param {Object} next Express next middleware function
+   * @return {Array} business
+   */
+  static businessNameExist(req, res, next) {
+    const { businessName } = req.body;
+
+    Business.findOne({
+      where: {
+        businessName
+      }
+    })
+      .then((business) => {
+        if (business) {
+          const { businessId } = req.params;
+          if (business.id === businessId) return next();
+          return res.status(409).json({
+            message: 'Business name already exists'
+          });
+        }
+        return next();
+      });
   }
 }

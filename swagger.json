@@ -8,7 +8,7 @@
       "email": "longe.pelumi@yahoo.com"
     }
   },
-  "host": "weconnect-orelongz.herokuapp.com",
+  "host": "localhost:8000",
   "basePath": "/api/v1",
   "tags": [
     {
@@ -17,16 +17,16 @@
     },
     {
       "name": "Business",
-      "description": "Access to Businesses and details"
+      "description": "Access to Businesses"
     },
     {
       "name": "Review",
-      "description": "Add and fetch reviews"
+      "description": "Access to reviews"
     }
   ],
   "schemes": [
-    "http",
-    "https"
+    "https",
+    "http"
   ],
   "paths": {
     "/auth/signup": {
@@ -38,7 +38,6 @@
         "description": "This endpoint uses a post request to register a new user",
         "operationId": "signup",
         "consumes": [
-          "application/x-www-form-urlencoded",
           "application/json"
         ],
         "produces": [
@@ -136,16 +135,18 @@
         }
       }
     },
-    "/businesses": {
-      "post": {
+    "/auth/user": {
+      "put": {
         "tags": [
-          "Business"
+          "User"
         ],
-        "summary": "Add business",
-        "description": "Add business to database.",
-        "operationId": "createBusiness",
+        "summary": "Edits a user's details",
+        "description": "This endpoint updates a user's details",
+        "operationId": "userEdit",
+        "consumes": [
+          "application/json"
+        ],
         "produces": [
-          "application/x-www-form-urlencoded",
           "application/json"
         ],
         "parameters": [
@@ -153,11 +154,92 @@
             "name": "x-access-token",
             "in": "header",
             "description": "Token Authentication",
-            "required": false,
+            "required": true,
             "type": "string"
           },
           {
             "in": "body",
+            "name": "body",
+            "description": "updated user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/userUpdate"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updates a user's details",
+            "schema": {
+              "$ref": "#/definitions/userUpdateRes"
+            }
+          },
+          "400": {
+            "description": "Invalid email address",
+            "schema": {
+              "$ref": "#/definitions/wrongEmail"
+            }
+          },
+          "401": {
+            "description": "Token issue",
+            "schema": {
+              "$ref": "#/definitions/invalidToken"
+            }
+          },
+          "406": {
+            "description": "Invalid Input",
+            "schema": {
+              "$ref": "#/definitions/invalidInput"
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Logs out a user",
+        "description": "This endpoint logs out a user",
+        "operationId": "userLogOut",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Updates a user's details",
+            "schema": {
+              "$ref": "#/definitions/logOut"
+            }
+          }
+        }
+      }
+    },
+    "/businesses": {
+      "post": {
+        "tags": [
+          "Business"
+        ],
+        "summary": "Add a business",
+        "description": "Add business to database.",
+        "operationId": "createBusiness",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "formData",
             "name": "body",
             "description": "Created business object",
             "required": true,
@@ -171,6 +253,12 @@
             "description": "Business successfully created",
             "schema": {
               "$ref": "#/definitions/createBusinessRes"
+            }
+          },
+          "401": {
+            "description": "Token issue",
+            "schema": {
+              "$ref": "#/definitions/invalidToken"
             }
           },
           "406": {
@@ -194,20 +282,8 @@
         "summary": "Get all businesses",
         "description": "Gets all businesses",
         "operationId": "getAllBusinesses",
-        "consumes": [
-          "application/json"
-        ],
         "produces": [
           "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "x-access-token",
-            "in": "header",
-            "description": "Token Authentication",
-            "required": false,
-            "type": "string"
-          }
         ],
         "responses": {
           "200": {
@@ -225,26 +301,18 @@
           "Business"
         ],
         "summary": "Get business by businessId",
-        "description": "Returns a single business",
+        "description": "Retrives a business",
         "operationId": "getBusiness",
         "produces": [
           "application/json"
         ],
         "parameters": [
           {
-            "name": "x-access-token",
-            "in": "header",
-            "description": "Token Authentication",
-            "required": false,
-            "type": "string"
-          },
-          {
             "name": "businessId",
             "in": "path",
-            "description": "businessId of business to return",
+            "description": "businessId of business to retrieve",
             "required": true,
-            "type": "integer",
-            "format": "int64"
+            "type": "UUID"
           }
         ],
         "responses": {
@@ -270,7 +338,6 @@
         "description": "Updates business profile",
         "operationId": "updateBusiness",
         "consumes": [
-          "application/x-www-form-urlencoded",
           "application/json"
         ],
         "produces": [
@@ -287,10 +354,9 @@
           {
             "name": "businessId",
             "in": "path",
-            "description": "business that would be updated",
+            "description": "business id to be updated",
             "required": true,
-            "type": "integer",
-            "format": "int64"
+            "type": "UUID"
           },
           {
             "in": "body",
@@ -309,10 +375,22 @@
               "$ref": "#/definitions/updatedBusiness"
             }
           },
+          "401": {
+            "description": "Token issue",
+            "schema": {
+              "$ref": "#/definitions/invalidToken"
+            }
+          },
           "404": {
             "description": "Business not found",
             "schema": {
               "$ref": "#/definitions/BusinessNotFound"
+            }
+          },
+          "406": {
+            "description": "Invalid Input",
+            "schema": {
+              "$ref": "#/definitions/invalidInput"
             }
           }
         }
@@ -588,26 +666,6 @@
         "email": {
           "type": "string",
           "example": "tobiemm@yahoo.com"
-        },
-        "password": {
-          "type": "string",
-          "password": "Tobiword"
-        },
-        "userId": {
-          "type": "integer",
-          "uniqueItems": true,
-          "example": 1
-        },
-        "businesses": {
-          "type": "array"
-        },
-        "createdAt": {
-          "type": "string",
-          "example": "3/10/2018, 10:40:17 PM"
-        },
-        "updateAt": {
-          "type": "string",
-          "example": "3/10/2018, 10:40:17 PM"
         }
       }
     },

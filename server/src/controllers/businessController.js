@@ -1,4 +1,3 @@
-import validator from 'validator';
 import { db } from './../models';
 import BusinessServices from './../services/businessService';
 import {
@@ -32,9 +31,6 @@ export default class BusinessController {
       .then(business => res.status(201).json({
         message: 'Business successfully created',
         business
-      }))
-      .catch(err => res.status(409).json({
-        message: err.errors[0].message
       }));
   }
 
@@ -46,32 +42,18 @@ export default class BusinessController {
    * @return {Object} message, business
    */
   static updateBusiness(req, res) {
-    const { businessId } = req.params;
+    const business = req.foundBusiness;
+    const { id } = req.decoded;
 
-    if (!validator.isUUID(businessId)) {
-      return notFound(res, 'Business');
+    if (id !== business.userId) {
+      return unauthorized(res);
     }
-
-    return Business.findOne({
-      where: {
-        id: businessId
-      }
-    })
-      .then((business) => {
-        if (!business) {
-          return notFound(res, 'Business');
-        }
-        const { id } = req.decoded;
-        if (id !== business.userId) {
-          return unauthorized(res);
-        }
-        const update = businessObject(req);
-        return business.update({ ...update })
-          .then(() => res.status(200).json({
-            message: 'Business successfully updated',
-            business
-          }));
-      });
+    const update = businessObject(req);
+    return business.update({ ...update })
+      .then(() => res.status(200).json({
+        message: 'Business successfully updated',
+        business
+      }));
   }
 
   /**
@@ -82,31 +64,18 @@ export default class BusinessController {
    * @return {Object} message, business
    */
   static deleteBusiness(req, res) {
-    const { businessId } = req.params;
+    const business = req.foundBusiness;
+    const { id } = req.decoded;
 
-    if (!validator.isUUID(businessId)) {
-      return notFound(res, 'Business');
+    if (id !== business.userId) {
+      return unauthorized(res);
     }
 
-    return Business.findOne({
-      where: {
-        id: businessId
-      }
-    })
-      .then((business) => {
-        if (!business) {
-          return notFound(res, 'Business');
-        }
-        const { id } = req.decoded;
-        if (id !== business.userId) {
-          return unauthorized(res);
-        }
-        return business.destroy()
-          .then(() => res.status(200).json({
-            message: 'Business was successfully deleted',
-            business
-          }));
-      });
+    return business.destroy()
+      .then(() => res.status(200).json({
+        message: 'Business was successfully deleted',
+        business
+      }));
   }
 
   /**
@@ -117,26 +86,12 @@ export default class BusinessController {
    * @return {Object} message, business
    */
   static getBusiness(req, res) {
-    const { businessId } = req.params;
+    const business = req.foundBusiness;
 
-    if (!validator.isUUID(businessId)) {
-      return notFound(res, 'Business');
-    }
-
-    return Business.findOne({
-      where: {
-        id: businessId
-      }
-    })
-      .then((business) => {
-        if (!business) {
-          return notFound(res, 'Business');
-        }
-        return res.status(200).json({
-          message: 'Business was successfully found',
-          business
-        });
-      });
+    return res.status(200).json({
+      message: 'Business was successfully found',
+      business
+    });
   }
 
   /**
@@ -144,7 +99,7 @@ export default class BusinessController {
    * @desc retrieve the details of a registered business
    * @param {Object} req request object
    * @param {Object} res response object
-   * @return {Object} message, business
+   * @return {Object} message, businesses
    */
   static getAllBusinesses(req, res) {
     return Business.all()
@@ -158,11 +113,7 @@ export default class BusinessController {
           });
         }
         const theBusinesses = [...(location || []), ...(category || [])];
-        if (theBusinesses.length === 0) {
-          return res.status(200).json({
-            message: 'There are no businesses matching your search'
-          });
-        }
+
         return res.status(200).json({
           message: 'Businesses found',
           businesses: theBusinesses
@@ -178,36 +129,18 @@ export default class BusinessController {
    * @return {Object} message, user
    */
   static changeBusinessOwnership(req, res) {
-    const { businessId } = req.params;
-
-    if (!validator.isUUID(businessId)) {
-      return notFound(res, 'Business');
-    }
-
+    const business = req.foundBusiness;
     const ownerId = req.decoded.id;
 
-    return Business.findOne({
-      where: {
-        id: businessId,
-        userId: ownerId
-      }
-    })
-      .then((business) => {
-        const { id } = req.foundUser;
-        if (ownerId === id) {
-          return res.status(200).json({
-            message: 'The business is still yours'
-          });
-        }
-        if (business) {
-          const { email } = req.body;
-          return business.update({ userId: id })
-            .then(() => res.status(200).json({
-              message: `Business ownership has been transferred to ${email}`
-            }));
-        }
-        return notFound(res, 'Business');
-      });
+    if (business.userId === ownerId) {
+      const { id } = req.foundUser;
+      const { email } = req.body;
+      return business.update({ userId: id })
+        .then(() => res.status(200).json({
+          message: `Business ownership has been transferred to ${email}`
+        }));
+    }
+    return notFound(res, 'Business');
   }
 
   /**

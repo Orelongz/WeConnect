@@ -447,13 +447,10 @@ describe('Business controller tests', () => {
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
-          assert.isUndefined(
-            res.body.businesses,
-            'No business with abia as the location'
-          );
+          res.body.businesses.should.be.a('array');
           assert.isString(
             res.body.message,
-            'There are no businesses matching your search'
+            'Businesses found'
           );
           done();
         });
@@ -491,22 +488,6 @@ describe('Business controller tests', () => {
   });
 
   describe('Given that a user sends a PUT request to /api/v1/businesses/change-ownership/:businessId/', () => {
-    it('should return a status of 200 when user supplies own email', (done) => {
-      chai.request(app)
-        .put(`/api/v1/businesses/change-ownership/${businessId2}`)
-        .set('authorization', authtoken1)
-        .send({ email: userData.user1.email })
-        .end((err, res) => {
-          res.should.have.status(200);
-          res.body.should.be.a('object');
-          assert.equal(
-            res.body.message,
-            'The business is still yours'
-          );
-          done();
-        });
-    });
-
     it('should return a status 200 and change the business ownership to a new user with the email passed in', (done) => {
       // user1 transferring business2 to user2
       chai.request(app)

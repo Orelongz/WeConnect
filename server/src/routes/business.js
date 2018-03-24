@@ -13,7 +13,11 @@ const {
   changeBusinessOwnership,
   getUserBusinesses
 } = BusinessController;
-const { businessValidation } = BusinessMiddleware;
+const {
+  businessValidation,
+  findBusiness,
+  businessNameExist
+} = BusinessMiddleware;
 const { findUserByEmail } = UserMiddleware;
 const router = express.Router();
 
@@ -28,13 +32,18 @@ router.get(
 );
 
 // Get a business by businessId
-router.get('/:businessId', getBusiness);
+router.get(
+  '/:businessId',
+  findBusiness,
+  getBusiness
+);
 
 // Register a business
 router.post(
   '/',
   validateToken,
   businessValidation,
+  businessNameExist,
   createBusiness
 );
 
@@ -43,6 +52,8 @@ router.put(
   '/:businessId',
   validateToken,
   businessValidation,
+  findBusiness,
+  businessNameExist,
   updateBusiness
 );
 
@@ -50,6 +61,8 @@ router.put(
 router.delete(
   '/:businessId',
   validateToken,
+  findBusiness,
+  businessNameExist,
   deleteBusiness
 );
 
@@ -58,6 +71,7 @@ router.put(
   '/change-ownership/:businessId',
   validateToken,
   findUserByEmail,
+  findBusiness,
   changeBusinessOwnership
 );
 
