@@ -129,7 +129,7 @@ export default class UserMiddleware {
     })
       .then((user) => {
         if (!user) {
-          return notFound(res, 'Email');
+          return notFound(res, 'User');
         }
         req.foundUser = user;
         return next();

@@ -193,7 +193,7 @@ describe('Business controller tests', () => {
         .type('form')
         .send(businessData.business1)
         .end((err, res) => {
-          res.should.have.status(401);
+          res.should.have.status(403);
           res.body.should.be.a('object');
           assert.isString(
             res.body.message,
@@ -270,6 +270,24 @@ describe('Business controller tests', () => {
           done();
         });
     });
+
+    it('should return 409 status code when business name is changed to an existing business', (done) => {
+      chai.request(app)
+        .put(`/api/v1/businesses/${businessId1}`)
+        .set('authorization', authtoken1)
+        .type('form')
+        .send(businessData.business2)
+        .end((err, res) => {
+          res.should.have.status(409);
+          res.body.should.be.a('object');
+          assert.strictEqual(
+            res.body.message,
+            'Business name already exists',
+            'duplicate business name'
+          );
+          done();
+        });
+    });
   });
 
   describe('Given that a user sends a DELETE request to /api/v1/businesses/:businessId', () => {
@@ -294,7 +312,7 @@ describe('Business controller tests', () => {
         .delete(`/api/v1/businesses/${businessId2}`)
         .set('authorization', authtoken2)
         .end((err, res) => {
-          res.should.have.status(401);
+          res.should.have.status(403);
           res.body.should.be.a('object');
           assert.isString(
             res.body.message,
@@ -506,6 +524,22 @@ describe('Business controller tests', () => {
         });
     });
 
+    it('should return a status 401 when token is not provided', (done) => {
+      chai.request(app)
+        .put(`/api/v1/businesses/change-ownership/${businessId2}`)
+        .send({ email: userData.user2.email })
+        .end((err, res) => {
+          res.should.have.status(401);
+          res.body.should.be.a('object');
+          assert.equal(
+            res.body.message,
+            'Please login',
+            'No token'
+          );
+          done();
+        });
+    });
+
     it('should return a status 404 when user is not the owner of the business', (done) => {
       // Ownership has been transferred to user2
       chai.request(app)
@@ -585,7 +619,7 @@ describe('Business controller tests', () => {
           res.body.should.be.a('object');
           assert.equal(
             res.body.message,
-            'Email not found',
+            'User not found',
             'Email is not in the database'
           );
           done();
