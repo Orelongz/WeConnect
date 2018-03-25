@@ -8,7 +8,7 @@
       "email": "longe.pelumi@yahoo.com"
     }
   },
-  "host": "localhost:8000",
+  "host": "weconnect-orelongz.herokuapp.com",
   "basePath": "/api/v1",
   "tags": [
     {
