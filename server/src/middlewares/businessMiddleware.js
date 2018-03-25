@@ -49,7 +49,7 @@ export default class BusinessMiddleware {
   }
 
   /**
-   * findBusinessByName()
+   * findBusiness()
    * @desc finds a business by its Id
    * @param {Object} req request object
    * @param {Array} res allBusinesses array

@@ -1,6 +1,7 @@
 
 node_modules/
 .nyc_output/
+.vscode/
 coverage/
 npm-debug.log
 debug.log
