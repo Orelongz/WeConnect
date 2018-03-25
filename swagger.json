@@ -208,7 +208,7 @@
         ],
         "responses": {
           "200": {
-            "description": "Updates a user's details",
+            "description": "Logs out a user",
             "schema": {
               "$ref": "#/definitions/logOut"
             }
@@ -239,7 +239,7 @@
             "type": "string"
           },
           {
-            "in": "formData",
+            "in": "body",
             "name": "body",
             "description": "Created business object",
             "required": true,
@@ -479,10 +479,13 @@
             "type": "string"
           },
           {
-            "in": "formData",
+            "in": "body",
             "name": "email",
             "description": "User email to recieve the business",
-            "required": true
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/recipientEmail"
+            }
           }
         ],
         "responses": {
@@ -1338,6 +1341,18 @@
           "items": {
             "$ref": "#/definitions/Business"
           }
+        }
+      }
+    },
+    "recipientEmail": {
+      "type": "object",
+      "required": [
+        "email"
+      ],
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "example@domain.com"
         }
       }
     },
