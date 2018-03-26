@@ -113,11 +113,11 @@ export default class UserMiddleware {
 
   /**
    * findUserByEmail()
-   * @desc checks businesses by category
+   * @desc finds user by email
    * @param {Object} req request object
    * @param {Array} res allBusinesses array
    * @param {Object} next Express next middleware function
-   * @return {Array} business
+   * @return {Object} message
    */
   static findUserByEmail(req, res, next) {
     const { email } = req.body;
@@ -129,7 +129,7 @@ export default class UserMiddleware {
     })
       .then((user) => {
         if (!user) {
-          return notFound(res, 'Email');
+          return notFound(res, 'User');
         }
         req.foundUser = user;
         return next();

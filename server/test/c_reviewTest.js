@@ -185,7 +185,7 @@ describe('Review controller tests', () => {
         });
     });
 
-    it('should return 404 status code when businessId is not found', (done) => {
+    it('should return 404 status code when businessId is not uuid', (done) => {
       chai.request(app)
         .get('/api/v1/businesses/anyInvalidBusinessId/reviews')
         .end((err, res) => {

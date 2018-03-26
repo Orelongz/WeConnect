@@ -1,6 +1,4 @@
-import validator from 'validator';
 import { db } from './../models';
-import { notFound } from './../services/genericMessages';
 
 const { Review } = db;
 
@@ -57,30 +55,12 @@ export default class ReviewController {
    * @return {Object} message, review
    */
   static getReview(req, res) {
-    const { businessId, reviewId } = req.params;
+    const review = req.foundReview;
 
-    if (!validator.isUUID(reviewId)) {
-      return notFound(res, 'Review');
-    }
-
-    const userId = req.decoded.id;
-
-    return Review.findOne({
-      where: {
-        id: reviewId,
-        businessId,
-        userId
-      }
-    })
-      .then((review) => {
-        if (review) {
-          return res.status(200).json({
-            message: 'Review found',
-            review
-          });
-        }
-        return notFound(res, 'Review');
-      });
+    return res.status(200).json({
+      message: 'Review found',
+      review
+    });
   }
 
   /**
@@ -91,32 +71,14 @@ export default class ReviewController {
    * @return {Object} message, review
    */
   static editReview(req, res) {
-    const { businessId, reviewId } = req.params;
+    const theReview = req.foundReview;
+    const { review } = req.body;
 
-    if (!validator.isUUID(reviewId)) {
-      return notFound(res, 'Review');
-    }
-
-    const userId = req.decoded.id;
-
-    return Review.findOne({
-      where: {
-        id: reviewId,
-        businessId,
-        userId
-      }
-    })
-      .then((theReview) => {
-        if (theReview) {
-          const { review } = req.body;
-          return theReview.update({ ...review })
-            .then(() => res.status(200).json({
-              message: 'Review updated',
-              review: theReview
-            }));
-        }
-        return notFound(res, 'Review');
-      });
+    return theReview.update({ ...review })
+      .then(() => res.status(200).json({
+        message: 'Review updated',
+        review: theReview
+      }));
   }
 
   /**
@@ -127,30 +89,12 @@ export default class ReviewController {
    * @return {Object} message, review
    */
   static deleteReview(req, res) {
-    const { businessId, reviewId } = req.params;
+    const review = req.foundReview;
 
-    if (!validator.isUUID(reviewId)) {
-      return notFound(res, 'Review');
-    }
-
-    const userId = req.decoded.id;
-
-    return Review.findOne({
-      where: {
-        id: reviewId,
-        businessId,
-        userId
-      }
-    })
-      .then((theReview) => {
-        if (theReview) {
-          return theReview.destroy()
-            .then(() => res.status(200).json({
-              message: 'Review deleted',
-              review: theReview
-            }));
-        }
-        return notFound(res, 'Review');
-      });
+    return review.destroy()
+      .then(() => res.status(200).json({
+        message: 'Review deleted',
+        review
+      }));
   }
 }

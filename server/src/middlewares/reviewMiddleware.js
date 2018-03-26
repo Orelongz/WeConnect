@@ -1,9 +1,8 @@
 import validator from 'validator';
-import { db } from './../models';
 import { notFound } from './../services/genericMessages';
+import { db } from './../models';
 
-const { Business } = db;
-
+const { Review } = db;
 /**
  * @class ReviewMiddleware
  * @desc middleware for reviews
@@ -28,30 +27,35 @@ export default class ReviewMiddleware {
   }
 
   /**
-   * businessExists()
-   * @desc checks if a businessId exists in db
+   * findReview()
+   * @desc handles validation of review input field
    * @param {Object} req request object
    * @param {Object} res response object
    * @param {Object} next Express next middleware function
-   * @return {*} void
+   * @return {*} void, message
    */
-  static businessExists(req, res, next) {
-    const { businessId } = req.params;
+  static findReview(req, res, next) {
+    const { businessId, reviewId } = req.params;
 
-    if (!validator.isUUID(businessId)) {
-      return notFound(res, 'Business');
+    if (!validator.isUUID(reviewId)) {
+      return notFound(res, 'Review');
     }
 
-    return Business.findOne({
+    const userId = req.decoded.id;
+
+    Review.findOne({
       where: {
-        id: businessId
+        id: reviewId,
+        businessId,
+        userId
       }
     })
-      .then((business) => {
-        if (!business) {
-          return notFound(res, 'Business');
+      .then((review) => {
+        if (review) {
+          req.foundReview = review;
+          return next();
         }
-        return next();
+        return notFound(res, 'Review');
       });
   }
 }

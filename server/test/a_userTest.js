@@ -213,7 +213,7 @@ describe('User controller tests', () => {
           res.body.should.be.a('object');
           assert.strictEqual(
             res.body.message,
-            'Email not found',
+            'User not found',
             'Email not in the database'
           );
           done();

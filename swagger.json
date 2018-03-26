@@ -17,16 +17,16 @@
     },
     {
       "name": "Business",
-      "description": "Access to Businesses and details"
+      "description": "Access to Businesses"
     },
     {
       "name": "Review",
-      "description": "Add and fetch reviews"
+      "description": "Access to reviews"
     }
   ],
   "schemes": [
-    "http",
-    "https"
+    "https",
+    "http"
   ],
   "paths": {
     "/auth/signup": {
@@ -34,11 +34,10 @@
         "tags": [
           "User"
         ],
-        "summary": "Registers a user",
-        "description": "This endpoint uses a post request to register a new user",
+        "summary": "Register a user",
+        "description": "Registers a new user",
         "operationId": "signup",
         "consumes": [
-          "application/x-www-form-urlencoded",
           "application/json"
         ],
         "produces": [
@@ -136,16 +135,18 @@
         }
       }
     },
-    "/businesses": {
-      "post": {
+    "/auth/user": {
+      "put": {
         "tags": [
-          "Business"
+          "User"
         ],
-        "summary": "Add business",
-        "description": "Add business to database.",
-        "operationId": "createBusiness",
+        "summary": "Edits a user's details",
+        "description": "This endpoint updates a user's details",
+        "operationId": "userEdit",
+        "consumes": [
+          "application/json"
+        ],
         "produces": [
-          "application/x-www-form-urlencoded",
           "application/json"
         ],
         "parameters": [
@@ -153,7 +154,88 @@
             "name": "x-access-token",
             "in": "header",
             "description": "Token Authentication",
-            "required": false,
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "updated user object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/User"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Updates a user's details",
+            "schema": {
+              "$ref": "#/definitions/userUpdateRes"
+            }
+          },
+          "400": {
+            "description": "Invalid email address",
+            "schema": {
+              "$ref": "#/definitions/wrongEmail"
+            }
+          },
+          "401": {
+            "description": "Token issue",
+            "schema": {
+              "$ref": "#/definitions/invalidToken"
+            }
+          },
+          "406": {
+            "description": "Invalid Input",
+            "schema": {
+              "$ref": "#/definitions/invalidInput"
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "tags": [
+          "User"
+        ],
+        "summary": "Logs out a user",
+        "description": "This endpoint logs out a user",
+        "operationId": "userLogOut",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Logs out a user",
+            "schema": {
+              "$ref": "#/definitions/logOut"
+            }
+          }
+        }
+      }
+    },
+    "/businesses": {
+      "post": {
+        "tags": [
+          "Business"
+        ],
+        "summary": "Add a business",
+        "description": "Add business to database.",
+        "operationId": "createBusiness",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": true,
             "type": "string"
           },
           {
@@ -162,7 +244,7 @@
             "description": "Created business object",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/createBusiness"
+              "$ref": "#/definitions/businessObject"
             }
           }
         ],
@@ -171,6 +253,12 @@
             "description": "Business successfully created",
             "schema": {
               "$ref": "#/definitions/createBusinessRes"
+            }
+          },
+          "401": {
+            "description": "Token issue",
+            "schema": {
+              "$ref": "#/definitions/invalidToken"
             }
           },
           "406": {
@@ -194,20 +282,8 @@
         "summary": "Get all businesses",
         "description": "Gets all businesses",
         "operationId": "getAllBusinesses",
-        "consumes": [
-          "application/json"
-        ],
         "produces": [
           "application/json"
-        ],
-        "parameters": [
-          {
-            "name": "x-access-token",
-            "in": "header",
-            "description": "Token Authentication",
-            "required": false,
-            "type": "string"
-          }
         ],
         "responses": {
           "200": {
@@ -225,26 +301,18 @@
           "Business"
         ],
         "summary": "Get business by businessId",
-        "description": "Returns a single business",
+        "description": "Retrives a business",
         "operationId": "getBusiness",
         "produces": [
           "application/json"
         ],
         "parameters": [
           {
-            "name": "x-access-token",
-            "in": "header",
-            "description": "Token Authentication",
-            "required": false,
-            "type": "string"
-          },
-          {
             "name": "businessId",
             "in": "path",
-            "description": "businessId of business to return",
+            "description": "businessId of business to retrieve",
             "required": true,
-            "type": "integer",
-            "format": "int64"
+            "type": "string"
           }
         ],
         "responses": {
@@ -270,7 +338,6 @@
         "description": "Updates business profile",
         "operationId": "updateBusiness",
         "consumes": [
-          "application/x-www-form-urlencoded",
           "application/json"
         ],
         "produces": [
@@ -281,16 +348,15 @@
             "name": "x-access-token",
             "in": "header",
             "description": "Token Authentication",
-            "required": false,
+            "required": true,
             "type": "string"
           },
           {
             "name": "businessId",
             "in": "path",
-            "description": "business that would be updated",
+            "description": "business id to be updated",
             "required": true,
-            "type": "integer",
-            "format": "int64"
+            "type": "string"
           },
           {
             "in": "body",
@@ -298,7 +364,7 @@
             "description": "Updated business object",
             "required": true,
             "schema": {
-              "$ref": "#/definitions/updateBusiness"
+              "$ref": "#/definitions/businessObject"
             }
           }
         ],
@@ -309,10 +375,28 @@
               "$ref": "#/definitions/updatedBusiness"
             }
           },
+          "401": {
+            "description": "Token issue",
+            "schema": {
+              "$ref": "#/definitions/invalidToken"
+            }
+          },
           "404": {
             "description": "Business not found",
             "schema": {
               "$ref": "#/definitions/BusinessNotFound"
+            }
+          },
+          "406": {
+            "description": "Invalid Input",
+            "schema": {
+              "$ref": "#/definitions/invalidInput"
+            }
+          },
+          "409": {
+            "description": "Business name exists",
+            "schema": {
+              "$ref": "#/definitions/existingBusiness"
             }
           }
         }
@@ -332,7 +416,7 @@
             "name": "x-access-token",
             "in": "header",
             "description": "Token Authentication",
-            "required": false,
+            "required": true,
             "type": "string"
           },
           {
@@ -340,8 +424,7 @@
             "in": "path",
             "description": "The business that would be deleted",
             "required": true,
-            "type": "integer",
-            "format": "int64"
+            "type": "string"
           }
         ],
         "responses": {
@@ -351,10 +434,113 @@
               "$ref": "#/definitions/deleteBusiness"
             }
           },
+          "401": {
+            "description": "Token issue",
+            "schema": {
+              "$ref": "#/definitions/invalidToken"
+            }
+          },
           "404": {
             "description": "Business not found",
             "schema": {
               "$ref": "#/definitions/BusinessNotFound"
+            }
+          }
+        }
+      }
+    },
+    "/businesses/change-ownership/{businessId}": {
+      "put": {
+        "tags": [
+          "Business"
+        ],
+        "summary": "Change business ownership",
+        "description": "Transfers a business to another user",
+        "operationId": "changeOwnership",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "businessId",
+            "in": "path",
+            "description": "business id to be updated",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "email",
+            "description": "User email to recieve the business",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/recipientEmail"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Business successfully updated",
+            "schema": {
+              "$ref": "#/definitions/updatedBusiness"
+            }
+          },
+          "401": {
+            "description": "Token issue",
+            "schema": {
+              "$ref": "#/definitions/invalidToken"
+            }
+          },
+          "404": {
+            "description": "User/Business not found",
+            "schema": {
+              "$ref": "#/definitions/UserNotFound"
+            }
+          }
+        }
+      }
+    },
+    "/businesses/user": {
+      "get": {
+        "tags": [
+          "Business"
+        ],
+        "summary": "Get user buinesses",
+        "description": "Retrives a list of user businesses",
+        "operationId": "userBusinesses",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Businesses successfully found",
+            "schema": {
+              "$ref": "#/definitions/userBusinesses"
+            }
+          },
+          "401": {
+            "description": "Token issue",
+            "schema": {
+              "$ref": "#/definitions/invalidToken"
             }
           }
         }
@@ -382,7 +568,7 @@
           {
             "name": "location",
             "in": "query",
-            "description": "Business category",
+            "description": "Business location",
             "required": true,
             "type": "string"
           }
@@ -484,10 +670,9 @@
           "Review"
         ],
         "summary": "Add a review for a business",
-        "description": "Add a review record for a business.",
+        "description": "Add a review to a business.",
         "operationId": "addReview",
         "consumes": [
-          "application/x-www-form-urlencoded",
           "application/json"
         ],
         "produces": [
@@ -498,15 +683,24 @@
             "name": "x-access-token",
             "in": "header",
             "description": "Token Authentication",
-            "required": false,
+            "required": true,
             "type": "string"
           },
           {
             "name": "businessId",
             "in": "path",
-            "description": "business to add review to",
+            "description": "business id to add review to",
             "required": true,
-            "type": "integer"
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated business object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/reviewObject"
+            }
           }
         ],
         "responses": {
@@ -514,6 +708,12 @@
             "description": "Review was successfully added",
             "schema": {
               "$ref": "#/definitions/addReview"
+            }
+          },
+          "401": {
+            "description": "Token issue",
+            "schema": {
+              "$ref": "#/definitions/invalidToken"
             }
           },
           "404": {
@@ -551,22 +751,204 @@
           {
             "name": "businessId",
             "in": "path",
-            "description": "Business to be reviewed",
+            "description": "Business id to be get its reviews",
             "required": true,
-            "type": "integer"
+            "type": "string"
           }
         ],
         "responses": {
           "200": {
             "description": "Reviews found",
             "schema": {
-              "$ref": "#/definitions/getBusinessReview"
+              "$ref": "#/definitions/getBusinessReviews"
             }
           },
           "404": {
-            "description": "Business was not found",
+            "description": "Business not found",
             "schema": {
               "$ref": "#/definitions/BusinessNotFound"
+            }
+          }
+        }
+      }
+    },
+    "/businesses/{businessId}/reviews/{reviewId}": {
+      "get": {
+        "tags": [
+          "Review"
+        ],
+        "summary": "Retrieves a review for a business",
+        "description": "Retrieves a review to a business.",
+        "operationId": "getReview",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "businessId",
+            "in": "path",
+            "description": "business id of the review",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "reviewId",
+            "in": "path",
+            "description": "id of the review",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Review found",
+            "schema": {
+              "$ref": "#/definitions/getReview"
+            }
+          },
+          "401": {
+            "description": "Token issue",
+            "schema": {
+              "$ref": "#/definitions/invalidToken"
+            }
+          },
+          "404": {
+            "description": "Business/Review not found",
+            "schema": {
+              "$ref": "#/definitions/ReviewNotFound"
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Review"
+        ],
+        "summary": "Edit a review for a business",
+        "description": "Updates a business review",
+        "operationId": "editReview",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "businessId",
+            "in": "path",
+            "description": "business id of the review",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "review",
+            "in": "formData",
+            "description": "id of the review",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Updated business object",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/reviewObject"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Review was successfully updated",
+            "schema": {
+              "$ref": "#/definitions/editReview"
+            }
+          },
+          "401": {
+            "description": "Token issue",
+            "schema": {
+              "$ref": "#/definitions/invalidToken"
+            }
+          },
+          "404": {
+            "description": "Business/Review was not found",
+            "schema": {
+              "$ref": "#/definitions/ReviewNotFound"
+            }
+          },
+          "406": {
+            "description": "Invalid Input",
+            "schema": {
+              "$ref": "#/definitions/invalidInput"
+            }
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Review"
+        ],
+        "summary": "Delete review for a business",
+        "description": "Deletes a review to a business.",
+        "operationId": "deleteReview",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "businessId",
+            "in": "path",
+            "description": "business id of the review",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "reviewId",
+            "in": "path",
+            "description": "id of the review",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Review deleted",
+            "schema": {
+              "$ref": "#/definitions/deleteReview"
+            }
+          },
+          "401": {
+            "description": "Token issue",
+            "schema": {
+              "$ref": "#/definitions/invalidToken"
+            }
+          },
+          "404": {
+            "description": "Business/Review was not found",
+            "schema": {
+              "$ref": "#/definitions/ReviewNotFound"
             }
           }
         }
@@ -588,26 +970,6 @@
         "email": {
           "type": "string",
           "example": "tobiemm@yahoo.com"
-        },
-        "password": {
-          "type": "string",
-          "password": "Tobiword"
-        },
-        "userId": {
-          "type": "integer",
-          "uniqueItems": true,
-          "example": 1
-        },
-        "businesses": {
-          "type": "array"
-        },
-        "createdAt": {
-          "type": "string",
-          "example": "3/10/2018, 10:40:17 PM"
-        },
-        "updateAt": {
-          "type": "string",
-          "example": "3/10/2018, 10:40:17 PM"
         }
       }
     },
@@ -723,7 +1085,42 @@
       "properties": {
         "message": {
           "type": "string",
-          "example": "Email not found"
+          "example": "User not found"
+        }
+      }
+    },
+    "userUpdateRes": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "User details updated"
+        },
+        "user": {
+          "type": "object",
+          "$ref": "#/definitions/User"
+        }
+      }
+    },
+    "invalidToken": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Please login/ Token Invalid"
+        }
+      }
+    },
+    "logOut": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "You have been logged out"
+        },
+        "token": {
+          "type": "string",
+          "example": "null"
         }
       }
     },
@@ -770,9 +1167,9 @@
           "type": "string",
           "example": "Lorem ipsum dolor sit amet, consectetur adipisicing elit"
         },
-        "reviews": {
-          "type": "array",
-          "example": [1, 2, 3]
+        "userId": {
+          "type": "string",
+          "example": "416ac246-e7ac-49ff-93b4-f7e94d997e6b"
         },
         "createdAt": {
           "type": "string",
@@ -799,7 +1196,7 @@
         }
       }
     },
-    "createBusiness": {
+    "businessObject": {
       "type": "object",
       "required": [
         "businessName",
@@ -884,6 +1281,15 @@
         }
       }
     },
+    "userBusinesses": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Business ownership has been transferred to {email}"
+        }
+      }
+    },
     "getBusiness": {
       "type": "object",
       "properties": {
@@ -894,23 +1300,6 @@
         "business": {
           "type": "object",
           "$ref": "#/definitions/Business"
-        }
-      }
-    },
-    "updateBusiness": {
-      "type": "object",
-      "properties": {
-        "address": {
-          "type": "string",
-          "example": "10, Folorunsho Street"
-        },
-        "city": {
-          "type": "string",
-          "example": "Egbeda"
-        },
-        "about": {
-          "type": "string",
-          "example": "Lorem ipsum dolor sit amet, consectetur adipisicing elit"
         }
       }
     },
@@ -955,6 +1344,18 @@
         }
       }
     },
+    "recipientEmail": {
+      "type": "object",
+      "required": [
+        "email"
+      ],
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "example@domain.com"
+        }
+      }
+    },
     "Review": {
       "type": "object",
       "properties": {
@@ -977,6 +1378,18 @@
         "updateAt": {
           "type": "string",
           "example": "3/10/2018, 10:40:17 PM"
+        }
+      }
+    },
+    "reviewObject": {
+      "type": "object",
+      "required": [
+        "review"
+      ],
+      "properties": {
+        "review": {
+          "type": "string",
+          "example": "Sample review"
         }
       }
     },
@@ -1005,7 +1418,55 @@
         }
       }
     },
-    "getBusinessReview": {
+    "ReviewNotFound": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Review not found"
+        }
+      }
+    },
+    "getReview": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Review found"
+        },
+        "review": {
+          "type": "object",
+          "$ref": "#/definitions/Review"
+        }
+      }
+    },
+    "editReview": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Review updated"
+        },
+        "review": {
+          "type": "object",
+          "$ref": "#/definitions/Review"
+        }
+      }
+    },
+    "deleteReview": {
+      "type": "object",
+      "properties": {
+        "message": {
+          "type": "string",
+          "example": "Review deleted"
+        },
+        "review": {
+          "type": "object",
+          "$ref": "#/definitions/Review"
+        }
+      }
+    },
+    "getBusinessReviews": {
       "type": "object",
       "properties": {
         "message": {
