@@ -19,24 +19,22 @@
   <div class="bg-light holder">
     <header>
       <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-          <a class="navbar-brand" href="index.html">WeConnect</a>
-          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav ml-auto">
-              <li class="nav-item">
-                <a class="nav-link" href="business-catalog.html">All Business</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="signup.html">Sign up</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="signin.html">Sign In</a>
-              </li>
-            </ul>
-          </div>
+        <a class="navbar-brand" href="index.html">WeConnect</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavDropdown">
+          <ul class="navbar-nav ml-auto">
+            <li class="nav-item">
+              <a class="nav-link" href="business-catalog.html">All Business</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="signup.html">Sign up</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="signin.html">Sign In</a>
+            </li>
+          </ul>
         </div>
       </nav>
     </header>
@@ -46,11 +44,22 @@
         <h1 class="text-center">Welcome to WeConnect</h1>
         <form class=" input-group">
           <input type="text" class="form-control" placeholder="Search..." >
-          <select class="input-group-append" id="search">
+          <!-- <select class="input-group-append" id="search">
             <option value="0" selected>By Name</option>
             <option value="1">By location</option>
             <option value="2">By category</option>
-          </select>
+          </select> -->
+          <div class="dropdown input-group-append">
+            <a class="btn btn-outline-tetiary bg-light dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Search By...
+            </a>
+          
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+              <a class="dropdown-item" href="#">Name</a>
+              <a class="dropdown-item" href="#">Category</a>
+              <a class="dropdown-item" href="#">Location</a>
+              </div>
+          </div>
           <div class="input-group-append">
             <button class="btn btn-primary" type="button">Search</button>
           </div>
