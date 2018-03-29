@@ -22,10 +22,6 @@ app.use('/api/v1', userRoute);
 app.use('/api/v1/businesses', businessRoute);
 app.use('/api/v1/businesses/:businessId/reviews', reviewRoute);
 
-app.get('/', (req, res) => res.status(200).json({
-  message: 'Welcome to WeConnect'
-}));
-
 app.all('*', (req, res) => res.status(404).json({
   message: 'Page not Found'
 }));

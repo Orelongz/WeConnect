@@ -7,16 +7,20 @@ const router = express.Router();
 const {
   signup,
   login,
-  updateUserDetails,
-  logout
+  updateUserDetails
 } = UserController;
 const {
   signUpValidation,
   validateEmail,
   signInValidation,
+  updateUserValidation,
   mailExists,
   findUserByEmail
 } = UserMiddleware;
+
+router.get('/', (req, res) => res.status(200).json({
+  message: 'Welcome to WeConnect'
+}));
 
 // Register a user
 router.post(
@@ -37,15 +41,12 @@ router.post(
 
 // Edits user details
 router.put(
-  '/auth/user',
+  '/user',
   validateToken,
-  signUpValidation,
+  updateUserValidation,
   validateEmail,
   mailExists,
   updateUserDetails
 );
-
-// Logout a user
-router.get('/auth/logout', logout);
 
 export default router;

@@ -13,13 +13,13 @@ let reviewId1;
 should();
 chai.use(chaiHttp);
 
-describe('Review controller tests', () => {
+describe('Given that a user sends a ', () => {
   before((done) => {
     Review.sync({ force: true })
       .then(() => done());
   });
 
-  describe('Given that a user sends a POST request to /api/v1/businesses/:businessId/reviews', () => {
+  describe('POST request to /api/v1/businesses/:businessId/reviews', () => {
     before((done) => {
       chai.request(app)
         .post('/api/v1/auth/login')
@@ -54,18 +54,29 @@ describe('Review controller tests', () => {
         .send(reviewData.review1)
         .end((err, res) => {
           res.should.have.status(201);
-          res.body.should.be.a('object');
           res.body.review.should.be.a('object');
-          assert.isString(
-            res.body.message,
-            'Review was successfully added'
-          );
-          assert.deepEqual(
+          assert.equal(
             res.body.review.review,
             reviewData.review1.review,
             'The created review object'
           );
           reviewId1 = res.body.review.id;
+          done();
+        });
+    });
+
+    it('should return 400 status code when review field is empty', (done) => {
+      chai.request(app)
+        .post(`/api/v1/businesses/${businessId1}/reviews`)
+        .set('authorization', authtoken1)
+        .type('form')
+        .send(reviewData.review3)
+        .end((err, res) => {
+          res.should.have.status(400);
+          assert.equal(
+            res.body.message,
+            'The review input field cannot be empty and must be a string'
+          );
           done();
         });
     });
@@ -78,8 +89,7 @@ describe('Review controller tests', () => {
         .send(reviewData.review1)
         .end((err, res) => {
           res.should.have.status(401);
-          res.body.should.be.a('object');
-          assert.isString(
+          assert.equal(
             res.body.message,
             'Invalid token'
           );
@@ -94,10 +104,9 @@ describe('Review controller tests', () => {
         .send(reviewData.review1)
         .end((err, res) => {
           res.should.have.status(401);
-          res.body.should.be.a('object');
-          assert.isString(
+          assert.equal(
             res.body.message,
-            'Please login'
+            'Token absent'
           );
           done();
         });
@@ -111,10 +120,9 @@ describe('Review controller tests', () => {
         .send(reviewData.review1)
         .end((err, res) => {
           res.should.have.status(404);
-          res.body.should.be.a('object');
-          assert.isString(
+          assert.equal(
             res.body.message,
-            'Business was not found'
+            'Business not found'
           );
           done();
         });
@@ -128,34 +136,16 @@ describe('Review controller tests', () => {
         .send(reviewData.review1)
         .end((err, res) => {
           res.should.have.status(404);
-          res.body.should.be.a('object');
-          assert.isString(
+          assert.equal(
             res.body.message,
-            'Business was not found'
-          );
-          done();
-        });
-    });
-
-    it('should return 406 status code when review field is empty', (done) => {
-      chai.request(app)
-        .post(`/api/v1/businesses/${businessId1}/reviews`)
-        .set('authorization', authtoken1)
-        .type('form')
-        .send(reviewData.review3)
-        .end((err, res) => {
-          res.should.have.status(406);
-          res.body.should.be.a('object');
-          assert.isString(
-            res.body.message,
-            'The review input field cannot be empty'
+            'Business not found'
           );
           done();
         });
     });
   });
 
-  describe('Given that a user sends a GET request to /api/v1/businesses/:businessId/reviews', () => {
+  describe('GET request to /api/v1/businesses/:businessId/reviews', () => {
     before((done) => {
       chai.request(app)
         .post(`/api/v1/businesses/${businessId1}/reviews`)
@@ -165,17 +155,12 @@ describe('Review controller tests', () => {
         .end(() => done());
     });
 
-    it('should return 200 status code and retrieve all comments', (done) => {
+    it('should return 200 status code and retrieve all reviews', (done) => {
       chai.request(app)
         .get(`/api/v1/businesses/${businessId1}/reviews`)
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.be.a('object');
           res.body.reviews.should.be.a('array');
-          assert.isString(
-            res.body.message,
-            'Reviews found'
-          );
           assert.equal(
             res.body.reviews.length,
             2,
@@ -190,10 +175,9 @@ describe('Review controller tests', () => {
         .get('/api/v1/businesses/anyInvalidBusinessId/reviews')
         .end((err, res) => {
           res.should.have.status(404);
-          res.body.should.be.a('object');
-          assert.isString(
+          assert.equal(
             res.body.message,
-            'Business was not found'
+            'Business not found'
           );
           done();
         });
@@ -204,28 +188,23 @@ describe('Review controller tests', () => {
         .get('/api/v1/businesses/756581de-2e7a-11e8-b467-0ed5f89f718b/reviews')
         .end((err, res) => {
           res.should.have.status(404);
-          res.body.should.be.a('object');
-          assert.isString(
+          assert.equal(
             res.body.message,
-            'Business was not found'
+            'Business not found'
           );
           done();
         });
     });
   });
 
-  describe('Given that a user sends a GET request to /api/v1/businesses/:businessId/reviews/:reviewId', () => {
+  describe('GET request to /api/v1/businesses/:businessId/reviews/:reviewId', () => {
     it('should return a status 200 if review, business and user exists', (done) => {
       chai.request(app)
         .get(`/api/v1/businesses/${businessId1}/reviews/${reviewId1}`)
         .set('authorization', authtoken1)
         .end((err, res) => {
           res.should.have.status(200);
-          assert.equal(
-            res.body.message,
-            'Review found',
-            'Review was found'
-          );
+          res.body.review.should.be.a('object');
           assert.isNotNull(
             res.body.review,
             'Review was found'
@@ -241,7 +220,7 @@ describe('Review controller tests', () => {
           res.should.have.status(401);
           assert.equal(
             res.body.message,
-            'Please login'
+            'Token absent'
           );
           done();
         });
@@ -335,6 +314,22 @@ describe('Review controller tests', () => {
         });
     });
 
+    it('should return a status 400 if review field is empty', (done) => {
+      chai.request(app)
+        .put(`/api/v1/businesses/${businessId1}/reviews/${reviewId1}`)
+        .set('authorization', authtoken1)
+        .send(reviewData.review3)
+        .end((err, res) => {
+          res.should.have.status(400);
+          assert.equal(
+            res.body.message,
+            'The review input field cannot be empty and must be a string',
+            'Review cannot be empty'
+          );
+          done();
+        });
+    });
+
     it('should return a status 401 if token is not passed in', (done) => {
       chai.request(app)
         .put(`/api/v1/businesses/${businessId1}/reviews/${reviewId1}`)
@@ -342,7 +337,7 @@ describe('Review controller tests', () => {
           res.should.have.status(401);
           assert.equal(
             res.body.message,
-            'Please login'
+            'Token absent'
           );
           done();
         });
@@ -421,22 +416,6 @@ describe('Review controller tests', () => {
           done();
         });
     });
-
-    it('should return a status 406 if review field is empty', (done) => {
-      chai.request(app)
-        .put(`/api/v1/businesses/${businessId1}/reviews/${reviewId1}`)
-        .set('authorization', authtoken1)
-        .send(reviewData.review3)
-        .end((err, res) => {
-          res.should.have.status(406);
-          assert.equal(
-            res.body.message,
-            'The review input field cannot be empty',
-            'Review cannot be empty'
-          );
-          done();
-        });
-    });
   });
 
   describe('Given that a user sends a DELETE request to /api/v1/businesses/:businessId/reviews/:reviewId', () => {
@@ -449,7 +428,7 @@ describe('Review controller tests', () => {
           assert.equal(
             res.body.message,
             'Review deleted',
-            'Review was found and updated'
+            'Review was found and deleted'
           );
           done();
         });
@@ -462,7 +441,7 @@ describe('Review controller tests', () => {
           res.should.have.status(401);
           assert.equal(
             res.body.message,
-            'Please login'
+            'Token absent'
           );
           done();
         });
@@ -484,7 +463,7 @@ describe('Review controller tests', () => {
 
     it('should return a status 404 if businesId not in the database', (done) => {
       chai.request(app)
-        .delete(`/api/v1/businesses/f64f2940-fae4-11e7-8c5f-ef356f279131/reviews/${reviewId1}`) // review was previously deleted
+        .delete(`/api/v1/businesses/f64f2940-fae4-11e7-8c5f-ef356f279131/reviews/${reviewId1}`)
         .set('authorization', authtoken1)
         .end((err, res) => {
           res.should.have.status(404);

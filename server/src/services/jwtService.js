@@ -5,12 +5,12 @@ require('dotenv').config();
 const { SECRET } = process.env;
 
 /**
-* issueToken
-* @desc generates auth token
+* generateToken
+* @desc generates authentication token
 * @param {Object} payload object
 * @returns {String} token
 */
-const genToken = payload => jwt.sign(payload, SECRET, { expiresIn: '24h' });
+const generateToken = payload => jwt.sign(payload, SECRET, { expiresIn: '24h' });
 
 /**
  * validateToken()
@@ -28,7 +28,7 @@ const validateToken = (req, res, next) => {
   );
   if (!token) {
     return res.status(401).json({
-      message: 'Please login'
+      message: 'Token absent'
     });
   }
   jwt.verify(token, SECRET, (err, decoded) => {
@@ -42,4 +42,4 @@ const validateToken = (req, res, next) => {
   });
 };
 
-export { genToken, validateToken };
+export { generateToken, validateToken };

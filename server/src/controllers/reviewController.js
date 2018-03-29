@@ -21,9 +21,9 @@ export default class ReviewController {
 
     return Review.create({ review, businessId, userId })
       .then(theReview => res.status(201).json({
-        message: 'Review was successfully added',
         review: theReview
-      }));
+      }))
+      .catch(error => res.status(500).json({ error }));
   }
 
   /**
@@ -42,9 +42,9 @@ export default class ReviewController {
       }
     })
       .then(reviews => res.status(200).json({
-        message: 'Reviews found',
         reviews
-      }));
+      }))
+      .catch(error => res.status(500).json({ error }));
   }
 
   /**
@@ -58,7 +58,6 @@ export default class ReviewController {
     const review = req.foundReview;
 
     return res.status(200).json({
-      message: 'Review found',
       review
     });
   }
@@ -78,7 +77,8 @@ export default class ReviewController {
       .then(() => res.status(200).json({
         message: 'Review updated',
         review: theReview
-      }));
+      }))
+      .catch(error => res.status(500).json({ error }));
   }
 
   /**
@@ -93,8 +93,8 @@ export default class ReviewController {
 
     return review.destroy()
       .then(() => res.status(200).json({
-        message: 'Review deleted',
-        review
-      }));
+        message: 'Review deleted'
+      }))
+      .catch(error => res.status(500).json({ error }));
   }
 }

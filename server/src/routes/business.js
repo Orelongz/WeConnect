@@ -62,7 +62,6 @@ router.delete(
   '/:businessId',
   validateToken,
   findBusiness,
-  businessNameExist,
   deleteBusiness
 );
 

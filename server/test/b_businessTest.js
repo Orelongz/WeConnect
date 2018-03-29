@@ -14,13 +14,13 @@ let businessId2;
 should();
 chai.use(chaiHttp);
 
-describe('Business controller tests', () => {
+describe('Given that a user sends a ', () => {
   before((done) => {
     Business.sync({ force: true })
       .then(() => done());
   });
 
-  describe('Given that a user sends a POST request to /api/v1/businesses/', () => {
+  describe('POST request to /api/v1/businesses/', () => {
     before((done) => {
       chai.request(app)
         .post('/api/v1/auth/login')
@@ -43,11 +43,14 @@ describe('Business controller tests', () => {
         .send(businessData.business1)
         .end((err, res) => {
           res.should.have.status(201);
-          res.body.should.be.a('object');
+          assert.isNotNull(
+            res.body.business,
+            'Business created'
+          );
           res.body.business.should.be.a('object');
-          assert.isString(
-            res.body.message,
-            'Business successfully created'
+          assert.equal(
+            res.body.business.businessName,
+            businessData.business1.businessName
           );
           businessId1 = res.body.business.id;
           done();
@@ -62,11 +65,14 @@ describe('Business controller tests', () => {
         .send(businessData.business2)
         .end((err, res) => {
           res.should.have.status(201);
-          res.body.should.be.a('object');
+          assert.isNotNull(
+            res.body.business,
+            'Business created'
+          );
           res.body.business.should.be.a('object');
-          assert.isString(
-            res.body.message,
-            'Business successfully created'
+          assert.equal(
+            res.body.business.businessName,
+            businessData.business2.businessName
           );
           assert.strictEqual(
             res.body.business.workHours,
@@ -74,6 +80,19 @@ describe('Business controller tests', () => {
             'business should still be created'
           );
           businessId2 = res.body.business.id;
+          done();
+        });
+    });
+
+    it('should return 400 status code when neccessary inputs are not passed in', (done) => {
+      chai.request(app)
+        .post('/api/v1/businesses/')
+        .set('authorization', authtoken1)
+        .type('form')
+        .send(businessData.business4)
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.message.should.be.a('array');
           done();
         });
     });
@@ -86,8 +105,7 @@ describe('Business controller tests', () => {
         .send(businessData.business2)
         .end((err, res) => {
           res.should.have.status(401);
-          res.body.should.be.a('object');
-          assert.isString(
+          assert.equal(
             res.body.message,
             'Invalid token'
           );
@@ -102,28 +120,9 @@ describe('Business controller tests', () => {
         .send(businessData.business2)
         .end((err, res) => {
           res.should.have.status(401);
-          res.body.should.be.a('object');
-          assert.isString(
+          assert.equal(
             res.body.message,
-            'Please login'
-          );
-          done();
-        });
-    });
-
-    it('should return 406 status code when neccessary inputs are not passed in', (done) => {
-      chai.request(app)
-        .post('/api/v1/businesses/')
-        .set('authorization', authtoken1)
-        .type('form')
-        .send(businessData.business4)
-        .end((err, res) => {
-          res.should.have.status(406);
-          res.body.should.be.a('object');
-          res.body.error.should.be.a('array');
-          assert.isUndefined(
-            res.body.message,
-            'message is undefined'
+            'Token absent'
           );
           done();
         });
@@ -137,10 +136,9 @@ describe('Business controller tests', () => {
         .send(businessData.business3)
         .end((err, res) => {
           res.should.have.status(409);
-          res.body.should.be.a('object');
           assert.strictEqual(
             res.body.message,
-            'Business name already exists',
+            'Business name exists',
             'duplicate business name'
           );
           done();
@@ -148,7 +146,7 @@ describe('Business controller tests', () => {
     });
   });
 
-  describe('Given that a user sends a PUT request to /api/v1/businesses/:businessId', () => {
+  describe('PUT request to /api/v1/businesses/:businessId', () => {
     before((done) => {
       chai.request(app)
         .post('/api/v1/auth/login')
@@ -171,17 +169,29 @@ describe('Business controller tests', () => {
         .send(businessData.business5)
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.be.a('object');
           res.body.business.should.be.a('object');
           assert.strictEqual(
             res.body.business.address,
             '30, Lamba road',
             'Business address updated'
           );
-          assert.isString(
+          assert.equal(
             res.body.message,
-            'Business successfully updated'
+            'Update successful'
           );
+          done();
+        });
+    });
+
+    it('should return 400 status code when neccessary inputs are not passed in', (done) => {
+      chai.request(app)
+        .put(`/api/v1/businesses/${businessId1}`)
+        .set('authorization', authtoken1)
+        .type('form')
+        .send(businessData.business4)
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.message.should.be.a('array');
           done();
         });
     });
@@ -194,10 +204,9 @@ describe('Business controller tests', () => {
         .send(businessData.business1)
         .end((err, res) => {
           res.should.have.status(403);
-          res.body.should.be.a('object');
-          assert.isString(
+          assert.equal(
             res.body.message,
-            'Unauthorized access to content'
+            'Access to content denied'
           );
           done();
         });
@@ -210,10 +219,9 @@ describe('Business controller tests', () => {
         .send(businessData.business1)
         .end((err, res) => {
           res.should.have.status(401);
-          res.body.should.be.a('object');
-          assert.isString(
+          assert.equal(
             res.body.message,
-            'Please login'
+            'Token absent'
           );
           done();
         });
@@ -227,8 +235,7 @@ describe('Business controller tests', () => {
         .send(businessData.business1)
         .end((err, res) => {
           res.should.have.status(404);
-          res.body.should.be.a('object');
-          assert.isString(
+          assert.equal(
             res.body.message,
             'Business not found'
           );
@@ -244,28 +251,9 @@ describe('Business controller tests', () => {
         .send(businessData.business1)
         .end((err, res) => {
           res.should.have.status(404);
-          res.body.should.be.a('object');
-          assert.isString(
+          assert.equal(
             res.body.message,
             'Business not found'
-          );
-          done();
-        });
-    });
-
-    it('should return 406 status code when neccessary inputs are not passed in', (done) => {
-      chai.request(app)
-        .put(`/api/v1/businesses/${businessId1}`)
-        .set('authorization', authtoken1)
-        .type('form')
-        .send(businessData.business4)
-        .end((err, res) => {
-          res.should.have.status(406);
-          res.body.should.be.a('object');
-          res.body.error.should.be.a('array');
-          assert.isUndefined(
-            res.body.message,
-            'message is undefined'
           );
           done();
         });
@@ -279,10 +267,9 @@ describe('Business controller tests', () => {
         .send(businessData.business2)
         .end((err, res) => {
           res.should.have.status(409);
-          res.body.should.be.a('object');
           assert.strictEqual(
             res.body.message,
-            'Business name already exists',
+            'Business name exists',
             'duplicate business name'
           );
           done();
@@ -290,18 +277,16 @@ describe('Business controller tests', () => {
     });
   });
 
-  describe('Given that a user sends a DELETE request to /api/v1/businesses/:businessId', () => {
+  describe('DELETE request to /api/v1/businesses/:businessId', () => {
     it('should return 200 status code and delete business with the businessId', (done) => {
       chai.request(app)
         .delete(`/api/v1/businesses/${businessId1}`)
         .set('authorization', authtoken1)
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.be.a('object');
-          res.body.business.should.be.a('object');
-          assert.isString(
+          assert.equal(
             res.body.message,
-            'Business was successfully deleted'
+            'Delete successful'
           );
           done();
         });
@@ -313,10 +298,9 @@ describe('Business controller tests', () => {
         .set('authorization', authtoken2)
         .end((err, res) => {
           res.should.have.status(403);
-          res.body.should.be.a('object');
-          assert.isString(
+          assert.equal(
             res.body.message,
-            'Unauthorized access to content'
+            'Access to content denied'
           );
           done();
         });
@@ -328,8 +312,7 @@ describe('Business controller tests', () => {
         .set('authorization', 'authtokenIsAnInvalidString')
         .end((err, res) => {
           res.should.have.status(401);
-          res.body.should.be.a('object');
-          assert.isString(
+          assert.equal(
             res.body.message,
             'Invalid token'
           );
@@ -342,10 +325,9 @@ describe('Business controller tests', () => {
         .delete(`/api/v1/businesses/${businessId2}`)
         .end((err, res) => {
           res.should.have.status(401);
-          res.body.should.be.a('object');
-          assert.isString(
+          assert.equal(
             res.body.message,
-            'Please login'
+            'Token absent'
           );
           done();
         });
@@ -357,7 +339,6 @@ describe('Business controller tests', () => {
         .set('authorization', authtoken1)
         .end((err, res) => {
           res.should.have.status(404);
-          res.body.should.be.a('object');
           assert.isString(
             res.body.message,
             'Business not found'
@@ -373,7 +354,6 @@ describe('Business controller tests', () => {
         .type('form')
         .end((err, res) => {
           res.should.have.status(404);
-          res.body.should.be.a('object');
           assert.isString(
             res.body.message,
             'Business not found'
@@ -383,17 +363,20 @@ describe('Business controller tests', () => {
     });
   });
 
-  describe('Given that a user sends a GET request to /api/v1/businesses/:businessId', () => {
+  describe('GET request to /api/v1/businesses/:businessId', () => {
     it('should return 200 status code and retrieve business with the businessId', (done) => {
       chai.request(app)
         .get(`/api/v1/businesses/${businessId2}`)
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.be.a('object');
+          assert.isNotNull(
+            res.body.business,
+            'Business found'
+          );
           res.body.business.should.be.a('object');
-          assert.isString(
-            res.body.message,
-            'Business was successfully found'
+          assert.equal(
+            res.body.business.businessName,
+            'Coffe Shop'
           );
           done();
         });
@@ -404,8 +387,7 @@ describe('Business controller tests', () => {
         .get('/api/v1/businesses/anyInvalidBusinessIdString')
         .end((err, res) => {
           res.should.have.status(404);
-          res.body.should.be.a('object');
-          assert.isString(
+          assert.equal(
             res.body.message,
             'Business not found'
           );
@@ -418,8 +400,7 @@ describe('Business controller tests', () => {
         .get(`/api/v1/businesses/${businessId1}`) // deleted in delete route test
         .end((err, res) => {
           res.should.have.status(404);
-          res.body.should.be.a('object');
-          assert.isString(
+          assert.equal(
             res.body.message,
             'Business not found'
           );
@@ -428,18 +409,13 @@ describe('Business controller tests', () => {
     });
   });
 
-  describe('Given that a user sends a GET request to /api/v1/businesses/', () => {
+  describe('GET request to /api/v1/businesses/', () => {
     it('should return 200 status code and retrieve all business in the database', (done) => {
       chai.request(app)
         .get('/api/v1/businesses/')
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.be.a('object');
           res.body.businesses.should.be.a('array');
-          assert.isString(
-            res.body.message,
-            'All Businesses'
-          );
           done();
         });
     });
@@ -449,12 +425,7 @@ describe('Business controller tests', () => {
         .get('/api/v1/businesses/?location=yaba')
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.be.a('object');
           res.body.businesses.should.be.a('array');
-          assert.isString(
-            res.body.message,
-            'Businesses found'
-          );
           done();
         });
     });
@@ -464,11 +435,9 @@ describe('Business controller tests', () => {
         .get('/api/v1/businesses/?location=abia')
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.be.a('object');
-          res.body.businesses.should.be.a('array');
-          assert.isString(
+          assert.equal(
             res.body.message,
-            'Businesses found'
+            'No businesses found'
           );
           done();
         });
@@ -479,12 +448,7 @@ describe('Business controller tests', () => {
         .get('/api/v1/businesses/?category=bar')
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.be.a('object');
           res.body.businesses.should.be.a('array');
-          assert.isString(
-            res.body.message,
-            'Businesses found'
-          );
           done();
         });
     });
@@ -494,18 +458,13 @@ describe('Business controller tests', () => {
         .get('/api/v1/businesses/?category=bar&location=enugu')
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.be.a('object');
           res.body.businesses.should.be.a('array');
-          assert.isString(
-            res.body.message,
-            'Businesses found'
-          );
           done();
         });
     });
   });
 
-  describe('Given that a user sends a PUT request to /api/v1/businesses/change-ownership/:businessId/', () => {
+  describe('PUT request to /api/v1/businesses/change-ownership/:businessId/', () => {
     it('should return a status 200 and change the business ownership to a new user with the email passed in', (done) => {
       // user1 transferring business2 to user2
       chai.request(app)
@@ -514,10 +473,9 @@ describe('Business controller tests', () => {
         .send({ email: userData.user2.email })
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.be.a('object');
           assert.equal(
             res.body.message,
-            'Business ownership has been transferred to rick.orga@gmail.com',
+            'Business ownership transferred to rick.orga@gmail.com',
             'Business ownership transfer complete'
           );
           done();
@@ -530,11 +488,9 @@ describe('Business controller tests', () => {
         .send({ email: userData.user2.email })
         .end((err, res) => {
           res.should.have.status(401);
-          res.body.should.be.a('object');
           assert.equal(
             res.body.message,
-            'Please login',
-            'No token'
+            'Token absent'
           );
           done();
         });
@@ -547,11 +503,10 @@ describe('Business controller tests', () => {
         .set('authorization', authtoken1)
         .send({ email: userData.user6.email })
         .end((err, res) => {
-          res.should.have.status(404);
-          res.body.should.be.a('object');
+          res.should.have.status(403);
           assert.equal(
             res.body.message,
-            'Business not found',
+            'Access to content denied',
             'User does not own the business anymore'
           );
           done();
@@ -566,7 +521,6 @@ describe('Business controller tests', () => {
         .send({ email: userData.user6.email })
         .end((err, res) => {
           res.should.have.status(404);
-          res.body.should.be.a('object');
           assert.equal(
             res.body.message,
             'Business not found'
@@ -583,7 +537,6 @@ describe('Business controller tests', () => {
         .send({ email: userData.user1.email })
         .end((err, res) => {
           res.should.have.status(404);
-          res.body.should.be.a('object');
           assert.isString(
             res.body.message,
             'Business not found'
@@ -600,7 +553,6 @@ describe('Business controller tests', () => {
         .send({ email: userData.user1.email })
         .end((err, res) => {
           res.should.have.status(404);
-          res.body.should.be.a('object');
           assert.isString(
             res.body.message,
             'Business not found'
@@ -616,7 +568,6 @@ describe('Business controller tests', () => {
         .send({ email: userData.user3.email })
         .end((err, res) => {
           res.should.have.status(404);
-          res.body.should.be.a('object');
           assert.equal(
             res.body.message,
             'User not found',
@@ -627,19 +578,14 @@ describe('Business controller tests', () => {
     });
   });
 
-  describe('Given that a user sends a GET request to /api/v1/businesses/user', () => {
+  describe('GET request to /api/v1/businesses/user', () => {
     it('should return a status of 200 when user is logged in', (done) => {
       chai.request(app)
         .get('/api/v1/businesses/user')
         .set('authorization', authtoken1)
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.be.a('object');
           res.body.businesses.should.be.a('array');
-          assert.equal(
-            res.body.message,
-            'Your businesses'
-          );
           done();
         });
     });
@@ -649,10 +595,9 @@ describe('Business controller tests', () => {
         .get('/api/v1/businesses/user')
         .end((err, res) => {
           res.should.have.status(401);
-          res.body.should.be.a('object');
           assert.equal(
             res.body.message,
-            'Please login'
+            'Token absent'
           );
           done();
         });
@@ -664,7 +609,6 @@ describe('Business controller tests', () => {
         .set('authorization', 'anyInvalidTokenString')
         .end((err, res) => {
           res.should.have.status(401);
-          res.body.should.be.a('object');
           assert.equal(
             res.body.message,
             'Invalid token'

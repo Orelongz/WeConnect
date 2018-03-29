@@ -11,25 +11,35 @@ let authtoken1;
 should();
 chai.use(chaiHttp);
 
-describe('User controller tests', () => {
+describe('Given that a user sends a', () => {
   before((done) => {
     User.sync({ force: true })
       .then(() => done());
   });
 
-  describe('Given that a user sends a POST request to /api/v1/auth/signup', () => {
+  describe('POST request to /api/v1/auth/signup', () => {
     it('should return 201 status code and create new user', (done) => {
       chai.request(app)
         .post('/api/v1/auth/signup')
         .type('form')
         .send(userData.user1)
         .end((err, res) => {
+          const { firstname, lastname, email } = res.body.user;
           res.should.have.status(201);
-          res.body.should.be.a('object');
-          assert.notEqual(
-            res.body.user.password,
-            userData.user1.password,
-            'Password has been hashed'
+          assert.equal(
+            firstname.toLowerCase(),
+            userData.user1.firstname.toLocaleLowerCase(),
+            'Firstname equal'
+          );
+          assert.equal(
+            lastname.toLowerCase(),
+            userData.user1.lastname.toLowerCase(),
+            'Lastname equal'
+          );
+          assert.equal(
+            email.toLowerCase(),
+            userData.user1.email.toLowerCase(),
+            'email equal'
           );
           assert.isNotNull(
             res.body.token,
@@ -45,12 +55,22 @@ describe('User controller tests', () => {
         .type('form')
         .send(userData.user2)
         .end((err, res) => {
+          const { firstname, lastname, email } = res.body.user;
           res.should.have.status(201);
-          res.body.should.be.a('object');
-          assert.notEqual(
-            res.body.user.password,
-            userData.user2.password,
-            'Password has been hashed'
+          assert.equal(
+            firstname.toLowerCase(),
+            userData.user2.firstname.toLocaleLowerCase(),
+            'Firstname equal'
+          );
+          assert.equal(
+            lastname.toLowerCase(),
+            userData.user2.lastname.toLowerCase(),
+            'Lastname equal'
+          );
+          assert.equal(
+            email.toLowerCase(),
+            userData.user2.email.toLowerCase(),
+            'email equal'
           );
           assert.isNotNull(
             res.body.token,
@@ -66,12 +86,22 @@ describe('User controller tests', () => {
         .type('form')
         .send(userData.user6)
         .end((err, res) => {
+          const { firstname, lastname, email } = res.body.user;
           res.should.have.status(201);
-          res.body.should.be.a('object');
-          assert.notEqual(
-            res.body.user.password,
-            userData.user2.password,
-            'Password has been hashed'
+          assert.equal(
+            firstname.toLowerCase(),
+            userData.user6.firstname.toLocaleLowerCase(),
+            'Firstname equal'
+          );
+          assert.equal(
+            lastname.toLowerCase(),
+            userData.user6.lastname.toLowerCase(),
+            'Lastname equal'
+          );
+          assert.equal(
+            email.toLowerCase(),
+            userData.user6.email.toLowerCase(),
+            'email equal'
           );
           assert.isNotNull(
             res.body.token,
@@ -89,50 +119,27 @@ describe('User controller tests', () => {
         .send(userData.user5)
         .end((err, res) => {
           res.should.have.status(400);
-          res.body.should.be.a('object');
           assert.strictEqual(
             res.body.message,
-            'Please enter a valid email address',
+            'Invalid email',
             'Email is not valid'
           );
           done();
         });
     });
 
-    it('should return 406 status code when password is different from confirmPassword', (done) => {
-      chai.request(app)
-        .post('/api/v1/auth/signup')
-        .type('form')
-        .send(userData.user3)
-        .end((err, res) => {
-          res.should.have.status(406);
-          res.body.should.be.a('object');
-          res.body.error.should.be.a('array');
-          assert.isUndefined(
-            res.body.message,
-            'message is undefined'
-          );
-          assert.notStrictEqual(
-            res.body.error,
-            ['Password and confirm password fields do not match']
-          );
-          done();
-        });
-    });
-
-    it('should return 406 status code when input fields are empty', (done) => {
+    it('should return 400 status code if any input field is empty', (done) => {
       chai.request(app)
         .post('/api/v1/auth/signup')
         .type('form')
         .send(userData.user4)
         .end((err, res) => {
-          res.should.have.status(406);
-          res.body.should.be.a('object');
-          res.body.error.should.be.a('array');
-          assert.isUndefined(
+          res.should.have.status(400);
+          assert.exists(
             res.body.message,
-            'message is undefined'
+            'message is not undefined'
           );
+          res.body.message.should.be.a('array');
           done();
         });
     });
@@ -144,10 +151,9 @@ describe('User controller tests', () => {
         .send(userData.user1)
         .end((err, res) => {
           res.should.have.status(409);
-          res.body.should.be.a('object');
           assert.strictEqual(
             res.body.message,
-            'This email already has an account',
+            'User exist',
             'Email already exists'
           );
           done();
@@ -155,8 +161,8 @@ describe('User controller tests', () => {
     });
   });
 
-  describe('Given that a user sends a POST request to /api/v1/auth/login', () => {
-    it('should return 202 status code and log the user into his/her account', (done) => {
+  describe('POST request to /api/v1/auth/login', () => {
+    it('should return 200 status code and log the user into his/her account', (done) => {
       chai.request(app)
         .post('/api/v1/auth/login')
         .type('form')
@@ -165,17 +171,37 @@ describe('User controller tests', () => {
           password: userData.user1.password
         })
         .end((err, res) => {
-          res.should.have.status(202);
-          res.body.should.be.a('object');
-          res.body.token.should.be.a('string');
+          const { firstname, lastname } = res.body.user;
+          res.should.have.status(200);
+          assert.equal(
+            firstname.toLowerCase(),
+            userData.user1.firstname.toLocaleLowerCase(),
+            'Firstname equal'
+          );
+          assert.equal(
+            lastname.toLowerCase(),
+            userData.user1.lastname.toLowerCase(),
+            'Lastname equal'
+          );
           assert.isNotNull(
-            res.body.message,
-            'Welcome message'
-          );
-          assert.exists(
             res.body.token,
-            'Token should be assigned on login'
+            'Token should be available'
           );
+          done();
+        });
+    });
+
+    it('should return 400 status code if any input field is empty', (done) => {
+      chai.request(app)
+        .post('/api/v1/auth/login')
+        .type('form')
+        .send({
+          email: userData.user4.email,
+          password: userData.user4.password
+        })
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.message.should.be.a('array');
           done();
         });
     });
@@ -190,7 +216,6 @@ describe('User controller tests', () => {
         })
         .end((err, res) => {
           res.should.have.status(401);
-          res.body.should.be.a('object');
           assert.strictEqual(
             res.body.message,
             'Wrong password',
@@ -210,7 +235,6 @@ describe('User controller tests', () => {
         })
         .end((err, res) => {
           res.should.have.status(404);
-          res.body.should.be.a('object');
           assert.strictEqual(
             res.body.message,
             'User not found',
@@ -219,42 +243,36 @@ describe('User controller tests', () => {
           done();
         });
     });
-
-    it('should return 406 status code when any input field is empty', (done) => {
-      chai.request(app)
-        .post('/api/v1/auth/login')
-        .type('form')
-        .send({
-          email: userData.user4.email,
-          password: userData.user4.password
-        })
-        .end((err, res) => {
-          res.should.have.status(406);
-          res.body.should.be.a('object');
-          res.body.error.should.be.a('array');
-          assert.isUndefined(
-            res.body.message,
-            'message is undefined'
-          );
-          done();
-        });
-    });
   });
 
-  describe('Given that a user sends a PUT request to /api/v1/auth/user', () => {
+  describe('PUT request to /api/v1/user', () => {
     it('should return 200 status code and update user details', (done) => {
       chai.request(app)
-        .put('/api/v1/auth/user')
+        .put('/api/v1/user')
         .set('authorization', authtoken1)
         .type('form')
         .send(userData.user6)
         .end((err, res) => {
+          const { firstname, lastname, email } = res.body.user;
           res.should.have.status(200);
-          res.body.should.be.a('object');
           assert.equal(
-            res.body.user.lastname,
+            res.body.message,
+            'Update successful'
+          );
+          assert.equal(
+            firstname,
+            userData.user6.firstname,
+            'firstname updated'
+          );
+          assert.equal(
+            lastname,
             userData.user6.lastname,
-            'User details has been updated'
+            'lastname updated'
+          );
+          assert.equal(
+            email,
+            userData.user6.email,
+            'email updated'
           );
           done();
         });
@@ -262,32 +280,43 @@ describe('User controller tests', () => {
 
     it('should return 400 status code when email is not valid', (done) => {
       chai.request(app)
-        .put('/api/v1/auth/user')
+        .put('/api/v1/user')
         .set('authorization', authtoken1)
         .type('form')
         .send(userData.user5)
         .end((err, res) => {
           res.should.have.status(400);
-          res.body.should.be.a('object');
           assert.strictEqual(
             res.body.message,
-            'Please enter a valid email address',
+            'Invalid email',
             'Email is not valid'
           );
           done();
         });
     });
 
+    it('should return 400 status code when an input field is empty', (done) => {
+      chai.request(app)
+        .put('/api/v1/user')
+        .set('authorization', authtoken1)
+        .type('form')
+        .send(userData.user4)
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.message.should.be.a('array');
+          done();
+        });
+    });
+
     it('should return 401 status code when a token is not valid', (done) => {
       chai.request(app)
-        .put('/api/v1/auth/user')
+        .put('/api/v1/user')
         .set('authorization', 'authtoken1IsAnInvalidString')
         .type('form')
         .send(userData.user6)
         .end((err, res) => {
           res.should.have.status(401);
-          res.body.should.be.a('object');
-          assert.isString(
+          assert.equal(
             res.body.message,
             'Invalid token'
           );
@@ -297,49 +326,14 @@ describe('User controller tests', () => {
 
     it('should return 401 status code when a token is not passed in', (done) => {
       chai.request(app)
-        .put('/api/v1/auth/user')
+        .put('/api/v1/user')
         .type('form')
         .send(userData.user6)
         .end((err, res) => {
           res.should.have.status(401);
-          res.body.should.be.a('object');
-          assert.isString(
+          assert.equal(
             res.body.message,
-            'Please login'
-          );
-          done();
-        });
-    });
-
-    it('should return 406 status code when input fields are empty', (done) => {
-      chai.request(app)
-        .put('/api/v1/auth/user')
-        .set('authorization', authtoken1)
-        .type('form')
-        .send(userData.user4)
-        .end((err, res) => {
-          res.should.have.status(406);
-          res.body.should.be.a('object');
-          res.body.error.should.be.a('array');
-          assert.isUndefined(
-            res.body.message,
-            'message is undefined'
-          );
-          done();
-        });
-    });
-  });
-
-  describe('Given that a user sends a GET request to /api/v1/auth/logout', () => {
-    it('should return 200 status code and log out the user', (done) => {
-      chai.request(app)
-        .get('/api/v1/auth/logout')
-        .end((err, res) => {
-          res.should.have.status(200);
-          res.body.should.be.a('object');
-          assert.isNull(
-            res.body.token,
-            'Token has been removed'
+            'Token absent'
           );
           done();
         });
