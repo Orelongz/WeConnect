@@ -1,16 +1,13 @@
 import { db } from './../models';
-import BusinessServices from './../services/businessService';
-import {
-  notFound,
-  unauthorized
-} from './../services/genericMessages';
+import BusinessServices from './../services/BusinessService';
+import { unauthorized } from './../services/genericMessages';
 
+const { Business } = db;
 const {
   businessObject,
   handleLocationSearch,
   handleCategorySearch
 } = BusinessServices;
-const { Business } = db;
 
 /**
  * @class businessController
@@ -29,9 +26,9 @@ export default class BusinessController {
 
     return Business.create({ ...businessDetails })
       .then(business => res.status(201).json({
-        message: 'Business successfully created',
         business
-      }));
+      }))
+      .catch(error => res.status(500).json({ error }));
   }
 
   /**
@@ -51,9 +48,10 @@ export default class BusinessController {
     const update = businessObject(req);
     return business.update({ ...update })
       .then(() => res.status(200).json({
-        message: 'Business successfully updated',
+        message: 'Update successful',
         business
-      }));
+      }))
+      .catch(error => res.status(500).json({ error }));
   }
 
   /**
@@ -73,9 +71,9 @@ export default class BusinessController {
 
     return business.destroy()
       .then(() => res.status(200).json({
-        message: 'Business was successfully deleted',
-        business
-      }));
+        message: 'Delete successful'
+      }))
+      .catch(error => res.status(500).json({ error }));
   }
 
   /**
@@ -89,7 +87,6 @@ export default class BusinessController {
     const business = req.foundBusiness;
 
     return res.status(200).json({
-      message: 'Business was successfully found',
       business
     });
   }
@@ -107,15 +104,23 @@ export default class BusinessController {
         const location = handleLocationSearch(req, businesses);
         const category = handleCategorySearch(req, businesses);
         if (!location && !category) {
+          if (businesses.length === 0) {
+            return res.status(200).json({
+              message: 'No businesses found'
+            });
+          }
           return res.status(200).json({
-            message: 'All Businesses',
             businesses
           });
         }
         const theBusinesses = [...(location || []), ...(category || [])];
 
+        if (theBusinesses.length === 0) {
+          return res.status(200).json({
+            message: 'No businesses found'
+          });
+        }
         return res.status(200).json({
-          message: 'Businesses found',
           businesses: theBusinesses
         });
       });
@@ -137,10 +142,11 @@ export default class BusinessController {
       const { email } = req.body;
       return business.update({ userId: id })
         .then(() => res.status(200).json({
-          message: `Business ownership has been transferred to ${email}`
-        }));
+          message: `Business ownership transferred to ${email}`
+        }))
+        .catch(error => res.status(500).json({ error }));
     }
-    return notFound(res, 'Business');
+    return unauthorized(res);
   }
 
   /**
@@ -159,8 +165,8 @@ export default class BusinessController {
       }
     })
       .then(businesses => res.status(200).json({
-        message: 'Your businesses',
         businesses
-      }));
+      }))
+      .catch(error => res.status(500).json({ error }));
   }
 }

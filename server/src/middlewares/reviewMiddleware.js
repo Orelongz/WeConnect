@@ -14,13 +14,13 @@ export default class ReviewMiddleware {
    * @param {Object} req request object
    * @param {Object} res response object
    * @param {Object} next Express next middleware function
-   * @return {*} void
+   * @return {*} message, void
    */
   static validateReview(req, res, next) {
     const { review } = req.body;
-    if (!review || review.trim() === '') {
-      return res.status(406).json({
-        message: 'The review input field cannot be empty'
+    if (!review || review.trim() === '' || typeof review !== 'string') {
+      return res.status(400).json({
+        message: 'The review input field cannot be empty and must be a string'
       });
     }
     return next();
@@ -56,6 +56,7 @@ export default class ReviewMiddleware {
           return next();
         }
         return notFound(res, 'Review');
-      });
+      })
+      .catch(error => res.status(500).json({ error }));
   }
 }

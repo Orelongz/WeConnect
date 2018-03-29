@@ -1,7 +1,7 @@
 import express from 'express';
-import BusinessController from './../controllers/businessController';
-import BusinessMiddleware from './../middlewares/businessMiddleware';
-import UserMiddleware from './../middlewares/userMiddleware';
+import BusinessController from './../controllers/BusinessController';
+import BusinessMiddleware from './../middlewares/BusinessMiddleware';
+import UserMiddleware from './../middlewares/UserMiddleware';
 import { validateToken } from './../services/jwtService';
 
 const {
@@ -62,7 +62,6 @@ router.delete(
   '/:businessId',
   validateToken,
   findBusiness,
-  businessNameExist,
   deleteBusiness
 );
 

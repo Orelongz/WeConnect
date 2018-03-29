@@ -7,29 +7,29 @@ const { assert, should } = chai;
 should();
 chai.use(chaiHttp);
 
-describe('Index routes tests', () => {
-  describe('Given that a user sends a GET request to /', () => {
+describe('Given that a user sends a ', () => {
+  describe('GET request to /api/v1', () => {
     it('should return 200 status code', (done) => {
       chai.request(app)
-        .get('/')
+        .get('/api/v1')
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.should.be.a('object');
-          assert.isString(
+          assert.equal(
             res.body.message,
             'Welcome to WeConnect'
           );
           done();
         });
     });
+  });
 
+  describe('GET/POST/PUT/DELETE request to an invalid route', () => {
     it('should return 404 status code', (done) => {
       chai.request(app)
         .get('/anyotherroute')
         .end((err, res) => {
           res.should.have.status(404);
-          res.body.should.be.a('object');
-          assert.isString(
+          assert.equal(
             res.body.message,
             'Page not Found'
           );

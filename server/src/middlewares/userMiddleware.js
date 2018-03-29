@@ -15,30 +15,27 @@ export default class UserMiddleware {
    * @param {Object} req request object
    * @param {Object} res response object
    * @param {Object} next Express next middleware function
-   * @return {*} error, void
+   * @return {*} message, void
    */
   static signUpValidation(req, res, next) {
-    const error = [];
+    const message = [];
     const {
-      firstname, lastname, email, password, confirmPassword
+      firstname, lastname, email, password
     } = req.body;
-    if (!firstname || firstname.trim() === '') {
-      error.push('The firstname field cannot be empty');
+    if (!firstname || firstname.trim() === '' || typeof firstname !== 'string') {
+      message.push('The firstname field cannot be empty and must be a string');
     }
-    if (!lastname || lastname.trim() === '') {
-      error.push('The lastname field cannot be empty');
+    if (!lastname || lastname.trim() === '' || typeof lastname !== 'string') {
+      message.push('The lastname field cannot be empty and must be a string');
     }
-    if (!email || email.trim() === '') {
-      error.push('The email field cannot be empty');
+    if (!email || email.trim() === '' || typeof email !== 'string') {
+      message.push('The email field cannot be empty and must be a string');
     }
-    if (!password || password.trim() === '') {
-      error.push('The password field cannot be empty');
+    if (!password || password.trim() === '' || typeof password !== 'string') {
+      message.push('The password field cannot be empty and must be a string');
     }
-    if (password !== confirmPassword) {
-      error.push('Password and confirm password fields do not match');
-    }
-    if (error.length > 0) {
-      return res.status(406).json({ error });
+    if (message.length > 0) {
+      return res.status(400).json({ message });
     }
     return next();
   }
@@ -49,13 +46,13 @@ export default class UserMiddleware {
    * @param {Object} req request object
    * @param {Object} res response object
    * @param {Object} next Express next middleware function
-   * @return {*} error, void
+   * @return {*} message, void
    */
   static validateEmail(req, res, next) {
     const { email } = req.body;
     if (!validator.isEmail(email)) {
       return res.status(400).json({
-        message: 'Please enter a valid email address'
+        message: 'Invalid email'
       });
     }
     return next();
@@ -67,19 +64,45 @@ export default class UserMiddleware {
    * @param {Object} req request object
    * @param {Object} res response object
    * @param {Object} next Express next middleware function
-   * @return {*} error, void
+   * @return {*} message, void
    */
   static signInValidation(req, res, next) {
-    const error = [];
+    const message = [];
     const { email, password } = req.body;
-    if (!email || email.trim() === '') {
-      error.push('The email field cannot be empty');
+    if (!email || email.trim() === '' || typeof email !== 'string') {
+      message.push('The email field cannot be empty and must be a string');
     }
-    if (!password || password.trim() === '') {
-      error.push('The password field cannot be empty');
+    if (!password || password.trim() === '' || typeof password !== 'string') {
+      message.push('The password field cannot be empty and must be a string');
     }
-    if (error.length > 0) {
-      return res.status(406).json({ error });
+    if (message.length > 0) {
+      return res.status(400).json({ message });
+    }
+    return next();
+  }
+
+  /**
+   * updateUserValidation()
+   * @desc handles validation of user update input
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @param {Object} next Express next middleware function
+   * @return {*} message, void
+   */
+  static updateUserValidation(req, res, next) {
+    const message = [];
+    const { firstname, lastname, email } = req.body;
+    if (!firstname || firstname.trim() === '' || typeof firstname !== 'string') {
+      message.push('The firstname field cannot be empty and must be a string');
+    }
+    if (!lastname || lastname.trim() === '' || typeof lastname !== 'string') {
+      message.push('The lastname field cannot be empty and must be a string');
+    }
+    if (!email || email.trim() === '' || typeof email !== 'string') {
+      message.push('The email field cannot be empty and must be a string');
+    }
+    if (message.length > 0) {
+      return res.status(400).json({ message });
     }
     return next();
   }
@@ -97,18 +120,19 @@ export default class UserMiddleware {
 
     User.findOne({
       where: {
-        email
+        email: email.toLowerCase()
       }
     })
       .then((user) => {
         if (req.decoded && req.decoded.email === email) return next();
         if (user) {
           return res.status(409).json({
-            message: 'This email already has an account'
+            message: 'User exist'
           });
         }
         return next();
-      });
+      })
+      .catch(error => res.status(500).json({ error }));
   }
 
   /**
@@ -133,6 +157,7 @@ export default class UserMiddleware {
         }
         req.foundUser = user;
         return next();
-      });
+      })
+      .catch(error => res.status(500).json({ error }));
   }
 }

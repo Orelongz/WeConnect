@@ -15,7 +15,7 @@ const notFound = (res, str) => res.status(404).json({
  * @return {Object} message
  */
 const unauthorized = res => res.status(403).json({
-  message: 'Unauthorized access to content'
+  message: 'Access to content denied'
 });
 
 export { notFound, unauthorized };

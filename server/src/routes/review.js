@@ -1,7 +1,7 @@
 import express from 'express';
-import ReviewController from './../controllers/reviewController';
-import ReviewMiddleware from './../middlewares/reviewMiddleware';
-import BusinessMiddleware from './../middlewares/businessMiddleware';
+import ReviewController from './../controllers/ReviewController';
+import ReviewMiddleware from './../middlewares/ReviewMiddleware';
+import BusinessMiddleware from './../middlewares/BusinessMiddleware';
 import { validateToken } from './../services/jwtService';
 
 const {

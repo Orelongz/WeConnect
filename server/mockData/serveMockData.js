@@ -3,43 +3,37 @@ const userData = {
     firstname: 'Chima',
     lastname: 'Dauda',
     email: 'chima.dauda@gmail.com',
-    password: 'chimauda',
-    confirmPassword: 'chimauda'
+    password: 'chimauda'
   },
   user2: {
     firstname: 'Ricky',
     lastname: 'Orga',
     email: 'rick.orga@gmail.com',
-    password: 'passrick',
-    confirmPassword: 'passrick'
+    password: 'passrick'
   },
   user3: {
     firstname: 'Jesse',
     lastname: 'Lingard',
     email: 'jessie@me.com',
-    password: 'sandbull',
-    confirmPassword: 'sandbullock'
+    password: 'sandbull'
   },
   user4: {
     firstname: '',
     lastname: '',
     email: '',
-    password: '',
-    confirmPassword: ''
+    password: ''
   },
   user5: {
     firstname: 'Favor',
     lastname: 'Matic',
     email: 'favor.matic',
-    password: 'password',
-    confirmPassword: 'password'
+    password: 'password'
   },
   user6: {
     firstname: 'Favor',
     lastname: 'Matic',
     email: 'aunt.me@gmail.com',
-    password: 'passrick',
-    confirmPassword: 'passrick'
+    password: 'passrick'
   }
 };
 
