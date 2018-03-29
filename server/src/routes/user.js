@@ -1,6 +1,6 @@
 import express from 'express';
-import UserMiddleware from './../middlewares/UserMiddleware';
-import UserController from './../controllers/UserController';
+import UserMiddleware from './../middlewares/userMiddleware';
+import UserController from './../controllers/userController';
 import { validateToken } from './../services/jwtService';
 
 const router = express.Router();

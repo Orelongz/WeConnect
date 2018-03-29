@@ -1,5 +1,5 @@
 import { db } from './../models';
-import BusinessServices from './../services/BusinessService';
+import BusinessServices from './../services/businessService';
 import { unauthorized } from './../services/genericMessages';
 
 const { Business } = db;
