@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       unique: {
         args: true,
-        msg: 'Business name already exists'
+        msg: 'Business name exists'
       }
     },
     businessImage: {
@@ -20,7 +20,13 @@ module.exports = (sequelize, DataTypes) => {
     },
     category: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        is: {
+          args: /^[a-z]+$/i,
+          message: 'Category must be letters'
+        }
+      }
     },
     address: {
       type: DataTypes.STRING,
@@ -32,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         is: {
           args: /^[a-z]+$/i,
-          message: 'Only letters are allowed'
+          message: 'City must be letters'
         }
       }
     },
@@ -42,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         is: {
           args: /^[a-z]+$/i,
-          message: 'Only letters are allowed'
+          message: 'State must be letters'
         }
       }
     },
@@ -52,7 +58,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         is: {
           args: /^\d*$/,
-          message: 'Only numbers are allowed'
+          message: 'Phone number must be numbers'
         }
       }
     },

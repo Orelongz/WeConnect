@@ -1,6 +1,11 @@
 import bcrypt from 'bcrypt';
-import { generateToken } from './../services/jwtService';
-import { db } from './../models';
+import {
+  generateToken,
+  handleValidation,
+  handleErrorMessage
+} from './../helpers/userHelpers';
+import db from './../models';
+import { notFound } from '../services/genericMessages';
 
 const { User } = db;
 
@@ -21,20 +26,33 @@ export default class UserController {
       firstname, lastname, email, password
     } = req.body;
 
+    const validateFail = handleValidation(res, {
+      firstname, lastname, email, password
+    });
+
+    if (validateFail) return validateFail;
+
     const hashedPassword = bcrypt.hashSync(password, 10);
+
     return User.create({
       firstname, lastname, email: email.toLowerCase(), hashedPassword
     })
       .then((user) => {
         const token = generateToken({ id: user.id, email: user.email });
         return res.status(201).json({
-          user: {
-            firstname, lastname, email
-          },
-          token
+          status: 'success',
+          data: {
+            user: {
+              firstname, lastname, email
+            },
+            token
+          }
         });
       })
-      .catch(error => res.status(500).json({ error }));
+      .catch(error => res.status(400).json({
+        status: 'fail',
+        error: handleErrorMessage(error)
+      }));
   }
 
   /**
@@ -45,23 +63,45 @@ export default class UserController {
    * @return {Object} message, user
    */
   static login(req, res) {
-    const { password } = req.body;
-    const {
-      id, firstname, lastname, email, hashedPassword
-    } = req.foundUser;
+    const { email, password } = req.body;
 
-    if (!bcrypt.compareSync(password, hashedPassword)) {
-      return res.status(401).json({
-        message: 'Wrong password'
-      });
-    }
-    const token = generateToken({ id, email });
-    return res.status(200).json({
-      user: {
-        firstname, lastname
-      },
-      token
-    });
+    const validateFail = handleValidation(res, { email, password });
+
+    if (validateFail) return validateFail;
+
+    return User.findOne({
+      where: {
+        email
+      }
+    })
+      .then((user) => {
+        if (user) {
+          const {
+            hashedPassword, firstname, lastname, id
+          } = user;
+          if (user && !bcrypt.compareSync(password, hashedPassword)) {
+            return res.status(401).json({
+              status: 'fail',
+              error: 'Wrong password'
+            });
+          }
+          const token = generateToken({ id, email });
+          return res.status(200).json({
+            status: 'success',
+            data: {
+              user: {
+                firstname, lastname
+              },
+              token
+            }
+          });
+        }
+        return notFound(res, 'User');
+      })
+      .catch(error => res.status(400).json({
+        status: 'fail',
+        error: handleErrorMessage(error)
+      }));
   }
 
   /**
@@ -72,21 +112,37 @@ export default class UserController {
    * @return {Object} message, user
    */
   static updateUserDetails(req, res) {
+    const { firstname, lastname, email } = req.body;
+
+    const validateFail = handleValidation(res, { firstname, lastname, email });
+
+    if (validateFail) return validateFail;
+
     const { id } = req.decoded;
 
     return User.findOne({
-      where: { id }
+      where: {
+        id
+      }
     })
       .then((user) => {
-        const { firstname, lastname, email } = req.body;
-        return user.update({ firstname, lastname, email })
+        if (!user) {
+          return notFound(res, 'User');
+        }
+        return user
+          .update({ firstname, lastname, email })
           .then(() => res.status(200).json({
-            message: 'Update successful',
-            user: {
-              firstname, lastname, email
+            status: 'success',
+            data: {
+              user: {
+                firstname, lastname, email
+              }
             }
           }));
       })
-      .catch(error => res.status(500).json({ error }));
+      .catch(error => res.status(400).json({
+        status: 'fail',
+        error: handleErrorMessage(error)
+      }));
   }
 }
