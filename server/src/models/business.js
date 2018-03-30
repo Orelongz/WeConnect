@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         is: {
           args: /^[a-z]+$/i,
-          message: 'Category must be letters'
+          msg: 'Category must be letters'
         }
       }
     },
@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         is: {
           args: /^[a-z]+$/i,
-          message: 'City must be letters'
+          msg: 'City must be letters'
         }
       }
     },
@@ -48,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         is: {
           args: /^[a-z]+$/i,
-          message: 'State must be letters'
+          msg: 'State must be letters'
         }
       }
     },
@@ -58,7 +58,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         is: {
           args: /^\d*$/,
-          message: 'Phone number must be numbers'
+          msg: 'Phone number must be numbers'
         }
       }
     },

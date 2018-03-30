@@ -1,16 +1,15 @@
-import { db } from './../models';
-import BusinessServices from './../services/businessService';
-import { unauthorized } from './../services/genericMessages';
+import db from './../models';
+import { businessObjectHolder, checkUUID } from './../helpers/business';
+import { handleValidation, handleErrorMessage } from './../helpers/user';
+import {
+  notFound,
+  unauthorized
+} from './../helpers/genericMessages';
 
-const { Business } = db;
-const {
-  businessObject,
-  handleLocationSearch,
-  handleCategorySearch
-} = BusinessServices;
+const { Business, User } = db;
 
 /**
- * @class businessController
+ * @class BusinessController
  * @desc handles the business routes
  */
 export default class BusinessController {
@@ -22,13 +21,24 @@ export default class BusinessController {
    * @return {Object} message, business
    */
   static createBusiness(req, res) {
-    const businessDetails = businessObject(req);
+    const businessObject = businessObjectHolder(req);
+    const validateFail = handleValidation(res, businessObject);
 
-    return Business.create({ ...businessDetails })
+    if (validateFail) return validateFail;
+
+    const {
+      businessImage, postalAddress, workHours
+    } = req.body;
+    const { id: userId } = req.decoded;
+
+    return Business.create({
+      ...businessObject, userId, businessImage, postalAddress, workHours
+    })
       .then(business => res.status(201).json({
-        business
+        status: 'success',
+        data: { business }
       }))
-      .catch(error => res.status(500).json({ error }));
+      .catch(error => handleErrorMessage(res, error));
   }
 
   /**
@@ -39,19 +49,38 @@ export default class BusinessController {
    * @return {Object} message, business
    */
   static updateBusiness(req, res) {
-    const business = req.foundBusiness;
-    const { id } = req.decoded;
+    const businessObject = businessObjectHolder(req);
+    const validateFail = handleValidation(res, businessObject);
 
-    if (id !== business.userId) {
-      return unauthorized(res);
-    }
-    const update = businessObject(req);
-    return business.update({ ...update })
-      .then(() => res.status(200).json({
-        message: 'Update successful',
-        business
-      }))
-      .catch(error => res.status(500).json({ error }));
+    if (validateFail) return validateFail;
+
+    const {
+      businessImage, postalAddress, workHours
+    } = req.body;
+    const { businessId: id } = req.params;
+    const isNotUUID = checkUUID(res, id, 'Business');
+
+    if (isNotUUID) return isNotUUID;
+
+    const { id: userId } = req.decoded;
+
+    return Business.update(
+      {
+        ...businessObject, businessImage, postalAddress, workHours
+      },
+      {
+        where: { id, userId },
+        returning: true,
+        plain: true
+      }
+    )
+      .then((business) => {
+        res.status(200).json({
+          status: 'success',
+          data: { business: business[1] }
+        });
+      })
+      .catch(error => handleErrorMessage(res, error));
   }
 
   /**
@@ -62,18 +91,25 @@ export default class BusinessController {
    * @return {Object} message, business
    */
   static deleteBusiness(req, res) {
-    const business = req.foundBusiness;
-    const { id } = req.decoded;
+    const { businessId: id } = req.params;
+    const isNotUUID = checkUUID(res, id, 'Business');
 
-    if (id !== business.userId) {
-      return unauthorized(res);
-    }
+    if (isNotUUID) return isNotUUID;
 
-    return business.destroy()
-      .then(() => res.status(200).json({
-        message: 'Delete successful'
-      }))
-      .catch(error => res.status(500).json({ error }));
+    const { id: userId } = req.decoded;
+
+    return Business.destroy({
+      where: { id, userId }
+    })
+      .then((result) => {
+        if (result === 1) {
+          return res.status(200).json({
+            status: 'success'
+          });
+        }
+        return unauthorized(res);
+      })
+      .catch(error => handleErrorMessage(error));
   }
 
   /**
@@ -84,11 +120,24 @@ export default class BusinessController {
    * @return {Object} message, business
    */
   static getBusiness(req, res) {
-    const business = req.foundBusiness;
+    const { businessId: id } = req.params;
+    const isNotUUID = checkUUID(res, id, 'Business');
 
-    return res.status(200).json({
-      business
-    });
+    if (isNotUUID) return isNotUUID;
+
+    return Business.findOne({
+      where: { id }
+    })
+      .then((business) => {
+        if (!business) {
+          return notFound(res, 'Business');
+        }
+        return res.status(200).json({
+          status: 'success',
+          business
+        });
+      })
+      .catch(error => handleErrorMessage(res, error));
   }
 
   /**
@@ -99,31 +148,15 @@ export default class BusinessController {
    * @return {Object} message, businesses
    */
   static getAllBusinesses(req, res) {
-    return Business.all()
-      .then((businesses) => {
-        const location = handleLocationSearch(req, businesses);
-        const category = handleCategorySearch(req, businesses);
-        if (!location && !category) {
-          if (businesses.length === 0) {
-            return res.status(200).json({
-              message: 'No businesses found'
-            });
-          }
-          return res.status(200).json({
-            businesses
-          });
+    return Business
+      .all()
+      .then(businesses => res.status(200).json({
+        status: 'success',
+        data: {
+          businesses
         }
-        const theBusinesses = [...(location || []), ...(category || [])];
-
-        if (theBusinesses.length === 0) {
-          return res.status(200).json({
-            message: 'No businesses found'
-          });
-        }
-        return res.status(200).json({
-          businesses: theBusinesses
-        });
-      });
+      }))
+      .catch(error => handleErrorMessage(res, error));
   }
 
   /**
@@ -134,19 +167,39 @@ export default class BusinessController {
    * @return {Object} message, user
    */
   static changeBusinessOwnership(req, res) {
-    const business = req.foundBusiness;
-    const ownerId = req.decoded.id;
+    const { email } = req.body;
+    const validateFail = handleValidation(res, { email });
 
-    if (business.userId === ownerId) {
-      const { id } = req.foundUser;
-      const { email } = req.body;
-      return business.update({ userId: id })
-        .then(() => res.status(200).json({
-          message: `Business ownership transferred to ${email}`
-        }))
-        .catch(error => res.status(500).json({ error }));
-    }
-    return unauthorized(res);
+    if (validateFail) return validateFail;
+
+    const { businessId: id } = req.params;
+    const isNotUUID = checkUUID(res, id, 'Business');
+
+    if (isNotUUID) return isNotUUID;
+    
+    const { id: ownerId } = req.decoded;
+
+    return User.findOne({
+      where: { email }
+    })
+      .then((user) => {
+        if (!user) {
+          return notFound(res, 'User');
+        }
+        const { id: userId } = user;
+        return Business.update(
+          { userId },
+          { where: { id, userId: ownerId }, returning: true, plain: true }
+        )
+          .then(() => {
+            res.status(200).json({
+              status: 'success',
+              message: 'Business transferred'
+            });
+          })
+          .catch(error => handleErrorMessage(res, error));
+      })
+      .catch(error => handleErrorMessage(res, error));
   }
 
   /**
@@ -157,16 +210,25 @@ export default class BusinessController {
    * @return {Object} message, business
    */
   static getUserBusinesses(req, res) {
-    const { id } = req.decoded;
+    const { id: userId } = req.decoded;
 
     return Business.all({
-      where: {
-        userId: id
-      }
+      where: { userId }
     })
-      .then(businesses => res.status(200).json({
-        businesses
-      }))
-      .catch(error => res.status(500).json({ error }));
+      .then((businesses) => {
+        if (businesses.length === 0) {
+          return res.status(200).json({
+            status: 'success',
+            message: 'No businesses'
+          });
+        }
+        return res.status(200).json({
+          status: 'success',
+          data: {
+            businesses
+          }
+        });
+      })
+      .catch(error => handleErrorMessage(res, error));
   }
 }

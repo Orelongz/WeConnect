@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
-require('dotenv').config();
+dotenv.config();
 
 const { SECRET } = process.env;
 
@@ -20,13 +21,15 @@ const validateToken = (req, res, next) => {
   );
   if (!token) {
     return res.status(401).json({
-      message: 'Token absent'
+      status: 'fail',
+      error: 'Token absent'
     });
   }
   jwt.verify(token, SECRET, (err, decoded) => {
     if (err) {
       return res.status(401).json({
-        message: 'Invalid token',
+        status: 'fail',
+        error: 'Invalid token',
       });
     }
     req.decoded = decoded;

@@ -3,9 +3,9 @@ import {
   generateToken,
   handleValidation,
   handleErrorMessage
-} from './../helpers/userHelpers';
+} from './../helpers/user';
 import db from './../models';
-import { notFound } from '../services/genericMessages';
+import { notFound } from './../helpers/genericMessages';
 
 const { User } = db;
 
@@ -49,10 +49,7 @@ export default class UserController {
           }
         });
       })
-      .catch(error => res.status(400).json({
-        status: 'fail',
-        error: handleErrorMessage(error)
-      }));
+      .catch(error => handleErrorMessage(res, error));
   }
 
   /**
@@ -98,10 +95,7 @@ export default class UserController {
         }
         return notFound(res, 'User');
       })
-      .catch(error => res.status(400).json({
-        status: 'fail',
-        error: handleErrorMessage(error)
-      }));
+      .catch(error => handleErrorMessage(res, error));
   }
 
   /**
@@ -140,9 +134,6 @@ export default class UserController {
             }
           }));
       })
-      .catch(error => res.status(400).json({
-        status: 'fail',
-        error: handleErrorMessage(error)
-      }));
+      .catch(error => handleErrorMessage(res, error));
   }
 }

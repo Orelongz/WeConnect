@@ -1,8 +1,6 @@
 import express from 'express';
 import BusinessController from './../controllers/businessController';
-import BusinessMiddleware from './../middlewares/businessMiddleware';
-import UserMiddleware from './../middlewares/userMiddleware';
-import { validateToken } from './../services/jwtService';
+import validateToken from './../middlewares/userMiddleware';
 
 const {
   createBusiness,
@@ -13,12 +11,6 @@ const {
   changeBusinessOwnership,
   getUserBusinesses
 } = BusinessController;
-const {
-  businessValidation,
-  findBusiness,
-  businessNameExist
-} = BusinessMiddleware;
-const { findUserByEmail } = UserMiddleware;
 const router = express.Router();
 
 // Get all businesses
@@ -31,10 +23,16 @@ router.get(
   getUserBusinesses
 );
 
+// Route to transfer business ownership
+router.put(
+  '/change-ownership/:businessId',
+  validateToken,
+  changeBusinessOwnership
+);
+
 // Get a business by businessId
 router.get(
   '/:businessId',
-  findBusiness,
   getBusiness
 );
 
@@ -42,8 +40,6 @@ router.get(
 router.post(
   '/',
   validateToken,
-  businessValidation,
-  businessNameExist,
   createBusiness
 );
 
@@ -51,9 +47,6 @@ router.post(
 router.put(
   '/:businessId',
   validateToken,
-  businessValidation,
-  findBusiness,
-  businessNameExist,
   updateBusiness
 );
 
@@ -61,17 +54,7 @@ router.put(
 router.delete(
   '/:businessId',
   validateToken,
-  findBusiness,
   deleteBusiness
-);
-
-// Route to transfer business ownership
-router.put(
-  '/change-ownership/:businessId',
-  validateToken,
-  findUserByEmail,
-  findBusiness,
-  changeBusinessOwnership
 );
 
 export default router;

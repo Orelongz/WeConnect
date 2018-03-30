@@ -32,31 +32,4 @@ router.put(
   updateUserDetails
 );
 
-// // Register a user
-// router.post(
-//   '/auth/signup',
-//   signUpValidation,
-//   validateEmail,
-//   mailExists,
-//   signup
-// );
-
-// // Login a user
-// router.post(
-//   '/auth/login',
-//   signInValidation,
-//   findUserByEmail,
-//   login
-// );
-
-// // Edits user details
-// router.put(
-//   '/user',
-//   validateToken,
-//   updateUserValidation,
-//   validateEmail,
-//   mailExists,
-//   updateUserDetails
-// );
-
 export default router;

@@ -3,7 +3,7 @@ import bodyParser from 'body-parser';
 import swaggerUi from 'swagger-ui-express';
 import cors from 'cors';
 import userRoute from './src/routes/user';
-// import businessRoute from './src/routes/business';
+import businessRoute from './src/routes/business';
 // import reviewRoute from './src/routes/review';
 import swaggerDocument from './../swagger.json';
 
@@ -19,7 +19,7 @@ app.use(
   swaggerUi.setup(swaggerDocument)
 );
 app.use('/api/v1', userRoute);
-// app.use('/api/v1/businesses', businessRoute);
+app.use('/api/v1/businesses', businessRoute);
 // app.use('/api/v1/businesses/:businessId/reviews', reviewRoute);
 
 app.all('*', (req, res) => res.status(404).json({

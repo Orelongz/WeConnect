@@ -1,10 +1,10 @@
 import jwt from 'jsonwebtoken';
-import db from './../models';
-import { notFound } from './../services/genericMessages';
-require('dotenv').config();
+import dotenv from 'dotenv';
+import { unauthorized } from './genericMessages';
+
+dotenv.config();
 
 const { SECRET } = process.env;
-const { User } = db;
 
 /**
 * generateToken
@@ -39,14 +39,19 @@ const handleValidation = (res, inputObject) => {
 /**
  * handleErrorMessage()
  * @desc handles validation of signup input fields
+ * @param {Object} res response object
  * @param {Object} error passed in error object
  * @return {*} message, void
  */
-const handleErrorMessage = (error) => {
-  const errorObject = error.errors;
-  if (errorObject) {
-    return errorObject.map(eachError => eachError.message);
+const handleErrorMessage = (res, error) => {
+  console.log(error);
+  if (error.errors) {
+    return res.status(400).json({
+      status: 'fail',
+      error: error.errors.map(eachError => eachError.message)
+    });
   }
+  return unauthorized(res);
 };
 
 export {
