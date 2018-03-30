@@ -1,6 +1,7 @@
 import validator from 'validator';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import 'babel-polyfill';
 
 dotenv.config();
 

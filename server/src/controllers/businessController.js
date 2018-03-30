@@ -1,5 +1,5 @@
 import db from './../models';
-import { businessObjectHolder } from './../helpers/business';
+import { businessObjectHolder, searchQueryHolder } from './../helpers/business';
 import {
   notFound,
   checkUUID,
@@ -149,8 +149,9 @@ export default class BusinessController {
    * @return {Object} message, businesses
    */
   static getAllBusinesses(req, res) {
+    const searchParameter = searchQueryHolder(req);
     return Business
-      .all()
+      .all(searchParameter)
       .then((businesses) => {
         if (businesses.length === 0) {
           return res.status(200).json({
