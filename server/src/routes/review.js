@@ -1,8 +1,6 @@
 import express from 'express';
 import ReviewController from './../controllers/reviewController';
-import ReviewMiddleware from './../middlewares/reviewMiddleware';
-import BusinessMiddleware from './../middlewares/businessMiddleware';
-import { validateToken } from './../services/jwtService';
+import validateToken from './../middlewares';
 
 const {
   addReview,
@@ -11,14 +9,11 @@ const {
   editReview,
   deleteReview
 } = ReviewController;
-const { findBusiness } = BusinessMiddleware;
-const { validateReview, findReview } = ReviewMiddleware;
 const router = express.Router({ mergeParams: true });
 
 // Get all reviews for a business
 router.get(
   '/',
-  findBusiness,
   getBusinessReviews
 );
 
@@ -26,8 +21,6 @@ router.get(
 router.post(
   '/',
   validateToken,
-  findBusiness,
-  validateReview,
   addReview
 );
 
@@ -35,8 +28,6 @@ router.post(
 router.get(
   '/:reviewId',
   validateToken,
-  findBusiness,
-  findReview,
   getReview
 );
 
@@ -44,9 +35,6 @@ router.get(
 router.put(
   '/:reviewId',
   validateToken,
-  validateReview,
-  findBusiness,
-  findReview,
   editReview
 );
 
@@ -54,8 +42,6 @@ router.put(
 router.delete(
   '/:reviewId',
   validateToken,
-  findBusiness,
-  findReview,
   deleteReview
 );
 

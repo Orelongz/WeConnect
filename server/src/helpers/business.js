@@ -1,6 +1,3 @@
-import validator from 'validator';
-import { notFound } from './../helpers/genericMessages';
-
 /**
  * businessObject()
  * @desc handles update of business
@@ -24,19 +21,4 @@ const businessObjectHolder = (req) => {
   return business;
 };
 
-
-/**
- * findBusiness()
- * @desc finds a business by its Id
- * @param {Object} res response object
- * @param {Object} id incoming id
- * @param {Object} str name of model
- * @return {Object} json object
- */
-const checkUUID = (res, id, str) => {
-  if (!validator.isUUID(id)) {
-    return notFound(res, str);
-  }
-};
-
-export { businessObjectHolder, checkUUID };
+export default businessObjectHolder;

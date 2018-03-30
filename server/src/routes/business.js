@@ -1,6 +1,6 @@
 import express from 'express';
 import BusinessController from './../controllers/businessController';
-import validateToken from './../middlewares/userMiddleware';
+import validateToken from './../middlewares';
 
 const {
   createBusiness,

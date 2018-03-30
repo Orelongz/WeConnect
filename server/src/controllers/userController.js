@@ -1,11 +1,11 @@
 import bcrypt from 'bcrypt';
 import {
+  notFound,
   generateToken,
   handleValidation,
   handleErrorMessage
-} from './../helpers/user';
+} from './../helpers';
 import db from './../models';
-import { notFound } from './../helpers/genericMessages';
 
 const { User } = db;
 
@@ -26,11 +26,10 @@ export default class UserController {
       firstname, lastname, email, password
     } = req.body;
 
-    const validateFail = handleValidation(res, {
+    const validationFailed = handleValidation(res, {
       firstname, lastname, email, password
     });
-
-    if (validateFail) return validateFail;
+    if (validationFailed) return validationFailed;
 
     const hashedPassword = bcrypt.hashSync(password, 10);
 
@@ -62,9 +61,8 @@ export default class UserController {
   static login(req, res) {
     const { email, password } = req.body;
 
-    const validateFail = handleValidation(res, { email, password });
-
-    if (validateFail) return validateFail;
+    const validationFailed = handleValidation(res, { email, password });
+    if (validationFailed) return validationFailed;
 
     return User.findOne({
       where: {
@@ -108,9 +106,8 @@ export default class UserController {
   static updateUserDetails(req, res) {
     const { firstname, lastname, email } = req.body;
 
-    const validateFail = handleValidation(res, { firstname, lastname, email });
-
-    if (validateFail) return validateFail;
+    const validationFailed = handleValidation(res, { firstname, lastname, email });
+    if (validationFailed) return validationFailed;
 
     const { id } = req.decoded;
 

@@ -1,10 +1,12 @@
 import db from './../models';
-import { businessObjectHolder, checkUUID } from './../helpers/business';
-import { handleValidation, handleErrorMessage } from './../helpers/user';
+import { businessObjectHolder } from './../helpers/business';
 import {
   notFound,
-  unauthorized
-} from './../helpers/genericMessages';
+  checkUUID,
+  unauthorized,
+  handleValidation,
+  handleErrorMessage
+} from './../helpers';
 
 const { Business, User } = db;
 
@@ -22,9 +24,8 @@ export default class BusinessController {
    */
   static createBusiness(req, res) {
     const businessObject = businessObjectHolder(req);
-    const validateFail = handleValidation(res, businessObject);
-
-    if (validateFail) return validateFail;
+    const validationFailed = handleValidation(res, businessObject);
+    if (validationFailed) return validationFailed;
 
     const {
       businessImage, postalAddress, workHours
@@ -50,9 +51,8 @@ export default class BusinessController {
    */
   static updateBusiness(req, res) {
     const businessObject = businessObjectHolder(req);
-    const validateFail = handleValidation(res, businessObject);
-
-    if (validateFail) return validateFail;
+    const validationFailed = handleValidation(res, businessObject);
+    if (validationFailed) return validationFailed;
 
     const {
       businessImage, postalAddress, workHours
@@ -104,12 +104,13 @@ export default class BusinessController {
       .then((result) => {
         if (result === 1) {
           return res.status(200).json({
-            status: 'success'
+            status: 'success',
+            message: 'Business deleted'
           });
         }
         return unauthorized(res);
       })
-      .catch(error => handleErrorMessage(error));
+      .catch(error => handleErrorMessage(res, error));
   }
 
   /**
@@ -134,7 +135,7 @@ export default class BusinessController {
         }
         return res.status(200).json({
           status: 'success',
-          business
+          data: { business }
         });
       })
       .catch(error => handleErrorMessage(res, error));
@@ -150,12 +151,20 @@ export default class BusinessController {
   static getAllBusinesses(req, res) {
     return Business
       .all()
-      .then(businesses => res.status(200).json({
-        status: 'success',
-        data: {
-          businesses
+      .then((businesses) => {
+        if (businesses.length === 0) {
+          return res.status(200).json({
+            status: 'success',
+            message: 'No businesses'
+          });
         }
-      }))
+        return res.status(200).json({
+          status: 'success',
+          data: {
+            businesses
+          }
+        });
+      })
       .catch(error => handleErrorMessage(res, error));
   }
 
@@ -168,15 +177,14 @@ export default class BusinessController {
    */
   static changeBusinessOwnership(req, res) {
     const { email } = req.body;
-    const validateFail = handleValidation(res, { email });
-
-    if (validateFail) return validateFail;
+    const validationFailed = handleValidation(res, { email });
+    if (validationFailed) return validationFailed;
 
     const { businessId: id } = req.params;
     const isNotUUID = checkUUID(res, id, 'Business');
 
     if (isNotUUID) return isNotUUID;
-    
+
     const { id: ownerId } = req.decoded;
 
     return User.findOne({

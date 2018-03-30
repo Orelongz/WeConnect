@@ -4,7 +4,7 @@ import swaggerUi from 'swagger-ui-express';
 import cors from 'cors';
 import userRoute from './src/routes/user';
 import businessRoute from './src/routes/business';
-// import reviewRoute from './src/routes/review';
+import reviewRoute from './src/routes/review';
 import swaggerDocument from './../swagger.json';
 
 const app = express();
@@ -20,7 +20,7 @@ app.use(
 );
 app.use('/api/v1', userRoute);
 app.use('/api/v1/businesses', businessRoute);
-// app.use('/api/v1/businesses/:businessId/reviews', reviewRoute);
+app.use('/api/v1/businesses/:businessId/reviews', reviewRoute);
 
 app.all('*', (req, res) => res.status(404).json({
   message: 'Page not Found'
