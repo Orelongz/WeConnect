@@ -12,7 +12,7 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         is: {
           args: /^[a-z]+$/i,
-          msg: 'Only letters are allowed'
+          msg: 'Firstname must be letters'
         }
       }
     },
@@ -22,17 +22,21 @@ module.exports = (sequelize, DataTypes) => {
       validate: {
         is: {
           args: /^[a-z]+$/i,
-          msg: 'Only letters are allowed'
+          msg: 'Lastname must be letters'
         }
       }
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
+      unique: {
+        args: true,
+        msg: 'User exists'
+      },
       validate: {
         isEmail: {
           args: true,
-          msg: 'Enter a valid email'
+          msg: 'Invalid email'
         }
       }
     },

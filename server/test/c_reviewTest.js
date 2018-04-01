@@ -1,7 +1,7 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from './../app';
-import { db } from './../src/models';
+import db from './../src/models';
 import { userData, businessData, reviewData } from './../mockData/serveMockData';
 
 const { Review } = db;
@@ -29,7 +29,7 @@ describe('Given that a user sends a ', () => {
           password: userData.user1.password
         })
         .end((err, res) => {
-          authtoken1 = res.body.token;
+          authtoken1 = res.body.data.token;
           done();
         });
     });
@@ -41,7 +41,7 @@ describe('Given that a user sends a ', () => {
         .type('form')
         .send(businessData.business6)
         .end((err, res) => {
-          businessId1 = res.body.business.id;
+          businessId1 = res.body.data.business.id;
           done();
         });
     });
@@ -54,13 +54,17 @@ describe('Given that a user sends a ', () => {
         .send(reviewData.review1)
         .end((err, res) => {
           res.should.have.status(201);
-          res.body.review.should.be.a('object');
           assert.equal(
-            res.body.review.review,
-            reviewData.review1.review,
-            'The created review object'
+            res.body.status,
+            'success'
           );
-          reviewId1 = res.body.review.id;
+          res.body.data.review.should.be.a('object');
+          assert.equal(
+            res.body.data.review.review,
+            reviewData.review1.review,
+            'Review created'
+          );
+          reviewId1 = res.body.data.review.id;
           done();
         });
     });
@@ -74,8 +78,12 @@ describe('Given that a user sends a ', () => {
         .end((err, res) => {
           res.should.have.status(400);
           assert.equal(
-            res.body.message,
-            'The review input field cannot be empty and must be a string'
+            res.body.status,
+            'fail'
+          );
+          assert.equal(
+            res.body.error[0],
+            'review must not be empty'
           );
           done();
         });
@@ -90,7 +98,11 @@ describe('Given that a user sends a ', () => {
         .end((err, res) => {
           res.should.have.status(401);
           assert.equal(
-            res.body.message,
+            res.body.status,
+            'fail'
+          );
+          assert.equal(
+            res.body.error,
             'Invalid token'
           );
           done();
@@ -105,7 +117,11 @@ describe('Given that a user sends a ', () => {
         .end((err, res) => {
           res.should.have.status(401);
           assert.equal(
-            res.body.message,
+            res.body.status,
+            'fail'
+          );
+          assert.equal(
+            res.body.error,
             'Token absent'
           );
           done();
@@ -121,7 +137,11 @@ describe('Given that a user sends a ', () => {
         .end((err, res) => {
           res.should.have.status(404);
           assert.equal(
-            res.body.message,
+            res.body.status,
+            'fail'
+          );
+          assert.equal(
+            res.body.error,
             'Business not found'
           );
           done();
@@ -137,7 +157,11 @@ describe('Given that a user sends a ', () => {
         .end((err, res) => {
           res.should.have.status(404);
           assert.equal(
-            res.body.message,
+            res.body.status,
+            'fail'
+          );
+          assert.equal(
+            res.body.error,
             'Business not found'
           );
           done();
@@ -160,9 +184,13 @@ describe('Given that a user sends a ', () => {
         .get(`/api/v1/businesses/${businessId1}/reviews`)
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.reviews.should.be.a('array');
           assert.equal(
-            res.body.reviews.length,
+            res.body.status,
+            'success'
+          );
+          res.body.data.reviews.should.be.a('array');
+          assert.equal(
+            res.body.data.reviews.length,
             2,
             'There are presently two reviews for this business'
           );
@@ -176,7 +204,11 @@ describe('Given that a user sends a ', () => {
         .end((err, res) => {
           res.should.have.status(404);
           assert.equal(
-            res.body.message,
+            res.body.status,
+            'fail'
+          );
+          assert.equal(
+            res.body.error,
             'Business not found'
           );
           done();
@@ -189,7 +221,11 @@ describe('Given that a user sends a ', () => {
         .end((err, res) => {
           res.should.have.status(404);
           assert.equal(
-            res.body.message,
+            res.body.status,
+            'fail'
+          );
+          assert.equal(
+            res.body.error,
             'Business not found'
           );
           done();
@@ -204,9 +240,13 @@ describe('Given that a user sends a ', () => {
         .set('authorization', authtoken1)
         .end((err, res) => {
           res.should.have.status(200);
-          res.body.review.should.be.a('object');
+          assert.equal(
+            res.body.status,
+            'success'
+          );
+          res.body.data.review.should.be.a('object');
           assert.isNotNull(
-            res.body.review,
+            res.body.data.review,
             'Review was found'
           );
           done();
@@ -219,7 +259,11 @@ describe('Given that a user sends a ', () => {
         .end((err, res) => {
           res.should.have.status(401);
           assert.equal(
-            res.body.message,
+            res.body.status,
+            'fail'
+          );
+          assert.equal(
+            res.body.error,
             'Token absent'
           );
           done();
@@ -233,50 +277,30 @@ describe('Given that a user sends a ', () => {
         .end((err, res) => {
           res.should.have.status(401);
           assert.equal(
-            res.body.message,
+            res.body.status,
+            'fail'
+          );
+          assert.equal(
+            res.body.error,
             'Invalid token'
           );
           done();
         });
     });
 
-    it('should return a status 404 if businesId not in the database', (done) => {
-      chai.request(app)
-        .get(`/api/v1/businesses/f64f2940-fae4-11e7-8c5f-ef356f279131/reviews/${reviewId1}`)
-        .set('authorization', authtoken1)
-        .end((err, res) => {
-          res.should.have.status(404);
-          assert.equal(
-            res.body.message,
-            'Business not found'
-          );
-          done();
-        });
-    });
-
-    it('should return a status 404 if businesId is not uuid', (done) => {
-      chai.request(app)
-        .get(`/api/v1/businesses/anyInvalidBusinessIdString/reviews/${reviewId1}`)
-        .set('authorization', authtoken1)
-        .end((err, res) => {
-          res.should.have.status(404);
-          assert.equal(
-            res.body.message,
-            'Business not found'
-          );
-          done();
-        });
-    });
-
-    it('should return a status 404 if reviewId is not in the database', (done) => {
+    it('should return a status 403 if user is not the owner of the review', (done) => {
       chai.request(app)
         .get(`/api/v1/businesses/${businessId1}/reviews/f64f2940-fae4-11e7-8c5f-ef356f279131`)
         .set('authorization', authtoken1)
         .end((err, res) => {
-          res.should.have.status(404);
+          res.should.have.status(403);
           assert.equal(
-            res.body.message,
-            'Review not found'
+            res.body.status,
+            'fail'
+          );
+          assert.equal(
+            res.body.error,
+            'Access to content denied'
           );
           done();
         });
@@ -289,7 +313,11 @@ describe('Given that a user sends a ', () => {
         .end((err, res) => {
           res.should.have.status(404);
           assert.equal(
-            res.body.message,
+            res.body.status,
+            'fail'
+          );
+          assert.equal(
+            res.body.error,
             'Review not found'
           );
           done();
@@ -297,7 +325,7 @@ describe('Given that a user sends a ', () => {
     });
   });
 
-  describe('Given that a user sends a PUT request to /api/v1/businesses/:businessId/reviews/:reviewId', () => {
+  describe('PUT request to /api/v1/businesses/:businessId/reviews/:reviewId', () => {
     it('should return a status 200 if review, business and user exists', (done) => {
       chai.request(app)
         .put(`/api/v1/businesses/${businessId1}/reviews/${reviewId1}`)
@@ -306,8 +334,12 @@ describe('Given that a user sends a ', () => {
         .end((err, res) => {
           res.should.have.status(200);
           assert.equal(
-            res.body.message,
-            'Review updated',
+            res.body.status,
+            'success'
+          );
+          assert.equal(
+            res.body.data.review.review,
+            reviewData.review4.review,
             'Review was found and updated'
           );
           done();
@@ -322,8 +354,12 @@ describe('Given that a user sends a ', () => {
         .end((err, res) => {
           res.should.have.status(400);
           assert.equal(
-            res.body.message,
-            'The review input field cannot be empty and must be a string',
+            res.body.status,
+            'fail'
+          );
+          assert.equal(
+            res.body.error[0],
+            'review must not be empty',
             'Review cannot be empty'
           );
           done();
@@ -336,7 +372,11 @@ describe('Given that a user sends a ', () => {
         .end((err, res) => {
           res.should.have.status(401);
           assert.equal(
-            res.body.message,
+            res.body.status,
+            'fail'
+          );
+          assert.equal(
+            res.body.error,
             'Token absent'
           );
           done();
@@ -350,53 +390,31 @@ describe('Given that a user sends a ', () => {
         .end((err, res) => {
           res.should.have.status(401);
           assert.equal(
-            res.body.message,
+            res.body.status,
+            'fail'
+          );
+          assert.equal(
+            res.body.error,
             'Invalid token'
           );
           done();
         });
     });
 
-    it('should return a status 404 if businesId not in the database', (done) => {
-      chai.request(app)
-        .put(`/api/v1/businesses/f64f2940-fae4-11e7-8c5f-ef356f279131/reviews/${reviewId1}`)
-        .set('authorization', authtoken1)
-        .send(reviewData.review4)
-        .end((err, res) => {
-          res.should.have.status(404);
-          assert.equal(
-            res.body.message,
-            'Business not found'
-          );
-          done();
-        });
-    });
-
-    it('should return a status 404 if businesId is not uuid', (done) => {
-      chai.request(app)
-        .put(`/api/v1/businesses/anyInvalidBusinessIdString/reviews/${reviewId1}`)
-        .set('authorization', authtoken1)
-        .send(reviewData.review4)
-        .end((err, res) => {
-          res.should.have.status(404);
-          assert.equal(
-            res.body.message,
-            'Business not found'
-          );
-          done();
-        });
-    });
-
-    it('should return a status 404 if reviewId is not in the database', (done) => {
+    it('should return a status 403 if user is not the owner of the review', (done) => {
       chai.request(app)
         .put(`/api/v1/businesses/${businessId1}/reviews/f64f2940-fae4-11e7-8c5f-ef356f279131`)
         .set('authorization', authtoken1)
         .send(reviewData.review4)
         .end((err, res) => {
-          res.should.have.status(404);
+          res.should.have.status(403);
           assert.equal(
-            res.body.message,
-            'Review not found'
+            res.body.status,
+            'fail'
+          );
+          assert.equal(
+            res.body.error,
+            'Access to content denied'
           );
           done();
         });
@@ -410,7 +428,11 @@ describe('Given that a user sends a ', () => {
         .end((err, res) => {
           res.should.have.status(404);
           assert.equal(
-            res.body.message,
+            res.body.status,
+            'fail'
+          );
+          assert.equal(
+            res.body.error,
             'Review not found'
           );
           done();
@@ -418,13 +440,17 @@ describe('Given that a user sends a ', () => {
     });
   });
 
-  describe('Given that a user sends a DELETE request to /api/v1/businesses/:businessId/reviews/:reviewId', () => {
+  describe('DELETE request to /api/v1/businesses/:businessId/reviews/:reviewId', () => {
     it('should return a status 200 if review, business and user exists', (done) => {
       chai.request(app)
         .delete(`/api/v1/businesses/${businessId1}/reviews/${reviewId1}`)
         .set('authorization', authtoken1)
         .end((err, res) => {
           res.should.have.status(200);
+          assert.equal(
+            res.body.status,
+            'success'
+          );
           assert.equal(
             res.body.message,
             'Review deleted',
@@ -440,7 +466,11 @@ describe('Given that a user sends a ', () => {
         .end((err, res) => {
           res.should.have.status(401);
           assert.equal(
-            res.body.message,
+            res.body.status,
+            'fail'
+          );
+          assert.equal(
+            res.body.error,
             'Token absent'
           );
           done();
@@ -454,52 +484,31 @@ describe('Given that a user sends a ', () => {
         .end((err, res) => {
           res.should.have.status(401);
           assert.equal(
-            res.body.message,
+            res.body.status,
+            'fail'
+          );
+          assert.equal(
+            res.body.error,
             'Invalid token'
           );
           done();
         });
     });
 
-    it('should return a status 404 if businesId not in the database', (done) => {
-      chai.request(app)
-        .delete(`/api/v1/businesses/f64f2940-fae4-11e7-8c5f-ef356f279131/reviews/${reviewId1}`)
-        .set('authorization', authtoken1)
-        .end((err, res) => {
-          res.should.have.status(404);
-          assert.equal(
-            res.body.message,
-            'Business not found'
-          );
-          done();
-        });
-    });
-
-    it('should return a status 404 if businesId is not uuid', (done) => {
-      chai.request(app)
-        .delete(`/api/v1/businesses/anyInvalidBusinessIdString/reviews/${reviewId1}`)
-        .set('authorization', authtoken1)
-        .send(reviewData.review4)
-        .end((err, res) => {
-          res.should.have.status(404);
-          assert.equal(
-            res.body.message,
-            'Business not found'
-          );
-          done();
-        });
-    });
-
-    it('should return a status 404 if reviewId is not in the database', (done) => {
+    it('should return a status 404 if user is not the owner of the review', (done) => {
       chai.request(app)
         .delete(`/api/v1/businesses/${businessId1}/reviews/f64f2940-fae4-11e7-8c5f-ef356f279131`)
         .set('authorization', authtoken1)
         .send(reviewData.review4)
         .end((err, res) => {
-          res.should.have.status(404);
+          res.should.have.status(403);
           assert.equal(
-            res.body.message,
-            'Review not found'
+            res.body.status,
+            'fail'
+          );
+          assert.equal(
+            res.body.error,
+            'Access to content denied'
           );
           done();
         });
@@ -513,7 +522,11 @@ describe('Given that a user sends a ', () => {
         .end((err, res) => {
           res.should.have.status(404);
           assert.equal(
-            res.body.message,
+            res.body.status,
+            'fail'
+          );
+          assert.equal(
+            res.body.error,
             'Review not found'
           );
           done();

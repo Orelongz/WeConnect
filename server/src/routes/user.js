@@ -1,7 +1,6 @@
 import express from 'express';
-import UserMiddleware from './../middlewares/userMiddleware';
 import UserController from './../controllers/userController';
-import { validateToken } from './../services/jwtService';
+import validateToken from './../middlewares';
 
 const router = express.Router();
 const {
@@ -9,14 +8,6 @@ const {
   login,
   updateUserDetails
 } = UserController;
-const {
-  signUpValidation,
-  validateEmail,
-  signInValidation,
-  updateUserValidation,
-  mailExists,
-  findUserByEmail
-} = UserMiddleware;
 
 router.get('/', (req, res) => res.status(200).json({
   message: 'Welcome to WeConnect'
@@ -25,17 +16,12 @@ router.get('/', (req, res) => res.status(200).json({
 // Register a user
 router.post(
   '/auth/signup',
-  signUpValidation,
-  validateEmail,
-  mailExists,
   signup
 );
 
 // Login a user
 router.post(
   '/auth/login',
-  signInValidation,
-  findUserByEmail,
   login
 );
 
@@ -43,9 +29,6 @@ router.post(
 router.put(
   '/user',
   validateToken,
-  updateUserValidation,
-  validateEmail,
-  mailExists,
   updateUserDetails
 );
 

@@ -1,16 +1,9 @@
 import jwt from 'jsonwebtoken';
+import dotenv from 'dotenv';
 
-require('dotenv').config();
+dotenv.config();
 
 const { SECRET } = process.env;
-
-/**
-* generateToken
-* @desc generates authentication token
-* @param {Object} payload object
-* @returns {String} token
-*/
-const generateToken = payload => jwt.sign(payload, SECRET, { expiresIn: '24h' });
 
 /**
  * validateToken()
@@ -28,13 +21,15 @@ const validateToken = (req, res, next) => {
   );
   if (!token) {
     return res.status(401).json({
-      message: 'Token absent'
+      status: 'fail',
+      error: 'Token absent'
     });
   }
   jwt.verify(token, SECRET, (err, decoded) => {
     if (err) {
       return res.status(401).json({
-        message: 'Invalid token',
+        status: 'fail',
+        error: 'Invalid token',
       });
     }
     req.decoded = decoded;
@@ -42,4 +37,4 @@ const validateToken = (req, res, next) => {
   });
 };
 
-export { generateToken, validateToken };
+export default validateToken;

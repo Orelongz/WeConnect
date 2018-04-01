@@ -1,7 +1,7 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
 import app from './../app';
-import { db } from './../src/models';
+import db from './../src/models';
 import { userData } from './../mockData/serveMockData';
 
 const { User } = db;
@@ -24,8 +24,12 @@ describe('Given that a user sends a', () => {
         .type('form')
         .send(userData.user1)
         .end((err, res) => {
-          const { firstname, lastname, email } = res.body.user;
+          const { firstname, lastname, email } = res.body.data.user;
           res.should.have.status(201);
+          assert.equal(
+            res.body.status,
+            'success',
+          );
           assert.equal(
             firstname.toLowerCase(),
             userData.user1.firstname.toLocaleLowerCase(),
@@ -42,7 +46,7 @@ describe('Given that a user sends a', () => {
             'email equal'
           );
           assert.isNotNull(
-            res.body.token,
+            res.body.data.token,
             'Token should be available'
           );
           done();
@@ -55,8 +59,12 @@ describe('Given that a user sends a', () => {
         .type('form')
         .send(userData.user2)
         .end((err, res) => {
-          const { firstname, lastname, email } = res.body.user;
+          const { firstname, lastname, email } = res.body.data.user;
           res.should.have.status(201);
+          assert.equal(
+            res.body.status,
+            'success',
+          );
           assert.equal(
             firstname.toLowerCase(),
             userData.user2.firstname.toLocaleLowerCase(),
@@ -73,7 +81,7 @@ describe('Given that a user sends a', () => {
             'email equal'
           );
           assert.isNotNull(
-            res.body.token,
+            res.body.data.token,
             'Token should be available'
           );
           done();
@@ -86,8 +94,12 @@ describe('Given that a user sends a', () => {
         .type('form')
         .send(userData.user6)
         .end((err, res) => {
-          const { firstname, lastname, email } = res.body.user;
+          const { firstname, lastname, email } = res.body.data.user;
           res.should.have.status(201);
+          assert.equal(
+            res.body.status,
+            'success',
+          );
           assert.equal(
             firstname.toLowerCase(),
             userData.user6.firstname.toLocaleLowerCase(),
@@ -104,10 +116,10 @@ describe('Given that a user sends a', () => {
             'email equal'
           );
           assert.isNotNull(
-            res.body.token,
+            res.body.data.token,
             'Token should be available'
           );
-          authtoken1 = res.body.token;
+          authtoken1 = res.body.data.token;
           done();
         });
     });
@@ -120,7 +132,12 @@ describe('Given that a user sends a', () => {
         .end((err, res) => {
           res.should.have.status(400);
           assert.strictEqual(
-            res.body.message,
+            res.body.status,
+            'fail'
+          );
+          res.body.error.should.have.be.a('array');
+          assert.equal(
+            res.body.error[0],
             'Invalid email',
             'Email is not valid'
           );
@@ -135,27 +152,27 @@ describe('Given that a user sends a', () => {
         .send(userData.user4)
         .end((err, res) => {
           res.should.have.status(400);
-          assert.exists(
-            res.body.message,
-            'message is not undefined'
+          assert.strictEqual(
+            res.body.status,
+            'fail'
           );
-          res.body.message.should.be.a('array');
+          res.body.error.should.have.be.a('array');
           done();
         });
     });
 
-    it('should return 409 status code when registering a duplicate email', (done) => {
+    it('should return 400 status code when registering a duplicate email', (done) => {
       chai.request(app)
         .post('/api/v1/auth/signup')
         .type('form')
         .send(userData.user1)
         .end((err, res) => {
-          res.should.have.status(409);
+          res.should.have.status(400);
           assert.strictEqual(
-            res.body.message,
-            'User exist',
-            'Email already exists'
+            res.body.status,
+            'fail'
           );
+          res.body.error.should.have.be.a('array');
           done();
         });
     });
@@ -171,8 +188,12 @@ describe('Given that a user sends a', () => {
           password: userData.user1.password
         })
         .end((err, res) => {
-          const { firstname, lastname } = res.body.user;
+          const { firstname, lastname } = res.body.data.user;
           res.should.have.status(200);
+          assert.equal(
+            res.body.status,
+            'success'
+          );
           assert.equal(
             firstname.toLowerCase(),
             userData.user1.firstname.toLocaleLowerCase(),
@@ -184,7 +205,7 @@ describe('Given that a user sends a', () => {
             'Lastname equal'
           );
           assert.isNotNull(
-            res.body.token,
+            res.body.data.token,
             'Token should be available'
           );
           done();
@@ -201,7 +222,11 @@ describe('Given that a user sends a', () => {
         })
         .end((err, res) => {
           res.should.have.status(400);
-          res.body.message.should.be.a('array');
+          assert.equal(
+            res.body.status,
+            'fail'
+          );
+          res.body.error.should.be.a('array');
           done();
         });
     });
@@ -216,8 +241,12 @@ describe('Given that a user sends a', () => {
         })
         .end((err, res) => {
           res.should.have.status(401);
+          assert.equal(
+            res.body.status,
+            'fail'
+          );
           assert.strictEqual(
-            res.body.message,
+            res.body.error,
             'Wrong password',
             'Password does not match the email in database'
           );
@@ -235,8 +264,12 @@ describe('Given that a user sends a', () => {
         })
         .end((err, res) => {
           res.should.have.status(404);
+          assert.equal(
+            res.body.status,
+            'fail'
+          );
           assert.strictEqual(
-            res.body.message,
+            res.body.error,
             'User not found',
             'Email not in the database'
           );
@@ -253,11 +286,11 @@ describe('Given that a user sends a', () => {
         .type('form')
         .send(userData.user6)
         .end((err, res) => {
-          const { firstname, lastname, email } = res.body.user;
+          const { firstname, lastname, email } = res.body.data.user;
           res.should.have.status(200);
           assert.equal(
-            res.body.message,
-            'Update successful'
+            res.body.status,
+            'success'
           );
           assert.equal(
             firstname,
@@ -286,8 +319,12 @@ describe('Given that a user sends a', () => {
         .send(userData.user5)
         .end((err, res) => {
           res.should.have.status(400);
-          assert.strictEqual(
-            res.body.message,
+          assert.equal(
+            res.body.status,
+            'fail'
+          );
+          assert.equal(
+            res.body.error[0],
             'Invalid email',
             'Email is not valid'
           );
@@ -303,7 +340,11 @@ describe('Given that a user sends a', () => {
         .send(userData.user4)
         .end((err, res) => {
           res.should.have.status(400);
-          res.body.message.should.be.a('array');
+          assert.equal(
+            res.body.status,
+            'fail'
+          );
+          res.body.error.should.be.a('array');
           done();
         });
     });
@@ -317,7 +358,11 @@ describe('Given that a user sends a', () => {
         .end((err, res) => {
           res.should.have.status(401);
           assert.equal(
-            res.body.message,
+            res.body.status,
+            'fail'
+          );
+          assert.equal(
+            res.body.error,
             'Invalid token'
           );
           done();
@@ -332,7 +377,11 @@ describe('Given that a user sends a', () => {
         .end((err, res) => {
           res.should.have.status(401);
           assert.equal(
-            res.body.message,
+            res.body.status,
+            'fail'
+          );
+          assert.equal(
+            res.body.error,
             'Token absent'
           );
           done();
