@@ -13,10 +13,10 @@ const businessObjectHolder = (req) => {
 
   const business = {
     businessName,
-    category,
+    category: category.toLowerCase(),
     address,
-    city,
-    state,
+    city: city.toLowerCase(),
+    state: state.toLowerCase(),
     phoneNumber,
     about
   };
@@ -24,28 +24,30 @@ const businessObjectHolder = (req) => {
 };
 
 /**
- * searchQueryHolder()
- * @desc handles update of business
+ * handleBusinessSearch()
+ * @desc handles business search
  * @param {Object} req request object
  * @return {Object} theBusiness
  */
-const searchQueryHolder = (req) => {
+const handleBusinessSearch = (req) => {
   const { location, category } = req.query;
-  let search;
-  if (location || category) {
-    search = {
-      where: {
-        [Op.or]: [
-          { city: location },
-          { state: location },
-          { category }
-        ]
-      }
-    };
-  } else {
-    search = {};
+  const search = {};
+  if (location) {
+    search.city = location.toLowerCase();
+    search.state = location.toLowerCase();
   }
-  return search;
+  if (category) {
+    search.category = category.toLowerCase();
+  }
+
+  let databaseQuery;
+  if (Object.keys(search).length === 0) {
+    databaseQuery = {};
+  } else {
+    databaseQuery = { where: { [Op.or]: search } };
+  }
+
+  return databaseQuery;
 };
 
-export { businessObjectHolder, searchQueryHolder };
+export { businessObjectHolder, handleBusinessSearch };

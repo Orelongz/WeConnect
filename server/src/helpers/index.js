@@ -1,7 +1,6 @@
 import validator from 'validator';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import 'babel-polyfill';
 
 dotenv.config();
 
@@ -39,7 +38,7 @@ const unauthorized = res => res.status(403).json({
 const handleValidation = (res, inputObject) => {
   const error = [];
   Object.entries(inputObject).forEach(([key, value]) => {
-    if (!value) {
+    if (!value || value.trim() === '') {
       error.push(`${key} must not be empty`);
     }
   });
@@ -65,7 +64,9 @@ const handleErrorMessage = (res, error) => {
       error: error.errors.map(eachError => eachError.message)
     });
   }
-  return unauthorized(res);
+  if (Object.keys(error).length === 0) {
+    return unauthorized(res);
+  }
 };
 
 /**

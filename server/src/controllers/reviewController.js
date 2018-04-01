@@ -7,7 +7,7 @@ import {
   handleErrorMessage
 } from '../helpers/';
 
-const { Review } = db;
+const { Business, Review } = db;
 
 /**
  * @class reviewController
@@ -32,11 +32,16 @@ export default class ReviewController {
     const isNotUUID = checkUUID(res, businessId, 'Business');
     if (isNotUUID) return isNotUUID;
 
-    return Review.create({ review, businessId, userId })
-      .then(theReview => res.status(201).json({
-        status: 'success',
-        data: { review: theReview }
-      }))
+    return Business.findOne({ where: { id: businessId } })
+      .then((business) => {
+        if (!business) return notFound(res, 'Business');
+
+        return Review.create({ review, businessId, userId })
+          .then(theReview => res.status(201).json({
+            status: 'success',
+            data: { review: theReview }
+          }));
+      })
       .catch(error => handleErrorMessage(res, error));
   }
 
@@ -49,26 +54,28 @@ export default class ReviewController {
    */
   static getBusinessReviews(req, res) {
     const { businessId } = req.params;
-    const isNotUUID = checkUUID(res, businessId, 'Business');
 
+    const isNotUUID = checkUUID(res, businessId, 'Business');
     if (isNotUUID) return isNotUUID;
 
-    return Review.all({
-      where: {
-        businessId
-      }
-    })
-      .then((reviews) => {
-        if (reviews.length === 0) {
-          return res.status(200).json({
-            status: 'success',
-            message: 'No reviews'
+    return Business.findOne({ where: { id: businessId } })
+      .then((business) => {
+        if (!business) return notFound(res, 'Business');
+
+        return Review.all({ where: { businessId } })
+          .then((reviews) => {
+            if (reviews.length === 0) {
+              return res.status(200).json({
+                status: 'success',
+                message: 'No reviews'
+              });
+            }
+
+            return res.status(200).json({
+              status: 'success',
+              data: { reviews }
+            });
           });
-        }
-        return res.status(200).json({
-          status: 'success',
-          data: { reviews }
-        });
       })
       .catch(error => handleErrorMessage(res, error));
   }
@@ -82,19 +89,16 @@ export default class ReviewController {
    */
   static getReview(req, res) {
     const { reviewId: id } = req.params;
-    const isNotUUID = checkUUID(res, id, 'Review');
+    const { id: userId } = req.decoded;
 
+    const isNotUUID = checkUUID(res, id, 'Review');
     if (isNotUUID) return isNotUUID;
 
     return Review.findOne({
-      where: {
-        id
-      }
+      where: { id, userId }
     })
       .then((review) => {
-        if (!review) {
-          return notFound(res, 'Review');
-        }
+        if (!review) return unauthorized(res);
         return res.status(200).json({
           status: 'success',
           data: { review }
@@ -112,6 +116,7 @@ export default class ReviewController {
    */
   static editReview(req, res) {
     const { reviewId: id } = req.params;
+    const { id: userId } = req.decoded;
     const { review } = req.body;
 
     const validationFailed = handleValidation(res, { review });
@@ -122,17 +127,12 @@ export default class ReviewController {
 
     return Review.update(
       { review },
-      { where: { id }, returning: true, plain: true }
+      { where: { id, userId }, returning: true, plain: true }
     )
-      .then((theReview) => {
-        if (!review) {
-          return notFound(res, 'Review');
-        }
-        return res.status(200).json({
-          status: 'success',
-          data: { review: theReview[1] }
-        });
-      })
+      .then(theReview => res.status(200).json({
+        status: 'success',
+        data: { review: theReview[1] }
+      }))
       .catch(error => handleErrorMessage(res, error));
   }
 

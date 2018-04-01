@@ -1,5 +1,5 @@
 import db from './../models';
-import { businessObjectHolder, searchQueryHolder } from './../helpers/business';
+import { businessObjectHolder, handleBusinessSearch } from './../helpers/business';
 import {
   notFound,
   checkUUID,
@@ -149,9 +149,9 @@ export default class BusinessController {
    * @return {Object} message, businesses
    */
   static getAllBusinesses(req, res) {
-    const searchParameter = searchQueryHolder(req);
+    const databaseQuery = handleBusinessSearch(req);
     return Business
-      .all(searchParameter)
+      .all(databaseQuery)
       .then((businesses) => {
         if (businesses.length === 0) {
           return res.status(200).json({
@@ -165,8 +165,7 @@ export default class BusinessController {
             businesses
           }
         });
-      })
-      .catch(error => handleErrorMessage(res, error));
+      });
   }
 
   /**
@@ -205,8 +204,7 @@ export default class BusinessController {
               status: 'success',
               message: 'Business transferred'
             });
-          })
-          .catch(error => handleErrorMessage(res, error));
+          });
       })
       .catch(error => handleErrorMessage(res, error));
   }
