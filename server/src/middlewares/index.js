@@ -15,7 +15,6 @@ const { SECRET } = process.env;
  */
 const validateToken = (req, res, next) => {
   const token = (
-    req.query.token ||
     req.headers.authorization ||
     req.headers['x-access-token']
   );

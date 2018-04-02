@@ -2,17 +2,17 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import swaggerUi from 'swagger-ui-express';
 import cors from 'cors';
-import userRoute from './src/routes/user';
-import businessRoute from './src/routes/business';
-import reviewRoute from './src/routes/review';
-import swaggerDocument from './../swagger.json';
+import userRoute from './server/src/routes/user';
+import businessRoute from './server/src/routes/business';
+import reviewRoute from './server/src/routes/review';
+import swaggerDocument from './swagger.json';
 
 const app = express();
 
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
+app.use(express.static('client/public'));
 app.use(
   '/api-docs/',
   swaggerUi.serve,
