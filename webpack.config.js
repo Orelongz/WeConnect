@@ -6,7 +6,7 @@ module.exports = {
     'webpack-dev-server/client?http://localhost:8000',
     'webpack/hot/only-dev-server',
     'react-hot-loader/patch',
-    './client/src/app.jsx'
+    './client/src/index.jsx'
   ],
   output: {
     filename: 'bundle.js',
@@ -24,11 +24,21 @@ module.exports = {
         options: {
           presets: ['react', 'env', 'stage-2']
         }
+      },
+      {
+        test: /\.s?css$/,
+        loader: 'style-loader!css-loader!sass-loader',
       }
     ]
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    new webpack.ProvidePlugin({
+      $: 'jquery',
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery',
+      Popper: ['popper.js', 'default']
+    })
   ],
   devServer: {
     contentBase: './client/public',
