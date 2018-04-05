@@ -32,13 +32,7 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
-    new webpack.ProvidePlugin({
-      $: 'jquery',
-      jQuery: 'jquery',
-      'window.jQuery': 'jquery',
-      Popper: ['popper.js', 'default']
-    })
+    new webpack.HotModuleReplacementPlugin()
   ],
   devServer: {
     contentBase: './client/public',
@@ -46,5 +40,5 @@ module.exports = {
     port: 8000,
     hot: true
   },
-  devtool: 'eval-source-map'
+  devtool: 'inline-source-map'
 };
