@@ -36,7 +36,6 @@ module.exports = {
   ],
   devServer: {
     contentBase: './client/public',
-    inline: true,
     port: 8000,
     hot: true
   },
