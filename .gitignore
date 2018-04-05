@@ -3,6 +3,8 @@ node_modules/
 .nyc_output/
 .vscode/
 coverage/
+dist/
+package-lock.json
 npm-debug.log
 debug.log
 .env

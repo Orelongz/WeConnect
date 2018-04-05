@@ -6,7 +6,7 @@ module.exports = {
     'webpack-dev-server/client?http://localhost:8000',
     'webpack/hot/only-dev-server',
     'react-hot-loader/patch',
-    './client/src/app.jsx'
+    './client/src/index.jsx'
   ],
   output: {
     filename: 'bundle.js',
@@ -24,6 +24,10 @@ module.exports = {
         options: {
           presets: ['react', 'env', 'stage-2']
         }
+      },
+      {
+        test: /\.s?css$/,
+        loader: 'style-loader!css-loader!sass-loader',
       }
     ]
   },
@@ -32,9 +36,8 @@ module.exports = {
   ],
   devServer: {
     contentBase: './client/public',
-    inline: true,
     port: 8000,
     hot: true
   },
-  devtool: 'eval-source-map'
+  devtool: 'inline-source-map'
 };
