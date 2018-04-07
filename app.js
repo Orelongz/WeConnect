@@ -15,10 +15,8 @@ import webpackConfig from './webpack.config';
 const app = express();
 const compiler = webpack(webpackConfig);
 
-app.use(express.static(path.join(__dirname, '/client/public/')));
-app.use(webpackDevMiddleware(compiler, {
-  publicPath: webpackConfig.output.publicPath
-}));
+app.use(express.static(`${__dirname}/client/public`));
+app.use(webpackDevMiddleware(compiler));
 app.use(webpackHotMiddleware(compiler));
 
 app.use(cors());
@@ -33,8 +31,7 @@ app.use('/api/v1', userRoute);
 app.use('/api/v1/businesses', businessRoute);
 app.use('/api/v1/businesses/:businessId/reviews', reviewRoute);
 
-app.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, '/client/public/index.html'));
-});
+const indexHTMLPath = path.join(__dirname, '/client/public/index.html');
+app.get('/*', (req, res) => res.sendFile(indexHTMLPath));
 
 export default app;

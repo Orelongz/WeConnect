@@ -8,7 +8,7 @@ import { composeWithDevTools } from 'redux-devtools-extension';
 // import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import rootReducer from './rootReducer';
-import App from './components/App';
+import App from './components/App.jsx';
 import './style/index.scss';
 
 const store = createStore(
@@ -32,4 +32,3 @@ if (module.hot) {
     store.replaceReducer(nextRootReducer);
   });
 }
- 

@@ -1,7 +1,9 @@
 {
   "root": true,
   "extends": "airbnb-base",
-  "plugins": ["react"],
+  "plugins": [
+    "react"
+  ],
   "env": {
     "node": true,
     "es6": true,

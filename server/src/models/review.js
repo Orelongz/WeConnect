@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     }
   });
-  // associations can be defined here
+    // associations can be defined here
   Review.associate = (models) => {
     Review.belongsTo(models.User, {
       foreignKey: 'userId',

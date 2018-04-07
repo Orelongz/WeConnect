@@ -1,0 +1,7 @@
+const USER_SIGNED_IN = 'USER_SIGNED_IN';
+const USER_SIGNED_UP = 'USER_SIGNED_UP';
+
+export {
+  USER_SIGNED_IN,
+  USER_SIGNED_UP
+};
