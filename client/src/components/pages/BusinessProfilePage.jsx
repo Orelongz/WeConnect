@@ -60,7 +60,7 @@ const SignIn = () => (
                   <img src="https://i.stack.imgur.com/34AD2.jpg" class="img-thumbnail rounded-circle small-profile-pic mr-3" />
                   <div class="media-body">
                     <div>
-                      <label for="review">Write a review: </label>
+                      <label htmlFor="review">Write a review: </label>
                       <textarea class="form-control" id="review"></textarea>
                     </div>
 

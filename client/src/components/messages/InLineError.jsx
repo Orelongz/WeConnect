@@ -6,7 +6,7 @@ const propTypes  = {
 };
 
 function InlineError({ text }) {
-  return <span className="text-danger">{text}</span>
+  return <p className="small text-white bg-info px-2">{text}</p>
 };
 
 InlineError.propTypes = propTypes;

@@ -7,8 +7,11 @@ const userLoggedIn = user => ({
 });
 
 const signin = credentials => dispatch => (
-  api.user.signin(credentials)
-    .then(user => dispatch(userLoggedIn(user)))
+  api.user
+    .signin(credentials)
+    .then((user) => {
+      dispatch(userLoggedIn(user));
+    })
 );
 
 export { signin, userLoggedIn };

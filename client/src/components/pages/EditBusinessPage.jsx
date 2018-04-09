@@ -11,7 +11,7 @@ const EditBusiness = () => (
             <form>
               <div className="form-row">
                 <div className="form-group col-md-6">
-                  <label for="companyName">Company Name</label>
+                  <label htmlFor="companyName">Company Name</label>
                   <input type="text" className="form-control" id="companyName" value="Coffee Shop" />
                 </div>
                 <div className="col-md-6">
@@ -25,15 +25,15 @@ const EditBusiness = () => (
 
               <div className="form-row">
                 <div className="form-group col-md-6">
-                  <label for="company-address">Address</label>
+                  <label htmlFor="company-address">Address</label>
                   <input type="text" className="form-control" id="company-address" value="Street" />
                 </div>
                 <div className="form-group col-md-3">
-                  <label for="company-city">City</label>
+                  <label htmlFor="company-city">City</label>
                   <input type="text" className="form-control" id="company-city" value="City" />
                 </div>
                 <div className="form-group col-md-3">
-                  <label for="company-state">State</label>
+                  <label htmlFor="company-state">State</label>
                   <select id="company-state" className="form-control">
                     <option value="0">Choose...</option>
                     <option value="1" selected>Lagos</option>
@@ -46,20 +46,20 @@ const EditBusiness = () => (
 
               <div className="form-row">
                 <div className="form-group col-md-4">
-                  <label for="company-phoneNo">Phone Number</label>
+                  <label htmlFor="company-phoneNo">Phone Number</label>
                   <input type="text" className="form-control" id="company-phoneNo" vlaue="0907879879" />
                 </div>
                 <div className="form-group col-md-4">
-                  <label for="company-postalAddress">Postal Address</label>
+                  <label htmlFor="company-postalAddress">Postal Address</label>
                   <input type="text" className="form-control" id="company-postalAddress" placeholder="Postal Address" />
                 </div>
                 <div className="form-group col-md-4">
-                  <label for="company-workingHours">Working hours</label>
+                  <label htmlFor="company-workingHours">Working hours</label>
                   <input type="text" className="form-control" id="company-workingHours" value="9am  to  4:30pm" />
                 </div>
               </div>
               <div className="form-group">
-                <label for="company-summary">About your business</label>
+                <label htmlFor="company-summary">About your business</label>
                 <textarea type="text" className="form-control" id="company-summary" rows="5">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor. in reprehenderit in voluptate velit esse llum dolore eu fugiat nulla pariatur. epteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</textarea>
               </div>
               <a href="business-profile.html" type="submit" className="btn btn-danger">Cancel</a>

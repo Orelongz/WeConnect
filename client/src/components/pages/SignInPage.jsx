@@ -19,14 +19,15 @@ class SignInPage extends Component {
   }
 
   submit(data) {
-    return this.props.signin(data)
+    return this.props
+      .signin(data)
       .then(() => this.props.history.push('/'));
   }
 
   render() {
     return (
-      <main className="pb-main mt-5">
-        <div className="container">
+      <div className="pb-main">
+        <div className="container mt-5">
           <div className="row justify-content-center">
             <div className="card col-xs-10 col-sm-8 col-md-6 col-lg-4">
               <div className="container">
@@ -40,7 +41,7 @@ class SignInPage extends Component {
             </div>
           </div>
         </div>
-      </main>
+      </div>
     );
   }
 };

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import validator from 'validator';
 import PropTypes from 'prop-types';
 import InLineError from './../messages/InLineError';
+import InfoMessage from './../messages/InfoMessage';
 
 const propTypes = {
   submit: PropTypes.func.isRequired
@@ -15,7 +16,6 @@ class SignInForm extends Component {
         email: '',
         password: ''
       },
-      loading: false,
       errors: {}
     };
     this.onChange = this.onChange.bind(this);
@@ -33,9 +33,12 @@ class SignInForm extends Component {
     const errors = this.validate(this.state.data);
     this.setState({ errors });
     if (Object.keys(errors).length === 0) {
-      this.props.submit(this.state.data);
+      return this.props
+        .submit(this.state.data)
+        .catch(err => this.setState({
+          errors: err.response.data
+        }));
     }
-
   }
 
   validate(data) {
@@ -49,6 +52,7 @@ class SignInForm extends Component {
     const { data, errors } = this.state;
     return (
       <form onSubmit={this.onSubmit}>
+        {errors.status === 'fail' && <InfoMessage text={errors.error} />}
         <div className="form-group">
           <label htmlFor="email">Email</label>
           <input
