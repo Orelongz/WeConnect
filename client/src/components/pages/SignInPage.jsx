@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import SignInForm from './../forms/SignInForm';
-import { signin } from './../../actions/auth';
+import InfoMessage from './../messages/InfoMessage';
+import { signin } from './../../actions/AuthAction';
 
 const propTypes = {
   history: PropTypes.shape({
@@ -15,18 +16,26 @@ const propTypes = {
 class SignInPage extends Component {
   constructor() {
     super();
+    this.state = {
+      error: ''
+    }
     this.submit = this.submit.bind(this);
   }
 
   submit(data) {
     return this.props
       .signin(data)
-      .then(() => this.props.history.push('/'));
+      .then(() => this.props.history.push('/'))
+      .catch(err => this.setState({
+        error: err.response.data
+      }));
   }
 
   render() {
+    const { error } = this.state
     return (
       <div className="pb-main">
+        {error.status === 'fail' && <InfoMessage text={error.error} type='danger' />}
         <div className="container mt-5">
           <div className="row justify-content-center">
             <div className="card col-xs-10 col-sm-8 col-md-6 col-lg-4">

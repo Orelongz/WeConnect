@@ -1,4 +1,4 @@
-import { USER_SIGNED_IN } from './../types';
+import { USER_SIGNED_IN } from './../types/Types';
 
 /**
  * user()

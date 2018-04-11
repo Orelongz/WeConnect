@@ -2,12 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 const propTypes  = {
-  text: PropTypes.string.isRequired
+  text: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired
 };
 
-function InfoMessages({ text }) {
+function InfoMessages({ text, type }) {
+  const className = `alert alert-${type} text-center`;
   return (
-    <div className="alert alert-info" role="alert">
+    <div className={className} role="alert">
       {text}
     </div>
   );
