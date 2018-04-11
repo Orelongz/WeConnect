@@ -1,5 +1,7 @@
 const webpack = require('webpack');
 
+const port = process.env.PORT || 8000;
+
 module.exports = {
   mode: 'development',
   entry: [
@@ -24,13 +26,17 @@ module.exports = {
       },
       {
         test: /\.s?css$/,
-        loader: 'style-loader!css-loader!sass-loader',
+        loader: 'style-loader!css-loader!sass-loader'
+      },
+      {
+        test: /\.(png|jpe?g|svg|gif)$/,
+        loader: 'url-loader?limit=25000'
       }
     ]
   },
   devServer: {
     contentBase: './client/public',
-    port: 8000,
+    port,
     hot: true
   },
   plugins: [
