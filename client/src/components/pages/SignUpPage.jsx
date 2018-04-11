@@ -10,19 +10,19 @@ const SignUp = () => (
             <h2 className="text-center my-4">Create your account</h2>
             <form >
               <div className="form-group">
-                <label for="firstName">First Name</label>
+                <label htmlFor="firstName">First Name</label>
                 <input type="text" className="form-control" id="firstName" placeholder="Firstname" />
               </div>
               <div className="form-group">
-                <label for="lastName">Last Name</label>
+                <label htmlFor="lastName">Last Name</label>
                 <input type="text" className="form-control" id="lastName" placeholder="Lastname" />
               </div>
               <div className="form-group">
-                <label for="password">Password</label>
+                <label htmlFor="password">Password</label>
                 <input type="password" className="form-control" id="password" placeholder="Password" />
               </div>
               <div className="form-group">
-                <label for="confirmPassword">Confirm Password</label>
+                <label htmlFor="confirmPassword">Confirm Password</label>
                 <input type="password" className="form-control" id="confirmPassword" placeholder="Confirm Password" />
               </div>
               <p className="text-center small">By clicking Join Now, you agree to WeConnect <a href="#">User Agreement</a> and <a href="#">Privacy Policy</a></p>

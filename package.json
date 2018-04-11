@@ -7,6 +7,8 @@
     "test": "test"
   },
   "dependencies": {
+    "axios": "^0.18.0",
+    "babel-preset-react-hmre": "^1.1.1",
     "bcrypt": "^1.0.3",
     "body-parser": "^1.18.2",
     "bootstrap": "^4.0.0",
@@ -14,6 +16,7 @@
     "chai-http": "^3.0.0",
     "cors": "^2.8.4",
     "dotenv": "^5.0.1",
+    "eslint-config-react": "^1.1.7",
     "express": "^4.16.3",
     "font-awesome": "^4.7.0",
     "jquery": "^3.3.1",
@@ -21,18 +24,25 @@
     "pg": "^7.4.1",
     "pg-hstore": "^2.3.2",
     "popper.js": "^1.14.2",
+    "prop-types": "^15.6.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
+    "redux": "^3.7.2",
+    "redux-devtools-extension": "^2.13.2",
+    "redux-thunk": "^2.2.0",
     "sequelize": "^4.36.0",
     "swagger-ui-express": "^2.0.15",
     "validator": "^9.4.1",
     "webpack": "^4.1.1",
-    "webpack-dev-middleware": "^3.1.1"
+    "webpack-dev-middleware": "^3.1.2",
+    "webpack-hot-middleware": "^2.21.2"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
     "babel-core": "^6.26.0",
+    "babel-eslint": "^8.2.2",
     "babel-loader": "^7.1.4",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
@@ -57,12 +67,11 @@
     "sequelize-cli": "^4.0.0",
     "style-loader": "^0.20.3",
     "webpack-cli": "^2.0.13",
-    "webpack-dev-server": "^3.1.1",
-    "webpack-hot-middleware": "^2.21.2"
+    "webpack-dev-server": "^3.1.1"
   },
   "scripts": {
     "start": "babel-node ./server/bin/www",
-    "webpack": "webpack-dev-server --config ./webpack.config.js --mode development",
+    "webpack": "webpack-dev-server --config ./webpack.config.js",
     "lint": "eslint --fix server/ client/src app.js webpack.config.js",
     "dev-migrate": "sequelize db:migrate",
     "test-migrate": "sequelize db:migrate:undo:all --env test && sequelize db:migrate --env test",

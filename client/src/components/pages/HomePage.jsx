@@ -89,16 +89,16 @@ const HomePage = () => (
                   <form>
                     <div className="form-row">
                       <div className="col">
-                        <label for="name">Name</label>
+                        <label htmlFor="name">Name</label>
                         <input type="text" className="form-control" placeholder="Name" id="name" />
                       </div>
                       <div className="col">
-                        <label for="email">Email</label>
+                        <label htmlFor="email">Email</label>
                         <input type="email" className="form-control" placeholder="email" />
                       </div>
                     </div>
                     <div className="form-group">
-                      <label for="name">Message</label>
+                      <label htmlFor="name">Message</label>
                       <textarea type="text" className="form-control" placeholder="Message" id="message" rows="4"></textarea>
                     </div>
                     <a href="#" type="submit" className="btn btn-primary">Send</a>

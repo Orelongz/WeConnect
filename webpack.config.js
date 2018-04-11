@@ -1,16 +1,13 @@
 const webpack = require('webpack');
-const path = require('path');
 
 module.exports = {
+  mode: 'development',
   entry: [
-    'webpack-dev-server/client?http://localhost:8000',
-    'webpack/hot/only-dev-server',
-    'react-hot-loader/patch',
-    './client/src/index.jsx'
+    './client/src/index.js'
   ],
   output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'client/public')
+    path: '/',
+    filename: 'bundle.js'
   },
   resolve: {
     extensions: ['*', '.js', '.jsx']
@@ -31,13 +28,15 @@ module.exports = {
       }
     ]
   },
-  plugins: [
-    new webpack.HotModuleReplacementPlugin()
-  ],
   devServer: {
     contentBase: './client/public',
     port: 8000,
     hot: true
   },
-  devtool: 'inline-source-map'
+  plugins: [
+    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.HotModuleReplacementPlugin()
+  ],
+  devtool: 'source-map'
 };
