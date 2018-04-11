@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import SignInForm from './../forms/SignInForm';
 import InfoMessage from './../messages/InfoMessage';
 import { signin } from './../../actions/AuthAction';
+import handleErrorCatch from './../../helpers/handleErrorCatch';
 
 const propTypes = {
   history: PropTypes.shape({
@@ -17,7 +18,7 @@ class SignInPage extends Component {
   constructor() {
     super();
     this.state = {
-      error: ''
+      error: null
     }
     this.submit = this.submit.bind(this);
   }
@@ -27,7 +28,7 @@ class SignInPage extends Component {
       .signin(data)
       .then(() => this.props.history.push('/'))
       .catch(err => this.setState({
-        error: err.response.data
+        error: handleErrorCatch(err.response.data)
       }));
   }
 
@@ -35,13 +36,13 @@ class SignInPage extends Component {
     const { error } = this.state
     return (
       <div className="pb-main">
-        {error.status === 'fail' && <InfoMessage text={error.error} type='danger' />}
+        {error && <InfoMessage text={error} type='danger' />}
         <div className="container mt-5">
           <div className="row justify-content-center">
             <div className="card col-xs-10 col-sm-8 col-md-6 col-lg-4">
               <div className="container">
                 <h2 className="text-center my-4">Signin</h2>
-                  <SignInForm submit={this.submit}/>
+                <SignInForm submit={this.submit}/>
                 <div className="d-flex justify-content-between small pt-2">
                   <p className="d-inline-block">Not a member? <Link to='/signup'>Sign up </Link></p>
                   <p className="d-inline-block"><Link to='/'>Forgot Password?</Link></p>

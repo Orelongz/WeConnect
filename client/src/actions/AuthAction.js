@@ -15,4 +15,13 @@ const signin = credentials => dispatch => (
     })
 );
 
-export { signin, userLoggedIn };
+const signup = credentials => dispatch => (
+  api.user
+    .signup(credentials)
+    .then((user) => {
+      localStorage.weconnectToken = user.token;
+      dispatch(userLoggedIn(user));
+    })
+);
+
+export { signin, userLoggedIn, signup };
