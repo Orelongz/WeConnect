@@ -70,7 +70,7 @@ class RegisterBusiness extends Component {
 
   render() {
     const { state, about, category, startTime, closeTime } = this.state.data;
-    const { stateArray, errors } = this.state;
+    const { stateArray, categoriesArray, errors } = this.state;
 
     return (
       <main className="pb-main">

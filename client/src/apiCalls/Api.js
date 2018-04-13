@@ -19,6 +19,6 @@ export default {
       .then(res => res.data.map(eachState => eachState.name)),
 
     categories: () => axios.get('/api/v1/categories')
-      .then(res => console.log(res.data.data))
+      .then(res => res.data.data)
   }
 };
