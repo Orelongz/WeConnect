@@ -1,74 +1,214 @@
-import React from 'react';
+import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import validate from './../../helpers/validate';
+import {
+  businessHours,
+  populateStates
+} from './../../helpers/businessFormHelper';
+import api from './../../apiCalls/Api';
 
-const RegisterBusiness = () => (
-  <main className="pb-main">
-    <div className="container">
-      <div className="row justify-content-center">
-        <div className="card py-3 col-xs-12 col-sm-10">
-          <div className="container">
-            <h2 className="text-center">Register your new business</h2>
-            <form>
-              <div className="form-row">
-                <div className="form-group col-md-6">
-                  <label htmlFor="companyName">Company Name</label>
-                  <input type="text" className="form-control" id="companyName" placeholder="Company Name" />
-                </div>
-                <div className="col-md-6">
-                  <label>Upload a profile picture</label>
-                  <div className="custom-file">
-                    <input type="file" className="custom-file-input" id="company-picture" />
-                    <label className="custom-file-label" for="company-picture">Choose file</label>
+class RegisterBusiness extends Component {
+  constructor() {
+    super();
+    this.state = {
+      data: {
+        businessName: '',
+        category: '',
+        address: '',
+        city: '',
+        state: 'Lagos',
+        phoneNumber: '',
+        postalAddress: '',
+        startTime: '9am',
+        closeTime: '5pm',
+        about: ''
+      },
+      stateArray: [],
+      errors: {}
+    };
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+  }
+
+  onChange(e) {
+    this.setState({
+      data: { ...this.state.data, [e.target.name]: e.target.value }
+    });
+  }
+
+  onSubmit(e) {
+    e.preventDefault();
+    let { postalAddress, ...requiredFields } = this.state.data;
+    const errors = validate(requiredFields);
+    // const businessImage = this.fileInput.files[0];
+    this.setState({ errors });
+    if (Object.keys(errors) === 0) {
+      console.log(this.state.data);
+    }
+  }
+
+  componentDidMount() {
+    api.business
+      .fillStates()
+      .then((nigerianStates) => {
+        this.setState({
+          stateArray: [...this.state.stateArray, ...nigerianStates]
+        });
+      });
+  }
+
+  render() {
+    const { state, about, category, startTime, closeTime } = this.state.data;
+    const { stateArray, errors } = this.state;
+
+    return (
+      <main className="pb-main">
+        <div className="container">
+          <div className="row justify-content-center">
+            <div className="card py-3 col-xs-12 col-sm-10">
+              <div className="container">
+                <h2 className="text-center">Register your new business</h2>
+                <form onSubmit={this.onSubmit}>
+                  <div className="form-row">
+                    <div className="form-group col-md-5">
+                      <label htmlFor="businessName">Business Name</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Business Name"
+                        name= "businessName"
+                        onChange={this.onChange}
+                      />
+                    </div>
+                    <div className="col-md-4">
+                      <label>Upload a profile picture</label>
+                      <div className="custom-file">
+                        <input
+                          type="file"
+                          className="custom-file-input"
+                          id="businessImage"
+                          ref={input => this.inputFile = input}
+                        />
+                        <label className="custom-file-label" htmlFor="businessImage">Choose file</label>
+                      </div>
+                    </div>
+                    <div className="form-group col-md-3">
+                      <label htmlFor="category">Choose a category</label>
+                      <select
+                        name="category"
+                        className="form-control"
+                        value={category}
+                        onChange={this.onChange}
+                      >
+                        <option value="gym">Gym</option>
+                        <option value="resturant">Resturant</option>
+                        <option value="bar">Bar</option>
+                        <option value="spa">Spa</option>
+                      </select>
+                    </div>
                   </div>
-                </div>
-              </div>
 
-              <div className="form-row">
-                <div className="form-group col-md-6">
-                  <label htmlFor="company-address">Address</label>
-                  <input type="text" className="form-control" id="company-address" placeholder="Street" />
-                </div>
-                <div className="form-group col-md-3">
-                  <label htmlFor="company-city">City</label>
-                  <input type="text" className="form-control" id="company-city" placeholder="City" />
-                </div>
-                <div className="form-group col-md-3">
-                  <label htmlFor="company-state">State</label>
-                  <select id="company-state" className="form-control">
-                    <option value="0" selected>Choose...</option>
-                    <option value="1">Lagos</option>
-                    <option value="2">Abuja</option>
-                    <option value="3">Calabar</option>
-                    <option value="4">Enugu</option>
-                  </select>
-                </div>
-              </div>
+                  <div className="form-row">
+                    <div className="form-group col-md-3">
+                      <label htmlFor="state">State</label>
+                      <select
+                        name="state"
+                        className="form-control"
+                        value={state}
+                        onChange={this.onChange}
+                        ref={choiceState => this.choiceState = choiceState}
+                      >
+                        {populateStates(stateArray)}
+                      </select>
+                    </div>
+                    <div className="form-group col-md-3">
+                      <label htmlFor="city">City</label>
+                      <input
+                        className="form-control"
+                        type="text"
+                        name="city"
+                        placeholder="City"
+                        onChange={this.onChange}
+                      />
+                    </div>
+                    <div className="form-group col-md-6">
+                      <label htmlFor="address">Address</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Address"
+                        name='address'
+                        onChange={this.onChange}
+                      />
+                    </div>
+                  </div>
 
-              <div className="form-row">
-                <div className="form-group col-md-4">
-                  <label htmlFor="company-phoneNo">Phone Number</label>
-                  <input type="text" className="form-control" id="company-phoneNo" placeholder="Phone Number" />
-                </div>
-                <div className="form-group col-md-4">
-                  <label htmlFor="company-postalAddress">Postal Address</label>
-                  <input type="text" className="form-control" id="company-postalAddress" placeholder="Postal Address" />
-                </div>
-                <div className="form-group col-md-4">
-                  <label htmlFor="company-workingHours">Working hours</label>
-                  <input type="text" className="form-control" id="company-workingHours" placeholder="____  to  ____" />
-                </div>
+                  <div className="form-row">
+                    <div className="form-group col-md-4">
+                      <label htmlFor="phoneNumber">Phone Number</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="phoneNumber"
+                        placeholder="Phone Number"
+                        onChange={this.onChange}
+                      />
+                    </div>
+                    <div className="form-group col-md-4">
+                      <label htmlFor="postalAddress">Postal Address</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="postalAddress"
+                        placeholder="Postal Address"
+                        onChange={this.onChange}
+                      />
+                    </div>
+                    <div className="form-group col-md-4">
+                      <label htmlFor="businessHours">Business hours</label>
+                      <div className="form-row">
+                        <select
+                          name="startTime"
+                          className="form-control col-5"
+                          value={startTime}
+                          onChange={this.onChange}
+                        >
+                          {businessHours("am")}
+                        </select>
+                        <span className="col-2 text-center">to</span>
+                        <select
+                          name="closeTime"
+                          className="form-control col-5"
+                          value={closeTime}
+                          onChange={this.onChange}
+                        >
+                          {businessHours("pm")}
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="about">About your business</label>
+                    <textarea
+                      type="text"
+                      className="form-control"
+                      name="about"
+                      rows="5"
+                      value={about}
+                      onChange={this.onChange}
+                    />
+                  </div>
+                  <button type="submit" className="btn btn-primary pull-right">Register</button>
+                </form>
               </div>
-              <div className="form-group">
-                <label htmlFor="company-summary">About your business</label>
-                <textarea type="text" className="form-control" id="company-summary" rows="5"></textarea>
-              </div>
-              <a href="#" type="submit" className="btn btn-primary pull-right">Register</a>
-            </form>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
-  </main>
-);
+      </main>
+    );
+  }
+}
 
 export default RegisterBusiness;

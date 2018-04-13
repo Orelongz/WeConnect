@@ -13,5 +13,9 @@ export default {
       { ...credentials }
     )
       .then(res => res.data.data)
+  },
+  business: {
+    fillStates: () => axios.get('http://locationsng-api.herokuapp.com/api/v1/states')
+      .then(res => res.data)
   }
 };

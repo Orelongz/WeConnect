@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import validator from 'validator';
+import validate from './../../helpers/validate';
 import InlineError from './../messages/InLineError';
 
 class ContactForm extends Component {
@@ -18,11 +18,6 @@ class ContactForm extends Component {
   }
 
   onChange(e) {
-    if (!e.target.name) {
-      return this.setState({
-        data: { ...this.state.data, message: e.target.value }
-      });
-    }
     return this.setState({
       data: { ...this.state.data, [e.target.name]: e.target.value }
     });
@@ -31,19 +26,11 @@ class ContactForm extends Component {
   onSubmit(e) {
     e.preventDefault();
     const { name, email, message } = this.state.data;
-    const errors = this.vaidate({ name, email, message });
+    const errors = validate({ name, email, message });
     this.setState({ errors });
     if (Object.keys(errors).length === 0) {
       alert(`Dear ${name}, your message has been sent`);
     }
-  }
-
-  vaidate(data) {
-    const errors = {};
-    if (data.name === '') errors.name = 'Please provide your name';
-    if (!validator.isEmail(data.email)) errors.email = 'Please a valid email';
-    if (data.message === '') errors.message = 'Please provide your name';
-    return errors
   }
 
   render() {
@@ -80,7 +67,7 @@ class ContactForm extends Component {
             type="text"
             className="form-control"
             placeholder="Message" 
-            id="message"
+            name="message"
             rows="4"
             value={data.message}
             onChange={this.onChange}

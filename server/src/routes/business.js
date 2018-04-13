@@ -1,4 +1,5 @@
 import express from 'express';
+// import multer from 'multer';
 import BusinessController from './../controllers/businessController';
 import validateToken from './../middlewares';
 
@@ -12,6 +13,20 @@ const {
   getUserBusinesses
 } = BusinessController;
 const router = express.Router();
+
+// const storage = multer.diskStorage({
+//   destination: './client/public/uploads',
+//   filename: (req, file, cb) => {
+//     cb(null, `${file.fieldname}-${Date.now()}`);
+//   }
+// });
+
+// const upload = multer({
+//   storage,
+//   limits: { fileSize: 1000000 },
+
+// }).single('weConnect-image');
+
 
 // Get all businesses
 router.get('/', getAllBusinesses);

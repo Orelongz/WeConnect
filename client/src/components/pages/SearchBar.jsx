@@ -18,14 +18,9 @@ class SearchBar extends Component {
   }
 
   onChange(e) {
-    if (e.target.name === 'search') {
-      return this.setState({
-        ...this.state, [e.target.name]: e.target.value
-      });
-    }
     return this.setState({
-      ...this.state, value: e.target.value
-    })
+      ...this.state, [e.target.name]: e.target.value
+    });
   }
 
   onSubmit(e) {
@@ -52,6 +47,7 @@ class SearchBar extends Component {
               className="input-group-append"
               value={value}
               onChange={this.onChange}
+              name='value'
             >
               <option value="name">By Name</option>
               <option value="location">By location</option>
