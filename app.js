@@ -9,6 +9,7 @@ import webpackHotMiddleware from 'webpack-hot-middleware';
 import userRoute from './server/src/routes/user';
 import businessRoute from './server/src/routes/business';
 import reviewRoute from './server/src/routes/review';
+import categoryRoute from './server/src/routes/category';
 import swaggerDocument from './swagger.json';
 import webpackConfig from './webpack.config';
 
@@ -28,6 +29,7 @@ app.use(
   swaggerUi.setup(swaggerDocument)
 );
 app.use('/api/v1', userRoute);
+app.use('/api/v1/categories', categoryRoute);
 app.use('/api/v1/businesses', businessRoute);
 app.use('/api/v1/businesses/:businessId/reviews', reviewRoute);
 

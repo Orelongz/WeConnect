@@ -14,6 +14,14 @@ module.exports = {
         key: 'id'
       }
     },
+    categoryId: {
+      type: Sequelize.UUID,
+      onDelete: 'CASCADE',
+      references: {
+        model: 'Categories',
+        key: 'id'
+      }
+    },
     businessName: {
       type: Sequelize.STRING,
       allowNull: false,

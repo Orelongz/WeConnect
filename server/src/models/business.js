@@ -81,6 +81,10 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'userId',
       onDelete: 'CASCADE'
     });
+    Business.belongsTo(models.Category, {
+      foreignKey: 'categoryId',
+      onDelete: 'CASCADE'
+    });
     Business.hasMany(models.Review, {
       foreignKey: 'businessId',
       onDelete: 'CASCADE'

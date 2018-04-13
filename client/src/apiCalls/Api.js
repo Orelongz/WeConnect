@@ -16,6 +16,9 @@ export default {
   },
   business: {
     fillStates: () => axios.get('http://locationsng-api.herokuapp.com/api/v1/states')
-      .then(res => res.data)
+      .then(res => res.data.map(eachState => eachState.name)),
+
+    categories: () => axios.get('/api/v1/categories')
+      .then(res => console.log(res.data.data))
   }
 };

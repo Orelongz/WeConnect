@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import validate from './../../helpers/validate';
 import {
   businessHours,
-  populateStates
+  populateOptions
 } from './../../helpers/businessFormHelper';
 import api from './../../apiCalls/Api';
 
@@ -26,6 +26,7 @@ class RegisterBusiness extends Component {
         about: ''
       },
       stateArray: [],
+      categoriesArray: [],
       errors: {}
     };
     this.onChange = this.onChange.bind(this);
@@ -55,6 +56,14 @@ class RegisterBusiness extends Component {
       .then((nigerianStates) => {
         this.setState({
           stateArray: [...this.state.stateArray, ...nigerianStates]
+        });
+      });
+    
+    api.business
+      .categories()
+      .then((categories) => {
+        this.setState({
+          categoriesArray: [...this.state.categoriesArray, ...categories]
         });
       });
   }
@@ -102,10 +111,7 @@ class RegisterBusiness extends Component {
                         value={category}
                         onChange={this.onChange}
                       >
-                        <option value="gym">Gym</option>
-                        <option value="resturant">Resturant</option>
-                        <option value="bar">Bar</option>
-                        <option value="spa">Spa</option>
+                        {populateOptions(categoriesArray)}
                       </select>
                     </div>
                   </div>
@@ -120,7 +126,7 @@ class RegisterBusiness extends Component {
                         onChange={this.onChange}
                         ref={choiceState => this.choiceState = choiceState}
                       >
-                        {populateStates(stateArray)}
+                        {populateOptions(stateArray)}
                       </select>
                     </div>
                     <div className="form-group col-md-3">

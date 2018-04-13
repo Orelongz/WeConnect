@@ -15,11 +15,11 @@ const businessHours = (str) => {
   );
 };
 
-const populateStates = (stateArray) => {
+const populateOptions = (passedArray) => {
   return (
-    stateArray.map((eachState) => {
+    passedArray.map((item) => {
       return (
-        <option key={shortid.generate()} value={eachState.name}>{eachState.name}</option>
+        <option key={shortid.generate()} value={item}>{item}</option>
       );
     })
   )
@@ -27,5 +27,5 @@ const populateStates = (stateArray) => {
 
 export {
   businessHours,
-  populateStates
+  populateOptions
 };

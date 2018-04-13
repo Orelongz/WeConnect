@@ -1,5 +1,9 @@
 import db from './../models';
-import { businessObjectHolder, handleBusinessSearch } from './../helpers/business';
+import {
+  checkCategory,
+  businessObjectHolder,
+  handleBusinessSearch
+} from './../helpers/business';
 import {
   notFound,
   checkUUID,
@@ -24,16 +28,21 @@ export default class BusinessController {
    */
   static createBusiness(req, res) {
     const businessObject = businessObjectHolder(req);
+
     const validationFailed = handleValidation(res, businessObject);
     if (validationFailed) return validationFailed;
 
+    const notCategory = checkCategory(req, res);
+    if (notCategory) return notCategory;
+
     const {
-      businessImage, postalAddress, workHours
+      businessImage, postalAddress
     } = req.body;
+
     const { id: userId } = req.decoded;
 
     return Business.create({
-      ...businessObject, userId, businessImage, postalAddress, workHours
+      ...businessObject, userId, businessImage, postalAddress
     })
       .then(business => res.status(201).json({
         status: 'success',
@@ -51,11 +60,15 @@ export default class BusinessController {
    */
   static updateBusiness(req, res) {
     const businessObject = businessObjectHolder(req);
+
     const validationFailed = handleValidation(res, businessObject);
     if (validationFailed) return validationFailed;
 
+    const notCategory = checkCategory(req, res);
+    if (notCategory) return notCategory;
+
     const {
-      businessImage, postalAddress, workHours
+      businessImage, postalAddress
     } = req.body;
     const { businessId: id } = req.params;
     const isNotUUID = checkUUID(res, id, 'Business');
@@ -66,7 +79,7 @@ export default class BusinessController {
 
     return Business.update(
       {
-        ...businessObject, businessImage, postalAddress, workHours
+        ...businessObject, businessImage, postalAddress
       },
       {
         where: { id, userId },
