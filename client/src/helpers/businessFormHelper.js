@@ -6,13 +6,7 @@ const businessHours = (str) => {
   for (let i = 1; i <= 12; i += 1) {
     workHours.push(`${i}${str}`);
   }
-  return (
-    workHours.map((time) => {
-      return (
-        <option key={shortid.generate()} value={time}>{time}</option>
-      );
-    })
-  );
+  return populateOptions(workHours);
 };
 
 const populateOptions = (passedArray) => {

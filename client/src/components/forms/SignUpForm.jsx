@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import validator from 'validator';
 import PropTypes from 'prop-types';
+import { validate } from './../../helpers';
 import InLineError from './../messages/InLineError';
 
 const propTypes = {
@@ -33,22 +33,12 @@ class SignUpForm extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-    const errors = this.validate(this.state.data);
+    const errors = validate(this.state.data);
     this.setState({ errors });
     if (Object.keys(errors).length === 0) {
       return this.props
         .submit(this.state.data);
     }
-  }
-
-  validate(data) {
-    const errors = {};
-    if (!validator.isEmail(data.email)) errors.email = 'Email not valid';
-    if (data.firstname.trim() === '') errors.firstname = 'Firstname should not be empty';
-    if (data.lastname.trim() === '') errors.lastname = 'Lastname should not be empty';
-    if (data.password.trim() === '') errors.password = 'Password can\'t be empty';
-    if (data.password !== data.confirmPassword) errors.confirmPassword = 'Passwords do not match';
-    return errors;
   }
 
   render() {

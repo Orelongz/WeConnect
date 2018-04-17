@@ -5,11 +5,13 @@ const port = process.env.PORT || 8000;
 module.exports = {
   mode: 'development',
   entry: [
+    'webpack-hot-middleware/client',
     './client/src/index.js'
   ],
   output: {
     path: '/',
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    publicPath: '/'
   },
   resolve: {
     extensions: ['*', '.js', '.jsx']
@@ -19,10 +21,7 @@ module.exports = {
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loader: 'babel-loader',
-        options: {
-          presets: ['react', 'env', 'stage-2']
-        }
+        loader: ['babel-loader']
       },
       {
         test: /\.s?css$/,
@@ -44,5 +43,5 @@ module.exports = {
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin()
   ],
-  devtool: 'source-map'
+  devtool: 'eval-source-map'
 };

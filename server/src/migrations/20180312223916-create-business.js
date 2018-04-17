@@ -55,7 +55,11 @@ module.exports = {
       type: Sequelize.STRING,
       allowNull: true
     },
-    workHours: {
+    startTime: {
+      type: Sequelize.STRING,
+      allowNull: true
+    },
+    closeTime: {
       type: Sequelize.STRING,
       allowNull: true
     },

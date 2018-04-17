@@ -1,6 +1,5 @@
 import db from './../models';
 import {
-  checkCategory,
   businessObjectHolder,
   handleBusinessSearch
 } from './../helpers/business';
@@ -12,7 +11,7 @@ import {
   handleErrorMessage
 } from './../helpers';
 
-const { Business, User } = db;
+const { Business, User, Category } = db;
 
 /**
  * @class BusinessController
@@ -28,26 +27,30 @@ export default class BusinessController {
    */
   static createBusiness(req, res) {
     const businessObject = businessObjectHolder(req);
-
+    const { postalAddress, category } = req.body;
     const validationFailed = handleValidation(res, businessObject);
     if (validationFailed) return validationFailed;
 
-    const notCategory = checkCategory(req, res);
-    if (notCategory) return notCategory;
+    return Category.findOne({ where: { category } })
+      .then((theCategory) => {
+        if (!theCategory) {
+          return res.status(400).json({
+            status: 'fail',
+            error: 'not a category'
+          });
+        }
+        const { id: userId } = req.decoded;
+        const businessImage = req.file;
+        const { id: categoryId } = theCategory;
 
-    const {
-      businessImage, postalAddress
-    } = req.body;
-
-    const { id: userId } = req.decoded;
-
-    return Business.create({
-      ...businessObject, userId, businessImage, postalAddress
-    })
-      .then(business => res.status(201).json({
-        status: 'success',
-        data: { business }
-      }))
+        return Business.create({
+          ...businessObject, userId, businessImage, postalAddress, categoryId
+        })
+          .then(business => res.status(201).json({
+            status: 'success',
+            data: { business }
+          }));
+      })
       .catch(error => handleErrorMessage(res, error));
   }
 
@@ -60,38 +63,41 @@ export default class BusinessController {
    */
   static updateBusiness(req, res) {
     const businessObject = businessObjectHolder(req);
-
+    const { postalAddress, category } = req.body;
     const validationFailed = handleValidation(res, businessObject);
     if (validationFailed) return validationFailed;
 
-    const notCategory = checkCategory(req, res);
-    if (notCategory) return notCategory;
+    return Category.findOne({ where: { category } })
+      .then((theCategory) => {
+        if (!theCategory) {
+          return res.status(400).json({
+            status: 'fail',
+            error: 'not a category'
+          });
+        }
+        const { id: userId } = req.decoded;
+        const businessImage = req.file;
+        const { id: categoryId } = theCategory;
+        const { businessId: id } = req.params;
+        const isNotUUID = checkUUID(res, id, 'Business');
+        if (isNotUUID) return isNotUUID;
 
-    const {
-      businessImage, postalAddress
-    } = req.body;
-    const { businessId: id } = req.params;
-    const isNotUUID = checkUUID(res, id, 'Business');
-
-    if (isNotUUID) return isNotUUID;
-
-    const { id: userId } = req.decoded;
-
-    return Business.update(
-      {
-        ...businessObject, businessImage, postalAddress
-      },
-      {
-        where: { id, userId },
-        returning: true,
-        plain: true
-      }
-    )
-      .then((business) => {
-        res.status(200).json({
-          status: 'success',
-          data: { business: business[1] }
-        });
+        return Business.update(
+          {
+            ...businessObject, businessImage, postalAddress, categoryId
+          },
+          {
+            where: { id, userId },
+            returning: true,
+            plain: true
+          }
+        )
+          .then((business) => {
+            res.status(200).json({
+              status: 'success',
+              data: { business: business[1] }
+            });
+          });
       })
       .catch(error => handleErrorMessage(res, error));
   }

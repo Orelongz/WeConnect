@@ -14,10 +14,15 @@ import swaggerDocument from './swagger.json';
 import webpackConfig from './webpack.config';
 
 const app = express();
+const port = parseInt(process.env.PORT, 10) || 8000;
 const compiler = webpack(webpackConfig);
 
 app.use(express.static(`${__dirname}/client/public`));
-app.use(webpackDevMiddleware(compiler));
+app.use(webpackDevMiddleware(compiler, {
+  hot: true,
+  publicPath: webpackConfig.output.publicPath,
+  noInfo: true
+}));
 app.use(webpackHotMiddleware(compiler));
 
 app.use(cors());
@@ -35,5 +40,7 @@ app.use('/api/v1/businesses/:businessId/reviews', reviewRoute);
 
 const indexHTMLPath = path.join(__dirname, '/client/public/index.html');
 app.get('/*', (req, res) => res.sendFile(indexHTMLPath));
+
+app.listen(port);
 
 export default app;

@@ -7,7 +7,7 @@ import humanizeString from 'humanize-string';
  * @param {Object} inputObject inputs to be validated
  * @return {Object} errors
  */
-const validate = (inputObject) => {
+function validate(inputObject) {
   const errors = {};
   Object.entries(inputObject).forEach(([key, value]) => {
     if (!value || value.trim() === '') {
@@ -18,6 +18,23 @@ const validate = (inputObject) => {
     }
   });
   return errors;
-};
+}
 
-export default validate;
+/**
+ * handleErrorCatch()
+ * @desc handles the error passed from the server
+ * @param {error} error
+ * @return {String} error
+ */
+function handleErrorCatch(error) {
+  // errrors are either strings or arrays
+  if (typeof error.error === 'string') {
+    return error.error;
+  }
+  return error.error[0];
+}
+
+export {
+  validate,
+  handleErrorCatch
+};

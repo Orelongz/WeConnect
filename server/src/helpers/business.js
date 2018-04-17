@@ -1,28 +1,4 @@
 import { Op } from 'sequelize';
-import db from './../models';
-
-const { Category } = db;
-
-/**
- * checkCategory()
- * @desc handles update of business
- * @param {Object} req request object
- * @param {Object} res response object
- * @return {Object} response
- */
-const checkCategory = (req, res) => {
-  const { category } = req.body;
-
-  Category.findOne({ where: { category } })
-    .then((theCategory) => {
-      if (!theCategory) {
-        return res.status(400).json({
-          status: 'fail',
-          error: 'Choose a category'
-        });
-      }
-    });
-};
 
 /**
  * businessObject()
@@ -38,10 +14,10 @@ const businessObjectHolder = (req) => {
 
   const business = {
     businessName,
-    category: category.toLowerCase(),
+    category,
     address,
-    city: city.toLowerCase(),
-    state: state.toLowerCase(),
+    city,
+    state,
     phoneNumber,
     about,
     startTime,
@@ -81,7 +57,6 @@ const handleBusinessSearch = (req) => {
 };
 
 export {
-  checkCategory,
   businessObjectHolder,
   handleBusinessSearch
 };
