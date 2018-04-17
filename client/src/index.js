@@ -10,11 +10,17 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import rootReducer from './rootReducer';
 import App from './components/App.jsx';
 import './style/index.scss';
+import { userLoggedIn } from './actions/AuthAction';
 
 const store = createStore(
   rootReducer,
   composeWithDevTools(applyMiddleware(thunk))
 );
+
+if (localStorage.weconnectToken) {
+  const user = { token: localStorage.weconnectToken };
+  store.dispatch(userLoggedIn(user));
+}
 
 ReactDOM.render(
   (<BrowserRouter>

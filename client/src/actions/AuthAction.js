@@ -1,9 +1,13 @@
-import { USER_SIGNED_IN } from './../types/Types';
+import { USER_SIGNED_IN, USER_LOGGED_OUT } from './../types/Types';
 import api from './../apiCalls/Api';
 
 const userLoggedIn = user => ({
   type: USER_SIGNED_IN,
   user
+});
+
+const userLoggedOut = () => ({
+  type: USER_LOGGED_OUT
 });
 
 const signin = credentials => dispatch => (
@@ -24,4 +28,9 @@ const signup = credentials => dispatch => (
     })
 );
 
-export { signin, userLoggedIn, signup };
+const logout = () => (dispatch) => {
+  localStorage.removeItem('weconnectToken');
+  dispatch(userLoggedOut());
+};
+
+export { signin, userLoggedIn, signup, logout };
