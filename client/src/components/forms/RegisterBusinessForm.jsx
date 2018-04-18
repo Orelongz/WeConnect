@@ -19,7 +19,7 @@ class RegisterBusinessForm extends Component {
       data: {
         businessName: '',
         businessImage: null,
-        category: '',
+        category: 'IT',
         address: '',
         city: '',
         state: 'Lagos',
@@ -49,7 +49,7 @@ class RegisterBusinessForm extends Component {
     const { postalAddress, businessImage, ...requiredFields } = this.state.data;
     const errors = validate(requiredFields);
     this.setState({ errors });
-    if (Object.keys(errors) === 0) {
+    if (Object.keys(errors).length === 0) {
       return this.props.submit(this.state.data)
     }
   }

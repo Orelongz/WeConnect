@@ -1,4 +1,5 @@
 import { USER_SIGNED_IN, USER_LOGGED_OUT } from './../types/Types';
+import setAuthorizationToken from './../utils/setAuthorizationToken';
 import api from './../apiCalls/Api';
 
 const userLoggedIn = user => ({
@@ -14,7 +15,9 @@ const signin = credentials => dispatch => (
   api.user
     .signin(credentials)
     .then((user) => {
-      localStorage.weconnectToken = user.token;
+      const { token } = user;
+      localStorage.weconnectToken = token;
+      setAuthorizationToken(token);
       dispatch(userLoggedIn(user));
     })
 );
@@ -23,13 +26,16 @@ const signup = credentials => dispatch => (
   api.user
     .signup(credentials)
     .then((user) => {
-      localStorage.weconnectToken = user.token;
+      const { token } = user;
+      localStorage.weconnectToken = token;
+      setAuthorizationToken(token);
       dispatch(userLoggedIn(user));
     })
 );
 
 const logout = () => (dispatch) => {
   localStorage.removeItem('weconnectToken');
+  setAuthorizationToken();
   dispatch(userLoggedOut());
 };
 

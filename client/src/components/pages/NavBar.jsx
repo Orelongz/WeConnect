@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import logout from './../../actions/AuthAction';
+import { logout } from './../../actions/AuthAction';
 
 const propTypes = {
   isAuthenticated: PropTypes.bool.isRequired,
@@ -30,7 +30,7 @@ const NavBar = ({ isAuthenticated, logout }) => (
         </li>
         <li className="nav-item">
           {isAuthenticated ? (
-            <button onClick={() => logout()}>Logout</button>
+            <Link to="/" className="nav-link" onClick={() => logout()}>Logout</Link>
           ): (
             <Link to='/signin' className="nav-link">Signin</Link>
           )}

@@ -5,12 +5,13 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
-// import 'bootstrap';
+import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import rootReducer from './rootReducer';
 import App from './components/App.jsx';
 import './style/index.scss';
 import { userLoggedIn } from './actions/AuthAction';
+import setAuthorizationToken from './utils/setAuthorizationToken';
 
 const store = createStore(
   rootReducer,
@@ -18,7 +19,9 @@ const store = createStore(
 );
 
 if (localStorage.weconnectToken) {
-  const user = { token: localStorage.weconnectToken };
+  const token = localStorage.weconnectToken;
+  const user = { token };
+  setAuthorizationToken(token);
   store.dispatch(userLoggedIn(user));
 }
 
