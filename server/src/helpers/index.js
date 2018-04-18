@@ -1,3 +1,4 @@
+import humanizeString from 'humanize-string';
 import validator from 'validator';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
@@ -39,7 +40,7 @@ const handleValidation = (res, inputObject) => {
   const error = [];
   Object.entries(inputObject).forEach(([key, value]) => {
     if (!value || value.trim() === '') {
-      error.push(`${key} must not be empty`);
+      error.push(`${humanizeString(key)} must not be empty`);
     }
   });
   if (error.length > 0) {

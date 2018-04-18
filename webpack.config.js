@@ -1,13 +1,17 @@
 const webpack = require('webpack');
 
+const port = process.env.PORT || 8000;
+
 module.exports = {
   mode: 'development',
   entry: [
+    'webpack-hot-middleware/client',
     './client/src/index.js'
   ],
   output: {
     path: '/',
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    publicPath: '/'
   },
   resolve: {
     extensions: ['*', '.js', '.jsx']
@@ -17,20 +21,21 @@ module.exports = {
       {
         test: /\.jsx?$/,
         exclude: /node_modules/,
-        loader: 'babel-loader',
-        options: {
-          presets: ['react', 'env', 'stage-2']
-        }
+        loader: ['babel-loader']
       },
       {
         test: /\.s?css$/,
-        loader: 'style-loader!css-loader!sass-loader',
+        loader: 'style-loader!css-loader!sass-loader'
+      },
+      {
+        test: /\.(png|jpe?g|svg|gif)$/,
+        loader: 'url-loader?limit=25000'
       }
     ]
   },
   devServer: {
     contentBase: './client/public',
-    port: 8000,
+    port,
     hot: true
   },
   plugins: [
@@ -38,5 +43,5 @@ module.exports = {
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin()
   ],
-  devtool: 'source-map'
+  devtool: 'eval-source-map'
 };

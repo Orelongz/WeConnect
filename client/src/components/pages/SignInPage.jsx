@@ -5,14 +5,14 @@ import { connect } from 'react-redux';
 import SignInForm from './../forms/SignInForm';
 import InfoMessage from './../messages/InfoMessage';
 import { signin } from './../../actions/AuthAction';
-import handleErrorCatch from './../../helpers/handleErrorCatch';
+import { handleErrorCatch } from './../../helpers';
 
 const propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired
   }).isRequired,
   signin: PropTypes.func.isRequired
-}
+};
 
 class SignInPage extends Component {
   constructor() {

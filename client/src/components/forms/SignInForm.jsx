@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import validator from 'validator';
 import PropTypes from 'prop-types';
+import { validate } from './../../helpers';
 import InLineError from './../messages/InLineError';
 
 const propTypes = {
@@ -29,19 +29,11 @@ class SignInForm extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-    const errors = this.validate(this.state.data);
+    const errors = validate(this.state.data);
     this.setState({ errors });
     if (Object.keys(errors).length === 0) {
-      return this.props
-        .submit(this.state.data);
+      return this.props.submit(this.state.data);
     }
-  }
-
-  validate(data) {
-    const errors = {};
-    if (!validator.isEmail(data.email)) errors.email = 'Email not valid';
-    if (data.password.trim() === '') errors.password = 'Password can\'t be empty';
-    return errors;
   }
 
   render() {

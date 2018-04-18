@@ -1,6 +1,16 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import SearchBar from './SearchBar';
+import ContactForm from './../forms/ContactForm';
+import {
+  marketPlace,
+  searchImage,
+  happyFace,
+  contactImage,
+  feedBack1,
+  feedBack2,
+  feedBack3
+} from './../../../public/images';
 
 const HomePage = () => (
   <div>
@@ -17,7 +27,7 @@ const HomePage = () => (
               <div className="row">
                 <div className="col-sm-12 col-md-4 mt-3">
                   <div className="card">
-                    <img src="https://images-na.ssl-images-amazon.com/images/I/61M2ls4U%2BiL.png" className="compact-pic p-3" />
+                    <img className="compact-pic p-3" src={searchImage} alt="view a business"/>
                     <div className="card-body">
                       <p className="card-text">View/ Register a business</p>
                     </div>
@@ -25,7 +35,7 @@ const HomePage = () => (
                 </div>
                 <div className="col-sm-12 col-md-4 mt-3">
                   <div className="card">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRWW0d9IQvzsJzyZx9uLDlHrITTqMLwRElLQjxM5IA9mpu2tf3_5w" className="compact-pic" />
+                    <img className="compact-pic" src={contactImage} alt="contact the business" />
                     <div className="card-body">
                       <p className="card-text">Get in touch with a business</p>
                     </div>
@@ -33,7 +43,7 @@ const HomePage = () => (
                 </div>
                 <div className="col-sm-12 col-md-4 mt-3">
                   <div className="card">
-                    <img src="http://api.ning.com/files/VrpMXk5gFE1k0TaxhueybvE2t7Tx-16c1X613sfzTmbw0C9XszGtbyhhVdmkQ8OEPlJ97IBlxxK9jI9HQncabc9sn8rwZGgt/walmartsmiley.jpg" className="compact-pic" />
+                    <img className="compact-pic" src={happyFace} alt="customer satisfaction" />
                     <div className="card-body">
                       <p className="card-text">Happy customer/ business owner</p>
                     </div>
@@ -49,7 +59,7 @@ const HomePage = () => (
                 <div className="carousel-inner mt-3 h200">
 
                   <div className="media carousel-item active">
-                    <img src="https://www.eurweb.com/wp-content/uploads/2017/11/jenifer-lewis.jpg" className="img-thumbnail small-profile-pic align-self-center" />
+                    <img className="img-thumbnail small-profile-pic align-self-center" src={feedBack1} alt="business owner" />
                     <blockquote className="media-body blockquote text-center">
                       <p className="mb-0">I joined a few days back and already seeing results in my resturant</p>
                       <footer className="blockquote-footer">Favor</footer>
@@ -57,7 +67,7 @@ const HomePage = () => (
                   </div>
 
                   <div className="media carousel-item">
-                    <img src="https://hairstyleonpoint.com/wp-content/uploads/2014/11/e7bba04af85ea21708bbdcdcd3414bc1-e1416520592212.jpg" className="img-thumbnail small-profile-pic align-self-center" />
+                    <img className="img-thumbnail small-profile-pic align-self-center" src={feedBack2} alt="business owner" />
                     <blockquote className="media-body blockquote text-center">
                       <p className="mb-0">Thanks a lot guys. On joining weconnect my business went from being relatively unknown to getting orders in other states of the country.</p>
                       <footer className="blockquote-footer">Joshua</footer>
@@ -65,7 +75,7 @@ const HomePage = () => (
                   </div>
 
                   <div className="media carousel-item">
-                    <img src="http://brianmushimba.com/images/brian_index_1.png" className="img-thumbnail small-profile-pic align-self-center" />
+                    <img className="img-thumbnail small-profile-pic align-self-center" src={feedBack3} alt="business owner" />
                     <blockquote className="media-body blockquote text-center">
                       <p className="mb-0">WeConnect offered me a wonderful platform to showcase my business.</p>
                       <footer className="blockquote-footer">Levi</footer>
@@ -86,23 +96,7 @@ const HomePage = () => (
               <div className="col-xs-12 col-md-6 col-lg-7">
                 <div className="container card mt-5 py-3">
                   <h3 className="text-center">Contact Us</h3>
-                  <form>
-                    <div className="form-row">
-                      <div className="col">
-                        <label htmlFor="name">Name</label>
-                        <input type="text" className="form-control" placeholder="Name" id="name" />
-                      </div>
-                      <div className="col">
-                        <label htmlFor="email">Email</label>
-                        <input type="email" className="form-control" placeholder="email" />
-                      </div>
-                    </div>
-                    <div className="form-group">
-                      <label htmlFor="name">Message</label>
-                      <textarea type="text" className="form-control" placeholder="Message" id="message" rows="4"></textarea>
-                    </div>
-                    <a href="#" type="submit" className="btn btn-primary">Send</a>
-                  </form>
+                  <ContactForm />
                 </div>
                 </div>
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-const SignIn = () => (
+const BusinessProfilePage = () => (
   <main class="pb-main">
       <div class="container">
         <div class="row">
@@ -138,4 +138,4 @@ const SignIn = () => (
     </main>
 );
 
-export default SignIn;
+export default BusinessProfilePage;

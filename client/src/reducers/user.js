@@ -1,4 +1,4 @@
-import { USER_SIGNED_IN } from './../types/Types';
+import { USER_SIGNED_IN, USER_LOGGED_OUT } from './../types/Types';
 
 /**
  * user()
@@ -11,6 +11,8 @@ function user(state = {}, action = {}) {
   switch (action.type) {
     case USER_SIGNED_IN:
       return action.user;
+    case USER_LOGGED_OUT:
+      return {};
     default:
       return state;
   }

@@ -66,7 +66,11 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: true
     },
-    workHours: {
+    startTime: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    closeTime: {
       type: DataTypes.STRING,
       allowNull: true
     },
@@ -79,6 +83,10 @@ module.exports = (sequelize, DataTypes) => {
   Business.associate = (models) => {
     Business.belongsTo(models.User, {
       foreignKey: 'userId',
+      onDelete: 'CASCADE'
+    });
+    Business.belongsTo(models.Category, {
+      foreignKey: 'categoryId',
       onDelete: 'CASCADE'
     });
     Business.hasMany(models.Review, {

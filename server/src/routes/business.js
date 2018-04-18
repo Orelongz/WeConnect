@@ -1,6 +1,7 @@
 import express from 'express';
 import BusinessController from './../controllers/businessController';
 import validateToken from './../middlewares';
+import imageUpload from './../middlewares/imageUpload';
 
 const {
   createBusiness,
@@ -40,6 +41,7 @@ router.get(
 router.post(
   '/',
   validateToken,
+  imageUpload,
   createBusiness
 );
 

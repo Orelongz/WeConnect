@@ -14,6 +14,14 @@ module.exports = {
         key: 'id'
       }
     },
+    categoryId: {
+      type: Sequelize.UUID,
+      onDelete: 'CASCADE',
+      references: {
+        model: 'Categories',
+        key: 'id'
+      }
+    },
     businessName: {
       type: Sequelize.STRING,
       allowNull: false,
@@ -47,7 +55,11 @@ module.exports = {
       type: Sequelize.STRING,
       allowNull: true
     },
-    workHours: {
+    startTime: {
+      type: Sequelize.STRING,
+      allowNull: true
+    },
+    closeTime: {
       type: Sequelize.STRING,
       allowNull: true
     },

@@ -8,17 +8,20 @@ import { Op } from 'sequelize';
  */
 const businessObjectHolder = (req) => {
   const {
-    businessName, category, address, city, state, phoneNumber, about
+    businessName, category, address, city, state,
+    phoneNumber, about, startTime, closeTime
   } = req.body;
 
   const business = {
     businessName,
-    category: category.toLowerCase(),
+    category,
     address,
-    city: city.toLowerCase(),
-    state: state.toLowerCase(),
+    city,
+    state,
     phoneNumber,
-    about
+    about,
+    startTime,
+    closeTime
   };
   return business;
 };
@@ -30,7 +33,7 @@ const businessObjectHolder = (req) => {
  * @return {Object} theBusiness
  */
 const handleBusinessSearch = (req) => {
-  const { location, category } = req.query;
+  const { location, category, name } = req.query;
   const search = {};
   if (location) {
     search.city = location.toLowerCase();
@@ -38,6 +41,9 @@ const handleBusinessSearch = (req) => {
   }
   if (category) {
     search.category = category.toLowerCase();
+  }
+  if (name) {
+    search.businessName = { [Op.iLike]: `%${name}%` };
   }
 
   let databaseQuery;
@@ -50,4 +56,7 @@ const handleBusinessSearch = (req) => {
   return databaseQuery;
 };
 
-export { businessObjectHolder, handleBusinessSearch };
+export {
+  businessObjectHolder,
+  handleBusinessSearch
+};
