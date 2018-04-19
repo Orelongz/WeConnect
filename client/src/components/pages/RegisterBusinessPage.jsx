@@ -10,7 +10,8 @@ const propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired
   }).isRequired,
-  newBusiness: PropTypes.func.isRequired
+  newBusiness: PropTypes.func.isRequired,
+  businessId: PropTypes.string
 };
 
 class RegisterBusinessPage extends Component {
@@ -25,7 +26,10 @@ class RegisterBusinessPage extends Component {
   submit(data) {
     return this.props
       .newBusiness(data)
-      .then(() => this.props.history.push('/'))
+      .then(() => {
+        const businessId = this.props.businessId;
+        this.props.history.push(`/businesses/${businessId}`);
+      })
       .catch(err => this.setState({
         error: handleErrorCatch(err.response.data)
       }));
@@ -54,4 +58,14 @@ class RegisterBusinessPage extends Component {
 
 RegisterBusinessPage.propTypes = propTypes;
 
-export default connect(null, { newBusiness })(RegisterBusinessPage);
+function mapStateToProps(state) {
+  console.log(state)
+  if (state.business.business) {
+    return {
+      businessId: state.business.business.id
+    };
+  }
+  return {};
+}
+
+export default connect(mapStateToProps, { newBusiness })(RegisterBusinessPage);

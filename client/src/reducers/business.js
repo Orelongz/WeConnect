@@ -1,4 +1,4 @@
-import { REGISTER_BUSINESS } from './../types/Types';
+import { REGISTER_BUSINESS, GET_BUSINESS_DETAILS } from './../types/Types';
 
 /**
  * business()
@@ -10,6 +10,7 @@ import { REGISTER_BUSINESS } from './../types/Types';
 function business(state = {}, action = {}) {
   switch (action.type) {
     case REGISTER_BUSINESS:
+    case GET_BUSINESS_DETAILS:
       return action.business;
     default:
       return state;

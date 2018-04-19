@@ -25,6 +25,9 @@ export default {
       '/api/v1/businesses',
       { ...credentials }
     )
-      .then(res => res.data.data)
+      .then(res => res.data.data),
+
+    getBusiness: businessId => axios.get(`/api/v1/businesses/${businessId}`)
+      .then(res => res.data.data),
   }
 };

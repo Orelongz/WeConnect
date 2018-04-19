@@ -22,7 +22,7 @@ class RegisterBusinessForm extends Component {
         category: 'IT',
         address: '',
         city: '',
-        state: 'Lagos',
+        businessState: 'Lagos',
         phoneNumber: '',
         postalAddress: '',
         startTime: '9am',
@@ -50,7 +50,8 @@ class RegisterBusinessForm extends Component {
     const errors = validate(requiredFields);
     this.setState({ errors });
     if (Object.keys(errors).length === 0) {
-      return this.props.submit(this.state.data)
+      const { businessState: state, ...rest } = this.state.data;
+      return this.props.submit({ state, ...rest })
     }
   }
 
@@ -73,7 +74,7 @@ class RegisterBusinessForm extends Component {
   }
 
   render() {
-    const { state, about, category, startTime, closeTime } = this.state.data;
+    const { businessState, about, category, startTime, closeTime } = this.state.data;
     const { stateArray, categoriesArray, errors } = this.state;
 
     return (
@@ -120,11 +121,10 @@ class RegisterBusinessForm extends Component {
           <div className="form-group col-md-3">
             <label htmlFor="state">State</label>
             <select
-              name="state"
+              name="businessState"
               className="form-control"
-              value={state}
+              value={businessState}
               onChange={this.onChange}
-              ref={choiceState => this.choiceState = choiceState}
             >
               {populateOptions(stateArray)}
             </select>
