@@ -25,11 +25,11 @@ const App = ({ location }) => (
     <Switch>
       <Route location={location} path='/' exact component={HomePage} />
       <GuestRoute location={location} path='/signup' exact component={SignUpPage} />
-      <GuestRoute location={location} path="/signin" exact component={SignInPage} />
+      <GuestRoute location={location} path='/signin' exact component={SignInPage} />
       <Route location={location} path='/businesses' exact component={BusinessesPage} />
-      <UserRoute location={location} path='/register-business' exact component={RegisterBusinessPage} />
-      <UserRoute location={location} path='/edit-business' exact component={EditBusinessPage} />
-      <Route location={location} path='/buiness-profile' exact component={BusinessProfilePage} />
+      <UserRoute location={location} path='/businesses/new' exact component={RegisterBusinessPage} />
+      <Route location={location} path='/businesses/:businessId' exact component={BusinessProfilePage} />
+      <UserRoute location={location} path='/businesses/:businessId/edit' exact component={EditBusinessPage} />
     </Switch>
     <Footer />
   </div>

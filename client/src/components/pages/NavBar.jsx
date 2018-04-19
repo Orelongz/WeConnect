@@ -23,7 +23,7 @@ const NavBar = ({ isAuthenticated, logout }) => (
         </li>
         <li className="nav-item">
           {isAuthenticated ? (
-            <Link to='/register-business' className="nav-link">Register Business</Link>
+            <Link to='/businesses/new' className="nav-link">Register Business</Link>
           ): (
             <Link to='/signup' className="nav-link">Signup</Link>
           )}
