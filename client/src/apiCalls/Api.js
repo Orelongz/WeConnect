@@ -1,15 +1,17 @@
 import axios from 'axios';
 
+const basePath = '/api/v1';
+
 export default {
   user: {
     signup: credentials => axios.post(
-      '/api/v1/auth/signup',
+      `${basePath}/auth/signup`,
       { ...credentials }
     )
       .then(res => res.data.data),
 
     signin: credentials => axios.post(
-      '/api/v1/auth/login',
+      `${basePath}/auth/login`,
       { ...credentials }
     )
       .then(res => res.data.data)
@@ -18,16 +20,19 @@ export default {
     fillStates: () => axios.get('http://locationsng-api.herokuapp.com/api/v1/states')
       .then(res => res.data.map(eachState => eachState.name)),
 
-    categories: () => axios.get('/api/v1/categories')
+    categories: () => axios.get(`${basePath}/categories`)
       .then(res => res.data.data),
 
     newBusiness: credentials => axios.post(
-      '/api/v1/businesses',
+      `${basePath}/businesses`,
       { ...credentials }
     )
       .then(res => res.data.data),
 
-    getBusiness: businessId => axios.get(`/api/v1/businesses/${businessId}`)
+    getBusiness: businessId => axios.get(`${basePath}/businesses/${businessId}`)
       .then(res => res.data.data),
+
+    allBusinesses: () => axios.get(`${basePath}/businesses`)
+      .then(res => res.data.data)
   }
 };

@@ -1,4 +1,8 @@
-import { REGISTER_BUSINESS, GET_BUSINESS_DETAILS } from './../types/Types';
+import {
+  REGISTER_BUSINESS,
+  GET_BUSINESS_DETAILS,
+  GET_ALL_BUSINESSES
+} from './../types/Types';
 import api from './../apiCalls/Api';
 
 const registeredBusiness = business => ({
@@ -9,6 +13,11 @@ const registeredBusiness = business => ({
 const gottenBusiness = business => ({
   type: GET_BUSINESS_DETAILS,
   business
+});
+
+const retrievedBusinesses = businesses => ({
+  type: GET_ALL_BUSINESSES,
+  businesses
 });
 
 const newBusiness = credentials => dispatch => (
@@ -27,4 +36,16 @@ const getBusiness = businessId => dispatch => (
     })
 );
 
-export { newBusiness, getBusiness };
+const allBusinesses = () => dispatch => (
+  api.business
+    .allBusinesses()
+    .then((businesses) => {
+      dispatch(retrievedBusinesses(businesses));
+    })
+);
+
+export {
+  newBusiness,
+  getBusiness,
+  allBusinesses
+};

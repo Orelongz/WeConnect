@@ -1,4 +1,8 @@
-import { REGISTER_BUSINESS, GET_BUSINESS_DETAILS } from './../types/Types';
+import {
+  REGISTER_BUSINESS,
+  GET_BUSINESS_DETAILS,
+  GET_ALL_BUSINESSES
+} from './../types/Types';
 
 /**
  * business()
@@ -12,6 +16,8 @@ function business(state = {}, action = {}) {
     case REGISTER_BUSINESS:
     case GET_BUSINESS_DETAILS:
       return action.business;
+    case GET_ALL_BUSINESSES:
+      return action.businesses;
     default:
       return state;
   }
