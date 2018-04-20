@@ -17,7 +17,8 @@ class BusinessProfilePage extends Component {
   constructor() {
     super();
     this.state = {
-      data: {}
+      data: {},
+      error: {}
     };
   }
 

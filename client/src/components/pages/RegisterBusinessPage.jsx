@@ -59,7 +59,6 @@ class RegisterBusinessPage extends Component {
 RegisterBusinessPage.propTypes = propTypes;
 
 function mapStateToProps(state) {
-  console.log(state)
   if (state.business.business) {
     return {
       businessId: state.business.business.id
