@@ -5,6 +5,7 @@ import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension';
+import decode from 'jwt-decode';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import rootReducer from './rootReducer';
@@ -20,7 +21,8 @@ const store = createStore(
 
 if (localStorage.weconnectToken) {
   const token = localStorage.weconnectToken;
-  const user = { token };
+  const payload = decode(token);
+  const user = { token, currentUser: payload.id };
   setAuthorizationToken(token);
   store.dispatch(userLoggedIn(user));
 }

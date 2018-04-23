@@ -33,6 +33,21 @@ export default {
       .then(res => res.data.data),
 
     allBusinesses: () => axios.get(`${basePath}/businesses`)
-      .then(res => res.data.data)
+      .then(res => res.data.data),
+
+    editBusiness: credentials => axios.put(
+      `${basePath}/businesses`,
+      { ...credentials }
+    )
+      .then(res => res.data.data),
+
+    changeOwnership: (credentials, businessId) => axios.put(
+      `${basePath}/businesses/change-ownership/${businessId}`,
+      { ...credentials }
+    )
+      .then(res => res.data),
+
+    deleteBusiness: businessId => axios.delete(`${basePath}/businesses/${businessId}`)
+      .then(res => res.data)
   }
 };

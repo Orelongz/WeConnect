@@ -4,8 +4,6 @@ import PropTypes from 'prop-types';
 import SearchBar from './SearchBar';
 import { allBusinesses } from './../../actions/businessAction';
 import { populateBusinesses } from './../../helpers/businessFormHelper';
-import { handleErrorCatch } from './../../helpers';
-
 
 const propTypes = {
   allBusinesses: PropTypes.func.isRequired,
@@ -34,7 +32,6 @@ class BusinessesPage extends Component {
 
   render() {
     const { businesses } = this.state;
-    console.log(businesses)
     return (
       <Fragment>
         <SearchBar />
@@ -54,7 +51,6 @@ class BusinessesPage extends Component {
 BusinessesPage.propTypes = propTypes;
 
 function mapStateToProps(state) {
-  console.log(state.business)
   if (state.business.businesses) {
     return { businesses: state.business.businesses };
   }

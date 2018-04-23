@@ -12,23 +12,11 @@ const propTypes = {
   submit: PropTypes.func.isRequired
 };
 
-class RegisterBusinessForm extends Component {
+class EditBusinessForm extends Component {
   constructor() {
     super();
     this.state = {
-      data: {
-        businessName: '',
-        businessImage: null,
-        category: 'IT',
-        address: '',
-        city: '',
-        businessState: 'Lagos',
-        phoneNumber: '',
-        postalAddress: '',
-        startTime: '9am',
-        closeTime: '5pm',
-        about: ''
-      },
+      data: {},
       stateArray: [],
       categoriesArray: [],
       errors: {}
@@ -71,9 +59,18 @@ class RegisterBusinessForm extends Component {
           categoriesArray: [...this.state.categoriesArray, ...categories]
         });
       });
+    
+    api.business
+      .getBusiness(businessId)
+      .then((businessDetails) => {
+        this.setState({
+          data: { ...businessDetails }
+        });
+      });
   }
 
   render() {
+    console.log(this.state)
     const { businessState, about, category, startTime, closeTime } = this.state.data;
     const { stateArray, categoriesArray, errors } = this.state;
 
@@ -85,7 +82,7 @@ class RegisterBusinessForm extends Component {
             <input
               type="text"
               className="form-control"
-              placeholder="Business Name"
+              value={businessName}
               name= "businessName"
               onChange={this.onChange}
             />
@@ -135,7 +132,7 @@ class RegisterBusinessForm extends Component {
               className="form-control"
               type="text"
               name="city"
-              placeholder="City"
+              value={city}
               onChange={this.onChange}
             />
             {errors.city && <InLineError text={errors.city} />}
@@ -145,7 +142,7 @@ class RegisterBusinessForm extends Component {
             <input
               type="text"
               className="form-control"
-              placeholder="Address"
+              value={address}
               name='address'
               onChange={this.onChange}
             />
@@ -160,7 +157,7 @@ class RegisterBusinessForm extends Component {
               type="text"
               className="form-control"
               name="phoneNumber"
-              placeholder="Phone Number"
+              value={phoneNumber}
               onChange={this.onChange}
             />
             {errors.phoneNumber && <InLineError text={errors.phoneNumber} />}
@@ -171,7 +168,7 @@ class RegisterBusinessForm extends Component {
               type="text"
               className="form-control"
               name="postalAddress"
-              placeholder="Postal Address"
+              value={postalAddress}
               onChange={this.onChange}
             />
           </div>
@@ -216,6 +213,6 @@ class RegisterBusinessForm extends Component {
   }
 }
 
-RegisterBusinessForm.propTypes = propTypes;
+EditBusinessForm.propTypes = propTypes;
 
-export default RegisterBusinessForm;
+export default EditBusinessForm;

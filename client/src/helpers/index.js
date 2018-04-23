@@ -27,7 +27,7 @@ function validate(inputObject) {
  * @return {String} error
  */
 function handleErrorCatch(error) {
-  // errrors are either strings or arrays
+  // errror is either a strings or an array
   if (typeof error.error === 'string') {
     return error.error;
   }

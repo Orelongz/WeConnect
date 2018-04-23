@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import RegisterBusinessForm from './../forms/RegisterBusinessForm';
+import BusinessForm from './../forms/BusinessForm';
 import InfoMessage from './../messages/InfoMessage';
 import { newBusiness } from './../../actions/businessAction';
 import { handleErrorCatch } from './../../helpers';
@@ -46,7 +46,7 @@ class RegisterBusinessPage extends Component {
             <div className="card py-3 col-xs-12 col-sm-10">
               <div className="container">
                 <h2 className="text-center">Register your new business</h2>
-                <RegisterBusinessForm submit={this.submit}/>
+                <BusinessForm submit={this.submit}/>
               </div>
             </div>
           </div>

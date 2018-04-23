@@ -2,15 +2,17 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import { getBusiness } from './../../actions/businessAction';
+import { getBusiness, deleteBusiness } from './../../actions/businessAction';
 
 const propTypes = {
   getBusiness: PropTypes.func.isRequired,
+  deleteBusiness: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       businessId: PropTypes.string.isRequired
     }).isRequired
-  }).isRequired
+  }).isRequired,
+  currentUser: PropTypes.string
 };
 
 class BusinessProfilePage extends Component {
@@ -18,8 +20,10 @@ class BusinessProfilePage extends Component {
     super();
     this.state = {
       data: {},
-      error: {}
+      error: {},
+      currentUser: ''
     };
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   componentDidMount() {
@@ -29,17 +33,24 @@ class BusinessProfilePage extends Component {
       .then(() => {
         const { businessDetails } = this.props;
         this.setState({ data: businessDetails })
-      })
-      .catch(err => this.setState({
-        error: handleErrorCatch(err.response.data)
-      }));
+      });
+  }
+
+  handleDelete() {
+    const { businessId } = this.props.match.params;
+    return this.props
+      .deleteBusiness(businessId)
+      .then(() => this.props.history.push('/businesses'))
   }
 
   render() {
     const {
       businessName, businessImage, category, address, city, state: businessState,
-      phoneNumber, postalAddress, startTime, closeTime, about, id
+      phoneNumber, postalAddress, startTime, closeTime, about, id: businessId, userId: ownerId
     } = this.state.data;
+
+    const { currentUser } = this.props;
+    
     return (
       <main className="pb-main">
         <div className="container">
@@ -77,10 +88,14 @@ class BusinessProfilePage extends Component {
                       {about}
                     </article>
                   </div>
-                  <div>
-                    <Link to={`/businesses/${id}/edit`} className="btn btn-primary">Edit</Link>
-                    <Link to='/businesses' className="btn btn-danger pull-right">Delete</Link>
-                  </div>
+                  {
+                    (ownerId === currentUser) ? (
+                      <div>
+                        <Link to={`/businesses/${businessId}/edit`} className="btn btn-primary">Edit</Link>
+                        <button onClick={this.handleDelete} className="btn btn-danger pull-right">Delete</button>
+                      </div>
+                    ) : null
+                  }
                 </div>
               </div>
 
@@ -158,13 +173,10 @@ class BusinessProfilePage extends Component {
                       </div>
                     </li>
                   </ul>
-
                 </div>
               </form>
-
             </div>
           </div>
-
         </div>
       </main>
     );
@@ -173,10 +185,14 @@ class BusinessProfilePage extends Component {
 
 function mapStateToProps(state) {
   return {
-    businessDetails: { ...state.business.business }
+    businessDetails: { ...state.business.business },
+    currentUser: state.user.currentUser
   };
 }
 
 BusinessProfilePage.propTypes = propTypes;
 
-export default connect(mapStateToProps, { getBusiness })(BusinessProfilePage);
+export default connect(mapStateToProps, {
+  getBusiness,
+  deleteBusiness
+})(BusinessProfilePage);
