@@ -1,13 +1,13 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { validate } from './../../helpers';
+import { validate } from './../../utils';
 import InLineError from './../messages/InLineError';
 
 const propTypes = {
   submit: PropTypes.func.isRequired
 };
 
-class BusinessForm extends Component {
+class BusinessTransferForm extends Component {
   constructor() {
     super();
     this.state = {
@@ -58,6 +58,6 @@ class BusinessForm extends Component {
   }
 }
 
-BusinessForm.propTypes = propTypes;
+BusinessTransferForm.propTypes = propTypes;
 
-export default BusinessForm;
+export default BusinessTransferForm;

@@ -13,29 +13,6 @@ const registeredBusiness = business => ({
   business
 });
 
-const gottenBusiness = business => ({
-  type: GET_BUSINESS_DETAILS,
-  business
-});
-
-const retrievedBusinesses = businesses => ({
-  type: GET_ALL_BUSINESSES,
-  businesses
-});
-
-const editedBusiness = business => ({
-  type: EDIT_BUSINESS,
-  business
-});
-
-const ownershipChanged = () => ({
-  type: CHANGE_OWNERSHIP
-});
-
-const deletedBusiness = () => ({
-  type: DELETE_BUSINESS
-});
-
 const newBusiness = credentials => dispatch => (
   api.business
     .newBusiness(credentials)
@@ -43,6 +20,11 @@ const newBusiness = credentials => dispatch => (
       dispatch(registeredBusiness(business));
     })
 );
+
+const gottenBusiness = business => ({
+  type: GET_BUSINESS_DETAILS,
+  business
+});
 
 const getBusiness = businessId => dispatch => (
   api.business
@@ -52,6 +34,11 @@ const getBusiness = businessId => dispatch => (
     })
 );
 
+const retrievedBusinesses = businesses => ({
+  type: GET_ALL_BUSINESSES,
+  businesses
+});
+
 const allBusinesses = () => dispatch => (
   api.business
     .allBusinesses()
@@ -59,6 +46,11 @@ const allBusinesses = () => dispatch => (
       dispatch(retrievedBusinesses(businesses));
     })
 );
+
+const editedBusiness = business => ({
+  type: EDIT_BUSINESS,
+  business
+});
 
 const editBusiness = credentials => dispatch => (
   api.business
@@ -68,19 +60,29 @@ const editBusiness = credentials => dispatch => (
     })
 );
 
-const changeOwnership = () => dispatch => (
+const ownershipChanged = business => ({
+  type: CHANGE_OWNERSHIP,
+  business
+});
+
+const changeOwnership = (email, businessId) => dispatch => (
   api.business
-    .changeOwnership()
-    .then(() => {
-      dispatch(ownershipChanged());
+    .changeOwnership(email, businessId)
+    .then((data) => {
+      dispatch(ownershipChanged(data.business));
     })
 );
+
+const deletedBusiness = businessId => ({
+  type: DELETE_BUSINESS,
+  businessId
+});
 
 const deleteBusiness = businessId => dispatch => (
   api.business
     .deleteBusiness(businessId)
     .then(() => {
-      dispatch(deletedBusiness());
+      dispatch(deletedBusiness(businessId));
     })
 );
 

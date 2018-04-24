@@ -1,13 +1,13 @@
 import { USER_SIGNED_IN, USER_LOGGED_OUT } from './../types/Types';
 
 /**
- * user()
+ * userReducer()
  * @desc reducer for user
  * @param {Object} state
  * @param {Object} action
  * @return {Object} user
  */
-function user(state = {}, action = {}) {
+function userReducer(state = {}, action = {}) {
   switch (action.type) {
     case USER_SIGNED_IN:
       return action.user;
@@ -18,4 +18,4 @@ function user(state = {}, action = {}) {
   }
 }
 
-export default user;
+export default userReducer;

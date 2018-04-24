@@ -11,9 +11,9 @@ const userLoggedOut = () => ({
   type: USER_LOGGED_OUT
 });
 
-const signin = credentials => dispatch => (
+const signup = credentials => dispatch => (
   api.user
-    .signin(credentials)
+    .signup(credentials)
     .then((user) => {
       const { token } = user;
       localStorage.weconnectToken = token;
@@ -22,9 +22,9 @@ const signin = credentials => dispatch => (
     })
 );
 
-const signup = credentials => dispatch => (
+const signin = credentials => dispatch => (
   api.user
-    .signup(credentials)
+    .signin(credentials)
     .then((user) => {
       const { token } = user;
       localStorage.weconnectToken = token;
@@ -39,4 +39,4 @@ const logout = () => (dispatch) => {
   dispatch(userLoggedOut());
 };
 
-export { signin, userLoggedIn, signup, logout };
+export { signup, signin, logout, userLoggedIn };

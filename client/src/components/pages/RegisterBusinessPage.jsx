@@ -4,23 +4,27 @@ import { connect } from 'react-redux';
 import BusinessForm from './../forms/BusinessForm';
 import InfoMessage from './../messages/InfoMessage';
 import { newBusiness } from './../../actions/businessAction';
-import { handleErrorCatch } from './../../helpers';
+import allCategories from './../../actions/categoriesAction';
+import { handleErrorCatch } from './../../utils';
 
 const propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired
   }).isRequired,
   newBusiness: PropTypes.func.isRequired,
+  allCategories: PropTypes.func.isRequired,
   businessId: PropTypes.string
 };
 
 class RegisterBusinessPage extends Component {
   constructor() {
     super();
-    this.state = {
-      error: null
-    };
+    this.state = { error: null };
     this.submit = this.submit.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.allCategories();
   }
 
   submit(data) {
@@ -37,6 +41,12 @@ class RegisterBusinessPage extends Component {
 
   render() {
     const { error } = this.state;
+    const checkRender = () => {
+      if (this.props.categories) {
+        return <BusinessForm submit={this.submit} categories={this.props.categories} />
+      }
+      return null;
+    }
 
     return (
       <main className="pb-main">
@@ -46,7 +56,7 @@ class RegisterBusinessPage extends Component {
             <div className="card py-3 col-xs-12 col-sm-10">
               <div className="container">
                 <h2 className="text-center">Register your new business</h2>
-                <BusinessForm submit={this.submit}/>
+                {checkRender()}
               </div>
             </div>
           </div>
@@ -59,12 +69,14 @@ class RegisterBusinessPage extends Component {
 RegisterBusinessPage.propTypes = propTypes;
 
 function mapStateToProps(state) {
-  if (state.business.business) {
-    return {
-      businessId: state.business.business.id
-    };
-  }
-  return {};
+  console.log(state)
+  return {
+    businessId: state.businessReducer.business.id,
+    categories: state.categoryReducer
+  };
 }
 
-export default connect(mapStateToProps, { newBusiness })(RegisterBusinessPage);
+export default connect(mapStateToProps, {
+  newBusiness,
+  allCategories
+})(RegisterBusinessPage);

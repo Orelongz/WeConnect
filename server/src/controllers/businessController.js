@@ -218,10 +218,13 @@ export default class BusinessController {
           { userId },
           { where: { id, userId: ownerId }, returning: true, plain: true }
         )
-          .then(() => {
+          .then((business) => {
             res.status(200).json({
               status: 'success',
-              message: 'Business transferred'
+              data: {
+                business: business[1],
+                message: 'Business transferred'
+              }
             });
           });
       })

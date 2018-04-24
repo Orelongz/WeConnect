@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import SignUpForm from './../forms/SignUpForm';
 import InfoMessage from './../messages/InfoMessage';
 import { signup } from './../../actions/AuthAction';
-import { handleErrorCatch } from './../../helpers';
+import { handleErrorCatch } from './../../utils';
 
 const propTypes = {
   history: PropTypes.shape({
