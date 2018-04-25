@@ -12,7 +12,7 @@ export default function ReviewList({ businessReviews }) {
           />
           <div className="media-body">
             <div>
-              <h5 className="d-inline">Hammed</h5>
+              <h5 className="d-inline">{review.User.firstname} {review.User.lastname}</h5>
               <div className="d-inline pull-right">
                   <span className="fa fa-star checked"></span>
                   <span className="fa fa-star checked"></span>
