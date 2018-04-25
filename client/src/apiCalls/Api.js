@@ -29,15 +29,15 @@ export default {
     allBusinesses: () => axios.get(`${basePath}/businesses`)
       .then(res => res.data.data.businesses),
 
-    editBusiness: credentials => axios.put(
-      `${basePath}/businesses`,
+    editBusiness: (credentials, businessId) => axios.put(
+      `${basePath}/businesses/${businessId}`,
       { ...credentials }
     )
       .then(res => res.data.data.business),
 
-    changeOwnership: (credentials, businessId) => axios.put(
+    changeOwnership: (email, businessId) => axios.put(
       `${basePath}/businesses/change-ownership/${businessId}`,
-      { ...credentials }
+      { ...email }
     )
       .then(res => res.data.data),
 

@@ -43,7 +43,13 @@ class RegisterBusinessPage extends Component {
     const { error } = this.state;
     const checkRender = () => {
       if (this.props.categories) {
-        return <BusinessForm submit={this.submit} categories={this.props.categories} />
+        return (
+          <BusinessForm
+            submit={this.submit}
+            categories={this.props.categories}
+            FormAction="Register"
+          />
+        );
       }
       return null;
     }
@@ -69,7 +75,6 @@ class RegisterBusinessPage extends Component {
 RegisterBusinessPage.propTypes = propTypes;
 
 function mapStateToProps(state) {
-  console.log(state)
   return {
     businessId: state.businessReducer.business.id,
     categories: state.categoryReducer

@@ -52,9 +52,9 @@ const editedBusiness = business => ({
   business
 });
 
-const editBusiness = credentials => dispatch => (
+const editBusiness = (credentials, businessId) => dispatch => (
   api.business
-    .editBusiness(credentials)
+    .editBusiness(credentials, businessId)
     .then((business) => {
       dispatch(editedBusiness(business));
     })

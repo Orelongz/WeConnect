@@ -32,6 +32,7 @@ function ImageUpload(req, res, next) {
     if (err) {
       req.file = '';
     }
+    req.file = '';
     return next();
   });
 }

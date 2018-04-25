@@ -12,6 +12,7 @@ import {
 const propTypes = {
   submit: PropTypes.func.isRequired,
   categories: PropTypes.array.isRequired,
+  FormAction: PropTypes.string.isRequired,
   businessDetails: PropTypes.object
 };
 
@@ -45,18 +46,6 @@ class BusinessForm extends Component {
     });
   }
 
-  componentDidMount() {
-    console.log(this.state)
-    if (this.props.businessDetails) {
-      const { state: businessState, ...rest } = this.props.businessDetails;
-      return (
-        this.setState({
-          data: { ...this.state.data, businessState, ...rest }
-        })
-      )
-    }
-  }
-
   onSubmit(e) {
     e.preventDefault();
     const { postalAddress, businessImage, ...requiredFields } = this.state.data;
@@ -68,11 +57,18 @@ class BusinessForm extends Component {
     }
   }
 
-  render() {
-    console.log(this.props.businessDetails);
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.businessDetails) {
+      const { state: businessState, ...rest } = nextProps.businessDetails;
+      this.setState({
+        data: { ...this.state.data, businessState, ...rest }
+      });
+    }
+}
 
+  render() {
     const { errors, data } = this.state;
-    const { categories } = this.props;
+    const { categories, FormAction } = this.props;
 
     return (
       <form onSubmit={this.onSubmit} encType="multipart/form-data">
@@ -221,7 +217,7 @@ class BusinessForm extends Component {
           />
           {errors.about && <InLineError text={errors.about} />}
         </div>
-        <button type="submit" className="btn btn-primary pull-right">Register</button>
+        <div className="clearfix"><button type="submit" className="btn btn-primary pull-right">{FormAction}</button></div>
       </form>
     );
   }

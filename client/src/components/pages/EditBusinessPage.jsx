@@ -10,6 +10,7 @@ import {
   changeOwnership,
   getBusiness
 } from './../../actions/businessAction';
+import { handleErrorCatch } from './../../utils';
 
 const propTypes = {
   getBusiness: PropTypes.func.isRequired,
@@ -32,14 +33,15 @@ class EditBusinessPage extends Component {
   }
 
   componentDidMount() {
-    const { businessId } = this.props.match.params
+    const { businessId } = this.props.match.params;
     this.props.getBusiness(businessId);
     this.props.allCategories();
   }
 
   handleEdit(data) {
+    const { businessId } = this.props.match.params;
     return this.props
-      .editBusiness(data)
+      .editBusiness(data, businessId)
       .then(() => {
         const { businessId } = this.props.match.params;
         this.props.history.push(`/businesses/${businessId}`);
@@ -67,6 +69,7 @@ class EditBusinessPage extends Component {
             submit={this.handleEdit}
             businessDetails={this.props.businessDetails}
             categories={this.props.categories}
+            FormAction="Save"
           />
         );
       }
