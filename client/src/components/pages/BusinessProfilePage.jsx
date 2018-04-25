@@ -3,10 +3,13 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import BusinessProfile from './BusinessProfile';
 import { getBusiness, deleteBusiness } from './../../actions/businessAction';
+import { addReview } from './../../actions/reviewAction';
+import ReviewsDiv from './ReviewsDiv';
 
 const propTypes = {
   getBusiness: PropTypes.func.isRequired,
   deleteBusiness: PropTypes.func.isRequired,
+  addReview: PropTypes.func.isRequired,
   match: PropTypes.shape({
     params: PropTypes.shape({
       businessId: PropTypes.string.isRequired
@@ -19,6 +22,7 @@ class BusinessProfilePage extends Component {
   constructor() {
     super();
     this.handleDelete = this.handleDelete.bind(this);
+    this.postReview = this.postReview.bind(this);
   }
 
   componentDidMount() {
@@ -33,6 +37,12 @@ class BusinessProfilePage extends Component {
     return this.props
       .deleteBusiness(businessId)
       .then(() => this.props.history.push('/businesses'))
+  }
+
+  postReview(data) {
+    const { businessId } = this.props.match.params;
+    return this.props
+      .addReview(data, businessId)
   }
 
   render() {
@@ -52,7 +62,15 @@ class BusinessProfilePage extends Component {
     return (
       <main className="pb-main">
         <div className="container">
-          {checkRender()}
+          <div className="row">
+            {checkRender()}
+            <div className="col-md-12 col-lg-4"></div>
+            <div className="col-md-12 col-lg-8">
+              <ReviewsDiv
+                postReview={this.postReview}
+              />
+            </div>
+          </div>
         </div>
       </main>
     );
@@ -70,5 +88,6 @@ BusinessProfilePage.propTypes = propTypes;
 
 export default connect(mapStateToProps, {
   getBusiness,
-  deleteBusiness
+  deleteBusiness,
+  addReview
 })(BusinessProfilePage);

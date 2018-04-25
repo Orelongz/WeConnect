@@ -1,82 +1,63 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { validate } from './../../utils';
+import InLineError from './../messages/InLineError';
 
-export default function ReviewForm() {
-  return (
-    <form className="card form-group mt-5">
-      <div className="container pt-3">
+class ReviewForm extends Component {
+  constructor() {
+    super();
+    this.state = {
+      review: '',
+      error: {}
+    };
+    this.onChange = this.onChange.bind(this);
+    this.submit = this.submit.bind(this);
+  }
 
-        <div className="media">
-          <img src="https://i.stack.imgur.com/34AD2.jpg" className="img-thumbnail rounded-circle small-profile-pic mr-3" />
-          <div className="media-body">
-            <div>
-              <label htmlFor="review">Write a review: </label>
-              <textarea className="form-control" id="review"></textarea>
-            </div>
+  submit(e) {
+    e.preventDefault();
+    const { review } = this.state;
+    const error = validate({ review });
+    this.setState({ error });
+    if (Object.keys(error).length === 0) {
+      return this.props.submit({ review })
+    }
+  }
 
-            <div className="pt-3">
-              <div className="d-inline">
-                <span className="fa fa-star-o"></span>
-                <span className="fa fa-star-o"></span>
-                <span className="fa fa-star-o"></span>
-                <span className="fa fa-star-o"></span>
-                <span className="fa fa-star-o"></span>
-              </div>
-              <a href="#" className="btn btn-primary btn-sm pull-right">POST</a>
-            </div>
-          </div>
+  onChange(e) {
+    return this.setState({
+      [e.target.name]: e.target.value
+    });
+  }
+
+  render() {
+    const { error } = this.state;
+    return (
+      <form className="media-body" onSubmit={this.submit}>
+        <div>
+          <label htmlFor="review">Write a review: </label>
+          <textarea
+            className="form-control"
+            id="review"
+            name="review"
+            onChange={this.onChange}
+            value={this.state.review}
+          />
+          {error.review && <InLineError text={error.review} />}
         </div>
 
-        <ul className="list-unstyled">
-          <li className="media border-top pt-3 mt-3">
-            <img src="https://i.stack.imgur.com/34AD2.jpg" className="img-thumbnail rounded-circle small-profile-pic mr-3" />
-            <div className="media-body">
-              <div>
-                <h5 className="d-inline">Hammed</h5>
-                <div className="d-inline pull-right">
-                    <span className="fa fa-star checked"></span>
-                    <span className="fa fa-star checked"></span>
-                    <span className="fa fa-star checked"></span>
-                    <span className="fa fa-star checked"></span>
-                    <span className="fa fa-star-o"></span>
-                  </div>
-              </div>
-              <p>They serve the best coffee ever.</p>
-            </div>
-          </li>
-          <li className="media border-top pt-3 mt-3">
-            <img src="https://i.stack.imgur.com/34AD2.jpg" className="img-thumbnail rounded-circle small-profile-pic mr-3" />
-            <div className="media-body">
-              <div>
-                <h5 className="d-inline">Tobi</h5>
-                <div className="d-inline pull-right">
-                  <span className="fa fa-star checked"></span>
-                  <span className="fa fa-star checked"></span>
-                  <span className="fa fa-star-o"></span>
-                  <span className="fa fa-star-o"></span>
-                  <span className="fa fa-star-o"></span>
-                </div>
-              </div>
-              <p>They need to improve their service. I got in and spent over 5 mins waiting to get my coffee. Not cool.</p>
-            </div>
-          </li>
-          <li className="media border-top pt-3 mt-3">
-            <img src="https://i.stack.imgur.com/34AD2.jpg" className="img-thumbnail rounded-circle small-profile-pic mr-3" />
-            <div className="media-body">
-              <div>
-                <h5 className="d-inline">Cynthia</h5>
-                <div className="d-inline pull-right">
-                  <span className="fa fa-star checked"></span>
-                  <span className="fa fa-star checked"></span>
-                  <span className="fa fa-star checked"></span>
-                  <span className="fa fa-star checked"></span>
-                  <span className="fa fa-star-o"></span>
-                </div>
-              </div>
-              <p>I kind of agree with Tobi, but they still make a very nice coffee though</p>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </form>
-  );
+        <div className="pt-3">
+          <div className="d-inline">
+            <span className="fa fa-star-o"></span>
+            <span className="fa fa-star-o"></span>
+            <span className="fa fa-star-o"></span>
+            <span className="fa fa-star-o"></span>
+            <span className="fa fa-star-o"></span>
+          </div>
+          <button type="submit" className="btn btn-primary btn-sm pull-right">POST</button>
+        </div>
+      </form>
+    );
+  }
 }
+
+export default ReviewForm;
