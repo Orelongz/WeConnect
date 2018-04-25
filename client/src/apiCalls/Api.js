@@ -47,5 +47,12 @@ export default {
   category: {
     getCategories: () => axios.get(`${basePath}/categories`)
       .then(res => res.data.data)
+  },
+  review: {
+    addReview: (credentials, businessId) => axios.post(
+      `${basePath}/businesses/${businessId}/reviews`,
+      { ...credentials }
+    )
+      .then(res => res.data.data.review)
   }
 };

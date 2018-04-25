@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
@@ -26,7 +26,7 @@ class BusinessProfile extends Component {
     } = businessDetails;
     
     return (
-      <div className="row">
+      <Fragment>
         <div className="col-md-12 col-lg-4 mt-4">
           <div className="card">
             <div className="card-header font-weight-bold bg-secondary text-white">
@@ -71,7 +71,7 @@ class BusinessProfile extends Component {
             </div>
           </div>
         </div>
-      </div>
+      </Fragment>
     );
   }
 }
