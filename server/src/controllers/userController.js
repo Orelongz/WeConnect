@@ -42,9 +42,8 @@ export default class UserController {
           status: 'success',
           data: {
             user: {
-              firstname, lastname, email
-            },
-            token
+              firstname, lastname, email, token
+            }
           }
         });
       })
@@ -85,9 +84,8 @@ export default class UserController {
             status: 'success',
             data: {
               user: {
-                firstname, lastname
-              },
-              token
+                firstname, lastname, token
+              }
             }
           });
         }

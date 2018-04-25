@@ -3,38 +3,26 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import SearchBar from './SearchBar';
 import { allBusinesses } from './../../actions/businessAction';
-import { populateBusinesses } from './../../helpers/businessFormHelper';
-import { handleErrorCatch } from './../../helpers';
-
+import { populateBusinesses } from './../../utils/businessUtils';
 
 const propTypes = {
   allBusinesses: PropTypes.func.isRequired,
-  businesses: PropTypes.array
+  businesses: PropTypes.array.isRequired
 };
 
 class BusinessesPage extends Component {
-  constructor() {
-    super();
-    this.state = {
-      error: {},
-      businesses: []
-    };
-  }
-
   componentDidMount() {
-    return this.props
-      .allBusinesses()
-      .then(() => {
-        const { businesses } = this.props;
-        this.setState({
-          businesses: [...businesses]
-        })
-      });
+    this.props.allBusinesses();
   }
 
   render() {
-    const { businesses } = this.state;
-    console.log(businesses)
+    function displayBusinesses(businesses) {
+      if (businesses.length === 0) {
+        return <p>Sorry, there are presently no businesses</p>
+      } else {
+        return populateBusinesses(businesses)
+      }
+    }
     return (
       <Fragment>
         <SearchBar />
@@ -42,7 +30,7 @@ class BusinessesPage extends Component {
           <div className="container">
             <h1 className="text-center">All Businesses</h1>
             <div className="row">
-              {populateBusinesses(businesses)}
+              {displayBusinesses(this.props.businesses)}
             </div>
           </div>
         </main>
@@ -54,11 +42,7 @@ class BusinessesPage extends Component {
 BusinessesPage.propTypes = propTypes;
 
 function mapStateToProps(state) {
-  console.log(state.business)
-  if (state.business.businesses) {
-    return { businesses: state.business.businesses };
-  }
-  return {};
+  return { businesses: state.businessReducer.businesses };
 }
 
 export default connect(mapStateToProps, { allBusinesses })(BusinessesPage);

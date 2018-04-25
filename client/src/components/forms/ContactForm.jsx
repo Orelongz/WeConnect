@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { validate } from './../../helpers';
+import { validate } from './../../utils';
 import InlineError from './../messages/InLineError';
 
 class ContactForm extends Component {

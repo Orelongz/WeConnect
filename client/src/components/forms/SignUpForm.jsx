@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { validate } from './../../helpers';
+import { validate } from './../../utils';
 import InLineError from './../messages/InLineError';
 
 const propTypes = {

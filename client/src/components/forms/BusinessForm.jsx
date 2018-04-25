@@ -1,24 +1,28 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import api from './../../apiCalls/Api';
-import { validate } from './../../helpers';
+import { validate } from './../../utils';
 import InLineError from './../messages/InLineError';
 import {
+  stateArray,
   businessHours,
   populateOptions
-} from './../../helpers/businessFormHelper';
+} from './../../utils/businessUtils';
 
 const propTypes = {
-  submit: PropTypes.func.isRequired
+  submit: PropTypes.func.isRequired,
+  categories: PropTypes.array.isRequired,
+  FormAction: PropTypes.string.isRequired,
+  businessDetails: PropTypes.object
 };
 
-class RegisterBusinessForm extends Component {
+class BusinessForm extends Component {
   constructor() {
     super();
     this.state = {
       data: {
         businessName: '',
-        businessImage: null,
+        businessImage: '',
         category: 'IT',
         address: '',
         city: '',
@@ -29,8 +33,6 @@ class RegisterBusinessForm extends Component {
         closeTime: '5pm',
         about: ''
       },
-      stateArray: [],
-      categoriesArray: [],
       errors: {}
     };
     this.onChange = this.onChange.bind(this);
@@ -55,27 +57,18 @@ class RegisterBusinessForm extends Component {
     }
   }
 
-  componentDidMount() {
-    api.business
-      .fillStates()
-      .then((nigerianStates) => {
-        this.setState({
-          stateArray: [...this.state.stateArray, ...nigerianStates]
-        });
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.businessDetails) {
+      const { state: businessState, ...rest } = nextProps.businessDetails;
+      this.setState({
+        data: { ...this.state.data, businessState, ...rest }
       });
-    
-    api.business
-      .categories()
-      .then((categories) => {
-        this.setState({
-          categoriesArray: [...this.state.categoriesArray, ...categories]
-        });
-      });
-  }
+    }
+}
 
   render() {
-    const { businessState, about, category, startTime, closeTime } = this.state.data;
-    const { stateArray, categoriesArray, errors } = this.state;
+    const { errors, data } = this.state;
+    const { categories, FormAction } = this.props;
 
     return (
       <form onSubmit={this.onSubmit} encType="multipart/form-data">
@@ -86,7 +79,9 @@ class RegisterBusinessForm extends Component {
               type="text"
               className="form-control"
               placeholder="Business Name"
+              id= "businessName"
               name= "businessName"
+              value={data.businessName}
               onChange={this.onChange}
             />
             {errors.businessName && <InLineError text={errors.businessName} />}
@@ -97,7 +92,9 @@ class RegisterBusinessForm extends Component {
               <input
                 type="file"
                 className="custom-file-input"
+                id="businessImage"
                 name="businessImage"
+                value={data.businessImage}
                 onChange={this.onChange}
                 accept="image/*"
               />
@@ -109,10 +106,11 @@ class RegisterBusinessForm extends Component {
             <select
               name="category"
               className="form-control"
-              value={category}
+              value={data.category}
+              id="category"
               onChange={this.onChange}
             >
-              {populateOptions(categoriesArray)}
+              {populateOptions(categories)}
             </select>
           </div>
         </div>
@@ -123,7 +121,8 @@ class RegisterBusinessForm extends Component {
             <select
               name="businessState"
               className="form-control"
-              value={businessState}
+              id="businessState"
+              value={data.businessState}
               onChange={this.onChange}
             >
               {populateOptions(stateArray)}
@@ -134,7 +133,9 @@ class RegisterBusinessForm extends Component {
             <input
               className="form-control"
               type="text"
+              id="city"
               name="city"
+              value={data.city}
               placeholder="City"
               onChange={this.onChange}
             />
@@ -146,7 +147,9 @@ class RegisterBusinessForm extends Component {
               type="text"
               className="form-control"
               placeholder="Address"
-              name='address'
+              id="address"
+              name="address"
+              value={data.address}
               onChange={this.onChange}
             />
             {errors.address && <InLineError text={errors.address} />}
@@ -159,7 +162,9 @@ class RegisterBusinessForm extends Component {
             <input
               type="text"
               className="form-control"
+              id="phoneNumber"
               name="phoneNumber"
+              value={data.phoneNumber}
               placeholder="Phone Number"
               onChange={this.onChange}
             />
@@ -170,7 +175,9 @@ class RegisterBusinessForm extends Component {
             <input
               type="text"
               className="form-control"
+              id="postalAddress"
               name="postalAddress"
+              value={data.postalAddress}
               placeholder="Postal Address"
               onChange={this.onChange}
             />
@@ -181,7 +188,7 @@ class RegisterBusinessForm extends Component {
               <select
                 name="startTime"
                 className="form-control col-5"
-                value={startTime}
+                value={data.startTime}
                 onChange={this.onChange}
               >
                 {businessHours("am")}
@@ -190,7 +197,7 @@ class RegisterBusinessForm extends Component {
               <select
                 name="closeTime"
                 className="form-control col-5"
-                value={closeTime}
+                value={data.closeTime}
                 onChange={this.onChange}
               >
                 {businessHours("pm")}
@@ -205,17 +212,17 @@ class RegisterBusinessForm extends Component {
             className="form-control"
             name="about"
             rows="5"
-            value={about}
+            value={data.about}
             onChange={this.onChange}
           />
           {errors.about && <InLineError text={errors.about} />}
         </div>
-        <button type="submit" className="btn btn-primary pull-right">Register</button>
+        <div className="clearfix"><button type="submit" className="btn btn-primary pull-right">{FormAction}</button></div>
       </form>
     );
   }
 }
 
-RegisterBusinessForm.propTypes = propTypes;
+BusinessForm.propTypes = propTypes;
 
-export default RegisterBusinessForm;
+export default BusinessForm;

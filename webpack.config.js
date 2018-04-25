@@ -5,6 +5,7 @@ const port = process.env.PORT || 8000;
 module.exports = {
   mode: 'development',
   entry: [
+    'babel-polyfill',
     'webpack-hot-middleware/client',
     './client/src/index.js'
   ],
