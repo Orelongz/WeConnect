@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ReviewForm from './../forms/ReviewForm';
+import ReviewsList from './ReviewsList';
 
 class ReviewDiv extends Component {
   constructor() {
@@ -20,6 +21,8 @@ class ReviewDiv extends Component {
             <img src="https://i.stack.imgur.com/34AD2.jpg" className="img-thumbnail rounded-circle small-profile-pic mr-3" />
             <ReviewForm submit={this.submit} />
           </div>
+
+          <ReviewsList businessReviews={this.props.businessReviews} />
         </div>
       </div>
     );

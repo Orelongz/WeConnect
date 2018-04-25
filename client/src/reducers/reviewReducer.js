@@ -1,4 +1,7 @@
-import { ADD_REVIEW } from './../types/Types';
+import {
+  ADD_REVIEW,
+  GET_BUSINESS_REVIEWS
+} from './../types/Types';
 
 const initialState = {
   review: {},
@@ -19,7 +22,12 @@ function reviewReducer(state = initialState, action = {}) {
         ...state,
         review: action.review,
         reviews: [...state.reviews, action.review]
-      }
+      };
+    case GET_BUSINESS_REVIEWS:
+      return {
+        ...state,
+        reviews: action.reviews
+      };
     default:
       return state;
   }

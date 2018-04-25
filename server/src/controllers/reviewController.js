@@ -63,19 +63,10 @@ export default class ReviewController {
         if (!business) return notFound(res, 'Business');
 
         return Review.all({ where: { businessId } })
-          .then((reviews) => {
-            if (reviews.length === 0) {
-              return res.status(200).json({
-                status: 'success',
-                message: 'No reviews'
-              });
-            }
-
-            return res.status(200).json({
-              status: 'success',
-              data: { reviews }
-            });
-          });
+          .then(reviews => res.status(200).json({
+            status: 'success',
+            data: { reviews }
+          }));
       })
       .catch(error => handleErrorMessage(res, error));
   }

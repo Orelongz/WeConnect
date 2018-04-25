@@ -53,6 +53,10 @@ export default {
       `${basePath}/businesses/${businessId}/reviews`,
       { ...credentials }
     )
-      .then(res => res.data.data.review)
+      .then(res => res.data.data.review),
+
+    getBusinessReviews: businessId => axios
+      .get(`${basePath}/businesses/${businessId}/reviews`)
+      .then(res => res.data.data.reviews)
   }
 };
