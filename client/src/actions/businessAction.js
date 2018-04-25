@@ -65,9 +65,9 @@ const ownershipChanged = business => ({
   business
 });
 
-const changeOwnership = (email, businessId) => dispatch => (
+const changeOwnership = (credentials, businessId) => dispatch => (
   api.business
-    .changeOwnership(email, businessId)
+    .changeOwnership(credentials, businessId)
     .then((data) => {
       dispatch(ownershipChanged(data.business));
     })

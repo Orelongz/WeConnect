@@ -37,7 +37,7 @@ class BusinessProfilePage extends Component {
 
   render() {
     const checkRender = () => {
-      if (this.props.currentUser && this.props.businessDetails) {
+      if (this.props.businessDetails) {
         return (
           <BusinessProfile
           businessDetails={this.props.businessDetails}

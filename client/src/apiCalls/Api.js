@@ -35,9 +35,9 @@ export default {
     )
       .then(res => res.data.data.business),
 
-    changeOwnership: (email, businessId) => axios.put(
+    changeOwnership: (credentials, businessId) => axios.put(
       `${basePath}/businesses/change-ownership/${businessId}`,
-      { ...email }
+      { ...credentials }
     )
       .then(res => res.data.data),
 

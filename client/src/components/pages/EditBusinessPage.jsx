@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 import BusinessForm from './../forms/BusinessForm';
 import BusinessTransferForm from './../forms/BusinessTransferForm';
+import InfoMessage from './../messages/InfoMessage';
 import allCategories from './../../actions/categoriesAction';
 import {
   editBusiness,
@@ -43,7 +44,6 @@ class EditBusinessPage extends Component {
     return this.props
       .editBusiness(data, businessId)
       .then(() => {
-        const { businessId } = this.props.match.params;
         this.props.history.push(`/businesses/${businessId}`);
       })
       .catch(err => this.setState({
@@ -51,9 +51,10 @@ class EditBusinessPage extends Component {
       }));
   }
 
-  businessTransfer(email, businessId) {
+  businessTransfer(data) {
+    const { businessId } = this.props.match.params;
     return this.props
-      .changeOwnership(email, businessId)
+      .changeOwnership(data, businessId)
       .then(() => this.props.history.push('/businesses'))
       .catch(err => this.setState({
         error: handleErrorCatch(err.response.data)

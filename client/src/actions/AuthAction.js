@@ -1,3 +1,4 @@
+import decode from 'jwt-decode';
 import { USER_SIGNED_IN, USER_LOGGED_OUT } from './../types/Types';
 import setAuthorizationToken from './../utils/setAuthorizationToken';
 import api from './../apiCalls/Api';
@@ -7,10 +8,6 @@ const userLoggedIn = user => ({
   user
 });
 
-const userLoggedOut = () => ({
-  type: USER_LOGGED_OUT
-});
-
 const signup = credentials => dispatch => (
   api.user
     .signup(credentials)
@@ -18,7 +15,7 @@ const signup = credentials => dispatch => (
       const { token } = user;
       localStorage.weconnectToken = token;
       setAuthorizationToken(token);
-      dispatch(userLoggedIn(user));
+      dispatch(userLoggedIn({ ...user, currentUser: decode(token).id }));
     })
 );
 
@@ -29,9 +26,13 @@ const signin = credentials => dispatch => (
       const { token } = user;
       localStorage.weconnectToken = token;
       setAuthorizationToken(token);
-      dispatch(userLoggedIn(user));
+      dispatch(userLoggedIn({ ...user, currentUser: decode(token).id }));
     })
 );
+
+const userLoggedOut = () => ({
+  type: USER_LOGGED_OUT
+});
 
 const logout = () => (dispatch) => {
   localStorage.removeItem('weconnectToken');

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const propTypes = {
   handleDelete: PropTypes.func.isRequired,
   businessDetails: PropTypes.object.isRequired,
-  currentUser: PropTypes.string.isRequired
+  currentUser: PropTypes.string
 }
 
 class BusinessProfile extends Component {
@@ -24,6 +24,7 @@ class BusinessProfile extends Component {
       businessName, businessImage, category, address, city, state: businessState,
       phoneNumber, postalAddress, startTime, closeTime, about, id: businessId, userId: ownerId
     } = businessDetails;
+    
     return (
       <div className="row">
         <div className="col-md-12 col-lg-4 mt-4">

@@ -27,9 +27,9 @@ class BusinessTransferForm extends Component {
   onSubmit(e) {
     e.preventDefault();
     const { email } = this.state;
-    const errors = validate({ email });
-    this.setState({ errors });
-    if (Object.keys(errors).length === 0) {
+    const error = validate({ email });
+    this.setState({ error });
+    if (Object.keys(error).length === 0) {
       return this.props.submit({ email })
     }
   }
