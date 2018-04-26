@@ -7,7 +7,7 @@ import {
   handleErrorMessage
 } from '../helpers/';
 
-const { Business, Review } = db;
+const { Business, Review, User } = db;
 
 /**
  * @class reviewController
@@ -58,24 +58,20 @@ export default class ReviewController {
     const isNotUUID = checkUUID(res, businessId, 'Business');
     if (isNotUUID) return isNotUUID;
 
-    return Business.findOne({ where: { id: businessId } })
-      .then((business) => {
-        if (!business) return notFound(res, 'Business');
+    return Review.all({
+      where: { businessId },
+      include: [{
+        model: User,
+        attributes: ['firstname', 'lastname']
+      }]
+    })
+      .then((reviews) => {
+        if (!reviews) return notFound(res, 'Business');
 
-        return Review.all({ where: { businessId } })
-          .then((reviews) => {
-            if (reviews.length === 0) {
-              return res.status(200).json({
-                status: 'success',
-                message: 'No reviews'
-              });
-            }
-
-            return res.status(200).json({
-              status: 'success',
-              data: { reviews }
-            });
-          });
+        return res.status(200).json({
+          status: 'success',
+          data: { reviews }
+        });
       })
       .catch(error => handleErrorMessage(res, error));
   }

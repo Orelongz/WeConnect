@@ -6,7 +6,8 @@ const router = express.Router();
 const {
   signup,
   login,
-  updateUserDetails
+  updateUserDetails,
+  getUserDetails
 } = UserController;
 
 router.get('/', (req, res) => res.status(200).json({
@@ -30,6 +31,13 @@ router.put(
   '/user',
   validateToken,
   updateUserDetails
+);
+
+// gets user details
+router.get(
+  '/user',
+  validateToken,
+  getUserDetails
 );
 
 export default router;

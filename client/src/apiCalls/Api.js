@@ -14,6 +14,9 @@ export default {
       `${basePath}/auth/login`,
       { ...credentials }
     )
+      .then(res => res.data.data.user),
+
+    userDetails: () => axios.get(`${basePath}/user`)
       .then(res => res.data.data.user)
   },
   business: {
@@ -53,6 +56,10 @@ export default {
       `${basePath}/businesses/${businessId}/reviews`,
       { ...credentials }
     )
-      .then(res => res.data.data.review)
+      .then(res => res.data.data.review),
+
+    getBusinessReviews: businessId => axios
+      .get(`${basePath}/businesses/${businessId}/reviews`)
+      .then(res => res.data.data.reviews)
   }
 };

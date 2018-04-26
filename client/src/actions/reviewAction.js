@@ -1,4 +1,7 @@
-import { ADD_REVIEW } from './../types/Types';
+import {
+  ADD_REVIEW,
+  GET_BUSINESS_REVIEWS
+} from './../types/Types';
 import api from './../apiCalls/Api';
 
 const addedReview = review => ({
@@ -6,12 +9,29 @@ const addedReview = review => ({
   review
 });
 
-const addReview = (credentials, businessId) => dispatch => (
+const addReview = (credentials, businessId, firstname, lastname) => dispatch => (
   api.review
     .addReview(credentials, businessId)
     .then((review) => {
-      dispatch(addedReview(review));
+      const User = { firstname, lastname };
+      dispatch(addedReview({ ...review, User }));
     })
 );
 
-export { addReview };
+const businessReviews = reviews => ({
+  type: GET_BUSINESS_REVIEWS,
+  reviews
+});
+
+const getBusinessReviews = businessId => dispatch => (
+  api.review
+    .getBusinessReviews(businessId)
+    .then((reviews) => {
+      dispatch(businessReviews(reviews));
+    })
+);
+
+export {
+  addReview,
+  getBusinessReviews
+};

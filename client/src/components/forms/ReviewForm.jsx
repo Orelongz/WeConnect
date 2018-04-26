@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { validate } from './../../utils';
 import InLineError from './../messages/InLineError';
+
+const propTypes = {
+  submit: PropTypes.func.isRequired
+}
 
 class ReviewForm extends Component {
   constructor() {
@@ -19,7 +24,8 @@ class ReviewForm extends Component {
     const error = validate({ review });
     this.setState({ error });
     if (Object.keys(error).length === 0) {
-      return this.props.submit({ review })
+      this.props.submit({ review });
+      this.setState({ review: '' })
     }
   }
 
@@ -59,5 +65,7 @@ class ReviewForm extends Component {
     );
   }
 }
+
+ReviewForm.propTypes = propTypes;
 
 export default ReviewForm;

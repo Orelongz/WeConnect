@@ -12,10 +12,10 @@ const UserRoute = ({ isAuthenticated, component: Component, ...rest }) => (
   <Route
     {...rest}
     render={props => 
-      !isAuthenticated ? (
+      isAuthenticated ? (
         <Component {...props} />
       ) : (
-        <Redirect to='/businesses' />
+        <Redirect to='/' />
       )
     }
   />
@@ -25,7 +25,7 @@ UserRoute.propTypes = propTypes;
 
 function mapStateToProps(state) {
   return {
-    isAuthenticated: !!state.userReducer.token
+    isAuthenticated: !!state.userReducer.id
   };
 }
 
