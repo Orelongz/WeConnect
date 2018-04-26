@@ -84,7 +84,7 @@ export default class UserController {
             status: 'success',
             data: {
               user: {
-                firstname, lastname, token
+                firstname, lastname, email, token
               }
             }
           });
@@ -118,16 +118,46 @@ export default class UserController {
         if (!user) {
           return notFound(res, 'User');
         }
+        const token = generateToken({ id, email });
         return user
           .update({ firstname, lastname, email })
           .then(() => res.status(200).json({
             status: 'success',
             data: {
               user: {
-                firstname, lastname, email
+                firstname, lastname, email, token
               }
             }
           }));
+      })
+      .catch(error => handleErrorMessage(res, error));
+  }
+
+  /**
+   * getUserDetails()
+   * @desc gets the details of a user
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @return {Object} message, user
+   */
+  static getUserDetails(req, res) {
+    const { id } = req.decoded;
+
+    return User.findOne({
+      where: {
+        id
+      }
+    })
+      .then((user) => {
+        const { firstname, lastname, email } = user;
+        return res.status(200).json({
+          status: 'success',
+          data: {
+            user: {
+              firstname, lastname, email
+            }
+          }
+        });
       })
       .catch(error => handleErrorMessage(res, error));
   }
