@@ -14,6 +14,9 @@ export default {
       `${basePath}/auth/login`,
       { ...credentials }
     )
+      .then(res => res.data.data.user),
+
+    userDetails: () => axios.get(`${basePath}/user`)
       .then(res => res.data.data.user)
   },
   business: {

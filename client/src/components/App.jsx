@@ -1,8 +1,8 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import UserRoute from './routes/UserRoute';
-import GuestRoute from './routes/GuestRoute';
+import UserRoute from './authRoutes/UserRoute';
+import GuestRoute from './authRoutes/GuestRoute';
 import NavBar from './pages/NavBar.jsx';
 import Footer from './pages/Footer.jsx';
 import HomePage from './pages/HomePage.jsx';

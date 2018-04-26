@@ -19,7 +19,9 @@ const propTypes = {
       businessId: PropTypes.string.isRequired
     }).isRequired
   }).isRequired,
-  currentUser: PropTypes.string
+  currentUser: PropTypes.string,
+  firstname: PropTypes.string,
+  lastname: PropTypes.string,
 };
 
 class BusinessProfilePage extends Component {
@@ -46,17 +48,19 @@ class BusinessProfilePage extends Component {
 
   postReview(data) {
     const { businessId } = this.props.match.params;
+    const { firstname, lastname } = this.props;
     return this.props
-      .addReview(data, businessId)
+      .addReview(data, businessId, firstname, lastname)
   }
 
   render() {
+    const { currentUser, businessReviews, businessDetails } = this.props;
     const checkRender = () => {
-      if (this.props.businessDetails) {
+      if (businessDetails) {
         return (
           <BusinessProfile
-          businessDetails={this.props.businessDetails}
-          currentUser={this.props.currentUser}
+          businessDetails={businessDetails}
+          currentUser={currentUser}
           handleDelete={this.handleDelete}
         />
         )
@@ -71,10 +75,15 @@ class BusinessProfilePage extends Component {
             {checkRender()}
             <div className="col-md-12 col-lg-4"></div>
             <div className="col-md-12 col-lg-8">
-              <ReviewsDiv
-                postReview={this.postReview}
-                businessReviews={this.props.businessReviews}
-              />
+              {
+                businessReviews.length > 0 || !!currentUser ? (
+                  <ReviewsDiv
+                    postReview={this.postReview}
+                    businessReviews={businessReviews}
+                    currentUser={currentUser}
+                  />
+                ) : null
+              }
             </div>
           </div>
         </div>
@@ -86,7 +95,9 @@ class BusinessProfilePage extends Component {
 function mapStateToProps(state) {
   return {
     businessDetails: state.businessReducer.business,
-    currentUser: state.userReducer.currentUser,
+    currentUser: state.userReducer.id,
+    firstname: state.userReducer.firstname,
+    lastname: state.userReducer.lastname,
     businessReviews: state.reviewReducer.reviews
   };
 }

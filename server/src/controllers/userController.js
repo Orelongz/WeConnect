@@ -37,12 +37,13 @@ export default class UserController {
       firstname, lastname, email: email.toLowerCase(), hashedPassword
     })
       .then((user) => {
-        const token = generateToken({ id: user.id, email: user.email });
+        const { id } = user;
+        const token = generateToken({ id, email });
         return res.status(201).json({
           status: 'success',
           data: {
             user: {
-              firstname, lastname, email, token
+              firstname, lastname, email, id, token
             }
           }
         });
@@ -84,7 +85,7 @@ export default class UserController {
             status: 'success',
             data: {
               user: {
-                firstname, lastname, email, token
+                firstname, lastname, email, id, token
               }
             }
           });
@@ -125,7 +126,7 @@ export default class UserController {
             status: 'success',
             data: {
               user: {
-                firstname, lastname, email, token
+                firstname, lastname, email, id, token
               }
             }
           }));
@@ -154,7 +155,7 @@ export default class UserController {
           status: 'success',
           data: {
             user: {
-              firstname, lastname, email
+              firstname, lastname, email, id
             }
           }
         });

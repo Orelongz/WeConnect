@@ -1,4 +1,8 @@
-import { USER_SIGNED_IN, USER_LOGGED_OUT } from './../types/Types';
+import {
+  USER_SIGNED_IN,
+  USER_LOGGED_OUT,
+  FETCH_USER_DETAILS
+} from './../types/Types';
 
 /**
  * userReducer()
@@ -10,7 +14,9 @@ import { USER_SIGNED_IN, USER_LOGGED_OUT } from './../types/Types';
 function userReducer(state = {}, action = {}) {
   switch (action.type) {
     case USER_SIGNED_IN:
-      return action.user;
+      return { ...state, ...action.user };
+    case FETCH_USER_DETAILS:
+      return { ...state, ...action.user };
     case USER_LOGGED_OUT:
       return {};
     default:

@@ -8,21 +8,25 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import store from './store/store';
 import App from './components/App.jsx';
 import './../public/style/index.scss';
-import { userLoggedIn } from './actions/AuthAction';
+import { userDetails, logout } from './actions/AuthAction';
 import setAuthorizationToken from './utils/setAuthorizationToken';
 
 if (localStorage.weconnectToken) {
   const token = localStorage.weconnectToken;
-  const payload = decode(token);
-  const user = { token, currentUser: payload.id };
-  setAuthorizationToken(token);
-  store.dispatch(userLoggedIn(user));
+  const expiry = decode(token).exp.toString();
+  const timeNow = new Date().getTime().toString().substring(0, 10);
+  if (expiry > timeNow) {
+    setAuthorizationToken(token);
+    store.dispatch(userDetails());
+  } else {
+    store.dispatch(logout());
+  }
 }
 
 ReactDOM.render(
   (<BrowserRouter>
     <Provider store={store}>
-      <Route  component={App} />
+      <Route component={App} />
     </Provider>
   </BrowserRouter>),
   document.getElementById('app')

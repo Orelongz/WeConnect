@@ -1,11 +1,5 @@
 import React from 'react';
 
-function dateTime(str) {
-  const date = str.split('T')[0];
-  const time = str.split('T')[1].split('.')[0];
-  return {date, time};
-};
-
 export default function ReviewList({ businessReviews }) {
 
   const generateReviews = () => {
@@ -27,7 +21,7 @@ export default function ReviewList({ businessReviews }) {
                   <span className="fa fa-star-o"></span>
                 </div>
                 <div>
-                  {dateTime(review.createdAt).date}
+                  {review.createdAt.split('T')[0]}
                 </div>
             </div>
             <p>{review.review}</p>

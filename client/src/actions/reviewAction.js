@@ -9,11 +9,12 @@ const addedReview = review => ({
   review
 });
 
-const addReview = (credentials, businessId) => dispatch => (
+const addReview = (credentials, businessId, firstname, lastname) => dispatch => (
   api.review
     .addReview(credentials, businessId)
     .then((review) => {
-      dispatch(addedReview(review));
+      const User = { firstname, lastname };
+      dispatch(addedReview({ ...review, User }));
     })
 );
 

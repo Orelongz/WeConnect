@@ -45,7 +45,7 @@ NavBar.propTypes = propTypes;
 
 function mapStateToProps(state) {
   return {
-    isAuthenticated: !!state.userReducer.token
+    isAuthenticated: !!state.userReducer.id
   }
 }
 
