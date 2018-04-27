@@ -60,6 +60,16 @@ export default {
 
     getBusinessReviews: businessId => axios
       .get(`${basePath}/businesses/${businessId}/reviews`)
-      .then(res => res.data.data.reviews)
+      .then(res => res.data.data.reviews),
+
+    editReview: (credentials, reviewId) => axios.put(
+      `${basePath}/reviews/${reviewId}`,
+      { ...credentials }
+    )
+      .then(res => res.data.data.review),
+
+    deleteReview: reviewId => axios
+      .delete(`${basePath}/reviews/${reviewId}`)
+      .then(res => res.data)
   }
 };

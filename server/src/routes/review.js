@@ -3,26 +3,11 @@ import ReviewController from './../controllers/reviewController';
 import validateToken from './../middlewares';
 
 const {
-  addReview,
-  getBusinessReviews,
   getReview,
   editReview,
   deleteReview
 } = ReviewController;
-const router = express.Router({ mergeParams: true });
-
-// Get all reviews for a business
-router.get(
-  '/',
-  getBusinessReviews
-);
-
-// Add review to a business
-router.post(
-  '/',
-  validateToken,
-  addReview
-);
+const router = express.Router();
 
 // Get user review
 router.get(

@@ -1,6 +1,8 @@
 import {
   ADD_REVIEW,
-  GET_BUSINESS_REVIEWS
+  GET_BUSINESS_REVIEWS,
+  EDIT_REVIEW,
+  DELETE_REVIEW
 } from './../types/Types';
 import api from './../apiCalls/Api';
 
@@ -31,7 +33,35 @@ const getBusinessReviews = businessId => dispatch => (
     })
 );
 
+const editedReview = review => ({
+  type: EDIT_REVIEW,
+  review
+});
+
+const editReview = (credentials, reviewId) => dispatch => (
+  api.review
+    .editReview(credentials, reviewId)
+    .then((review) => {
+      dispatch(editedReview(review));
+    })
+);
+
+const deletedReview = reviewId => ({
+  type: DELETE_REVIEW,
+  reviewId
+});
+
+const deleteReview = reviewId => dispatch => (
+  api.review
+    .deleteReview(reviewId)
+    .then(() => {
+      dispatch(deletedReview(reviewId));
+    })
+);
+
 export {
   addReview,
-  getBusinessReviews
+  getBusinessReviews,
+  editReview,
+  deleteReview
 };

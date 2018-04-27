@@ -1,6 +1,9 @@
 import {
   ADD_REVIEW,
-  GET_BUSINESS_REVIEWS
+  GET_BUSINESS_REVIEWS,
+  GET_REVIEW,
+  EDIT_REVIEW,
+  DELETE_REVIEW
 } from './../types/Types';
 
 const initialState = {
@@ -27,6 +30,27 @@ function reviewReducer(state = initialState, action = {}) {
       return {
         ...state,
         reviews: action.reviews
+      };
+    case GET_REVIEW:
+      return {
+        ...state,
+        review: action.review
+      };
+    case EDIT_REVIEW: {
+      const newReviewList = state.reviews.map((eachReview) => {
+        if (eachReview.id === action.review.id) return action.review;
+        return eachReview;
+      });
+      return {
+        ...state,
+        reviews: newReviewList
+      };
+    }
+    case DELETE_REVIEW:
+      return {
+        ...state,
+        review: {},
+        reviews: state.reviews.filter(review => review.id !== action.reviewId)
       };
     default:
       return state;

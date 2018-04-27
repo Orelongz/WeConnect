@@ -1,5 +1,6 @@
 import express from 'express';
 import BusinessController from './../controllers/businessController';
+import ReviewController from './../controllers/reviewController';
 import validateToken from './../middlewares';
 import imageUpload from './../middlewares/imageUpload';
 
@@ -12,10 +13,22 @@ const {
   changeBusinessOwnership,
   getUserBusinesses
 } = BusinessController;
+const {
+  addReview,
+  getBusinessReviews
+} = ReviewController;
 const router = express.Router();
 
 // Get all businesses
 router.get('/', getAllBusinesses);
+
+// Register a business
+router.post(
+  '/',
+  validateToken,
+  imageUpload,
+  createBusiness
+);
 
 // Route to get all user businesses
 router.get(
@@ -37,14 +50,6 @@ router.get(
   getBusiness
 );
 
-// Register a business
-router.post(
-  '/',
-  validateToken,
-  imageUpload,
-  createBusiness
-);
-
 // Update a business
 router.put(
   '/:businessId',
@@ -57,6 +62,19 @@ router.delete(
   '/:businessId',
   validateToken,
   deleteBusiness
+);
+
+// Get all reviews for a business
+router.get(
+  '/:businessId/reviews',
+  getBusinessReviews
+);
+
+// Add review to a business
+router.post(
+  '/:businessId/reviews',
+  validateToken,
+  addReview
 );
 
 export default router;
