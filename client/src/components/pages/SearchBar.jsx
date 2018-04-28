@@ -1,5 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
+const propTypes = {
+  handleSearch: PropTypes.func.isRequired
+}
 
 /**
  * SearchBar
@@ -26,7 +31,9 @@ class SearchBar extends Component {
   onSubmit(e) {
     e.preventDefault();
     const { value, search } = this.state;
-    alert(`search result for ${value}: ${search}`);
+    if (search.trim() !== '') {
+      this.props.handleSearch(`${value}=${search}`);
+    }
   }
 
   render() {
@@ -62,4 +69,7 @@ class SearchBar extends Component {
     )
   }
 }
+
+SearchBar.propTypes = propTypes;
+
 export default SearchBar;

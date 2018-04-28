@@ -39,9 +39,9 @@ const retrievedBusinesses = businesses => ({
   businesses
 });
 
-const allBusinesses = () => dispatch => (
+const allBusinesses = str => dispatch => (
   api.business
-    .allBusinesses()
+    .allBusinesses(str)
     .then((businesses) => {
       dispatch(retrievedBusinesses(businesses));
     })

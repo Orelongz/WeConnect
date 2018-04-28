@@ -36,7 +36,7 @@ export default class BusinessController {
         if (!theCategory) {
           return res.status(400).json({
             status: 'fail',
-            error: 'not a category'
+            error: 'Category is invalid'
           });
         }
         const { id: userId } = req.decoded;
@@ -171,20 +171,12 @@ export default class BusinessController {
     const databaseQuery = handleBusinessSearch(req);
     return Business
       .all(databaseQuery)
-      .then((businesses) => {
-        if (businesses.length === 0) {
-          return res.status(200).json({
-            status: 'success',
-            message: 'No businesses'
-          });
+      .then(businesses => res.status(200).json({
+        status: 'success',
+        data: {
+          businesses
         }
-        return res.status(200).json({
-          status: 'success',
-          data: {
-            businesses
-          }
-        });
-      });
+      }));
   }
 
   /**

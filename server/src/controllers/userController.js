@@ -74,23 +74,22 @@ export default class UserController {
           const {
             hashedPassword, firstname, lastname, id
           } = user;
-          if (user && !bcrypt.compareSync(password, hashedPassword)) {
-            return res.status(401).json({
-              status: 'fail',
-              error: 'Wrong password'
+          if (user && bcrypt.compareSync(password, hashedPassword)) {
+            const token = generateToken({ id, email });
+            return res.status(200).json({
+              status: 'success',
+              data: {
+                user: {
+                  firstname, lastname, email, id, token
+                }
+              }
             });
           }
-          const token = generateToken({ id, email });
-          return res.status(200).json({
-            status: 'success',
-            data: {
-              user: {
-                firstname, lastname, email, id, token
-              }
-            }
-          });
         }
-        return notFound(res, 'User');
+        return res.status(401).json({
+          status: 'fail',
+          error: 'Wrong email or password'
+        });
       })
       .catch(error => handleErrorMessage(res, error));
   }
