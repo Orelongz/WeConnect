@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 const propTypes = {
-  handleDelete: PropTypes.func.isRequired,
+  handleBusinessDelete: PropTypes.func.isRequired,
   businessDetails: PropTypes.object.isRequired,
   currentUser: PropTypes.string
 }
@@ -15,7 +15,7 @@ class BusinessProfile extends Component {
   }
 
   handleDelete() {
-    return this.props.handleDelete();
+    return this.props.handleBusinessDelete();
   }
 
   render() {

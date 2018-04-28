@@ -33,35 +33,38 @@ class ReviewForm extends Component {
     return this.setState({
       [e.target.name]: e.target.value
     });
-  }
+  }  
 
   render() {
     const { error } = this.state;
     return (
-      <form className="media-body" onSubmit={this.submit}>
-        <div>
-          <label htmlFor="review">Write a review: </label>
-          <textarea
-            className="form-control"
-            id="review"
-            name="review"
-            onChange={this.onChange}
-            value={this.state.review}
-          />
-          {error.review && <InLineError text={error.review} />}
-        </div>
-
-        <div className="pt-3">
-          <div className="d-inline">
-            <span className="fa fa-star-o"></span>
-            <span className="fa fa-star-o"></span>
-            <span className="fa fa-star-o"></span>
-            <span className="fa fa-star-o"></span>
-            <span className="fa fa-star-o"></span>
+      <div className="media">
+        <img src="https://i.stack.imgur.com/34AD2.jpg" className="img-thumbnail rounded-circle small-profile-pic mr-3" />
+        <form className="media-body" onSubmit={this.submit}>
+          <div>
+            <label htmlFor="review">Write a review: </label>
+            <textarea
+              className="form-control"
+              id="review"
+              name="review"
+              onChange={this.onChange}
+              value={this.state.review}
+            />
+            {error.review && <InLineError text={error.review} />}
           </div>
-          <button type="submit" className="btn btn-primary btn-sm pull-right">POST</button>
-        </div>
-      </form>
+
+          <div className="pt-3">
+            <div className="d-inline">
+              <span className="fa fa-star-o"></span>
+              <span className="fa fa-star-o"></span>
+              <span className="fa fa-star-o"></span>
+              <span className="fa fa-star-o"></span>
+              <span className="fa fa-star-o"></span>
+            </div>
+            <button type="submit" className="btn btn-primary btn-sm pull-right">POST</button>
+          </div>
+        </form>
+      </div>
     );
   }
 }

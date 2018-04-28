@@ -5,7 +5,9 @@ import BusinessProfile from './BusinessProfile';
 import { getBusiness, deleteBusiness } from './../../actions/businessAction';
 import {
   addReview,
-  getBusinessReviews
+  getBusinessReviews,
+  editReview,
+  deleteReview
 } from './../../actions/reviewAction';
 import ReviewsDiv from './ReviewsDiv';
 
@@ -14,6 +16,8 @@ const propTypes = {
   deleteBusiness: PropTypes.func.isRequired,
   addReview: PropTypes.func.isRequired,
   getBusinessReviews: PropTypes.func.isRequired,
+  editReview: PropTypes.func,
+  deleteReview: PropTypes.func,
   match: PropTypes.shape({
     params: PropTypes.shape({
       businessId: PropTypes.string.isRequired
@@ -27,8 +31,10 @@ const propTypes = {
 class BusinessProfilePage extends Component {
   constructor() {
     super();
-    this.handleDelete = this.handleDelete.bind(this);
+    this.handleBusinessDelete = this.handleBusinessDelete.bind(this);
     this.postReview = this.postReview.bind(this);
+    this.handleEditReview = this.handleEditReview.bind(this);
+    this.handleDeleteReview = this.handleDeleteReview.bind(this);
   }
 
   componentDidMount() {
@@ -39,7 +45,7 @@ class BusinessProfilePage extends Component {
     this.props.getBusinessReviews(businessId);
   }
 
-  handleDelete() {
+  handleBusinessDelete() {
     const { businessId } = this.props.match.params;
     return this.props
       .deleteBusiness(businessId)
@@ -53,16 +59,27 @@ class BusinessProfilePage extends Component {
       .addReview(data, businessId, firstname, lastname)
   }
 
+  handleEditReview(data, reviewId) {
+    const { firstname, lastname } = this.props;
+    return this.props
+      .editReview(data, reviewId, firstname, lastname);
+  }
+
+  handleDeleteReview(reviewId) {
+    return this.props
+      .deleteReview(reviewId);
+  }
+
   render() {
     const { currentUser, businessReviews, businessDetails } = this.props;
     const checkRender = () => {
       if (businessDetails) {
         return (
           <BusinessProfile
-          businessDetails={businessDetails}
-          currentUser={currentUser}
-          handleDelete={this.handleDelete}
-        />
+            businessDetails={businessDetails}
+            currentUser={currentUser}
+            handleBusinessDelete={this.handleBusinessDelete}
+          />
         )
       }
       return null; 
@@ -81,6 +98,8 @@ class BusinessProfilePage extends Component {
                     postReview={this.postReview}
                     businessReviews={businessReviews}
                     currentUser={currentUser}
+                    handleEditReview={this.handleEditReview}
+                    handleDeleteReview={this.handleDeleteReview}
                   />
                 ) : null
               }
@@ -108,5 +127,7 @@ export default connect(mapStateToProps, {
   getBusiness,
   deleteBusiness,
   addReview,
-  getBusinessReviews
+  getBusinessReviews,
+  editReview,
+  deleteReview
 })(BusinessProfilePage);

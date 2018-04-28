@@ -36,7 +36,7 @@ app.use(
 app.use('/api/v1', userRoute);
 app.use('/api/v1/categories', categoryRoute);
 app.use('/api/v1/businesses', businessRoute);
-app.use('/api/v1/businesses/:businessId/reviews', reviewRoute);
+app.use('/api/v1/reviews', reviewRoute);
 
 const indexHTMLPath = path.join(__dirname, '/client/public/index.html');
 app.get('/*', (req, res) => res.sendFile(indexHTMLPath));
