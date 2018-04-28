@@ -38,11 +38,12 @@ const editedReview = review => ({
   review
 });
 
-const editReview = (credentials, reviewId) => dispatch => (
+const editReview = (credentials, reviewId, firstname, lastname) => dispatch => (
   api.review
     .editReview(credentials, reviewId)
     .then((review) => {
-      dispatch(editedReview(review));
+      const User = { firstname, lastname };
+      dispatch(editedReview({ ...review, User }));
     })
 );
 

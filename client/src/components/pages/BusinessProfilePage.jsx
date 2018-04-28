@@ -6,8 +6,7 @@ import { getBusiness, deleteBusiness } from './../../actions/businessAction';
 import {
   addReview,
   getBusinessReviews,
-  // getReview,
-  // editReview,
+  editReview,
   deleteReview
 } from './../../actions/reviewAction';
 import ReviewsDiv from './ReviewsDiv';
@@ -17,7 +16,6 @@ const propTypes = {
   deleteBusiness: PropTypes.func.isRequired,
   addReview: PropTypes.func.isRequired,
   getBusinessReviews: PropTypes.func.isRequired,
-  getReview: PropTypes.func,
   editReview: PropTypes.func,
   deleteReview: PropTypes.func,
   match: PropTypes.shape({
@@ -61,19 +59,15 @@ class BusinessProfilePage extends Component {
       .addReview(data, businessId, firstname, lastname)
   }
 
-  handleGetReview() {
-    const { reviewId } = this.props.match.params;
+  handleEditReview(data, reviewId) {
+    const { firstname, lastname } = this.props;
     return this.props
-      .getReview(reviewId)
-  }
-
-  handleEditReview(reviewId) {
-    console.log('edited' + reviewId)
+      .editReview(data, reviewId, firstname, lastname);
   }
 
   handleDeleteReview(reviewId) {
     return this.props
-      .deleteReview(reviewId)
+      .deleteReview(reviewId);
   }
 
   render() {
@@ -134,6 +128,6 @@ export default connect(mapStateToProps, {
   deleteBusiness,
   addReview,
   getBusinessReviews,
-  // editReview,
+  editReview,
   deleteReview
 })(BusinessProfilePage);

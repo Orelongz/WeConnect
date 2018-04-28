@@ -31,11 +31,6 @@ function reviewReducer(state = initialState, action = {}) {
         ...state,
         reviews: action.reviews
       };
-    case GET_REVIEW:
-      return {
-        ...state,
-        review: action.review
-      };
     case EDIT_REVIEW: {
       const newReviewList = state.reviews.map((eachReview) => {
         if (eachReview.id === action.review.id) return action.review;

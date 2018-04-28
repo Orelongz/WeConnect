@@ -23,8 +23,8 @@ class ReviewDiv extends Component {
     return this.props.postReview(data);
   }
 
-  editReview(reviewId) {
-    return this.props.handleEditReview(reviewId);
+  editReview(data, reviewId) {
+    return this.props.handleEditReview(data, reviewId);
   }
 
   deleteReview(reviewId) {
@@ -37,14 +37,7 @@ class ReviewDiv extends Component {
     return (
       <div className="card form-group mt-4">
         <div className="container pt-3">
-          {
-            currentUser ? (
-              <div className="media">
-                <img src="https://i.stack.imgur.com/34AD2.jpg" className="img-thumbnail rounded-circle small-profile-pic mr-3" />
-                <ReviewForm submit={this.submit} />
-              </div>
-            ): null
-          }
+          { currentUser ? <ReviewForm submit={this.submit} /> : null }
           <ReviewsList
             businessReviews={businessReviews}
             currentUser={currentUser}
