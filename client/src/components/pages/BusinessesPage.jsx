@@ -11,6 +11,15 @@ const propTypes = {
 };
 
 class BusinessesPage extends Component {
+  constructor() {
+    super();
+    this.handleSearch = this.handleSearch.bind(this);
+  }
+
+  handleSearch(str) {
+    this.props.allBusinesses(str);
+  }
+
   componentDidMount() {
     this.props.allBusinesses();
   }
@@ -18,20 +27,24 @@ class BusinessesPage extends Component {
   render() {
     function displayBusinesses(businesses) {
       if (businesses.length === 0) {
-        return <p>Sorry, there are presently no businesses</p>
+        return <h1 className="text-center">No Businesses Yet</h1>
       } else {
-        return populateBusinesses(businesses)
+        return (
+          <Fragment>
+            <h1 className="text-center">Businesses</h1>
+            <div className="row">
+              {populateBusinesses(businesses)}
+            </div>
+          </Fragment>
+        );
       }
     }
     return (
       <Fragment>
-        <SearchBar />
+        <SearchBar handleSearch={this.handleSearch} />
         <main className="pb-main">
           <div className="container">
-            <h1 className="text-center">All Businesses</h1>
-            <div className="row">
-              {displayBusinesses(this.props.businesses)}
-            </div>
+            {displayBusinesses(this.props.businesses)}
           </div>
         </main>
       </Fragment>

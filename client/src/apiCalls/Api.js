@@ -29,7 +29,7 @@ export default {
     getBusiness: businessId => axios.get(`${basePath}/businesses/${businessId}`)
       .then(res => res.data.data.business),
 
-    allBusinesses: () => axios.get(`${basePath}/businesses`)
+    allBusinesses: str => axios.get(`${basePath}/businesses?${str}`)
       .then(res => res.data.data.businesses),
 
     editBusiness: (credentials, businessId) => axios.put(

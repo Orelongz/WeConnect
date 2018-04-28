@@ -36,11 +36,11 @@ const handleBusinessSearch = (req) => {
   const { location, category, name } = req.query;
   const search = {};
   if (location) {
-    search.city = location;
-    search.state = location;
+    search.city = { [Op.iLike]: `%${location}%` };
+    search.state = { [Op.iLike]: `%${location}%` };
   }
   if (category) {
-    search.category = category;
+    search.category = { [Op.iLike]: `%${category}%` };
   }
   if (name) {
     search.businessName = { [Op.iLike]: `%${name}%` };
