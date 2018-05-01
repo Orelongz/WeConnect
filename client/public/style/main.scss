@@ -51,3 +51,22 @@
 .pb-main {
   padding-bottom: 75px;
 }
+
+.tab {
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+  height: 25rem;
+  padding: 50px 0;
+
+  .tablink {
+    cursor: pointer;
+
+    &:hover {
+      background-color: #ddd;
+    }
+    
+    &:active {
+      background-color: #ccc;
+    }
+  }
+}

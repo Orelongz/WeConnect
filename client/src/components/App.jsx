@@ -12,6 +12,7 @@ import BusinessesPage from './pages/BusinessesPage.jsx';
 import RegisterBusinessPage from './pages/RegisterBusinessPage.jsx';
 import EditBusinessPage from './pages/EditBusinessPage.jsx';
 import BusinessProfilePage from './pages/BusinessProfilePage.jsx';
+import Dashboard from './pages/Dashboard.jsx';
 
 const propTypes = {
   location: PropTypes.shape({
@@ -30,6 +31,7 @@ const App = ({ location }) => (
       <UserRoute location={location} path='/businesses/new' exact component={RegisterBusinessPage} />
       <Route location={location} path='/businesses/:businessId' exact component={BusinessProfilePage} />
       <UserRoute location={location} path='/businesses/:businessId/edit' exact component={EditBusinessPage} />
+      <UserRoute location={location} path='/dashboard' exact component={Dashboard} />
     </Switch>
     <Footer />
   </div>

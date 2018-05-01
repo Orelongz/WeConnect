@@ -1,7 +1,8 @@
 import {
   USER_SIGNED_IN,
   USER_LOGGED_OUT,
-  FETCH_USER_DETAILS
+  FETCH_USER_DETAILS,
+  EDITTED_USER_DETAIL
 } from './../types/Types';
 
 /**
@@ -16,6 +17,8 @@ function userReducer(state = {}, action = {}) {
     case USER_SIGNED_IN:
       return { ...state, ...action.user };
     case FETCH_USER_DETAILS:
+      return { ...state, ...action.user };
+    case EDITTED_USER_DETAIL:
       return { ...state, ...action.user };
     case USER_LOGGED_OUT:
       return {};

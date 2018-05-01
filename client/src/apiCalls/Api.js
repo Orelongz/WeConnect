@@ -17,6 +17,12 @@ export default {
       .then(res => res.data.data.user),
 
     userDetails: () => axios.get(`${basePath}/user`)
+      .then(res => res.data.data.user),
+
+    editUser: credentials => axios.put(
+      `${basePath}/user`,
+      { ...credentials }
+    )
       .then(res => res.data.data.user)
   },
   business: {
@@ -45,7 +51,10 @@ export default {
       .then(res => res.data.data),
 
     deleteBusiness: businessId => axios.delete(`${basePath}/businesses/${businessId}`)
-      .then(res => res.data)
+      .then(res => res.data),
+
+    userBusinesses: () => axios.get(`${basePath}/businesses/user`)
+      .then(res => res.data.data.businesses)
   },
   category: {
     getCategories: () => axios.get(`${basePath}/categories`)

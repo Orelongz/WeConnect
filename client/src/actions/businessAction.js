@@ -4,7 +4,8 @@ import {
   GET_ALL_BUSINESSES,
   EDIT_BUSINESS,
   CHANGE_OWNERSHIP,
-  DELETE_BUSINESS
+  DELETE_BUSINESS,
+  GET_USER_BUSINESSES
 } from './../types/Types';
 import api from './../apiCalls/Api';
 
@@ -86,11 +87,25 @@ const deleteBusiness = businessId => dispatch => (
     })
 );
 
+const userBusinessesFetched = businesses => ({
+  type: GET_USER_BUSINESSES,
+  businesses
+});
+
+const userBusinesses = () => (dispatch) => {
+  api.business
+    .userBusinesses()
+    .then((businesses) => {
+      dispatch(userBusinessesFetched(businesses));
+    });
+};
+
 export {
   newBusiness,
   getBusiness,
   allBusinesses,
   editBusiness,
   changeOwnership,
-  deleteBusiness
+  deleteBusiness,
+  userBusinesses
 };
