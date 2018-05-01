@@ -1,8 +1,8 @@
-import decode from 'jwt-decode';
 import {
   USER_SIGNED_IN,
   USER_LOGGED_OUT,
-  FETCH_USER_DETAILS
+  FETCH_USER_DETAILS,
+  EDITTED_USER_DETAIL
 } from './../types/Types';
 import setAuthorizationToken from './../utils/setAuthorizationToken';
 import api from './../apiCalls/Api';
@@ -57,10 +57,27 @@ const userDetails = () => (dispatch) => {
     });
 };
 
+const editedUser = user => ({
+  type: EDITTED_USER_DETAIL,
+  user
+});
+
+const editUser = credentials => (dispatch) => {
+  api.user
+    .editUser(credentials)
+    .then((user) => {
+      const { token } = user;
+      localStorage.weconnectToken = token;
+      setAuthorizationToken(token);
+      dispatch(editedUser(user));
+    });
+};
+
 export {
   signup,
   signin,
   logout,
   userDetails,
-  userLoggedIn
+  userLoggedIn,
+  editUser
 };

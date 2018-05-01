@@ -236,20 +236,12 @@ export default class BusinessController {
     return Business.all({
       where: { userId }
     })
-      .then((businesses) => {
-        if (businesses.length === 0) {
-          return res.status(200).json({
-            status: 'success',
-            message: 'No businesses'
-          });
+      .then(businesses => res.status(200).json({
+        status: 'success',
+        data: {
+          businesses
         }
-        return res.status(200).json({
-          status: 'success',
-          data: {
-            businesses
-          }
-        });
-      })
+      }))
       .catch(error => handleErrorMessage(res, error));
   }
 }

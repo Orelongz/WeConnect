@@ -4,7 +4,8 @@ import {
   GET_ALL_BUSINESSES,
   EDIT_BUSINESS,
   CHANGE_OWNERSHIP,
-  DELETE_BUSINESS
+  DELETE_BUSINESS,
+  GET_USER_BUSINESSES
 } from './../types/Types';
 
 const initialState = {
@@ -50,6 +51,11 @@ function businessReducer(state = initialState, action = {}) {
         ...state,
         business: {},
         businesses: state.businesses.filter(business => business.id !== action.businessId)
+      };
+    case GET_USER_BUSINESSES:
+      return {
+        ...state,
+        businesses: action.businesses
       };
     default:
       return state;

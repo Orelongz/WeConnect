@@ -18,6 +18,9 @@ const NavBar = ({ isAuthenticated, logout }) => (
     </button>
     <div className="collapse navbar-collapse" id="navbarNavDropdown">
       <ul className="navbar-nav ml-auto">
+        {isAuthenticated ? (
+          <Link to='/dashboard' className="nav-link">Dashboard</Link>
+        ): null}
         <li className="nav-item">
           <Link to='/businesses' className="nav-link">Businesses</Link>
         </li>
