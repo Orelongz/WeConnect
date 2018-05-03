@@ -58,20 +58,20 @@ export default class ReviewController {
     const isNotUUID = checkUUID(res, businessId, 'Business');
     if (isNotUUID) return isNotUUID;
 
-    return Review.all({
-      where: { businessId },
-      include: [{
-        model: User,
-        attributes: ['firstname', 'lastname']
-      }]
-    })
-      .then((reviews) => {
-        if (!reviews) return notFound(res, 'Business');
-
-        return res.status(200).json({
-          status: 'success',
-          data: { reviews }
-        });
+    return Business.findOne({ where: { id: businessId } })
+      .then((business) => {
+        if (!business) return notFound(res, 'Business');
+        Review.all({
+          where: { businessId },
+          include: [{
+            model: User,
+            attributes: ['firstname', 'lastname']
+          }]
+        })
+          .then(reviews => res.status(200).json({
+            status: 'success',
+            data: { reviews }
+          }));
       })
       .catch(error => handleErrorMessage(res, error));
   }
