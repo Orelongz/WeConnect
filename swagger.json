@@ -8,16 +8,20 @@
       "email": "longe.pelumi@yahoo.com"
     }
   },
-  "host": "weconnect-orelongz.herokuapp.com",
+  "host": "localhost:8000",
   "basePath": "/api/v1",
   "tags": [
     {
       "name": "User",
-      "description": "Signup and Signin Users"
+      "description": "Access to users functions"
     },
     {
       "name": "Business",
       "description": "Access to Businesses"
+    },
+    {
+      "name": "Category",
+      "description": "Access to Categories"
     },
     {
       "name": "Review",
@@ -62,21 +66,9 @@
             }
           },
           "400": {
-            "description": "Invalid email address",
-            "schema": {
-              "$ref": "#/definitions/wrongEmail"
-            }
-          },
-          "406": {
-            "description": "Invalid Input",
+            "description": "Invalid email/input",
             "schema": {
               "$ref": "#/definitions/invalidInput"
-            }
-          },
-          "409": {
-            "description": "Existing email",
-            "schema": {
-              "$ref": "#/definitions/existingEmail"
             }
           }
         }
@@ -108,34 +100,28 @@
           }
         ],
         "responses": {
-          "202": {
+          "200": {
             "description": "Log in user",
             "schema": {
               "$ref": "#/definitions/login"
             }
           },
-          "401": {
-            "description": "Wrong password",
-            "schema": {
-              "$ref": "#/definitions/wrongPassword"
-            }
-          },
-          "404": {
-            "description": "User not found",
-            "schema": {
-              "$ref": "#/definitions/UserNotFound"
-            }
-          },
-          "406": {
+          "400": {
             "description": "Invalid Input",
             "schema": {
               "$ref": "#/definitions/invalidInput"
+            }
+          },
+          "401": {
+            "description": "Email/ password mismatch",
+            "schema": {
+              "$ref": "#/definitions/loginFail"
             }
           }
         }
       }
     },
-    "/auth/user": {
+    "/user": {
       "put": {
         "tags": [
           "User"
@@ -175,9 +161,9 @@
             }
           },
           "400": {
-            "description": "Invalid email address",
+            "description": "Invalid email/input",
             "schema": {
-              "$ref": "#/definitions/wrongEmail"
+              "$ref": "#/definitions/invalidInput"
             }
           },
           "401": {
@@ -185,32 +171,33 @@
             "schema": {
               "$ref": "#/definitions/invalidToken"
             }
-          },
-          "406": {
-            "description": "Invalid Input",
-            "schema": {
-              "$ref": "#/definitions/invalidInput"
-            }
           }
         }
-      }
-    },
-    "/auth/logout": {
+      },
       "get": {
         "tags": [
           "User"
         ],
-        "summary": "Logs out a user",
-        "description": "This endpoint logs out a user",
-        "operationId": "userLogOut",
+        "summary": "Retrieves a user's details",
+        "description": "This endpoint retrieves a user's details",
+        "operationId": "getUser",
         "produces": [
           "application/json"
         ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": true,
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
-            "description": "Logs out a user",
+            "description": "User details",
             "schema": {
-              "$ref": "#/definitions/logOut"
+              "$ref": "#/definitions/User"
             }
           }
         }
@@ -222,7 +209,7 @@
           "Business"
         ],
         "summary": "Add a business",
-        "description": "Add business to database.",
+        "description": "Register a business to the app",
         "operationId": "createBusiness",
         "consumes": [
           "application/json"
@@ -255,22 +242,16 @@
               "$ref": "#/definitions/createBusinessRes"
             }
           },
-          "401": {
-            "description": "Token issue",
-            "schema": {
-              "$ref": "#/definitions/invalidToken"
-            }
-          },
-          "406": {
+          "400": {
             "description": "Invalid Input",
             "schema": {
               "$ref": "#/definitions/invalidInput"
             }
           },
-          "409": {
-            "description": "Business name exists",
+          "401": {
+            "description": "Token issue",
             "schema": {
-              "$ref": "#/definitions/existingBusiness"
+              "$ref": "#/definitions/invalidToken"
             }
           }
         }
@@ -325,7 +306,7 @@
           "404": {
             "description": "Business not found!",
             "schema": {
-              "$ref": "#/definitions/BusinessNotFound"
+              "$ref": "#/definitions/businessNotFound"
             }
           }
         }
@@ -375,28 +356,28 @@
               "$ref": "#/definitions/updatedBusiness"
             }
           },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/invalidInput"
+            }
+          },
           "401": {
             "description": "Token issue",
             "schema": {
               "$ref": "#/definitions/invalidToken"
             }
           },
+          "403": {
+            "description": "Access Denied",
+            "schema": {
+              "$ref": "#/definitions/accessDenied"
+            }
+          },
           "404": {
             "description": "Business not found",
             "schema": {
-              "$ref": "#/definitions/BusinessNotFound"
-            }
-          },
-          "406": {
-            "description": "Invalid Input",
-            "schema": {
-              "$ref": "#/definitions/invalidInput"
-            }
-          },
-          "409": {
-            "description": "Business name exists",
-            "schema": {
-              "$ref": "#/definitions/existingBusiness"
+              "$ref": "#/definitions/businessNotFound"
             }
           }
         }
@@ -440,10 +421,16 @@
               "$ref": "#/definitions/invalidToken"
             }
           },
+          "403": {
+            "description": "Access Denied",
+            "schema": {
+              "$ref": "#/definitions/accessDenied"
+            }
+          },
           "404": {
             "description": "Business not found",
             "schema": {
-              "$ref": "#/definitions/BusinessNotFound"
+              "$ref": "#/definitions/businessNotFound"
             }
           }
         }
@@ -492,7 +479,7 @@
           "200": {
             "description": "Business successfully updated",
             "schema": {
-              "$ref": "#/definitions/updatedBusiness"
+              "$ref": "#/definitions/transferBusiness"
             }
           },
           "401": {
@@ -501,16 +488,22 @@
               "$ref": "#/definitions/invalidToken"
             }
           },
-          "404": {
-            "description": "User/Business not found",
+          "403": {
+            "description": "Access Denied",
             "schema": {
-              "$ref": "#/definitions/UserNotFound"
+              "$ref": "#/definitions/accessDenied"
+            }
+          },
+          "404": {
+            "description": "User not found",
+            "schema": {
+              "$ref": "#/definitions/userNotFound"
             }
           }
         }
       }
     },
-    "/businesses/user": {
+    "/businesses/user": { 
       "get": {
         "tags": [
           "Business"
@@ -575,7 +568,7 @@
         ],
         "responses": {
           "200": {
-            "description": "User successfully created",
+            "description": "Businesses found",
             "schema": {
               "$ref": "#/definitions/businessSearch"
             }
@@ -696,7 +689,7 @@
           {
             "in": "body",
             "name": "body",
-            "description": "Updated business object",
+            "description": "Review object",
             "required": true,
             "schema": {
               "$ref": "#/definitions/reviewObject"
@@ -710,6 +703,12 @@
               "$ref": "#/definitions/addReview"
             }
           },
+          "400": {
+            "description": "Invalid input",
+            "schema": {
+              "$ref": "#/definitions/invalidInput"
+            }
+          },
           "401": {
             "description": "Token issue",
             "schema": {
@@ -719,13 +718,7 @@
           "404": {
             "description": "Business was not found",
             "schema": {
-              "$ref": "#/definitions/BusinessNotFound"
-            }
-          },
-          "406": {
-            "description": "Invalid Input",
-            "schema": {
-              "$ref": "#/definitions/invalidInput"
+              "$ref": "#/definitions/businessNotFound"
             }
           }
         }
@@ -766,13 +759,13 @@
           "404": {
             "description": "Business not found",
             "schema": {
-              "$ref": "#/definitions/BusinessNotFound"
+              "$ref": "#/definitions/businessNotFound"
             }
           }
         }
       }
     },
-    "/businesses/{businessId}/reviews/{reviewId}": {
+    "/reviews/{reviewId}": {
       "get": {
         "tags": [
           "Review"
@@ -788,13 +781,6 @@
             "name": "x-access-token",
             "in": "header",
             "description": "Token Authentication",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "businessId",
-            "in": "path",
-            "description": "business id of the review",
             "required": true,
             "type": "string"
           },
@@ -819,8 +805,14 @@
               "$ref": "#/definitions/invalidToken"
             }
           },
+          "403": {
+            "description": "Access Denied",
+            "schema": {
+              "$ref": "#/definitions/accessDenied"
+            }
+          },
           "404": {
-            "description": "Business/Review not found",
+            "description": "Review not found",
             "schema": {
               "$ref": "#/definitions/ReviewNotFound"
             }
@@ -849,15 +841,8 @@
             "type": "string"
           },
           {
-            "name": "businessId",
+            "name": "reviewId",
             "in": "path",
-            "description": "business id of the review",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "review",
-            "in": "formData",
             "description": "id of the review",
             "required": true,
             "type": "string"
@@ -865,7 +850,7 @@
           {
             "in": "body",
             "name": "body",
-            "description": "Updated business object",
+            "description": "Updated review object",
             "required": true,
             "schema": {
               "$ref": "#/definitions/reviewObject"
@@ -879,22 +864,28 @@
               "$ref": "#/definitions/editReview"
             }
           },
+          "400": {
+            "description": "Invalid Input",
+            "schema": {
+              "$ref": "#/definitions/invalidInput"
+            }
+          },
           "401": {
             "description": "Token issue",
             "schema": {
               "$ref": "#/definitions/invalidToken"
             }
           },
-          "404": {
-            "description": "Business/Review was not found",
+          "403": {
+            "description": "Access Denied",
             "schema": {
-              "$ref": "#/definitions/ReviewNotFound"
+              "$ref": "#/definitions/accessDenied"
             }
           },
-          "406": {
-            "description": "Invalid Input",
+          "404": {
+            "description": "Review was not found",
             "schema": {
-              "$ref": "#/definitions/invalidInput"
+              "$ref": "#/definitions/ReviewNotFound"
             }
           }
         }
@@ -914,13 +905,6 @@
             "name": "x-access-token",
             "in": "header",
             "description": "Token Authentication",
-            "required": true,
-            "type": "string"
-          },
-          {
-            "name": "businessId",
-            "in": "path",
-            "description": "business id of the review",
             "required": true,
             "type": "string"
           },
@@ -945,10 +929,46 @@
               "$ref": "#/definitions/invalidToken"
             }
           },
+          "403": {
+            "description": "access Denied",
+            "schema": {
+              "$ref": "#/definitions/accessDenied"
+            }
+          },
           "404": {
-            "description": "Business/Review was not found",
+            "description": "Review was not found",
             "schema": {
               "$ref": "#/definitions/ReviewNotFound"
+            }
+          }
+        }
+      }
+    },
+    "/categories": {
+      "get": {
+        "tags": [
+          "Category"
+        ],
+        "summary": "Retrieves the list of all available categories",
+        "description": "Retrieves the list of all categories",
+        "operationId": "listCategories",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "x-access-token",
+            "in": "header",
+            "description": "Token Authentication",
+            "required": false,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Categories",
+            "schema": {
+              "$ref": "#/definitions/listCategories"
             }
           }
         }
@@ -1008,9 +1028,9 @@
     "signupResponse": {
       "type": "object",
       "properties": {
-        "message": {
+        "status": {
           "type": "string",
-          "example": "User successfully created"
+          "example": "success"
         },
         "user": {
           "type": "object",
@@ -1018,30 +1038,16 @@
         }
       }
     },
-    "wrongEmail": {
-      "type": "object",
-      "properties": {
-        "message": {
-          "type": "string",
-          "example": "Please enter a valid email address"
-        }
-      }
-    },
     "invalidInput": {
       "type": "object",
       "properties": {
+        "status": {
+          "type": "string",
+          "example": "fail"
+        },
         "error": {
           "type": "array",
           "example": ["Error 1", "Error 2", "Error 3"]
-        }
-      }
-    },
-    "existingEmail": {
-      "type": "object",
-      "properties": {
-        "message": {
-          "type": "string",
-          "example": "This email already has an account"
         }
       }
     },
@@ -1065,25 +1071,50 @@
     "login": {
       "type": "object",
       "properties": {
-        "message": {
+        "status": {
           "type": "string",
-          "example": "Welcome Tobiloba Emmanuel"
+          "example": "success"
+        },
+        "user": {
+          "type": "object",
+          "$ref": "#/definitions/User"
         }
       }
     },
-    "wrongPassword": {
+    "loginFail": {
       "type": "object",
       "properties": {
-        "message": {
+        "status": {
           "type": "string",
-          "example": "Wrong password"
+          "example": "fail"
+        },
+        "error": {
+          "type": "string",
+          "example": "Invalid email"
         }
       }
     },
-    "UserNotFound": {
+    "accessDenied": {
       "type": "object",
       "properties": {
-        "message": {
+        "status": {
+          "type": "string",
+          "example": "fail"
+        },
+        "error": {
+          "type": "string",
+          "example": "Access to content denied"
+        }
+      }
+    },
+    "userNotFound": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "fail"
+        },
+        "error": {
           "type": "string",
           "example": "User not found"
         }
@@ -1092,9 +1123,9 @@
     "userUpdateRes": {
       "type": "object",
       "properties": {
-        "message": {
+        "status": {
           "type": "string",
-          "example": "User details updated"
+          "example": "success"
         },
         "user": {
           "type": "object",
@@ -1105,22 +1136,13 @@
     "invalidToken": {
       "type": "object",
       "properties": {
-        "message": {
+        "status": {
           "type": "string",
-          "example": "Please login/ Token Invalid"
-        }
-      }
-    },
-    "logOut": {
-      "type": "object",
-      "properties": {
-        "message": {
-          "type": "string",
-          "example": "You have been logged out"
+          "example": "fail"
         },
-        "token": {
+        "message": {
           "type": "string",
-          "example": "null"
+          "example": "Token Invalid/ absent"
         }
       }
     },
@@ -1184,11 +1206,11 @@
     "getAllBusinesses": {
       "type": "object",
       "properties": {
-        "message": {
+        "status": {
           "type": "string",
-          "example": "All Businesses"
+          "example": "success"
         },
-        "business": {
+        "businesses": {
           "type": "array",
           "items": {
             "$ref": "#/definitions/Business"
@@ -1253,9 +1275,9 @@
     "createBusinessRes": {
       "type": "object",
       "properties": {
-        "message": {
+        "status": {
           "type": "string",
-          "example":"Business successfully created"
+          "example": "success"
         },
         "business": {
           "type": "object",
@@ -1263,30 +1285,44 @@
         }
       }
     },
-    "BusinessNotFound": {
+    "businessNotFound": {
       "type": "object",
       "properties": {
-        "message": {
+        "status": {
+          "type": "string",
+          "example": "fail"
+        },
+        "error": {
           "type": "string",
           "example": "Business Not Found!"
         }
       }
     },
-    "existingBusiness": {
+    "transferBusiness": {
       "type": "object",
       "properties": {
+        "status": {
+          "type": "string",
+          "example": "success"
+        },
         "message": {
           "type": "string",
-          "example": "Coffee Shop already exists as a business name"
+          "example": "Business transferred"
         }
       }
     },
     "userBusinesses": {
       "type": "object",
       "properties": {
-        "message": {
+        "status": {
           "type": "string",
-          "example": "Business ownership has been transferred to {email}"
+          "example": "success"
+        },
+        "businesses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Business"
+          }
         }
       }
     },
@@ -1319,22 +1355,22 @@
     "deleteBusiness": {
       "type": "object",
       "properties": {
+        "status": {
+          "type": "string",
+          "example": "success"
+        },
         "message": {
           "type": "string",
           "example": "Business was successfully deleted"
-        },
-        "business": {
-          "type": "object",
-          "$ref": "#/definitions/Business"
         }
       }
     },
     "businessSearch": {
       "type": "object",
       "properties": {
-        "message": {
+        "status": {
           "type": "string",
-          "example": "Businesses found"
+          "example": "success"
         },
         "business": {
           "type": "array",
@@ -1408,9 +1444,9 @@
     "addReviewRes": {
       "type": "object",
       "properties": {
-        "message": {
+        "status": {
           "type": "string",
-          "example": "Review was successfully added"
+          "example": "success"
         },
         "review": {
           "type": "object",
@@ -1421,7 +1457,11 @@
     "ReviewNotFound": {
       "type": "object",
       "properties": {
-        "message": {
+        "status": {
+          "type": "string",
+          "example": "fail"
+        },
+        "error": {
           "type": "string",
           "example": "Review not found"
         }
@@ -1431,8 +1471,8 @@
       "type": "object",
       "properties": {
         "message": {
-          "type": "string",
-          "example": "Review found"
+          "type": "stauts",
+          "example": "success"
         },
         "review": {
           "type": "object",
@@ -1443,9 +1483,9 @@
     "editReview": {
       "type": "object",
       "properties": {
-        "message": {
+        "status": {
           "type": "string",
-          "example": "Review updated"
+          "example": "success"
         },
         "review": {
           "type": "object",
@@ -1456,13 +1496,13 @@
     "deleteReview": {
       "type": "object",
       "properties": {
+        "status": {
+          "type": "string",
+          "example": "success"
+        },
         "message": {
           "type": "string",
           "example": "Review deleted"
-        },
-        "review": {
-          "type": "object",
-          "$ref": "#/definitions/Review"
         }
       }
     },
@@ -1478,6 +1518,19 @@
           "items": {
             "$ref": "#/definitions/Review"
           }
+        }
+      }
+    },
+    "listCategories": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "example": "success"
+        },
+        "data": {
+          "type": "array",
+          "items": ["category1", "category2"]
         }
       }
     }
