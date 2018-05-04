@@ -30,7 +30,7 @@ describe('Given that a user sends a ', () => {
           password: userData.user1.password
         })
         .end((err, res) => {
-          authtoken1 = res.body.data.token;
+          authtoken1 = res.body.data.user.token;
           done();
         });
     });
@@ -42,6 +42,8 @@ describe('Given that a user sends a ', () => {
         .type('form')
         .send(businessData.business1)
         .end((err, res) => {
+          businessId1 = res.body.data.business.id;
+
           res.should.have.status(201);
           assert.equal(
             res.body.status,
@@ -56,7 +58,6 @@ describe('Given that a user sends a ', () => {
             res.body.data.business.businessName,
             businessData.business1.businessName
           );
-          businessId1 = res.body.data.business.id;
           done();
         });
     });
@@ -68,6 +69,8 @@ describe('Given that a user sends a ', () => {
         .type('form')
         .send(businessData.business2)
         .end((err, res) => {
+          businessId2 = res.body.data.business.id;
+
           res.should.have.status(201);
           assert.equal(
             res.body.status,
@@ -83,11 +86,10 @@ describe('Given that a user sends a ', () => {
             businessData.business2.businessName
           );
           assert.strictEqual(
-            res.body.data.business.workHours,
+            res.body.data.business.postalAddress,
             null,
             'business should still be created'
           );
-          businessId2 = res.body.data.business.id;
           done();
         });
     });
@@ -105,6 +107,47 @@ describe('Given that a user sends a ', () => {
             'fail'
           );
           res.body.error.should.be.a('array');
+          done();
+        });
+    });
+
+    it('should return 400 status code when category is not valid', (done) => {
+      chai.request(app)
+        .post('/api/v1/businesses/')
+        .set('authorization', authtoken1)
+        .type('form')
+        .send(businessData.business7)
+        .end((err, res) => {
+          res.should.have.status(400);
+          assert.equal(
+            res.body.status,
+            'fail'
+          );
+          assert.equal(
+            res.body.error,
+            'Category is invalid'
+          );
+          done();
+        });
+    });
+
+    it('should return 400 status code when there is a duplicate business name', (done) => {
+      chai.request(app)
+        .post('/api/v1/businesses/')
+        .set('authorization', authtoken1)
+        .type('form')
+        .send(businessData.business3)
+        .end((err, res) => {
+          res.should.have.status(400);
+          assert.equal(
+            res.body.status,
+            'fail'
+          );
+          assert.strictEqual(
+            res.body.error[0],
+            'Business name exists',
+            'duplicate business name'
+          );
           done();
         });
     });
@@ -147,40 +190,16 @@ describe('Given that a user sends a ', () => {
           done();
         });
     });
-
-    it('should return 400 status code when there is a duplicate business name', (done) => {
-      chai.request(app)
-        .post('/api/v1/businesses/')
-        .set('authorization', authtoken1)
-        .type('form')
-        .send(businessData.business3)
-        .end((err, res) => {
-          res.should.have.status(400);
-          assert.equal(
-            res.body.status,
-            'fail'
-          );
-          assert.strictEqual(
-            res.body.error[0],
-            'Business name exists',
-            'duplicate business name'
-          );
-          done();
-        });
-    });
   });
 
   describe('PUT request to /api/v1/businesses/:businessId', () => {
     before((done) => {
       chai.request(app)
-        .post('/api/v1/auth/login')
+        .post('/api/v1/auth/signup')
         .type('form')
-        .send({
-          email: userData.user2.email,
-          password: userData.user2.password
-        })
+        .send(userData.user3)
         .end((err, res) => {
-          authtoken2 = res.body.data.token;
+          authtoken2 = res.body.data.user.token;
           done();
         });
     });
@@ -220,6 +239,26 @@ describe('Given that a user sends a ', () => {
             'fail'
           );
           res.body.error.should.be.a('array');
+          done();
+        });
+    });
+
+    it('should return 400 status code when category is not valid', (done) => {
+      chai.request(app)
+        .put(`/api/v1/businesses/${businessId1}`)
+        .set('authorization', authtoken1)
+        .type('form')
+        .send(businessData.business7)
+        .end((err, res) => {
+          res.should.have.status(400);
+          assert.equal(
+            res.body.status,
+            'fail'
+          );
+          assert.equal(
+            res.body.error,
+            'Category is invalid'
+          );
           done();
         });
     });
@@ -284,7 +323,7 @@ describe('Given that a user sends a ', () => {
         });
     });
 
-    it('should return 404 status code when businessId is not a uuid', (done) => {
+    it('should return 404 status code when businessId is not valid', (done) => {
       chai.request(app)
         .put('/api/v1/businesses/anyInvalidBusinessIdString')
         .set('authorization', authtoken1)
@@ -377,7 +416,7 @@ describe('Given that a user sends a ', () => {
         });
     });
 
-    it('should return 404 status code when businessId is not a uuid', (done) => {
+    it('should return 404 status code when businessId is not valid', (done) => {
       chai.request(app)
         .delete('/api/v1/businesses/anyInvalidBusinessIdString')
         .set('authorization', authtoken1)
@@ -464,10 +503,6 @@ describe('Given that a user sends a ', () => {
             res.body.status,
             'success'
           );
-          assert.equal(
-            res.body.status,
-            'success'
-          );
           res.body.data.businesses.should.be.a('array');
           done();
         });
@@ -483,23 +518,6 @@ describe('Given that a user sends a ', () => {
             'success'
           );
           res.body.data.businesses.should.be.a('array');
-          done();
-        });
-    });
-
-    it('should return 200 status code and no list if the location is not availabe', (done) => {
-      chai.request(app)
-        .get('/api/v1/businesses/?location=abia')
-        .end((err, res) => {
-          res.should.have.status(200);
-          assert.equal(
-            res.body.status,
-            'success'
-          );
-          assert.equal(
-            res.body.message,
-            'No businesses'
-          );
           done();
         });
     });
@@ -535,11 +553,11 @@ describe('Given that a user sends a ', () => {
 
   describe('PUT request to /api/v1/businesses/change-ownership/:businessId/', () => {
     it('should return a status 200 and change the business ownership to a new user with the email passed in', (done) => {
-      // user1 transferring business2 to user2
+      // user1 transferring business2 to user3
       chai.request(app)
         .put(`/api/v1/businesses/change-ownership/${businessId2}`)
         .set('authorization', authtoken1)
-        .send({ email: userData.user2.email })
+        .send({ email: userData.user3.email })
         .end((err, res) => {
           res.should.have.status(200);
           assert.equal(
@@ -618,7 +636,7 @@ describe('Given that a user sends a ', () => {
       chai.request(app)
         .put(`/api/v1/businesses/change-ownership/${businessId2}`)
         .set('authorization', authtoken2)
-        .send({ email: userData.user3.email })
+        .send({ email: 'someemail@yahoo.com' })
         .end((err, res) => {
           res.should.have.status(404);
           assert.equal(
@@ -640,24 +658,6 @@ describe('Given that a user sends a ', () => {
       chai.request(app)
         .get('/api/v1/businesses/user')
         .set('authorization', authtoken1)
-        .end((err, res) => {
-          res.should.have.status(200);
-          assert.equal(
-            res.body.status,
-            'success'
-          );
-          assert.equal(
-            res.body.message,
-            'No businesses'
-          );
-          done();
-        });
-    });
-
-    it('should return a status of 200 when user is logged in', (done) => {
-      chai.request(app)
-        .get('/api/v1/businesses/user')
-        .set('authorization', authtoken2)
         .end((err, res) => {
           res.should.have.status(200);
           assert.equal(

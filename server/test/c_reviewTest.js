@@ -29,7 +29,7 @@ describe('Given that a user sends a ', () => {
           password: userData.user1.password
         })
         .end((err, res) => {
-          authtoken1 = res.body.data.token;
+          authtoken1 = res.body.data.user.token;
           done();
         });
     });
@@ -83,7 +83,7 @@ describe('Given that a user sends a ', () => {
           );
           assert.equal(
             res.body.error[0],
-            'review must not be empty'
+            'Review must not be empty'
           );
           done();
         });
@@ -179,7 +179,7 @@ describe('Given that a user sends a ', () => {
         .end(() => done());
     });
 
-    it('should return 200 status code and retrieve all reviews', (done) => {
+    it('should return 200 status code and retrieve all reviews for the business', (done) => {
       chai.request(app)
         .get(`/api/v1/businesses/${businessId1}/reviews`)
         .end((err, res) => {
@@ -233,10 +233,10 @@ describe('Given that a user sends a ', () => {
     });
   });
 
-  describe('GET request to /api/v1/businesses/:businessId/reviews/:reviewId', () => {
+  describe('GET request to /api/v1/reviews/:reviewId', () => {
     it('should return a status 200 if review, business and user exists', (done) => {
       chai.request(app)
-        .get(`/api/v1/businesses/${businessId1}/reviews/${reviewId1}`)
+        .get(`/api/v1/reviews/${reviewId1}`)
         .set('authorization', authtoken1)
         .end((err, res) => {
           res.should.have.status(200);
@@ -245,8 +245,8 @@ describe('Given that a user sends a ', () => {
             'success'
           );
           res.body.data.review.should.be.a('object');
-          assert.isNotNull(
-            res.body.data.review,
+          assert.isString(
+            res.body.data.review.review,
             'Review was found'
           );
           done();
@@ -255,7 +255,7 @@ describe('Given that a user sends a ', () => {
 
     it('should return a status 401 if token is not passed in', (done) => {
       chai.request(app)
-        .get(`/api/v1/businesses/${businessId1}/reviews/${reviewId1}`)
+        .get(`/api/v1/reviews/${reviewId1}`)
         .end((err, res) => {
           res.should.have.status(401);
           assert.equal(
@@ -272,7 +272,7 @@ describe('Given that a user sends a ', () => {
 
     it('should return a status 401 if an invalid token is passed in', (done) => {
       chai.request(app)
-        .get(`/api/v1/businesses/${businessId1}/reviews/${reviewId1}`)
+        .get(`/api/v1/reviews/${reviewId1}`)
         .set('authorization', 'anyInvalidTokenString')
         .end((err, res) => {
           res.should.have.status(401);
@@ -290,7 +290,7 @@ describe('Given that a user sends a ', () => {
 
     it('should return a status 403 if user is not the owner of the review', (done) => {
       chai.request(app)
-        .get(`/api/v1/businesses/${businessId1}/reviews/f64f2940-fae4-11e7-8c5f-ef356f279131`)
+        .get('/api/v1/reviews/f64f2940-fae4-11e7-8c5f-ef356f279131')
         .set('authorization', authtoken1)
         .end((err, res) => {
           res.should.have.status(403);
@@ -308,7 +308,7 @@ describe('Given that a user sends a ', () => {
 
     it('should return a status 404 if reviewId is not uuid', (done) => {
       chai.request(app)
-        .get(`/api/v1/businesses/${businessId1}/reviews/anyInvalidReviewIdString`)
+        .get('/api/v1/reviews/anyInvalidReviewIdString')
         .set('authorization', authtoken1)
         .end((err, res) => {
           res.should.have.status(404);
@@ -325,10 +325,10 @@ describe('Given that a user sends a ', () => {
     });
   });
 
-  describe('PUT request to /api/v1/businesses/:businessId/reviews/:reviewId', () => {
+  describe('PUT request to /api/v1/reviews/:reviewId', () => {
     it('should return a status 200 if review, business and user exists', (done) => {
       chai.request(app)
-        .put(`/api/v1/businesses/${businessId1}/reviews/${reviewId1}`)
+        .put(`/api/v1/reviews/${reviewId1}`)
         .set('authorization', authtoken1)
         .send(reviewData.review4)
         .end((err, res) => {
@@ -348,7 +348,7 @@ describe('Given that a user sends a ', () => {
 
     it('should return a status 400 if review field is empty', (done) => {
       chai.request(app)
-        .put(`/api/v1/businesses/${businessId1}/reviews/${reviewId1}`)
+        .put(`/api/v1/reviews/${reviewId1}`)
         .set('authorization', authtoken1)
         .send(reviewData.review3)
         .end((err, res) => {
@@ -359,7 +359,7 @@ describe('Given that a user sends a ', () => {
           );
           assert.equal(
             res.body.error[0],
-            'review must not be empty',
+            'Review must not be empty',
             'Review cannot be empty'
           );
           done();
@@ -368,7 +368,7 @@ describe('Given that a user sends a ', () => {
 
     it('should return a status 401 if token is not passed in', (done) => {
       chai.request(app)
-        .put(`/api/v1/businesses/${businessId1}/reviews/${reviewId1}`)
+        .put(`/api/v1/reviews/${reviewId1}`)
         .end((err, res) => {
           res.should.have.status(401);
           assert.equal(
@@ -385,7 +385,7 @@ describe('Given that a user sends a ', () => {
 
     it('should return a status 401 if an invalid token is passed in', (done) => {
       chai.request(app)
-        .put(`/api/v1/businesses/${businessId1}/reviews/${reviewId1}`)
+        .put(`/api/v1/reviews/${reviewId1}`)
         .set('authorization', 'anyInvalidTokenString')
         .end((err, res) => {
           res.should.have.status(401);
@@ -403,7 +403,7 @@ describe('Given that a user sends a ', () => {
 
     it('should return a status 403 if user is not the owner of the review', (done) => {
       chai.request(app)
-        .put(`/api/v1/businesses/${businessId1}/reviews/f64f2940-fae4-11e7-8c5f-ef356f279131`)
+        .put('/api/v1/reviews/f64f2940-fae4-11e7-8c5f-ef356f279131')
         .set('authorization', authtoken1)
         .send(reviewData.review4)
         .end((err, res) => {
@@ -422,7 +422,7 @@ describe('Given that a user sends a ', () => {
 
     it('should return a status 404 if reviewId is not uuid', (done) => {
       chai.request(app)
-        .put(`/api/v1/businesses/${businessId1}/reviews/anyInvalidReviewIdString`)
+        .put('/api/v1/reviews/anyInvalidReviewIdString')
         .set('authorization', authtoken1)
         .send(reviewData.review4)
         .end((err, res) => {
@@ -440,10 +440,10 @@ describe('Given that a user sends a ', () => {
     });
   });
 
-  describe('DELETE request to /api/v1/businesses/:businessId/reviews/:reviewId', () => {
-    it('should return a status 200 if review, business and user exists', (done) => {
+  describe('DELETE request to /api/v1/reviews/:reviewId', () => {
+    it('should return a status 200 and delete the review', (done) => {
       chai.request(app)
-        .delete(`/api/v1/businesses/${businessId1}/reviews/${reviewId1}`)
+        .delete(`/api/v1/reviews/${reviewId1}`)
         .set('authorization', authtoken1)
         .end((err, res) => {
           res.should.have.status(200);
@@ -462,7 +462,7 @@ describe('Given that a user sends a ', () => {
 
     it('should return a status 401 if token is not passed in', (done) => {
       chai.request(app)
-        .delete(`/api/v1/businesses/${businessId1}/reviews/${reviewId1}`)
+        .delete(`/api/v1/reviews/${reviewId1}`)
         .end((err, res) => {
           res.should.have.status(401);
           assert.equal(
@@ -479,7 +479,7 @@ describe('Given that a user sends a ', () => {
 
     it('should return a status 401 if an invalid token is passed in', (done) => {
       chai.request(app)
-        .delete(`/api/v1/businesses/${businessId1}/reviews/${reviewId1}`)
+        .delete(`/api/v1/reviews/${reviewId1}`)
         .set('authorization', 'anyInvalidTokenString')
         .end((err, res) => {
           res.should.have.status(401);
@@ -495,9 +495,9 @@ describe('Given that a user sends a ', () => {
         });
     });
 
-    it('should return a status 404 if user is not the owner of the review', (done) => {
+    it('should return a status 403 if user is not the owner of the review', (done) => {
       chai.request(app)
-        .delete(`/api/v1/businesses/${businessId1}/reviews/f64f2940-fae4-11e7-8c5f-ef356f279131`)
+        .delete('/api/v1/reviews/f64f2940-fae4-11e7-8c5f-ef356f279131')
         .set('authorization', authtoken1)
         .send(reviewData.review4)
         .end((err, res) => {
@@ -516,7 +516,7 @@ describe('Given that a user sends a ', () => {
 
     it('should return a status 404 if reviewId is not uuid', (done) => {
       chai.request(app)
-        .delete(`/api/v1/businesses/${businessId1}/reviews/anyInvalidReviewIdString`)
+        .delete('/api/v1/reviews/anyInvalidReviewIdString')
         .set('authorization', authtoken1)
         .send(reviewData.review4)
         .end((err, res) => {

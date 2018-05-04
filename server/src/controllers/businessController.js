@@ -72,7 +72,7 @@ export default class BusinessController {
         if (!theCategory) {
           return res.status(400).json({
             status: 'fail',
-            error: 'not a category'
+            error: 'Category is invalid'
           });
         }
         const { id: userId } = req.decoded;
@@ -92,12 +92,10 @@ export default class BusinessController {
             plain: true
           }
         )
-          .then((business) => {
-            res.status(200).json({
-              status: 'success',
-              data: { business: business[1] }
-            });
-          });
+          .then(business => res.status(200).json({
+            status: 'success',
+            data: { business: business[1] }
+          }));
       })
       .catch(error => handleErrorMessage(res, error));
   }
@@ -193,7 +191,6 @@ export default class BusinessController {
 
     const { businessId: id } = req.params;
     const isNotUUID = checkUUID(res, id, 'Business');
-
     if (isNotUUID) return isNotUUID;
 
     const { id: ownerId } = req.decoded;
@@ -211,13 +208,12 @@ export default class BusinessController {
           { where: { id, userId: ownerId }, returning: true, plain: true }
         )
           .then((business) => {
-            res.status(200).json({
-              status: 'success',
-              data: {
-                business: business[1],
+            if (business) {
+              return res.status(200).json({
+                status: 'success',
                 message: 'Business transferred'
-              }
-            });
+              });
+            }
           });
       })
       .catch(error => handleErrorMessage(res, error));

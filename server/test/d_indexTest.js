@@ -26,12 +26,12 @@ describe('Given that a user sends a ', () => {
   describe('GET/POST/PUT/DELETE request to an invalid route', () => {
     it('should return 404 status code', (done) => {
       chai.request(app)
-        .get('/anyotherroute')
+        .get('/api/v1/anyOtherRoute')
         .end((err, res) => {
           res.should.have.status(404);
           assert.equal(
             res.body.message,
-            'Page not Found'
+            'Route not available'
           );
           done();
         });

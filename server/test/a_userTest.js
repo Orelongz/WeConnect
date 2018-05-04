@@ -7,6 +7,7 @@ import { userData } from './../mockData/serveMockData';
 const { User } = db;
 const { assert, should } = chai;
 let authtoken1;
+let authtoken2;
 
 should();
 chai.use(chaiHttp);
@@ -24,102 +25,33 @@ describe('Given that a user sends a', () => {
         .type('form')
         .send(userData.user1)
         .end((err, res) => {
-          const { firstname, lastname, email } = res.body.data.user;
+          const {
+            firstname, lastname, email, token
+          } = res.body.data.user;
           res.should.have.status(201);
           assert.equal(
             res.body.status,
             'success',
           );
           assert.equal(
-            firstname.toLowerCase(),
-            userData.user1.firstname.toLocaleLowerCase(),
+            firstname,
+            userData.user1.firstname,
             'Firstname equal'
           );
           assert.equal(
-            lastname.toLowerCase(),
-            userData.user1.lastname.toLowerCase(),
+            lastname,
+            userData.user1.lastname,
             'Lastname equal'
           );
           assert.equal(
-            email.toLowerCase(),
+            email,
             userData.user1.email.toLowerCase(),
             'email equal'
           );
           assert.isNotNull(
-            res.body.data.token,
+            token,
             'Token should be available'
           );
-          done();
-        });
-    });
-
-    it('should return 201 status code and create new user', (done) => {
-      chai.request(app)
-        .post('/api/v1/auth/signup')
-        .type('form')
-        .send(userData.user2)
-        .end((err, res) => {
-          const { firstname, lastname, email } = res.body.data.user;
-          res.should.have.status(201);
-          assert.equal(
-            res.body.status,
-            'success',
-          );
-          assert.equal(
-            firstname.toLowerCase(),
-            userData.user2.firstname.toLocaleLowerCase(),
-            'Firstname equal'
-          );
-          assert.equal(
-            lastname.toLowerCase(),
-            userData.user2.lastname.toLowerCase(),
-            'Lastname equal'
-          );
-          assert.equal(
-            email.toLowerCase(),
-            userData.user2.email.toLowerCase(),
-            'email equal'
-          );
-          assert.isNotNull(
-            res.body.data.token,
-            'Token should be available'
-          );
-          done();
-        });
-    });
-
-    it('should return 201 status code and create new user', (done) => {
-      chai.request(app)
-        .post('/api/v1/auth/signup')
-        .type('form')
-        .send(userData.user6)
-        .end((err, res) => {
-          const { firstname, lastname, email } = res.body.data.user;
-          res.should.have.status(201);
-          assert.equal(
-            res.body.status,
-            'success',
-          );
-          assert.equal(
-            firstname.toLowerCase(),
-            userData.user6.firstname.toLocaleLowerCase(),
-            'Firstname equal'
-          );
-          assert.equal(
-            lastname.toLowerCase(),
-            userData.user6.lastname.toLowerCase(),
-            'Lastname equal'
-          );
-          assert.equal(
-            email.toLowerCase(),
-            userData.user6.email.toLowerCase(),
-            'email equal'
-          );
-          assert.isNotNull(
-            res.body.data.token,
-            'Token should be available'
-          );
-          authtoken1 = res.body.data.token;
           done();
         });
     });
@@ -188,24 +120,33 @@ describe('Given that a user sends a', () => {
           password: userData.user1.password
         })
         .end((err, res) => {
-          const { firstname, lastname } = res.body.data.user;
+          const {
+            firstname, lastname, email, token
+          } = res.body.data.user;
+          authtoken1 = token;
+
           res.should.have.status(200);
           assert.equal(
             res.body.status,
             'success'
           );
           assert.equal(
-            firstname.toLowerCase(),
-            userData.user1.firstname.toLocaleLowerCase(),
+            firstname,
+            userData.user1.firstname,
             'Firstname equal'
           );
           assert.equal(
-            lastname.toLowerCase(),
-            userData.user1.lastname.toLowerCase(),
+            lastname,
+            userData.user1.lastname,
             'Lastname equal'
           );
-          assert.isNotNull(
-            res.body.data.token,
+          assert.equal(
+            email,
+            userData.user1.email,
+            'Lastname equal'
+          );
+          assert.isString(
+            token,
             'Token should be available'
           );
           done();
@@ -231,7 +172,7 @@ describe('Given that a user sends a', () => {
         });
     });
 
-    it('should return 401 status code when wrong password is given', (done) => {
+    it('should return 401 status code when password does not match the given email', (done) => {
       chai.request(app)
         .post('/api/v1/auth/login')
         .type('form')
@@ -247,31 +188,8 @@ describe('Given that a user sends a', () => {
           );
           assert.strictEqual(
             res.body.error,
-            'Wrong password',
+            'Wrong email or password',
             'Password does not match the email in database'
-          );
-          done();
-        });
-    });
-
-    it('should return 404 status code when email is not registered', (done) => {
-      chai.request(app)
-        .post('/api/v1/auth/login')
-        .type('form')
-        .send({
-          email: userData.user3.email,
-          password: userData.user3.password
-        })
-        .end((err, res) => {
-          res.should.have.status(404);
-          assert.equal(
-            res.body.status,
-            'fail'
-          );
-          assert.strictEqual(
-            res.body.error,
-            'User not found',
-            'Email not in the database'
           );
           done();
         });
@@ -279,14 +197,29 @@ describe('Given that a user sends a', () => {
   });
 
   describe('PUT request to /api/v1/user', () => {
+    before((done) => {
+      chai.request(app)
+        .post('/api/v1/auth/signup')
+        .type('form')
+        .send(userData.user2)
+        .end((err, res) => {
+          authtoken2 = res.body.data.user.token;
+          done();
+        });
+    });
+
     it('should return 200 status code and update user details', (done) => {
       chai.request(app)
         .put('/api/v1/user')
-        .set('authorization', authtoken1)
+        .set('authorization', authtoken2)
         .type('form')
         .send(userData.user6)
         .end((err, res) => {
-          const { firstname, lastname, email } = res.body.data.user;
+          const {
+            firstname, lastname, email, token
+          } = res.body.data.user;
+          authtoken2 = token;
+
           res.should.have.status(200);
           assert.equal(
             res.body.status,
@@ -383,6 +316,45 @@ describe('Given that a user sends a', () => {
           assert.equal(
             res.body.error,
             'Token absent'
+          );
+          done();
+        });
+    });
+  });
+
+  describe('GET request to /api/v1/user', () => {
+    it('should return 200 status code and retrieve user details', (done) => {
+      chai.request(app)
+        .get('/api/v1/user')
+        .set('authorization', authtoken2)
+        .end((err, res) => {
+          const {
+            firstname, lastname, email, id
+          } = res.body.data.user;
+
+          res.should.have.status(200);
+          assert.equal(
+            res.body.status,
+            'success'
+          );
+          assert.equal(
+            firstname,
+            userData.user6.firstname,
+            'firstname retrived'
+          );
+          assert.equal(
+            lastname,
+            userData.user6.lastname,
+            'lastname retrived'
+          );
+          assert.equal(
+            email,
+            userData.user6.email,
+            'email retrived'
+          );
+          assert.isString(
+            id,
+            'id is a UUID string'
           );
           done();
         });

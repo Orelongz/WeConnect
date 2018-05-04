@@ -37,6 +37,9 @@ app.use('/api/v1', userRoute);
 app.use('/api/v1/categories', categoryRoute);
 app.use('/api/v1/businesses', businessRoute);
 app.use('/api/v1/reviews', reviewRoute);
+app.use('/api/v1/*', (req, res) => res.status(404).json({
+  message: 'Route not available'
+}));
 
 const indexHTMLPath = path.join(__dirname, '/client/public/index.html');
 app.get('/*', (req, res) => res.sendFile(indexHTMLPath));

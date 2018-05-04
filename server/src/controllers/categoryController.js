@@ -19,7 +19,7 @@ export default class CategoryController {
       .all({ attributes: ['category'] })
       .then((categories) => {
         const result = categories.map(eachCategory => eachCategory.category);
-        res.status(200).json({
+        return res.status(200).json({
           status: 'success',
           data: result
         });
