@@ -23,10 +23,10 @@ export default class ReviewController {
    */
   static addReview(req, res) {
     const { businessId } = req.params;
-    const { review } = req.body;
+    const { review, rating } = req.body;
     const { id: userId } = req.decoded;
 
-    const validationFailed = handleValidation(res, { review });
+    const validationFailed = handleValidation(res, { review, rating });
     if (validationFailed) return validationFailed;
 
     const isNotUUID = checkUUID(res, businessId, 'Business');
@@ -36,7 +36,9 @@ export default class ReviewController {
       .then((business) => {
         if (!business) return notFound(res, 'Business');
 
-        return Review.create({ review, businessId, userId })
+        return Review.create({
+          review, rating, businessId, userId
+        })
           .then(theReview => res.status(201).json({
             status: 'success',
             data: { review: theReview }

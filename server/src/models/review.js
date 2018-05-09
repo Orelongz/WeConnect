@@ -9,6 +9,18 @@ module.exports = (sequelize, DataTypes) => {
     review: {
       type: DataTypes.TEXT,
       allowNull: false
+    },
+    rating: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0,
+      validate: {
+        checkRatingInput(value) {
+          value = parseInt(value, 10);
+          if (!(value >= 0 && value <= 5)) {
+            throw new Error('Rating value must be between 0 and 5');
+          }
+        }
+      }
     }
   });
     // associations can be defined here

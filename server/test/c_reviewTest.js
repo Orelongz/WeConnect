@@ -68,6 +68,25 @@ describe('Given that a user sends a ', () => {
           done();
         });
     });
+    it('should return 400 status code when rating value is not valid', (done) => {
+      chai.request(app)
+        .post(`/api/v1/businesses/${businessId1}/reviews`)
+        .set('authorization', authtoken1)
+        .type('form')
+        .send(reviewData.review5)
+        .end((err, res) => {
+          res.should.have.status(400);
+          assert.equal(
+            res.body.status,
+            'fail'
+          );
+          assert.equal(
+            res.body.error,
+            'Rating value must be between 0 and 5'
+          );
+          done();
+        });
+    });
 
     it('should return 400 status code when review field is empty', (done) => {
       chai.request(app)
