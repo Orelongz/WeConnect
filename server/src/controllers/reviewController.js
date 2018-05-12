@@ -26,7 +26,7 @@ export default class ReviewController {
     const { review, rating } = req.body;
     const { id: userId } = req.decoded;
 
-    const validationFailed = handleValidation(res, { review, rating });
+    const validationFailed = handleValidation(res, { review });
     if (validationFailed) return validationFailed;
 
     const isNotUUID = checkUUID(res, businessId, 'Business');
@@ -48,7 +48,7 @@ export default class ReviewController {
   }
 
   /**
-   * getBusinessReviews() getUserReview
+   * getBusinessReviews()
    * @desc retrieves all reviews for a business
    * @param {Object} req request object
    * @param {Object} res response object
@@ -76,6 +76,42 @@ export default class ReviewController {
           }));
       })
       .catch(error => handleErrorMessage(res, error));
+  }
+
+  /**
+   * getBusinessRating()
+   * @desc retrieves rating for a business
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @return {Object} message, reviews
+   */
+  static getBusinessRating(req, res) {
+    const { businessId } = req.params;
+
+    const isNotUUID = checkUUID(res, businessId, 'Business');
+    if (isNotUUID) return isNotUUID;
+
+    return Review.findAll({ where: { businessId } })
+      .then((reviews) => {
+        if (reviews === null) {
+          return res.status(200).json({
+            status: 'success',
+            data: { rating: null }
+          });
+        }
+        const rating = reviews.reduce((total, reviewObject, index, array) => {
+          total += reviewObject.rating;
+          if (index === array.length - 1) {
+            return total / array.length;
+          }
+          return total;
+        }, 0);
+
+        return res.status(200).json({
+          status: 'success',
+          data: { rating }
+        });
+      });
   }
 
   /**
@@ -115,7 +151,7 @@ export default class ReviewController {
   static editReview(req, res) {
     const { reviewId: id } = req.params;
     const { id: userId } = req.decoded;
-    const { review } = req.body;
+    const { review, rating } = req.body;
 
     const validationFailed = handleValidation(res, { review });
     if (validationFailed) return validationFailed;
@@ -124,7 +160,7 @@ export default class ReviewController {
     if (isNotUUID) return isNotUUID;
 
     return Review.update(
-      { review },
+      { review, rating },
       { where: { id, userId }, returning: true, plain: true }
     )
       .then(theReview => res.status(200).json({

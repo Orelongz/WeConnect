@@ -77,9 +77,6 @@ module.exports = (sequelize, DataTypes) => {
     about: {
       type: DataTypes.TEXT,
       allowNull: false
-    },
-    ratingArray: {
-      type: DataTypes.ARRAY
     }
   });
   // associations can be defined here
@@ -96,16 +93,6 @@ module.exports = (sequelize, DataTypes) => {
       foreignKey: 'businessId',
       onDelete: 'CASCADE'
     });
-  };
-
-  Business.prototype.getRating = () => {
-    this.ratingArray.reduce((total, rating, index, array) => {
-      total += rating;
-      if (index === array.length - 1) {
-        return total / array.length;
-      }
-      return total;
-    }, 0);
   };
 
   return Business;

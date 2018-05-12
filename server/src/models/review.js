@@ -12,12 +12,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     rating: {
       type: DataTypes.INTEGER,
-      defaultValue: 0,
+      allowNull: false,
       validate: {
         checkRatingInput(value) {
           value = parseInt(value, 10);
-          if (!(value >= 0 && value <= 5)) {
-            throw new Error('Rating value must be between 0 and 5');
+          if (!(value > 0 && value <= 5)) {
+            throw new Error('Rating value must be between 1 and 5');
           }
         }
       }

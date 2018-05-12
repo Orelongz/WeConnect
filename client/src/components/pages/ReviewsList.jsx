@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import shortid from 'shortid';
 import EditReviewForm from './../forms/EditReviewForm';
 
 const propTypes = {
@@ -31,6 +32,26 @@ class ReviewList extends Component {
     });
   }
 
+  displayRating(rating) {
+    const stars = [];
+    
+    for(let i = 1; i <= 5; i += 1) {
+      let starClass = 'fa fa-star-o';
+      
+      if (rating >= i) {
+        starClass = 'fa fa-star checked';
+      }
+
+      stars.push(
+        <span
+          className={starClass}
+          key={shortid.generate()}
+          ></span>
+      );
+    }
+    return stars;
+  }
+
   renderReviewOrEditField(review) {
     const { currentUser } = this.props;
     if (this.state.editing === review.id) {
@@ -54,13 +75,7 @@ class ReviewList extends Component {
         <div className="media-body">
           <div className="d-flex justify-content-between">
             <h5>{review.User.firstname} {review.User.lastname}</h5>
-            <div>
-              <span className="fa fa-star checked"></span>
-              <span className="fa fa-star checked"></span>
-              <span className="fa fa-star checked"></span>
-              <span className="fa fa-star checked"></span>
-              <span className="fa fa-star-o"></span>
-            </div>
+            <div>{this.displayRating(review.rating)}</div>
             <div>
               {review.updatedAt.split('T')[0]}
             </div>

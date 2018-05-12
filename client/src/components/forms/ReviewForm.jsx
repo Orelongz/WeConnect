@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { validate } from './../../utils';
 import InLineError from './../messages/InLineError';
+import Rating from './../pages/Rating';
 
 const propTypes = {
   submit: PropTypes.func.isRequired
@@ -12,20 +13,27 @@ class ReviewForm extends Component {
     super();
     this.state = {
       review: '',
+      rating: null,
       error: {}
     };
     this.onChange = this.onChange.bind(this);
+    this.setRating = this.setRating.bind(this);
     this.submit = this.submit.bind(this);
   }
 
   submit(e) {
     e.preventDefault();
-    const { review } = this.state;
+    const { review, rating } = this.state;
     const error = validate({ review });
+
+    if (rating === null) {
+      error.rating = 'Rate the business';
+    }
     this.setState({ error });
+
     if (Object.keys(error).length === 0) {
-      this.props.submit({ review });
-      this.setState({ review: '' })
+      this.props.submit({ review, rating });
+      this.setState({ review: ''});
     }
   }
 
@@ -33,7 +41,11 @@ class ReviewForm extends Component {
     return this.setState({
       [e.target.name]: e.target.value
     });
-  }  
+  }
+
+  setRating(rating) {
+    this.setState({ rating });
+  }
 
   render() {
     const { error } = this.state;
@@ -51,16 +63,11 @@ class ReviewForm extends Component {
               value={this.state.review}
             />
             {error.review && <InLineError text={error.review} />}
+            {error.rating && <InLineError text={error.rating} />}
           </div>
 
           <div className="pt-3">
-            <div className="d-inline">
-              <span className="fa fa-star-o"></span>
-              <span className="fa fa-star-o"></span>
-              <span className="fa fa-star-o"></span>
-              <span className="fa fa-star-o"></span>
-              <span className="fa fa-star-o"></span>
-            </div>
+            <Rating setRating={this.setRating} />
             <button type="submit" className="btn btn-primary btn-sm pull-right">POST</button>
           </div>
         </form>

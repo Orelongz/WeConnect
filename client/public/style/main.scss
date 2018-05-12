@@ -70,3 +70,14 @@
     }
   }
 }
+
+#rating {
+  span {
+    cursor: pointer;
+    padding: 0 3px;
+
+    &:hover {
+      color: orange;
+    }
+  }
+}

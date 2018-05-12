@@ -2,7 +2,11 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import BusinessProfile from './BusinessProfile';
-import { getBusiness, deleteBusiness } from './../../actions/businessAction';
+import {
+  getBusiness,
+  deleteBusiness, 
+  businessRating
+} from './../../actions/businessAction';
 import {
   addReview,
   getBusinessReviews,
@@ -16,6 +20,7 @@ const propTypes = {
   deleteBusiness: PropTypes.func.isRequired,
   addReview: PropTypes.func.isRequired,
   getBusinessReviews: PropTypes.func.isRequired,
+  businessRating: PropTypes.func.isRequired,
   editReview: PropTypes.func,
   deleteReview: PropTypes.func,
   match: PropTypes.shape({
@@ -42,6 +47,7 @@ class BusinessProfilePage extends Component {
     this.props
       .getBusiness(businessId)
       .catch(() => this.props.history.push('/businesses'));
+    this.props.businessRating(businessId);
     this.props.getBusinessReviews(businessId);
   }
 
@@ -55,19 +61,25 @@ class BusinessProfilePage extends Component {
   postReview(data) {
     const { businessId } = this.props.match.params;
     const { firstname, lastname } = this.props;
-    return this.props
+    
+    this.props
       .addReview(data, businessId, firstname, lastname)
+      .then(() => this.props.businessRating(businessId));
   }
 
   handleEditReview(data, reviewId) {
+    const { businessId } = this.props.match.params;
     const { firstname, lastname } = this.props;
-    return this.props
-      .editReview(data, reviewId, firstname, lastname);
+
+    this.props.editReview(data, reviewId, firstname, lastname)
+      .then(() => this.props.businessRating(businessId));
   }
 
   handleDeleteReview(reviewId) {
-    return this.props
-      .deleteReview(reviewId);
+    const { businessId } = this.props.match.params;
+
+    this.props.deleteReview(reviewId)
+      .then(() => this.props.businessRating(businessId));
   }
 
   render() {
@@ -129,5 +141,6 @@ export default connect(mapStateToProps, {
   addReview,
   getBusinessReviews,
   editReview,
-  deleteReview
+  deleteReview,
+  businessRating
 })(BusinessProfilePage);

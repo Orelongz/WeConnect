@@ -54,7 +54,10 @@ export default {
       .then(res => res.data),
 
     userBusinesses: () => axios.get(`${basePath}/businesses/user`)
-      .then(res => res.data.data.businesses)
+      .then(res => res.data.data.businesses),
+
+    businessRating: businessId => axios.get(`${basePath}/businesses/${businessId}/rating`)
+      .then(res => res.data.data)
   },
   category: {
     getCategories: () => axios.get(`${basePath}/categories`)
