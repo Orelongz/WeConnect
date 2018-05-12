@@ -93,12 +93,6 @@ export default class ReviewController {
 
     return Review.findAll({ where: { businessId } })
       .then((reviews) => {
-        if (reviews === null) {
-          return res.status(200).json({
-            status: 'success',
-            data: { rating: null }
-          });
-        }
         const rating = reviews.reduce((total, reviewObject, index, array) => {
           total += reviewObject.rating;
           if (index === array.length - 1) {
