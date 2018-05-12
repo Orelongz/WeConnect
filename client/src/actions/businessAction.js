@@ -5,7 +5,8 @@ import {
   EDIT_BUSINESS,
   CHANGE_OWNERSHIP,
   DELETE_BUSINESS,
-  GET_USER_BUSINESSES
+  GET_USER_BUSINESSES,
+  BUSINESS_RATING
 } from './../types/Types';
 import api from './../apiCalls/Api';
 
@@ -100,6 +101,19 @@ const userBusinesses = () => (dispatch) => {
     });
 };
 
+const gottenBusinessRating = rating => ({
+  type: BUSINESS_RATING,
+  rating
+});
+
+const businessRating = businessId => (dispatch) => {
+  api.business
+    .businessRating(businessId)
+    .then((rating) => {
+      dispatch(gottenBusinessRating(rating));
+    });
+};
+
 export {
   newBusiness,
   getBusiness,
@@ -107,5 +121,6 @@ export {
   editBusiness,
   changeOwnership,
   deleteBusiness,
-  userBusinesses
+  userBusinesses,
+  businessRating
 };

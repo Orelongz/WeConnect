@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import shortid from 'shortid';
 
 const propTypes = {
   handleBusinessDelete: PropTypes.func.isRequired,
@@ -18,11 +19,32 @@ class BusinessProfile extends Component {
     return this.props.handleBusinessDelete();
   }
 
+  displayRating(rating) {
+    const stars = [];
+    
+    for(let i = 1; i <= 5; i += 1) {
+      let starClass = 'fa fa-star-o';
+      
+      if (rating >= i) {
+        starClass = 'fa fa-star checked';
+      }
+
+      stars.push(
+        <span
+          className={starClass}
+          key={shortid.generate()}
+          ></span>
+      );
+    }
+    return stars;
+  }
+
   render() {
     const { businessDetails, currentUser } = this.props;
     const {
       businessName, businessImage, category, address, city, state: businessState,
-      phoneNumber, postalAddress, startTime, closeTime, about, id: businessId, userId: ownerId
+      phoneNumber, postalAddress, startTime, closeTime, about, id: businessId,
+      userId: ownerId, rating
     } = businessDetails;
     
     return (
@@ -44,6 +66,9 @@ class BusinessProfile extends Component {
               <li className="list-group-item">
                 <i className="fa fa-mobile fa-lg" aria-hidden="true"></i>
                 &nbsp;{phoneNumber}
+              </li>
+              <li className="list-group-item">
+                Average Rating: {this.displayRating(rating)} {rating && rating.toFixed(1)}stars
               </li>
             </ul>
           </div>

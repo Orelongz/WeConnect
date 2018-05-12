@@ -15,7 +15,8 @@ const {
 } = BusinessController;
 const {
   addReview,
-  getBusinessReviews
+  getBusinessReviews,
+  getBusinessRating
 } = ReviewController;
 const router = express.Router();
 
@@ -75,6 +76,12 @@ router.post(
   '/:businessId/reviews',
   validateToken,
   addReview
+);
+
+// Get business rating
+router.get(
+  '/:businessId/rating',
+  getBusinessRating
 );
 
 export default router;

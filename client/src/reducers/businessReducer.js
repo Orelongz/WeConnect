@@ -5,7 +5,8 @@ import {
   EDIT_BUSINESS,
   CHANGE_OWNERSHIP,
   DELETE_BUSINESS,
-  GET_USER_BUSINESSES
+  GET_USER_BUSINESSES,
+  BUSINESS_RATING
 } from './../types/Types';
 
 const initialState = {
@@ -56,6 +57,11 @@ function businessReducer(state = initialState, action = {}) {
       return {
         ...state,
         businesses: action.businesses
+      };
+    case BUSINESS_RATING:
+      return {
+        ...state,
+        business: { ...state.business, ...action.rating }
       };
     default:
       return state;

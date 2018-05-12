@@ -144,12 +144,15 @@ const businessData = {
 const reviewData = {
   review1: {
     review: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. I Class aptent .',
+    rating: 4
   },
   review2: {
     review: 'nteger nec odio. Praesent libero. Sed cursus ante dapibus diam. Sed nisi. Nulla quis sem at nibh elementum imperdiet. Duis sagittis ipsum. Praesent mauris. Fusce nec tellus',
+    rating: 5
   },
-  review3: { review: '    ' },
-  review4: { review: 'update the review' }
+  review3: { review: '    ', rating: 2 },
+  review4: { review: 'update the review', rating: 5 },
+  review5: { review: 'post review with invalid rating', rating: 'good rating' }
 };
 
 export {

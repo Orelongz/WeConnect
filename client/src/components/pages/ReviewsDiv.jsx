@@ -37,7 +37,7 @@ class ReviewDiv extends Component {
     return (
       <div className="card form-group mt-4">
         <div className="container pt-3">
-          { currentUser ? <ReviewForm submit={this.submit} /> : null }
+          { currentUser && <ReviewForm submit={this.submit} /> }
           <ReviewsList
             businessReviews={businessReviews}
             currentUser={currentUser}

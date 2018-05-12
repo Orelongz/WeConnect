@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { validate } from './../../utils';
 import InLineError from './../messages/InLineError';
+import Rating from './../pages/Rating';
 
 const propTypes = {
   editReview: PropTypes.func.isRequired,
@@ -13,26 +14,31 @@ class EditReviewForm extends Component {
     super();
     this.state = {
       reviewUpdate: '',
+      rating: null,
       error: {}
     };
     this.onChange = this.onChange.bind(this);
     this.submit = this.submit.bind(this);
+    this.setRating = this.setRating.bind(this);
   }
 
   componentDidMount() {
     this.setState({
-      reviewUpdate: this.props.review.review
+      reviewUpdate: this.props.review.review,
+      rating: this.props.review.rating
     });
   }
 
   submit(e) {
     e.preventDefault();
-    const { review } = this.props;
-    const { reviewUpdate } = this.state;
+    const { reviewUpdate, rating } = this.state;
     const error = validate({ reviewUpdate });
+
     this.setState({ error });
+    const { review } = this.props;
+
     if (Object.keys(error).length === 0) {
-      this.props.editReview({ review: reviewUpdate }, review.id);
+      this.props.editReview({ review: reviewUpdate, rating }, review.id);
     }
   }
 
@@ -40,6 +46,10 @@ class EditReviewForm extends Component {
     return this.setState({
       [e.target.name]: e.target.value
     });
+  }
+
+  setRating(rating) {
+    this.setState({ rating });
   }
 
   render() {
@@ -54,13 +64,7 @@ class EditReviewForm extends Component {
         <div className="media-body">
           <div className="d-flex justify-content-between pb-1">
             <h5>{review.User.firstname} {review.User.lastname}</h5>
-            <div>
-              <span className="fa fa-star checked"></span>
-              <span className="fa fa-star checked"></span>
-              <span className="fa fa-star checked"></span>
-              <span className="fa fa-star checked"></span>
-              <span className="fa fa-star-o"></span>
-            </div>
+            <Rating setRating={this.setRating} rating={review.rating}/>
             <button type="submit" className="btn btn-primary btn-sm pull-right">POST</button>
           </div>
           <textarea
