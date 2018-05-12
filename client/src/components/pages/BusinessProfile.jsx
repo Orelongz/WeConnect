@@ -67,9 +67,12 @@ class BusinessProfile extends Component {
                 <i className="fa fa-mobile fa-lg" aria-hidden="true"></i>
                 &nbsp;{phoneNumber}
               </li>
-              <li className="list-group-item">
-                Average Rating: {this.displayRating(rating)} {rating && rating.toFixed(1)}stars
-              </li>
+              {
+                rating && rating !== 0 ?
+                <li className="list-group-item">
+                  Average Rating: {this.displayRating(rating)} {rating && rating.toFixed(1)}stars
+                </li> : null
+              }
             </ul>
           </div>
   
