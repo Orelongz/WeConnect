@@ -51,9 +51,15 @@ class BusinessForm extends Component {
     const { postalAddress, businessImage, ...requiredFields } = this.state.data;
     const errors = validate(requiredFields);
     this.setState({ errors });
+    
     if (Object.keys(errors).length === 0) {
       const { businessState: state, ...rest } = this.state.data;
-      return this.props.submit({ state, ...rest })
+      const businessObject = new FormData();
+
+      Object.entries({ state, ...rest }).forEach(([key, value]) => {
+        businessObject.append(key, value);
+      });
+      return this.props.submit(businessObject);
     }
   }
 
@@ -71,7 +77,7 @@ class BusinessForm extends Component {
     const { categories, FormAction } = this.props;
 
     return (
-      <form onSubmit={this.onSubmit} encType="multipart/form-data">
+      <form onSubmit={this.onSubmit}>
         <div className="form-row">
           <div className="form-group col-md-5">
             <label htmlFor="businessName">Business Name</label>
@@ -94,7 +100,6 @@ class BusinessForm extends Component {
                 className="custom-file-input"
                 id="businessImage"
                 name="businessImage"
-                value={data.businessImage}
                 onChange={this.onChange}
                 accept="image/*"
               />

@@ -15,7 +15,7 @@ const UserRoute = ({ isAuthenticated, component: Component, ...rest }) => (
       isAuthenticated ? (
         <Component {...props} />
       ) : (
-        <Redirect to='/' />
+        <Redirect to='/signin' />
       )
     }
   />

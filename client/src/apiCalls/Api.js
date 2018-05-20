@@ -28,7 +28,7 @@ export default {
   business: {
     newBusiness: credentials => axios.post(
       `${basePath}/businesses`,
-      { ...credentials }
+      credentials
     )
       .then(res => res.data.data.business),
 
@@ -40,7 +40,7 @@ export default {
 
     editBusiness: (credentials, businessId) => axios.put(
       `${basePath}/businesses/${businessId}`,
-      { ...credentials }
+      credentials
     )
       .then(res => res.data.data.business),
 

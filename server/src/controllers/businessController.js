@@ -1,3 +1,5 @@
+import cloudinary from 'cloudinary';
+import dotenv from 'dotenv';
 import db from './../models';
 import {
   businessObjectHolder,
@@ -12,6 +14,14 @@ import {
 } from './../helpers';
 
 const { Business, User, Category } = db;
+
+dotenv.config();
+
+cloudinary.config({
+  cloud_name: 'longe',
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 /**
  * @class BusinessController
@@ -31,27 +41,32 @@ export default class BusinessController {
     const validationFailed = handleValidation(res, businessObject);
     if (validationFailed) return validationFailed;
 
-    return Category.findOne({ where: { category } })
-      .then((theCategory) => {
-        if (!theCategory) {
-          return res.status(400).json({
-            status: 'fail',
-            error: 'Category is invalid'
-          });
-        }
-        const { id: userId } = req.decoded;
-        const businessImage = req.file;
-        const { id: categoryId } = theCategory;
+    let businessImage;
 
-        return Business.create({
-          ...businessObject, userId, businessImage, postalAddress, categoryId
+    cloudinary.v2.uploader.upload(req.file.path, (err, result) => {
+      businessImage = result.secure_url;
+
+      return Category.findOne({ where: { category } })
+        .then((theCategory) => {
+          if (!theCategory) {
+            return res.status(400).json({
+              status: 'fail',
+              error: 'Category is invalid'
+            });
+          }
+          const { id: userId } = req.decoded;
+          const { id: categoryId } = theCategory;
+
+          return Business.create({
+            ...businessObject, userId, businessImage, postalAddress, categoryId
+          })
+            .then(business => res.status(201).json({
+              status: 'success',
+              data: { business }
+            }));
         })
-          .then(business => res.status(201).json({
-            status: 'success',
-            data: { business }
-          }));
-      })
-      .catch(error => handleErrorMessage(res, error));
+        .catch(error => handleErrorMessage(res, error));
+    });
   }
 
   /**

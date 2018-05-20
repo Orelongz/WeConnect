@@ -2,7 +2,7 @@ import express from 'express';
 import BusinessController from './../controllers/businessController';
 import ReviewController from './../controllers/reviewController';
 import validateToken from './../middlewares';
-import imageUpload from './../middlewares/imageUpload';
+import ImageUpload from './../middlewares/imageUpload';
 
 const {
   createBusiness,
@@ -27,7 +27,7 @@ router.get('/', getAllBusinesses);
 router.post(
   '/',
   validateToken,
-  imageUpload,
+  ImageUpload.single('businessImage'),
   createBusiness
 );
 
