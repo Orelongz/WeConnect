@@ -34,11 +34,12 @@ const populateBusinesses = (businesses) => {
     businesses.map((eachBusiness) => {
       const { businessImage, businessName, category, phoneNumber, id: businessId } = eachBusiness;
       const businessLink = `/businesses/${businessId}`;
+      const displayImage = (businessImage === '' || businessImage === null ? defaultBusinessProfilePic: businessImage);
       return (
         <div key={businessId} className="col-xs-12 col-sm-6 col-lg-4 mt-4">
           <div className="card" >
             <Link to={businessLink} className="overflow">
-              <img src={businessImage !== '' ? businessImage : defaultBusinessProfilePic} alt={businessName} className="card-img-top catalog-profile-pic" />
+              <img src={displayImage} alt={businessName} className="card-img-top catalog-profile-pic" />
             </Link>
             <div className="card-body">
               <h5 className="card-title">{businessName}</h5>

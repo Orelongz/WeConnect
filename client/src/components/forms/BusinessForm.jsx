@@ -61,7 +61,7 @@ class BusinessForm extends Component {
 
   onSubmit(e) {
     e.preventDefault();
-    const { postalAddress, businessImage, ...requiredFields } = this.state.data;
+    const { postalAddress, businessImage, imagePreview, ...requiredFields } = this.state.data;
     const errors = validate(requiredFields);
     this.setState({ errors });
     
@@ -87,7 +87,6 @@ class BusinessForm extends Component {
 
   displayPreview(businessDetails) {
     const { imagePreview } = this.state.data;
-    console.log(this.state.data)
       return (imagePreview !== '') ? (
         <div className="border w-100" style={{height:'200px'}}>
           <img src={imagePreview}

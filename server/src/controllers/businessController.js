@@ -1,5 +1,3 @@
-import cloudinary from 'cloudinary';
-import dotenv from 'dotenv';
 import db from './../models';
 import {
   businessObjectHolder,
@@ -15,14 +13,6 @@ import {
 
 const { Business, User, Category } = db;
 
-dotenv.config();
-
-cloudinary.config({
-  cloud_name: 'longe',
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
-});
-
 /**
  * @class BusinessController
  * @desc handles the business routes
@@ -37,36 +27,28 @@ export default class BusinessController {
    */
   static createBusiness(req, res) {
     const businessObject = businessObjectHolder(req);
-    const { postalAddress, category } = req.body;
-    const validationFailed = handleValidation(res, businessObject);
-    if (validationFailed) return validationFailed;
+    const { postalAddress, category, businessImage } = req.body;
 
-    let businessImage;
+    return Category.findOne({ where: { category } })
+      .then((theCategory) => {
+        if (!theCategory) {
+          return res.status(400).json({
+            status: 'fail',
+            error: 'Category is invalid'
+          });
+        }
+        const { id: userId } = req.decoded;
+        const { id: categoryId } = theCategory;
 
-    cloudinary.v2.uploader.upload(req.file.path, (err, result) => {
-      businessImage = result.secure_url || '';
-
-      return Category.findOne({ where: { category } })
-        .then((theCategory) => {
-          if (!theCategory) {
-            return res.status(400).json({
-              status: 'fail',
-              error: 'Category is invalid'
-            });
-          }
-          const { id: userId } = req.decoded;
-          const { id: categoryId } = theCategory;
-
-          return Business.create({
-            ...businessObject, userId, businessImage, postalAddress, categoryId
-          })
-            .then(business => res.status(201).json({
-              status: 'success',
-              data: { business }
-            }));
+        return Business.create({
+          ...businessObject, userId, businessImage, postalAddress, categoryId
         })
-        .catch(error => handleErrorMessage(res, error));
-    });
+          .then(business => res.status(201).json({
+            status: 'success',
+            data: { business }
+          }));
+      })
+      .catch(error => handleErrorMessage(res, error));
   }
 
   /**
@@ -78,84 +60,38 @@ export default class BusinessController {
    */
   static updateBusiness(req, res) {
     const businessObject = businessObjectHolder(req);
-    const { postalAddress, category } = req.body;
-    const validationFailed = handleValidation(res, businessObject);
-    if (validationFailed) return validationFailed;
+    const { postalAddress, category, businessImage } = req.body;
 
-    let businessImage;
+    return Category.findOne({ where: { category } })
+      .then((theCategory) => {
+        if (!theCategory) {
+          return res.status(400).json({
+            status: 'fail',
+            error: 'Category is invalid'
+          });
+        }
+        const { id: userId } = req.decoded;
+        const { id: categoryId } = theCategory;
+        const { businessId: id } = req.params;
+        const isNotUUID = checkUUID(res, id, 'Business');
+        if (isNotUUID) return isNotUUID;
 
-    cloudinary.v2.uploader.upload(req.file.path, (err, result) => {
-      businessImage = result.secure_url || '';
-
-      return Category.findOne({ where: { category } })
-        .then((theCategory) => {
-          if (!theCategory) {
-            return res.status(400).json({
-              status: 'fail',
-              error: 'Category is invalid'
-            });
+        return Business.update(
+          {
+            ...businessObject, businessImage, postalAddress, categoryId
+          },
+          {
+            where: { id, userId },
+            returning: true,
+            plain: true
           }
-          const { id: userId } = req.decoded;
-          const { id: categoryId } = theCategory;
-          const { businessId: id } = req.params;
-          const isNotUUID = checkUUID(res, id, 'Business');
-          if (isNotUUID) return isNotUUID;
-
-          return Business.update(
-            {
-              ...businessObject, businessImage, postalAddress, categoryId
-            },
-            {
-              where: { id, userId },
-              returning: true,
-              plain: true
-            }
-          )
-            .then(business => res.status(200).json({
-              status: 'success',
-              data: { business: business[1] }
-            }));
-        })
-        .catch(error => handleErrorMessage(res, error));
-    });
-
-
-    // const businessObject = businessObjectHolder(req);
-    // const { postalAddress, category } = req.body;
-    // const validationFailed = handleValidation(res, businessObject);
-    // if (validationFailed) return validationFailed;
-
-    // return Category.findOne({ where: { category } })
-    //   .then((theCategory) => {
-    //     if (!theCategory) {
-    //       return res.status(400).json({
-    //         status: 'fail',
-    //         error: 'Category is invalid'
-    //       });
-    //     }
-    //     const { id: userId } = req.decoded;
-    //     const businessImage = req.file;
-    //     const { id: categoryId } = theCategory;
-    //     const { businessId: id } = req.params;
-    //     const isNotUUID = checkUUID(res, id, 'Business');
-    //     if (isNotUUID) return isNotUUID;
-
-    //     return Business.update(
-    //       {
-    //         ...businessObject, businessImage, postalAddress, categoryId
-    //       },
-    //       {
-    //         where: { id, userId },
-    //         returning: true,
-    //         plain: true
-    //       }
-    //     )
-    //       .then(business => res.status(200).json({
-    //         status: 'success',
-    //         data: { business: business[1] }
-    //       }));
-    //   })
-    //   .catch(error => handleErrorMessage(res, error));
+        )
+          .then(business => res.status(200).json({
+            status: 'success',
+            data: { business: business[1] }
+          }));
+      })
+      .catch(error => handleErrorMessage(res, error));
   }
 
   /**

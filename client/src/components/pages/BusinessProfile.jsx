@@ -47,6 +47,7 @@ class BusinessProfile extends Component {
       phoneNumber, postalAddress, startTime, closeTime, about, id: businessId,
       userId: ownerId, rating
     } = businessDetails;
+    const displayImage = (businessImage === '' || businessImage === null ? defaultBusinessProfilePic: businessImage);
     
     return (
       <Fragment>
@@ -81,7 +82,7 @@ class BusinessProfile extends Component {
         </div>
         <div className="col-md-12 col-lg-8 mt-4">
           <div className="card">
-            <img src={businessImage !== '' ? businessImage : defaultBusinessProfilePic} alt={businessName} className="card-img-top business-pic" />
+            <img src={displayImage} alt={businessName} className="card-img-top business-pic" />
             <div className="card-body">
               <div>
                 <h1>About {businessName}</h1>
