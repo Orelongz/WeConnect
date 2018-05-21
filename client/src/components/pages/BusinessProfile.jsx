@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import shortid from 'shortid';
+import { defaultBusinessProfilePic } from './../../../public/images';
 
 const propTypes = {
   handleBusinessDelete: PropTypes.func.isRequired,
@@ -80,7 +81,7 @@ class BusinessProfile extends Component {
         </div>
         <div className="col-md-12 col-lg-8 mt-4">
           <div className="card">
-            <img src={businessImage} alt={businessName} className="card-img-top" />
+            <img src={businessImage !== '' ? businessImage : defaultBusinessProfilePic} alt={businessName} className="card-img-top business-pic" />
             <div className="card-body">
               <div>
                 <h1>About {businessName}</h1>

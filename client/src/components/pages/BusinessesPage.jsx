@@ -24,27 +24,28 @@ class BusinessesPage extends Component {
     this.props.allBusinesses();
   }
 
-  render() {
-    function displayBusinesses(businesses) {
-      if (businesses.length === 0) {
-        return <h1 className="text-center">No Businesses Yet</h1>
-      } else {
-        return (
-          <Fragment>
-            <h1 className="text-center">Businesses</h1>
-            <div className="row">
-              {populateBusinesses(businesses)}
-            </div>
-          </Fragment>
-        );
-      }
+  displayBusinesses(businesses) {
+    if (businesses.length === 0) {
+      return <h1 className="text-center">No Businesses Yet</h1>
+    } else {
+      return (
+        <Fragment>
+          <h1 className="text-center">Businesses</h1>
+          <div className="row">
+            {populateBusinesses(businesses)}
+          </div>
+        </Fragment>
+      );
     }
+  }
+
+  render() {
     return (
       <Fragment>
         <SearchBar handleSearch={this.handleSearch} />
         <main className="pb-main">
           <div className="container">
-            {displayBusinesses(this.props.businesses)}
+            {this.displayBusinesses(this.props.businesses)}
           </div>
         </main>
       </Fragment>

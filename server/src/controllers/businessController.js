@@ -44,7 +44,7 @@ export default class BusinessController {
     let businessImage;
 
     cloudinary.v2.uploader.upload(req.file.path, (err, result) => {
-      businessImage = result.secure_url;
+      businessImage = result.secure_url || '';
 
       return Category.findOne({ where: { category } })
         .then((theCategory) => {
@@ -82,37 +82,80 @@ export default class BusinessController {
     const validationFailed = handleValidation(res, businessObject);
     if (validationFailed) return validationFailed;
 
-    return Category.findOne({ where: { category } })
-      .then((theCategory) => {
-        if (!theCategory) {
-          return res.status(400).json({
-            status: 'fail',
-            error: 'Category is invalid'
-          });
-        }
-        const { id: userId } = req.decoded;
-        const businessImage = req.file;
-        const { id: categoryId } = theCategory;
-        const { businessId: id } = req.params;
-        const isNotUUID = checkUUID(res, id, 'Business');
-        if (isNotUUID) return isNotUUID;
+    let businessImage;
 
-        return Business.update(
-          {
-            ...businessObject, businessImage, postalAddress, categoryId
-          },
-          {
-            where: { id, userId },
-            returning: true,
-            plain: true
+    cloudinary.v2.uploader.upload(req.file.path, (err, result) => {
+      businessImage = result.secure_url || '';
+
+      return Category.findOne({ where: { category } })
+        .then((theCategory) => {
+          if (!theCategory) {
+            return res.status(400).json({
+              status: 'fail',
+              error: 'Category is invalid'
+            });
           }
-        )
-          .then(business => res.status(200).json({
-            status: 'success',
-            data: { business: business[1] }
-          }));
-      })
-      .catch(error => handleErrorMessage(res, error));
+          const { id: userId } = req.decoded;
+          const { id: categoryId } = theCategory;
+          const { businessId: id } = req.params;
+          const isNotUUID = checkUUID(res, id, 'Business');
+          if (isNotUUID) return isNotUUID;
+
+          return Business.update(
+            {
+              ...businessObject, businessImage, postalAddress, categoryId
+            },
+            {
+              where: { id, userId },
+              returning: true,
+              plain: true
+            }
+          )
+            .then(business => res.status(200).json({
+              status: 'success',
+              data: { business: business[1] }
+            }));
+        })
+        .catch(error => handleErrorMessage(res, error));
+    });
+
+
+    // const businessObject = businessObjectHolder(req);
+    // const { postalAddress, category } = req.body;
+    // const validationFailed = handleValidation(res, businessObject);
+    // if (validationFailed) return validationFailed;
+
+    // return Category.findOne({ where: { category } })
+    //   .then((theCategory) => {
+    //     if (!theCategory) {
+    //       return res.status(400).json({
+    //         status: 'fail',
+    //         error: 'Category is invalid'
+    //       });
+    //     }
+    //     const { id: userId } = req.decoded;
+    //     const businessImage = req.file;
+    //     const { id: categoryId } = theCategory;
+    //     const { businessId: id } = req.params;
+    //     const isNotUUID = checkUUID(res, id, 'Business');
+    //     if (isNotUUID) return isNotUUID;
+
+    //     return Business.update(
+    //       {
+    //         ...businessObject, businessImage, postalAddress, categoryId
+    //       },
+    //       {
+    //         where: { id, userId },
+    //         returning: true,
+    //         plain: true
+    //       }
+    //     )
+    //       .then(business => res.status(200).json({
+    //         status: 'success',
+    //         data: { business: business[1] }
+    //       }));
+    //   })
+    //   .catch(error => handleErrorMessage(res, error));
   }
 
   /**

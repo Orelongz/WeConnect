@@ -1,6 +1,7 @@
 import React from 'react';
 import shortid from 'shortid';
 import { Link } from 'react-router-dom';
+import { defaultBusinessProfilePic } from './../../public/images';
 
 const stateArray = [
   "Abia", "Adamawa", "Akwa Ibom", "Anambra", "Bauchi", "Benue", "Borno",
@@ -33,12 +34,11 @@ const populateBusinesses = (businesses) => {
     businesses.map((eachBusiness) => {
       const { businessImage, businessName, category, phoneNumber, id: businessId } = eachBusiness;
       const businessLink = `/businesses/${businessId}`;
-      const showImage =  businessImage !== null ? businessImage : null;
       return (
         <div key={businessId} className="col-xs-12 col-sm-6 col-lg-4 mt-4">
           <div className="card" >
             <Link to={businessLink} className="overflow">
-              <img src={businessImage} alt={businessName} />
+              <img src={businessImage !== '' ? businessImage : defaultBusinessProfilePic} alt={businessName} className="card-img-top catalog-profile-pic" />
             </Link>
             <div className="card-body">
               <h5 className="card-title">{businessName}</h5>

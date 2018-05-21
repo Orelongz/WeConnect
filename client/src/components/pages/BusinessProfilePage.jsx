@@ -82,26 +82,27 @@ class BusinessProfilePage extends Component {
       .then(() => this.props.businessRating(businessId));
   }
 
+  checkRender(businessDetails, currentUser) {
+    if (businessDetails) {
+      return (
+        <BusinessProfile
+          businessDetails={businessDetails}
+          currentUser={currentUser}
+          handleBusinessDelete={this.handleBusinessDelete}
+        />
+      )
+    }
+    return null; 
+  };
+
   render() {
     const { currentUser, businessReviews, businessDetails } = this.props;
-    const checkRender = () => {
-      if (businessDetails) {
-        return (
-          <BusinessProfile
-            businessDetails={businessDetails}
-            currentUser={currentUser}
-            handleBusinessDelete={this.handleBusinessDelete}
-          />
-        )
-      }
-      return null; 
-    };
-    
+
     return (
       <main className="pb-main">
         <div className="container">
           <div className="row">
-            {checkRender()}
+            {this.checkRender(businessDetails, currentUser)}
             <div className="col-md-12 col-lg-4"></div>
             <div className="col-md-12 col-lg-8">
               {
