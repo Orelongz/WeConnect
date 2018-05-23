@@ -1,6 +1,7 @@
 import express from 'express';
 import UserController from './../controllers/userController';
 import validateToken from './../middlewares';
+import { uploadUserImage } from './../middlewares/checkFileUpload';
 
 const router = express.Router();
 const {
@@ -30,6 +31,7 @@ router.post(
 router.put(
   '/user',
   validateToken,
+  uploadUserImage,
   updateUserDetails
 );
 

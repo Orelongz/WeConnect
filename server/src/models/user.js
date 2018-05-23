@@ -26,6 +26,11 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
+    userImage: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      defaultValue: ''
+    },
     email: {
       type: DataTypes.STRING,
       allowNull: false,

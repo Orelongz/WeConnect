@@ -2,11 +2,12 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import shortid from 'shortid';
+import { defaultBusinessProfilePic } from './../../../public/images';
 
 const propTypes = {
   handleBusinessDelete: PropTypes.func.isRequired,
   businessDetails: PropTypes.object.isRequired,
-  currentUser: PropTypes.string
+  User: PropTypes.object
 }
 
 class BusinessProfile extends Component {
@@ -40,12 +41,13 @@ class BusinessProfile extends Component {
   }
 
   render() {
-    const { businessDetails, currentUser } = this.props;
+    const { businessDetails, User } = this.props;
     const {
       businessName, businessImage, category, address, city, state: businessState,
       phoneNumber, postalAddress, startTime, closeTime, about, id: businessId,
       userId: ownerId, rating
     } = businessDetails;
+    const displayImage = (businessImage === '' || businessImage === null) ? defaultBusinessProfilePic : businessImage;
     
     return (
       <Fragment>
@@ -68,9 +70,9 @@ class BusinessProfile extends Component {
                 &nbsp;{phoneNumber}
               </li>
               {
-                rating && rating !== 0 ?
+                (rating && rating !== 0) ?
                 <li className="list-group-item">
-                  Average Rating: {this.displayRating(rating)} {rating && rating.toFixed(1)}stars
+                  Average Rating: {this.displayRating(rating)} {rating.toFixed(1)}stars
                 </li> : null
               }
             </ul>
@@ -80,7 +82,7 @@ class BusinessProfile extends Component {
         </div>
         <div className="col-md-12 col-lg-8 mt-4">
           <div className="card">
-            <img src={businessImage} alt={businessName} className="card-img-top" />
+            <img src={displayImage} alt={businessName} className="card-img-top business-pic" />
             <div className="card-body">
               <div>
                 <h1>About {businessName}</h1>
@@ -89,12 +91,11 @@ class BusinessProfile extends Component {
                 </article>
               </div>
               {
-                (ownerId === currentUser) ? (
-                  <div>
-                    <Link to={`/businesses/${businessId}/edit`} className="btn btn-primary">Edit</Link>
-                    <button onClick={this.handleDelete} className="btn btn-danger pull-right">Delete</button>
-                  </div>
-                ) : null
+                (ownerId === User.id) &&
+                <div>
+                  <Link to={`/businesses/${businessId}/edit`} className="btn btn-primary">Edit</Link>
+                  <button onClick={this.handleDelete} className="btn btn-danger pull-right">Delete</button>
+                </div>
               }
             </div>
           </div>

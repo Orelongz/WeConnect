@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import decode from 'jwt-decode';
+import jwt from 'jsonwebtoken';
 import 'bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import store from './store/store';
@@ -11,16 +11,18 @@ import './../public/style/index.scss';
 import { userDetails, logout } from './actions/AuthAction';
 import setAuthorizationToken from './utils/setAuthorizationToken';
 
+const SECRET = process.env.SECRET;
+
 if (localStorage.weconnectToken) {
   const token = localStorage.weconnectToken;
-  const expiry = decode(token).exp.toString();
-  const timeNow = new Date().getTime().toString().substring(0, 10);
-  if (expiry > timeNow) {
-    setAuthorizationToken(token);
-    store.dispatch(userDetails());
-  } else {
-    store.dispatch(logout());
-  }
+  jwt.verify(token, SECRET, function(err, decoded) {
+    if (err) {
+      store.dispatch(logout());
+    } else {
+      setAuthorizationToken(token);
+      store.dispatch(userDetails());
+    }
+  });
 }
 
 ReactDOM.render(

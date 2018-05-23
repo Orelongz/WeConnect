@@ -2,7 +2,7 @@ import express from 'express';
 import BusinessController from './../controllers/businessController';
 import ReviewController from './../controllers/reviewController';
 import validateToken from './../middlewares';
-import imageUpload from './../middlewares/imageUpload';
+import { uploadBusinessImage } from './../middlewares/checkFileUpload';
 
 const {
   createBusiness,
@@ -27,7 +27,7 @@ router.get('/', getAllBusinesses);
 router.post(
   '/',
   validateToken,
-  imageUpload,
+  uploadBusinessImage,
   createBusiness
 );
 
@@ -55,6 +55,7 @@ router.get(
 router.put(
   '/:businessId',
   validateToken,
+  uploadBusinessImage,
   updateBusiness
 );
 

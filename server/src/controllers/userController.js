@@ -72,7 +72,7 @@ export default class UserController {
       .then((user) => {
         if (user) {
           const {
-            hashedPassword, firstname, lastname, id
+            hashedPassword, firstname, lastname, id, userImage
           } = user;
           if (user && bcrypt.compareSync(password, hashedPassword)) {
             const token = generateToken({ id, email });
@@ -80,7 +80,7 @@ export default class UserController {
               status: 'success',
               data: {
                 user: {
-                  firstname, lastname, email, id, token
+                  firstname, lastname, email, id, userImage, token
                 }
               }
             });
@@ -102,11 +102,9 @@ export default class UserController {
    * @return {Object} message, user
    */
   static updateUserDetails(req, res) {
-    const { firstname, lastname, email } = req.body;
-
-    const validationFailed = handleValidation(res, { firstname, lastname, email });
-    if (validationFailed) return validationFailed;
-
+    const {
+      firstname, lastname, email, userImage
+    } = req.body;
     const { id } = req.decoded;
 
     return User.findOne({
@@ -120,12 +118,14 @@ export default class UserController {
         }
         const token = generateToken({ id, email });
         return user
-          .update({ firstname, lastname, email })
+          .update({
+            firstname, lastname, email, userImage
+          })
           .then(() => res.status(200).json({
             status: 'success',
             data: {
               user: {
-                firstname, lastname, email, id, token
+                firstname, lastname, email, id, userImage, token
               }
             }
           }));
@@ -149,12 +149,14 @@ export default class UserController {
       }
     })
       .then((user) => {
-        const { firstname, lastname, email } = user;
+        const {
+          firstname, lastname, email, userImage
+        } = user;
         return res.status(200).json({
           status: 'success',
           data: {
             user: {
-              firstname, lastname, email, id
+              firstname, lastname, email, userImage, id
             }
           }
         });

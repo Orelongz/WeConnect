@@ -7,6 +7,7 @@ import feedBack3 from './feedback_3.png';
 import happyFace from './happy_face.jpg';
 import marketPlace from './market_place.jpg';
 import searchImage from './search_image.png';
+import defaultBusinessProfilePic from './default_business_profile_pic.jpg';
 
 export {
   coffeeShopBrown,
@@ -17,5 +18,6 @@ export {
   feedBack3,
   happyFace,
   marketPlace,
-  searchImage
+  searchImage,
+  defaultBusinessProfilePic
 };

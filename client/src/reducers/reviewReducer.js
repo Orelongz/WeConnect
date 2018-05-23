@@ -1,7 +1,7 @@
 import {
   ADD_REVIEW,
   GET_BUSINESS_REVIEWS,
-  GET_REVIEW,
+  // GET_REVIEW,
   EDIT_REVIEW,
   DELETE_REVIEW
 } from './../types/Types';

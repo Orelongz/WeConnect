@@ -1,5 +1,6 @@
 .small-profile-pic {
-  width: 5rem;
+  width: 70px;
+  height: 70px;
 }
 
 .overflow {
@@ -9,16 +10,20 @@
 .catalog-profile-pic {
   height: 15rem;
   transition: all .5s ease-in-out;
-}
-
-.catalog-profile-pic:hover {
-  -ms-transform: scale(1.2);
-  -webkit-transform: scale(1.2);
-  transform: scale(1.2);
+  
+  &:hover {
+    -ms-transform: scale(1.2);
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2);
+  }
 }
 
 .compact-pic {
   height: 10rem;
+}
+
+.business-pic {
+  height: 400px;
 }
 
 .header {

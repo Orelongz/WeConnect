@@ -16,7 +16,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     businessImage: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: true,
+      defaultValue: ''
     },
     category: {
       type: DataTypes.STRING,
@@ -64,7 +65,8 @@ module.exports = (sequelize, DataTypes) => {
     },
     postalAddress: {
       type: DataTypes.STRING,
-      allowNull: true
+      allowNull: true,
+      defaultValue: ''
     },
     startTime: {
       type: DataTypes.STRING,

@@ -28,9 +28,7 @@ const propTypes = {
       businessId: PropTypes.string.isRequired
     }).isRequired
   }).isRequired,
-  currentUser: PropTypes.string,
-  firstname: PropTypes.string,
-  lastname: PropTypes.string,
+  User: PropTypes.object,
 };
 
 class BusinessProfilePage extends Component {
@@ -60,10 +58,10 @@ class BusinessProfilePage extends Component {
 
   postReview(data) {
     const { businessId } = this.props.match.params;
-    const { firstname, lastname } = this.props;
+    const { User } = this.props;
     
     this.props
-      .addReview(data, businessId, firstname, lastname)
+      .addReview(data, businessId, User)
       .then(() => this.props.businessRating(businessId));
   }
 
@@ -83,37 +81,31 @@ class BusinessProfilePage extends Component {
   }
 
   render() {
-    const { currentUser, businessReviews, businessDetails } = this.props;
-    const checkRender = () => {
-      if (businessDetails) {
-        return (
-          <BusinessProfile
-            businessDetails={businessDetails}
-            currentUser={currentUser}
-            handleBusinessDelete={this.handleBusinessDelete}
-          />
-        )
-      }
-      return null; 
-    };
-    
+    const { User, businessReviews, businessDetails } = this.props;
+
     return (
       <main className="pb-main">
         <div className="container">
           <div className="row">
-            {checkRender()}
+            {
+              businessDetails && 
+              <BusinessProfile
+                businessDetails={businessDetails}
+                User={User}
+                handleBusinessDelete={this.handleBusinessDelete}
+              />
+            }
             <div className="col-md-12 col-lg-4"></div>
             <div className="col-md-12 col-lg-8">
               {
-                businessReviews.length > 0 || !!currentUser ? (
-                  <ReviewsDiv
-                    postReview={this.postReview}
-                    businessReviews={businessReviews}
-                    currentUser={currentUser}
-                    handleEditReview={this.handleEditReview}
-                    handleDeleteReview={this.handleDeleteReview}
-                  />
-                ) : null
+                (businessReviews.length > 0 || !!User.id) &&
+                <ReviewsDiv
+                  postReview={this.postReview}
+                  businessReviews={businessReviews}
+                  User={User}
+                  handleEditReview={this.handleEditReview}
+                  handleDeleteReview={this.handleDeleteReview}
+                />
               }
             </div>
           </div>
@@ -126,9 +118,7 @@ class BusinessProfilePage extends Component {
 function mapStateToProps(state) {
   return {
     businessDetails: state.businessReducer.business,
-    currentUser: state.userReducer.id,
-    firstname: state.userReducer.firstname,
-    lastname: state.userReducer.lastname,
+    User: state.userReducer,
     businessReviews: state.reviewReducer.reviews
   };
 }

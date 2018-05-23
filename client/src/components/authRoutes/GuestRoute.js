@@ -8,7 +8,7 @@ const propTypes = {
   isAuthenticated: PropTypes.bool.isRequired
 }
 
-const UserRoute = ({ isAuthenticated, component: Component, ...rest }) => (
+const GuestRoute = ({ isAuthenticated, component: Component, ...rest }) => (
   <Route
     {...rest}
     render={props => 
@@ -21,7 +21,7 @@ const UserRoute = ({ isAuthenticated, component: Component, ...rest }) => (
   />
 );
 
-UserRoute.propTypes = propTypes;
+GuestRoute.propTypes = propTypes;
 
 function mapStateToProps(state) {
   return {
@@ -29,4 +29,4 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(UserRoute);
+export default connect(mapStateToProps)(GuestRoute);

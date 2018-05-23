@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { validate } from './../../utils';
 import InLineError from './../messages/InLineError';
 import Rating from './../pages/Rating';
+import {  defaultUserProfilePic } from './../../../public/images';
 
 const propTypes = {
   editReview: PropTypes.func.isRequired,
@@ -55,10 +56,12 @@ class EditReviewForm extends Component {
   render() {
     const { error } = this.state;
     const { review } = this.props;
+    const displayImage = review.User.userImage !== '' ? review.User.userImage : defaultUserProfilePic;
+
     return (
       <form className="media border-top pt-3 mt-3" onSubmit={this.submit}>
         <img
-          src="https://i.stack.imgur.com/34AD2.jpg"
+          src={displayImage}
           className="img-thumbnail rounded-circle small-profile-pic mr-3"
         />
         <div className="media-body">

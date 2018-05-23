@@ -29,7 +29,8 @@ module.exports = {
     },
     businessImage: {
       type: Sequelize.STRING,
-      allowNull: true
+      allowNull: true,
+      defaultValue: ''
     },
     category: {
       type: Sequelize.STRING,
@@ -53,7 +54,8 @@ module.exports = {
     },
     postalAddress: {
       type: Sequelize.STRING,
-      allowNull: true
+      allowNull: true,
+      defaultValue: ''
     },
     startTime: {
       type: Sequelize.STRING,

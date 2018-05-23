@@ -27,9 +27,7 @@ export default class BusinessController {
    */
   static createBusiness(req, res) {
     const businessObject = businessObjectHolder(req);
-    const { postalAddress, category } = req.body;
-    const validationFailed = handleValidation(res, businessObject);
-    if (validationFailed) return validationFailed;
+    const { postalAddress, category, businessImage } = req.body;
 
     return Category.findOne({ where: { category } })
       .then((theCategory) => {
@@ -40,7 +38,6 @@ export default class BusinessController {
           });
         }
         const { id: userId } = req.decoded;
-        const businessImage = req.file;
         const { id: categoryId } = theCategory;
 
         return Business.create({
@@ -63,9 +60,7 @@ export default class BusinessController {
    */
   static updateBusiness(req, res) {
     const businessObject = businessObjectHolder(req);
-    const { postalAddress, category } = req.body;
-    const validationFailed = handleValidation(res, businessObject);
-    if (validationFailed) return validationFailed;
+    const { postalAddress, category, businessImage } = req.body;
 
     return Category.findOne({ where: { category } })
       .then((theCategory) => {
@@ -76,7 +71,6 @@ export default class BusinessController {
           });
         }
         const { id: userId } = req.decoded;
-        const businessImage = req.file;
         const { id: categoryId } = theCategory;
         const { businessId: id } = req.params;
         const isNotUUID = checkUUID(res, id, 'Business');

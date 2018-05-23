@@ -67,7 +67,7 @@ export default class ReviewController {
           where: { businessId },
           include: [{
             model: User,
-            attributes: ['firstname', 'lastname']
+            attributes: ['firstname', 'lastname', 'userImage']
           }]
         })
           .then(reviews => res.status(200).json({

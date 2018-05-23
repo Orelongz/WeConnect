@@ -9,6 +9,7 @@ import {
   deleteBusiness
 } from './../../actions/businessAction';
 import { editUser } from './../../actions/AuthAction';
+import {  defaultUserProfilePic } from './../../../public/images';
 
 const propTypes = {
   userBusinesses: PropTypes.func.isRequired,
@@ -69,13 +70,14 @@ class Dashboard extends Component {
 
   render() {
     const { User } = this.props;
+    const displayImage = User.userImage !== '' ? User.userImage : defaultUserProfilePic;
 
     return (
       <Fragment>
         <section className="header d-flex justify-content-center">
           <div className="text-white text-center mt-4">
             <img
-              src="https://i.stack.imgur.com/34AD2.jpg"
+              src={displayImage}
               alt="profile pic"
               className="rounded-circle img-thumbnail"
               style={{height: '150px', width: '150px'}}
