@@ -161,14 +161,34 @@ export default class BusinessController {
    */
   static getAllBusinesses(req, res) {
     const databaseQuery = handleBusinessSearch(req);
+
+    const limit = req.query.limit || 9;
+    const page = req.query.page || 1;
+    const offset = limit * (page - 1);
+
     return Business
-      .all(databaseQuery)
-      .then(businesses => res.status(200).json({
-        status: 'success',
-        data: {
-          businesses
-        }
-      }));
+      .findAndCountAll({
+        limit,
+        ...databaseQuery,
+        offset,
+        order: [['createdAt', 'DESC']]
+      })
+      .then((businesses) => {
+        const { count } = businesses;
+        const pages = Math.ceil(count / limit);
+        const currentPage = Math.floor(offset / limit) + 1;
+
+        return res.status(200).json({
+          status: 'success',
+          data: {
+            businesses: businesses.rows,
+            count,
+            pages,
+            currentPage,
+            pageSize: businesses.rows.length
+          }
+        });
+      });
   }
 
   /**
@@ -222,16 +242,32 @@ export default class BusinessController {
    */
   static getUserBusinesses(req, res) {
     const { id: userId } = req.decoded;
+    const limit = req.query.limit || 9;
+    const page = req.query.page || 1;
+    const offset = limit * (page - 1);
 
-    return Business.all({
-      where: { userId }
+    return Business.findAndCountAll({
+      where: { userId },
+      limit,
+      offset,
+      order: [['createdAt', 'DESC']]
     })
-      .then(businesses => res.status(200).json({
-        status: 'success',
-        data: {
-          businesses
-        }
-      }))
+      .then((businesses) => {
+        const { count } = businesses;
+        const pages = Math.ceil(count / limit);
+        const currentPage = Math.floor(offset / limit) + 1;
+
+        return res.status(200).json({
+          status: 'success',
+          data: {
+            businesses: businesses.rows,
+            count,
+            pages,
+            currentPage,
+            pageSize: businesses.rows.length
+          }
+        });
+      })
       .catch(error => handleErrorMessage(res, error));
   }
 }
