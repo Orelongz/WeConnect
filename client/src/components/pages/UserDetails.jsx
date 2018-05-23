@@ -12,7 +12,7 @@ class UserDetails extends Component {
   constructor() {
     super();
     this.state = {
-      data: {},
+      data: { userImage: '' },
       errors: {},
       isEditing: false
     };
@@ -22,9 +22,20 @@ class UserDetails extends Component {
   }
 
   onChange(e) {
-    this.setState({
-      data: { ...this.state.data, [e.target.name]: e.target.value }
-    });
+    if (e.target.name !== 'userImage') {
+      this.setState({
+        data: { ...this.state.data, [e.target.name]: e.target.value }
+      });
+    } else {
+      let value = e.target.files[0];
+      let reader = new FileReader();
+      reader.onloadend = () => {
+        this.setState({
+          data: { ...this.state.data, userImage: value, imagePreview: reader.result }
+        });
+      }
+      reader.readAsDataURL(value);
+    }
   }
 
   toggleEditStatus() {
@@ -37,13 +48,20 @@ class UserDetails extends Component {
 
   submit(e) {
     e.preventDefault();
-    const errors = validate(this.state.data);
+    const { userImage, ...requiredDetails } = this.state.data;
+    const errors = validate(requiredDetails);
     this.setState({ errors });
+
     if (Object.keys(errors).length === 0) {
-      this.props.editUserDetails(this.state.data);
-      this.setState({
-        isEditing: false
+      const userObject = new FormData();
+      const { imagePreview, ...rest } = this.state.data;
+
+      Object.entries(rest).forEach(([key, value]) => {
+        userObject.append(key, value);
       });
+
+      this.props.editUserDetails(userObject);
+      this.setState({ isEditing: false });
     }
 
   }
@@ -87,9 +105,18 @@ class UserDetails extends Component {
             />
             {errors.email && <InlineError text={errors.email} />}
           </div>
+          <div>
+            <input
+              type="file"
+              id="userImage"
+              name="userImage"
+              onChange={this.onChange}
+              accept="image/*"
+            />
+          </div>
           <button className="btn btn-primary pull-right">Save</button>
       </form>
-      )
+      );
     }
     return (
       <div>

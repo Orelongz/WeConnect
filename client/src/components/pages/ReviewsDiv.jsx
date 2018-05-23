@@ -6,7 +6,7 @@ import ReviewsList from './ReviewsList';
 const propTypes = {
   postReview: PropTypes.func,
   businessReviews: PropTypes.array.isRequired,
-  currentUser: PropTypes.string,
+  User: PropTypes.object,
   handleEditReview: PropTypes.func,
   handleDeleteReview: PropTypes.func
 }
@@ -32,15 +32,15 @@ class ReviewDiv extends Component {
   }
 
   render() {
-    const { currentUser, businessReviews } = this.props;
+    const { User, businessReviews } = this.props;
     
     return (
       <div className="card form-group mt-4">
         <div className="container pt-3">
-          { currentUser && <ReviewForm submit={this.submit} /> }
+          { User.id && <ReviewForm submit={this.submit} User={User} /> }
           <ReviewsList
             businessReviews={businessReviews}
-            currentUser={currentUser}
+            User={User}
             editReview={this.editReview}
             deleteReview={this.deleteReview}
           />

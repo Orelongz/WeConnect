@@ -2,12 +2,13 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import shortid from 'shortid';
 import EditReviewForm from './../forms/EditReviewForm';
+import {  defaultUserProfilePic } from './../../../public/images';
 
 const propTypes = {
   businessReviews: PropTypes.array.isRequired,
   editReview: PropTypes.func,
   deleteReview: PropTypes.func,
-  currentUser: PropTypes.string
+  User: PropTypes.object
 }
 
 class ReviewList extends Component {
@@ -53,7 +54,9 @@ class ReviewList extends Component {
   }
 
   renderReviewOrEditField(review) {
-    const { currentUser } = this.props;
+    const { User } = this.props;
+    const displayImage = review.User.userImage !== '' ? review.User.userImage : defaultUserProfilePic;
+
     if (this.state.editing === review.id) {
       return (
         <EditReviewForm
@@ -69,7 +72,7 @@ class ReviewList extends Component {
         key={review.id}
       >
         <img
-          src="https://i.stack.imgur.com/34AD2.jpg"
+          src={displayImage}
           className="img-thumbnail rounded-circle small-profile-pic mr-3"
         />
         <div className="media-body">
@@ -80,7 +83,7 @@ class ReviewList extends Component {
               {review.updatedAt.split('T')[0]}
             </div>
             {
-              currentUser === review.userId ? (
+              User.id === review.userId ? (
                 <Fragment>
                   <div
                     data-toggle="tooltip"

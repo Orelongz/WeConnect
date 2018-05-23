@@ -5,7 +5,8 @@ import InLineError from './../messages/InLineError';
 import Rating from './../pages/Rating';
 
 const propTypes = {
-  submit: PropTypes.func.isRequired
+  submit: PropTypes.func.isRequired,
+  User: PropTypes.object
 }
 
 class ReviewForm extends Component {
@@ -49,9 +50,12 @@ class ReviewForm extends Component {
 
   render() {
     const { error } = this.state;
+    const { User } = this.props;
+    const displayImage = User.userImage !== '' ? User.userImage : defaultUserProfilePic;
+    
     return (
       <div className="media">
-        <img src="https://i.stack.imgur.com/34AD2.jpg" className="img-thumbnail rounded-circle small-profile-pic mr-3" />
+        <img src={displayImage}className="img-thumbnail rounded-circle small-profile-pic mr-3" />
         <form className="media-body" onSubmit={this.submit}>
           <div>
             <label htmlFor="review">Write a review: </label>

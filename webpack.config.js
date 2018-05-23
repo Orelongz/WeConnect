@@ -1,4 +1,5 @@
 const webpack = require('webpack');
+const Dotenv = require('dotenv-webpack');
 
 const port = process.env.PORT || 8000;
 
@@ -42,7 +43,13 @@ module.exports = {
   plugins: [
     new webpack.NoEmitOnErrorsPlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.HotModuleReplacementPlugin()
+    new webpack.HotModuleReplacementPlugin(),
+    new Dotenv({
+      path: './env',
+      safe: true,
+      systemvars: true,
+      silent: true
+    })
   ],
   devtool: 'eval-source-map'
 };

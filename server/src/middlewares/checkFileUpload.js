@@ -55,17 +55,24 @@ function uploadBusinessImage(req, res, next) {
  */
 function uploadUserImage(req, res, next) {
   userImageUpload(req, res, (err) => {
+    console.log('here ', req.body)
+    const { firstname, lastname, email } = req.body;
+    const validationFailed = handleValidation(res, { firstname, lastname, email });
+    if (validationFailed) return validationFailed;
+
     if (err) {
       return res.status(400).json({
         status: 'fail',
         error: err
       });
     } else if (req.file) {
-      cloudinary.v2.uploader.upload(req.file.path, (err, result) => {
+      cloudinary.v2.uploader.upload(req.file.path, (error, result) => {
         req.body.userImage = result.secure_url;
+        next();
       });
+    } else {
+      next();
     }
-    next();
   });
 }
 
