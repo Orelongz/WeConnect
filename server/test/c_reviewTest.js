@@ -81,8 +81,8 @@ describe('Given that a user sends a ', () => {
             'fail'
           );
           assert.equal(
-            res.body.error,
-            'Rating value must be between 0 and 5'
+            res.body.error[0],
+            'Rating value must be between 1 and 5'
           );
           done();
         });

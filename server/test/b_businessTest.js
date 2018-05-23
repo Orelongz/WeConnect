@@ -87,7 +87,7 @@ describe('Given that a user sends a ', () => {
           );
           assert.strictEqual(
             res.body.data.business.postalAddress,
-            null,
+            '',
             'business should still be created'
           );
           done();
