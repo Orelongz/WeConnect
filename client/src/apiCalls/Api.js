@@ -35,8 +35,8 @@ export default {
     getBusiness: businessId => axios.get(`${basePath}/businesses/${businessId}`)
       .then(res => res.data.data.business),
 
-    allBusinesses: str => axios.get(`${basePath}/businesses?${str}`)
-      .then(res => res.data.data.businesses),
+    allBusinesses: (searchTerm, page) => axios.get(`${basePath}/businesses?${searchTerm}&${page}`)
+      .then(res => (res.data.data)),
 
     editBusiness: (credentials, businessId) => axios.put(
       `${basePath}/businesses/${businessId}`,

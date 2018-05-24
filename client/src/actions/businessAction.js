@@ -6,7 +6,8 @@ import {
   CHANGE_OWNERSHIP,
   DELETE_BUSINESS,
   GET_USER_BUSINESSES,
-  BUSINESS_RATING
+  BUSINESS_RATING,
+  PAGINATE_BUSINESSES
 } from './../types/Types';
 import api from './../apiCalls/Api';
 
@@ -41,11 +42,17 @@ const retrievedBusinesses = businesses => ({
   businesses
 });
 
-const allBusinesses = str => dispatch => (
+const paginateBusiness = paginate => ({
+  type: PAGINATE_BUSINESSES,
+  paginate
+});
+
+const allBusinesses = (searchTerm, page) => dispatch => (
   api.business
-    .allBusinesses(str)
-    .then((businesses) => {
-      dispatch(retrievedBusinesses(businesses));
+    .allBusinesses(searchTerm, page)
+    .then((data) => {
+      dispatch(retrievedBusinesses(data.businesses));
+      dispatch(paginateBusiness(data.paginate));
     })
 );
 

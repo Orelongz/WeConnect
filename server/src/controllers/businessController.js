@@ -162,7 +162,7 @@ export default class BusinessController {
   static getAllBusinesses(req, res) {
     const databaseQuery = handleBusinessSearch(req);
 
-    const limit = req.query.limit || 9;
+    const limit = 6;
     const page = req.query.page || 1;
     const offset = limit * (page - 1);
 
@@ -182,10 +182,13 @@ export default class BusinessController {
           status: 'success',
           data: {
             businesses: businesses.rows,
-            count,
-            pages,
-            currentPage,
-            pageSize: businesses.rows.length
+            paginate: {
+              count,
+              pages,
+              currentPage,
+              pageSize: businesses.rows.length,
+              limit
+            }
           }
         });
       });
@@ -261,10 +264,12 @@ export default class BusinessController {
           status: 'success',
           data: {
             businesses: businesses.rows,
-            count,
-            pages,
-            currentPage,
-            pageSize: businesses.rows.length
+            paginate: {
+              count,
+              pages,
+              currentPage,
+              pageSize: businesses.rows.length
+            }
           }
         });
       })
