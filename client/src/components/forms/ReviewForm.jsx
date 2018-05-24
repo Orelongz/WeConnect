@@ -22,8 +22,8 @@ class ReviewForm extends Component {
     this.submit = this.submit.bind(this);
   }
 
-  submit(e) {
-    e.preventDefault();
+  submit(event) {
+    event.preventDefault();
     const { review, rating } = this.state;
     const error = validate({ review });
 

@@ -40,15 +40,15 @@ class BusinessForm extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onChange(e) {
+  onChange(event) {
     let value;
-    if (e.target.name !== 'businessImage') {
-      value = e.target.value;
+    if (event.target.name !== 'businessImage') {
+      value = event.target.value;
       this.setState({
-        data: { ...this.state.data, [e.target.name]: value }
+        data: { ...this.state.data, [event.target.name]: value }
       });
     } else {
-      value = e.target.files[0];
+      value = event.target.files[0];
       let reader = new FileReader();
       reader.onloadend = () => {
         this.setState({
@@ -59,8 +59,8 @@ class BusinessForm extends Component {
     }
   }
 
-  onSubmit(e) {
-    e.preventDefault();
+  onSubmit(event) {
+    event.preventDefault();
     const { postalAddress, businessImage, imagePreview, ...requiredFields } = this.state.data;
     const errors = validate(requiredFields);
     this.setState({ errors });

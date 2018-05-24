@@ -63,16 +63,20 @@ export default class ReviewController {
     return Business.findOne({ where: { id: businessId } })
       .then((business) => {
         if (!business) return notFound(res, 'Business');
-        Review.all({
+
+        return Review.all({
           where: { businessId },
           include: [{
             model: User,
             attributes: ['firstname', 'lastname', 'userImage']
-          }]
+          }],
+          order: [['createdAt', 'DESC']]
         })
           .then(reviews => res.status(200).json({
             status: 'success',
-            data: { reviews }
+            data: {
+              reviews
+            }
           }));
       })
       .catch(error => handleErrorMessage(res, error));

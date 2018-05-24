@@ -35,7 +35,11 @@ function uploadBusinessImage(req, res, next) {
         error: err
       });
     } else if (req.file) {
+      console.log('here')
       cloudinary.v2.uploader.upload(req.file.path, (error, result) => {
+        if (error) {
+          console.log(error);
+        }
         req.body.businessImage = result.secure_url;
         next();
       });
@@ -55,7 +59,6 @@ function uploadBusinessImage(req, res, next) {
  */
 function uploadUserImage(req, res, next) {
   userImageUpload(req, res, (err) => {
-    console.log('here ', req.body)
     const { firstname, lastname, email } = req.body;
     const validationFailed = handleValidation(res, { firstname, lastname, email });
     if (validationFailed) return validationFailed;

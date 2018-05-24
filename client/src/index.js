@@ -8,6 +8,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import store from './store/store';
 import App from './components/App.jsx';
 import './../public/style/index.scss';
+import 'rc-pagination/assets/index.css';
+import 'rc-select/assets/index.css';
 import { userDetails, logout } from './actions/AuthAction';
 import setAuthorizationToken from './utils/setAuthorizationToken';
 

@@ -6,12 +6,14 @@ import {
   CHANGE_OWNERSHIP,
   DELETE_BUSINESS,
   GET_USER_BUSINESSES,
-  BUSINESS_RATING
+  BUSINESS_RATING,
+  PAGINATE_BUSINESSES
 } from './../types/Types';
 
 const initialState = {
   businesses: [],
-  business: {}
+  business: {},
+  paginate: {}
 };
 /**
  * businessReducer()
@@ -62,6 +64,10 @@ function businessReducer(state = initialState, action = {}) {
       return {
         ...state,
         business: { ...state.business, ...action.rating }
+      };
+    case PAGINATE_BUSINESSES:
+      return {
+        ...state, paginate: action.paginate
       };
     default:
       return state;
