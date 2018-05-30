@@ -26,11 +26,12 @@ class SignUpPage extends Component {
   submit(data) {
     return this.props
       .signup(data)
-      .then(() => this.props.history.push('/'))
+      .then((user) => {
+        alertify.success(`Welcome to WeConnect, ${user.firstname}`);
+        this.props.history.push('/businesses');
+      })
       .catch(err => {
-        this.setState({
-          error: handleErrorCatch(err.response.data)
-        })
+        alertify.error(handleErrorCatch(err.response.data));
       });
   }
 
@@ -38,7 +39,6 @@ class SignUpPage extends Component {
     const { error } = this.state
     return (
       <div className="pb-main">
-        {error && <InfoMessage text={error} type='danger' />}
         <div className="container mt-5">
           <div className="row justify-content-center">
             <div className="card col-xs-10 col-sm-8 col-md-6 col-lg-4">

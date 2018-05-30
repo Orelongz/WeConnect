@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import alertify from 'alertifyjs';
 import SignInForm from './../forms/SignInForm';
 import InfoMessage from './../messages/InfoMessage';
 import { signin } from './../../actions/AuthAction';
@@ -26,17 +27,19 @@ class SignInPage extends Component {
   submit(data) {
     return this.props
       .signin(data)
-      .then(() => this.props.history.push('/'))
-      .catch(err => this.setState({
-        error: handleErrorCatch(err.response.data)
-      }));
+      .then((user) => {
+        alertify.success(`Welcome back, ${user.firstname}`);
+        this.props.history.push('/businesses');
+      })
+      .catch(err => {
+        alertify.error(handleErrorCatch(err.response.data));
+      });
   }
 
   render() {
     const { error } = this.state
     return (
       <div className="pb-main">
-        {error && <InfoMessage text={error} type='danger' />}
         <div className="container mt-5">
           <div className="row justify-content-center">
             <div className="card col-xs-10 col-sm-8 col-md-6 col-lg-4">

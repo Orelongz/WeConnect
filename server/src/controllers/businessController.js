@@ -162,7 +162,7 @@ export default class BusinessController {
   static getAllBusinesses(req, res) {
     const databaseQuery = handleBusinessSearch(req);
 
-    const limit = 6;
+    const limit = 3;
     const page = req.query.page || 1;
     const offset = limit * (page - 1);
 

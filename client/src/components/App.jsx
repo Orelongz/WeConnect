@@ -14,11 +14,15 @@ import EditBusinessPage from './pages/EditBusinessPage.jsx';
 import BusinessProfilePage from './pages/BusinessProfilePage.jsx';
 import Dashboard from './pages/Dashboard.jsx';
 
+import alertify from 'alertifyjs';
+
 const propTypes = {
   location: PropTypes.shape({
     pathname: PropTypes.string.isRequired
   }).isRequired
-}
+};
+
+alertify.set('notifier', 'position', 'top-center');
 
 const App = ({ location }) => (
   <div className="bg-light holder">

@@ -20,6 +20,7 @@ const signup = credentials => dispatch => (
       localStorage.weconnectToken = token;
       setAuthorizationToken(token);
       dispatch(userLoggedIn(user));
+      return user;
     })
 );
 
@@ -31,6 +32,7 @@ const signin = credentials => dispatch => (
       localStorage.weconnectToken = token;
       setAuthorizationToken(token);
       dispatch(userLoggedIn(user));
+      return user;
     })
 );
 
