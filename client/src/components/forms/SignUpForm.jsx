@@ -1,14 +1,26 @@
+// import required modules
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { validate } from './../../utils';
-import InLineError from './../messages/InLineError';
+import InLineError from './../messages/InLineError.jsx';
 
+// define proptypes for SignUpForm component
 const propTypes = {
   submit: PropTypes.func.isRequired
-}
+};
 
+/**
+ * @class SignUpForm
+ * @desc renders the SignUpForm of the app
+ * @return {void}
+ */
 class SignUpForm extends Component {
+  /**
+   * constructor
+   * @desc constructor for the SignUpForm component
+   * @return {void}
+   */
   constructor() {
     super();
     this.state = {
@@ -25,14 +37,26 @@ class SignUpForm extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onChange(e) {
+  /**
+   * onChange
+   * @desc handles state change when value of input fields change
+   * @param {Object} event DOM event
+   * @return {Object} new state object
+   */
+  onChange(event) {
     return this.setState({
-      data: { ...this.state.data, [e.target.name]: e.target.value }
+      data: { ...this.state.data, [event.target.name]: event.target.value }
     });
   }
 
-  onSubmit(e) {
-    e.preventDefault();
+  /**
+   * onSubmit
+   * @desc handles submit of the signup form
+   * @param {Object} event DOM event
+   * @return {func} submit
+   */
+  onSubmit(event) {
+    event.preventDefault();
     const errors = validate(this.state.data);
     this.setState({ errors });
     if (Object.keys(errors).length === 0) {
@@ -41,8 +65,14 @@ class SignUpForm extends Component {
     }
   }
 
+  /**
+   * render
+   * @desc renders the SignUpForm component
+   * @return {Object} the SignUpForm component
+   */
   render() {
     const { data, errors } = this.state;
+
     return (
       <form onSubmit={this.onSubmit}>
         <div className="form-group">
@@ -58,6 +88,7 @@ class SignUpForm extends Component {
           />
           {errors.firstname && <InLineError text={errors.firstname} />}
         </div>
+
         <div className="form-group">
           <label htmlFor="lastname">Lastname</label>
           <input
@@ -71,6 +102,7 @@ class SignUpForm extends Component {
           />
           {errors.lastname && <InLineError text={errors.lastname} />}
         </div>
+
         <div className="form-group">
           <label htmlFor="email">Email</label>
           <input
@@ -84,6 +116,7 @@ class SignUpForm extends Component {
           />
           {errors.email && <InLineError text={errors.email} />}
         </div>
+
         <div className="form-group">
           <label htmlFor="password">Password</label>
           <input
@@ -97,6 +130,7 @@ class SignUpForm extends Component {
           />
           {errors.password && <InLineError text={errors.password} />}
         </div>
+
         <div className="form-group">
           <label htmlFor="confirmPassword">Confirm Password</label>
           <input
@@ -110,12 +144,13 @@ class SignUpForm extends Component {
           />
           {errors.confirmPassword && <InLineError text={errors.confirmPassword} />}
         </div>
+
         <p className="text-center small">By clicking Join Now, you agree to WeConnect <Link to="#">User Agreement</Link> and <Link to="#">Privacy Policy</Link></p>
         <button className="btn btn-primary w-100"><i className="fa fa-user-plus" aria-hidden="true"></i>&nbsp;Join Now</button>
       </form>
     );
   }
-};
+}
 
 SignUpForm.propTypes = propTypes;
 

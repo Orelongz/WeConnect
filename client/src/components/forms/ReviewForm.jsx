@@ -1,15 +1,28 @@
+// import required modules
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { validate } from './../../utils';
-import InLineError from './../messages/InLineError';
-import Rating from './../pages/Rating';
+import InLineError from './../messages/InLineError.jsx';
+import Rating from './../pages/BusinessProfile/Rating.jsx';
+import { defaultUserProfilePic } from './../../../public/images';
 
+// define proptypes for ReviewForm component
 const propTypes = {
   submit: PropTypes.func.isRequired,
   User: PropTypes.object
-}
+};
 
+/**
+ * @class ReviewForm
+ * @desc renders the ReviewForm component
+ * @return {*} void
+ */
 class ReviewForm extends Component {
+  /**
+   * constructor
+   * @desc constructor for the ContactForm component
+   * @return {*} void
+   */
   constructor() {
     super();
     this.state = {
@@ -22,6 +35,12 @@ class ReviewForm extends Component {
     this.submit = this.submit.bind(this);
   }
 
+  /**
+   * onSubmit
+   * @desc handles submit of the review form
+   * @param {Object} event DOM event
+   * @return {func} submit
+   */
   submit(event) {
     event.preventDefault();
     const { review, rating } = this.state;
@@ -34,25 +53,42 @@ class ReviewForm extends Component {
 
     if (Object.keys(error).length === 0) {
       this.props.submit({ review, rating });
-      this.setState({ review: ''});
+      this.setState({ review: '' });
     }
   }
 
-  onChange(e) {
+  /**
+   * onChange
+   * @desc handles state change when value of input fields change
+   * @param {Object} event DOM event
+   * @return {func} new state object
+   */
+  onChange(event) {
     return this.setState({
-      [e.target.name]: e.target.value
+      [event.target.name]: event.target.value
     });
   }
 
+  /**
+   * setRating
+   * @desc sets the rating for a review
+   * @param {Integer} rating business rating
+   * @return {Object} new state object
+   */
   setRating(rating) {
     this.setState({ rating });
   }
 
+  /**
+   * render
+   * @desc renders the ReviewForm component
+   * @return {Object} the ReviewForm component
+   */
   render() {
     const { error } = this.state;
     const { User } = this.props;
     const displayImage = User.userImage !== '' ? User.userImage : defaultUserProfilePic;
-    
+
     return (
       <div className="media">
         <img src={displayImage}className="img-thumbnail rounded-circle small-profile-pic mr-3" />

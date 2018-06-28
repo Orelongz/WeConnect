@@ -1,12 +1,14 @@
+// import required modules
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import SignInForm from './../forms/SignInForm';
-import InfoMessage from './../messages/InfoMessage';
-import { signin } from './../../actions/AuthAction';
-import { handleErrorCatch } from './../../utils';
+import alertify from 'alertifyjs';
+import SignInForm from './../../forms/SignInForm.jsx';
+import { signin } from './../../../actions/AuthAction';
+import { handleErrorCatch } from './../../../utils';
 
+// define proptypes for SignInPage component
 const propTypes = {
   history: PropTypes.shape({
     push: PropTypes.func.isRequired
@@ -14,29 +16,50 @@ const propTypes = {
   signin: PropTypes.func.isRequired
 };
 
+/**
+ * @class SignInPage
+ * @desc renders the SignInPage component
+ * @return {*} void
+ */
 class SignInPage extends Component {
+  /**
+   * constructor
+   * @desc constructor for the SignInPage component
+   * @return {*} void
+   */
   constructor() {
     super();
-    this.state = {
-      error: null
-    }
     this.submit = this.submit.bind(this);
   }
 
+  /**
+   * submit
+   * @desc handles submitting of the SignInForm
+   * @param {Object} data user credentials collected from the SignInForm
+   * @return {func} signin
+   */
   submit(data) {
     return this.props
       .signin(data)
-      .then(() => this.props.history.push('/'))
-      .catch(err => this.setState({
-        error: handleErrorCatch(err.response.data)
-      }));
+      .then((user) => {
+        // alerts the user a welcome message
+        alertify.success(`Welcome back, ${user.firstname}`);
+        this.props.history.push('/businesses');
+      })
+      .catch((err) => {
+        // alerts the user the error that occurred
+        alertify.error(handleErrorCatch(err.response.data));
+      });
   }
 
+  /**
+   * render
+   * @desc renders the SignInPage component
+   * @return {Object} the SignInPage component
+   */
   render() {
-    const { error } = this.state
     return (
       <div className="pb-main">
-        {error && <InfoMessage text={error} type='danger' />}
         <div className="container mt-5">
           <div className="row justify-content-center">
             <div className="card col-xs-10 col-sm-8 col-md-6 col-lg-4">
@@ -54,7 +77,7 @@ class SignInPage extends Component {
       </div>
     );
   }
-};
+}
 
 SignInPage.propTypes = propTypes;
 

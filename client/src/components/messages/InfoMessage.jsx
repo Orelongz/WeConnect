@@ -1,11 +1,20 @@
+// import required modules
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const propTypes  = {
+// define proptypes for InfoMessages component
+const propTypes = {
   text: PropTypes.string.isRequired,
   type: PropTypes.string.isRequired
 };
 
+/**
+ * InfoMessages
+ * @desc display errors from api
+ * @param {String} text error text
+ * @param {String} type error type
+ * @return {Object} rendered message component
+ */
 function InfoMessages({ text, type }) {
   const className = `alert alert-${type} text-center`;
   return (
@@ -13,7 +22,7 @@ function InfoMessages({ text, type }) {
       {text}
     </div>
   );
-};
+}
 
 InfoMessages.propTypes = propTypes;
 

@@ -19,7 +19,6 @@ before_script:
   - npm run test-migrate
 script:
   - npm run test
-  - npm run check-coverage
 after_success:
   - npm run coverage
   - npm run report-coverage

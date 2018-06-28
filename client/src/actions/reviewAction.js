@@ -6,11 +6,25 @@ import {
 } from './../types/Types';
 import api from './../apiCalls/Api';
 
+/**
+ * addedReview()
+ * @desc addedReview action
+ * @param {Object} review
+ * @return {Object} addedReview action
+ */
 const addedReview = review => ({
   type: ADD_REVIEW,
   review
 });
 
+/**
+ * addReview()
+ * @desc dispatches addedReview action
+ * @param {Object} credentials
+ * @param {String} businessId
+ * @param {Object} User
+ * @return {*} void
+ */
 const addReview = (credentials, businessId, User) => dispatch => (
   api.review
     .addReview(credentials, businessId)
@@ -19,11 +33,23 @@ const addReview = (credentials, businessId, User) => dispatch => (
     })
 );
 
+/**
+ * businessReviews()
+ * @desc businessReviews action
+ * @param {Object} reviews
+ * @return {Object} businessReviews action
+ */
 const businessReviews = reviews => ({
   type: GET_BUSINESS_REVIEWS,
   reviews
 });
 
+/**
+ * getBusinessReviews()
+ * @desc dispatches businessReviews action
+ * @param {String} businessId
+ * @return {*} void
+ */
 const getBusinessReviews = businessId => dispatch => (
   api.review
     .getBusinessReviews(businessId)
@@ -32,11 +58,26 @@ const getBusinessReviews = businessId => dispatch => (
     })
 );
 
+/**
+ * editedReview()
+ * @desc editedReview action
+ * @param {Object} review
+ * @return {Object} editedReview action
+ */
 const editedReview = review => ({
   type: EDIT_REVIEW,
   review
 });
 
+/**
+ * addReview()
+ * @desc dispatches editedReview action
+ * @param {Object} credentials
+ * @param {String} reviewId
+ * @param {String} firstname
+ * @param {String} lastname
+ * @return {*} void
+ */
 const editReview = (credentials, reviewId, firstname, lastname) => dispatch => (
   api.review
     .editReview(credentials, reviewId)
@@ -46,11 +87,23 @@ const editReview = (credentials, reviewId, firstname, lastname) => dispatch => (
     })
 );
 
+/**
+ * deletedReview()
+ * @desc deletedReview action
+ * @param {Object} reviewId
+ * @return {Object} deletedReview action
+ */
 const deletedReview = reviewId => ({
   type: DELETE_REVIEW,
   reviewId
 });
 
+/**
+ * deleteReview()
+ * @desc dispatches deletedReview action
+ * @param {String} reviewId
+ * @return {*} void
+ */
 const deleteReview = reviewId => dispatch => (
   api.review
     .deleteReview(reviewId)

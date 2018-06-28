@@ -704,4 +704,41 @@ describe('Given that a user sends a ', () => {
         });
     });
   });
+
+  describe('GET request to /api/v1/businesses/:businessId/rating', () => {
+    it('should return a 200 status and the rating of a business', (done) => {
+      chai.request(app)
+        .get(`/api/v1/businesses/${businessId2}/rating`)
+        .end((err, res) => {
+          res.should.have.status(200);
+          assert.equal(
+            res.body.status,
+            'success'
+          );
+          res.body.data.rating.should.be.a('number');
+          assert.equal(
+            res.body.data.rating,
+            0
+          );
+          done();
+        });
+    });
+
+    it('should return a 404 status', (done) => {
+      chai.request(app)
+        .get('/api/v1/businesses/somebusiness/rating')
+        .end((err, res) => {
+          res.should.have.status(404);
+          assert.equal(
+            res.body.status,
+            'fail'
+          );
+          assert.equal(
+            res.body.error,
+            'Business not found'
+          );
+          done();
+        });
+    });
+  });
 });

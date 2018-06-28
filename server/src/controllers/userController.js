@@ -113,9 +113,6 @@ export default class UserController {
       }
     })
       .then((user) => {
-        if (!user) {
-          return notFound(res, 'User');
-        }
         const token = generateToken({ id, email });
         return user
           .update({

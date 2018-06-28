@@ -1,4 +1,4 @@
-import coffeeShopBrown from './coffee_shop_brown.jpg';
+// import all images into the index file
 import contactImage from './contact_image.jpg';
 import defaultUserProfilePic from './default_user_profile_pic.jpg';
 import feedBack1 from './feedback_1.jpg';
@@ -7,10 +7,10 @@ import feedBack3 from './feedback_3.png';
 import happyFace from './happy_face.jpg';
 import marketPlace from './market_place.jpg';
 import searchImage from './search_image.png';
-import defaultBusinessProfilePic from './default_business_profile_pic.jpg';
+import defaultBusinessProfilePic from './default_business_profile_pic.png';
 
+// export all images to needed files
 export {
-  coffeeShopBrown,
   contactImage,
   defaultUserProfilePic,
   feedBack1,

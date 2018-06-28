@@ -1,35 +1,48 @@
-import React, { Component, Fragment } from 'react';
+// import required modules
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import shortid from 'shortid';
-import { defaultBusinessProfilePic } from './../../../public/images';
+import { defaultBusinessProfilePic } from './../../../../public/images';
 
+// define proptypes for BusinessProfile component
 const propTypes = {
   handleBusinessDelete: PropTypes.func.isRequired,
   businessDetails: PropTypes.object.isRequired,
   User: PropTypes.object
-}
+};
 
+/**
+ * displayRating
+ * @desc display average rating as stars
+ * @param {integer} rating array of businesses
+ * @return {Object} rendered businesses
+ */
 const displayRating = (rating) => {
   const stars = [];
-  
-  for(let i = 1; i <= 5; i += 1) {
+
+  for (let i = 1; i <= 5; i += 1) {
     let starClass = 'fa fa-star-o';
-    
+
     if (rating >= i) {
       starClass = 'fa fa-star checked';
     }
 
-    stars.push(
-      <span
-        className={starClass}
-        key={shortid.generate()}
-        ></span>
-    );
+    stars.push(<span
+      className={starClass}
+      key={shortid.generate()}
+    ></span>);
   }
+
   return stars;
 };
 
+/**
+ * BusinessProfile
+ * @desc display average rating as stars
+ * @param {Object} props
+ * @return {Object} rendered businesses
+ */
 function BusinessProfile({ businessDetails, User, handleBusinessDelete }) {
   const {
     businessName, businessImage, category, address, city, state: businessState,
@@ -59,6 +72,14 @@ function BusinessProfile({ businessDetails, User, handleBusinessDelete }) {
               &nbsp;{phoneNumber}
             </li>
             {
+              category &&
+              <li className="list-group-item">Category: {category}</li>
+            }
+            {
+              postalAddress &&
+              <li className="list-group-item">Postal Address: {postalAddress}</li>
+            }
+            {
               (rating && rating !== 0) ?
               <li className="list-group-item">
                 Average Rating: {displayRating(rating)} {rating.toFixed(1)}stars
@@ -69,6 +90,7 @@ function BusinessProfile({ businessDetails, User, handleBusinessDelete }) {
 
         <div id="map"></div>
       </div>
+
       <div className="col-md-12 col-lg-8 mt-4">
         <div className="card">
           <img src={displayImage} alt={businessName} className="card-img-top business-pic" />

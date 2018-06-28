@@ -11,7 +11,10 @@ import businessRoute from './server/src/routes/business';
 import reviewRoute from './server/src/routes/review';
 import categoryRoute from './server/src/routes/category';
 import swaggerDocument from './swagger.json';
-import webpackConfig from './webpack.config';
+
+const webpackConfig = (
+  process.env.NODE_ENV !== 'production' ? require('./webpack.dev') : require('./webpack.prod')
+);
 
 const app = express();
 const port = parseInt(process.env.PORT, 10) || 8000;
