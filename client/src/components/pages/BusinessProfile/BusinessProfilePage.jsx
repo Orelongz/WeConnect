@@ -1,20 +1,22 @@
+// import required modules
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import BusinessProfile from './BusinessProfile';
+import BusinessProfile from './BusinessProfile.jsx';
 import {
   getBusiness,
-  deleteBusiness, 
+  deleteBusiness,
   businessRating
-} from './../../actions/businessAction';
+} from './../../../actions/businessAction';
 import {
   addReview,
   getBusinessReviews,
   editReview,
   deleteReview
-} from './../../actions/reviewAction';
-import ReviewsDiv from './ReviewsDiv';
+} from './../../../actions/reviewAction';
+import ReviewsDiv from './ReviewsDiv.jsx';
 
+// define proptypes for BusinessProfilePage component
 const propTypes = {
   getBusiness: PropTypes.func.isRequired,
   deleteBusiness: PropTypes.func.isRequired,
@@ -29,9 +31,24 @@ const propTypes = {
     }).isRequired
   }).isRequired,
   User: PropTypes.object,
+  businessReviews: PropTypes.array.isRequired,
+  businessDetails: PropTypes.object.isRequired,
+  history: PropTypes.shape({
+    push: PropTypes.func.isRequired
+  }).isRequired
 };
 
+/**
+ * @class BusinessProfilePage
+ * @desc renders the BusinessProfilePage component
+ * @return {*} void
+ */
 class BusinessProfilePage extends Component {
+  /**
+   * constructor
+   * @desc constructor for the BusinessProfilePage component
+   * @return {*} void
+   */
   constructor() {
     super();
     this.handleBusinessDelete = this.handleBusinessDelete.bind(this);
@@ -40,6 +57,11 @@ class BusinessProfilePage extends Component {
     this.handleDeleteReview = this.handleDeleteReview.bind(this);
   }
 
+  /**
+   * componentDidMount
+   * @desc react componentDidMount lifecycle
+   * @return {Object} new state object
+   */
   componentDidMount() {
     const { businessId } = this.props.match.params;
     this.props
@@ -49,30 +71,54 @@ class BusinessProfilePage extends Component {
     this.props.getBusinessReviews(businessId);
   }
 
+  /**
+   * handleBusinessDelete
+   * @desc handles the deletion of a business
+   * @return {*} void
+   */
   handleBusinessDelete() {
     const { businessId } = this.props.match.params;
     return this.props
       .deleteBusiness(businessId)
-      .then(() => this.props.history.push('/businesses'))
+      .then(() => this.props.history.push('/businesses'));
   }
 
+  /**
+   * postReview
+   * @desc handles the posting of a review
+   * @param {Object} data review object
+   * @return {*} void
+   */
   postReview(data) {
     const { businessId } = this.props.match.params;
     const { User } = this.props;
-    
-    this.props
+
+    return this.props
       .addReview(data, businessId, User)
       .then(() => this.props.businessRating(businessId));
   }
 
+  /**
+   * postReview
+   * @desc handles the editing of a review
+   * @param {Object} data review object
+   * @param {String} reviewId
+   * @return {*} void
+   */
   handleEditReview(data, reviewId) {
     const { businessId } = this.props.match.params;
-    const { firstname, lastname } = this.props;
+    const { firstname, lastname } = this.props.User;
 
     this.props.editReview(data, reviewId, firstname, lastname)
       .then(() => this.props.businessRating(businessId));
   }
 
+  /**
+   * postReview
+   * @desc handles the deletion of a review
+   * @param {String} reviewId
+   * @return {*} void
+   */
   handleDeleteReview(reviewId) {
     const { businessId } = this.props.match.params;
 
@@ -80,6 +126,11 @@ class BusinessProfilePage extends Component {
       .then(() => this.props.businessRating(businessId));
   }
 
+  /**
+   * render
+   * @desc renders the BusinessesPage component
+   * @return {Object} the BusinessesPage component
+   */
   render() {
     const { User, businessReviews, businessDetails } = this.props;
 
@@ -88,7 +139,7 @@ class BusinessProfilePage extends Component {
         <div className="container">
           <div className="row">
             {
-              businessDetails && 
+              businessDetails &&
               <BusinessProfile
                 businessDetails={businessDetails}
                 User={User}
@@ -115,6 +166,11 @@ class BusinessProfilePage extends Component {
   }
 }
 
+/**
+ * mapStateToProps
+ * @param {Object} state redux state
+ * @return {Object} BusinessesPage props
+ */
 function mapStateToProps(state) {
   return {
     businessDetails: state.businessReducer.business,

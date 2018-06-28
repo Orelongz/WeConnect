@@ -1,3 +1,4 @@
+// import required modules
 import {
   USER_SIGNED_IN,
   USER_LOGGED_OUT,
@@ -7,11 +8,23 @@ import {
 import setAuthorizationToken from './../utils/setAuthorizationToken';
 import api from './../apiCalls/Api';
 
+/**
+ * userLoggedIn()
+ * @desc userLoggedIn action
+ * @param {Object} user
+ * @return {Object} login action
+ */
 const userLoggedIn = user => ({
   type: USER_SIGNED_IN,
   user
 });
 
+/**
+ * signup()
+ * @desc dispatches signup action
+ * @param {Object} credentials
+ * @return {*} void
+ */
 const signup = credentials => dispatch => (
   api.user
     .signup(credentials)
@@ -24,6 +37,12 @@ const signup = credentials => dispatch => (
     })
 );
 
+/**
+ * signin()
+ * @desc dispatches signin action
+ * @param {Object} credentials
+ * @return {*} void
+ */
 const signin = credentials => dispatch => (
   api.user
     .signin(credentials)
@@ -36,21 +55,42 @@ const signin = credentials => dispatch => (
     })
 );
 
+/**
+ * userLoggedOut()
+ * @desc userLoggedOut action
+ * @return {Object} logout action
+ */
 const userLoggedOut = () => ({
   type: USER_LOGGED_OUT
 });
 
+/**
+ * logout()
+ * @desc dispatches logout action
+ * @return {*} void
+ */
 const logout = () => (dispatch) => {
   localStorage.removeItem('weconnectToken');
   setAuthorizationToken();
   dispatch(userLoggedOut());
 };
 
+/**
+ * userFetched()
+ * @desc userFetched action
+ * @param {Object} user
+ * @return {Object} userFetched action
+ */
 const userFetched = user => ({
   type: FETCH_USER_DETAILS,
   user
 });
 
+/**
+ * userDetails()
+ * @desc dispatches userFetched action
+ * @return {*} void
+ */
 const userDetails = () => (dispatch) => {
   api.user
     .userDetails()
@@ -59,11 +99,23 @@ const userDetails = () => (dispatch) => {
     });
 };
 
+/**
+ * editedUser()
+ * @desc editedUser action
+ * @param {Object} user
+ * @return {Object} editedUser action
+ */
 const editedUser = user => ({
   type: EDITTED_USER_DETAIL,
   user
 });
 
+/**
+ * userDetails()
+ * @desc dispatches editedUser action
+ * @param {Object} credentials
+ * @return {*} void
+ */
 const editUser = credentials => (dispatch) => {
   api.user
     .editUser(credentials)

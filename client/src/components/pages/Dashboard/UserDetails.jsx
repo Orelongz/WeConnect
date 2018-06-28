@@ -1,14 +1,26 @@
+// import required modules
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { validate } from './../../utils';
-import InlineError from './../messages/InLineError';
+import { validate } from './../../../utils';
+import InlineError from './../../messages/InLineError.jsx';
 
+// define proptypes for UserDetails component
 const propTypes = {
   User: PropTypes.object.isRequired,
   editUserDetails: PropTypes.func.isRequired
 };
 
+/**
+ * @class UserDetails
+ * @desc renders the UserDetails of the app
+ * @return {void}
+ */
 class UserDetails extends Component {
+  /**
+   * constructor
+   * @desc constructor for the Dashboard component
+   * @return {void}
+   */
   constructor() {
     super();
     this.state = {
@@ -21,23 +33,34 @@ class UserDetails extends Component {
     this.submit = this.submit.bind(this);
   }
 
-  onChange(e) {
-    if (e.target.name !== 'userImage') {
+  /**
+   * onChange
+   * @desc handles state change when value of input fields change
+   * @param {Object} event DOM event
+   * @return {*} void
+   */
+  onChange(event) {
+    if (event.target.name !== 'userImage') {
       this.setState({
-        data: { ...this.state.data, [e.target.name]: e.target.value }
+        data: { ...this.state.data, [event.target.name]: event.target.value }
       });
     } else {
-      let value = e.target.files[0];
-      let reader = new FileReader();
+      const value = event.target.files[0];
+      const reader = new FileReader();
       reader.onloadend = () => {
         this.setState({
           data: { ...this.state.data, userImage: value, imagePreview: reader.result }
         });
-      }
+      };
       reader.readAsDataURL(value);
     }
   }
 
+  /**
+   * toggleEditStatus
+   * @desc toggles editting to true or false
+   * @return {func} new state object
+   */
   toggleEditStatus() {
     const { id, ...rest } = this.props.User;
     this.setState({
@@ -46,8 +69,14 @@ class UserDetails extends Component {
     });
   }
 
-  submit(e) {
-    e.preventDefault();
+  /**
+   * submit
+   * @desc handles editting user details
+   * @param {Object} event DOM event
+   * @return {func} editUserDetails
+   */
+  submit(event) {
+    event.preventDefault();
     const { userImage, ...requiredDetails } = this.state.data;
     const errors = validate(requiredDetails);
     this.setState({ errors });
@@ -63,9 +92,14 @@ class UserDetails extends Component {
       this.props.editUserDetails(userObject);
       this.setState({ isEditing: false });
     }
-
   }
 
+  /**
+   * renderDetailsOrEdit
+   * @desc selectively render userdetails or edit details form
+   * @param {Object} event DOM event
+   * @return {func} editUserDetails
+   */
   renderDetailsOrEdit() {
     const { firstname, lastname, email } = this.props.User;
     const { data, isEditing, errors } = this.state;
@@ -134,9 +168,14 @@ class UserDetails extends Component {
         </div>
         <button onClick={this.toggleEditStatus} className="btn btn-primary pull-right">Edit</button>
       </div>
-    )
+    );
   }
 
+  /**
+   * render
+   * @desc renders the userDetails component
+   * @return {Object} the userDetails component
+   */
   render() {
     return (
       <div className="container">

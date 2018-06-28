@@ -1,13 +1,25 @@
+// import required modules
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { validate } from './../../utils';
-import InLineError from './../messages/InLineError';
+import InLineError from './../messages/InLineError.jsx';
 
+// define proptypes for SignInForm component
 const propTypes = {
   submit: PropTypes.func.isRequired
-}
+};
 
+/**
+ * @class SignInForm
+ * @desc renders the SignInForm component
+ * @return {*} void
+ */
 class SignInForm extends Component {
+  /**
+   * constructor
+   * @desc constructor for the SignInForm component
+   * @return {*} void
+   */
   constructor() {
     super();
     this.state = {
@@ -21,14 +33,26 @@ class SignInForm extends Component {
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onChange(e) {
+  /**
+   * onChange
+   * @desc handles state change when value of input fields change
+   * @param {Object} event DOM event
+   * @return {Object} new state object
+   */
+  onChange(event) {
     return this.setState({
-      data: { ...this.state.data, [e.target.name]: e.target.value }
+      data: { ...this.state.data, [event.target.name]: event.target.value }
     });
   }
 
-  onSubmit(e) {
-    e.preventDefault();
+  /**
+   * onSubmit
+   * @desc handles submit of the signin form
+   * @param {Object} event DOM event
+   * @return {func} submit
+   */
+  onSubmit(event) {
+    event.preventDefault();
     const errors = validate(this.state.data);
     this.setState({ errors });
     if (Object.keys(errors).length === 0) {
@@ -36,8 +60,14 @@ class SignInForm extends Component {
     }
   }
 
+  /**
+   * render
+   * @desc renders the SignInForm component
+   * @return {Object} the SignInForm component
+   */
   render() {
     const { data, errors } = this.state;
+
     return (
       <form onSubmit={this.onSubmit}>
         <div className="form-group">
@@ -70,7 +100,7 @@ class SignInForm extends Component {
       </form>
     );
   }
-};
+}
 
 SignInForm.propTypes = propTypes;
 

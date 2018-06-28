@@ -9,6 +9,7 @@ const userImageUpload = upload.single('userImage');
 
 dotenv.config();
 
+// cloudinary config
 cloudinary.config({
   cloud_name: 'longe',
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -35,10 +36,9 @@ function uploadBusinessImage(req, res, next) {
         error: err
       });
     } else if (req.file) {
-      console.log('here')
       cloudinary.v2.uploader.upload(req.file.path, (error, result) => {
         if (error) {
-          console.log(error);
+          next();
         }
         req.body.businessImage = result.secure_url;
         next();

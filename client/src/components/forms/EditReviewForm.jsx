@@ -1,16 +1,28 @@
+// import required modules
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { validate } from './../../utils';
-import InLineError from './../messages/InLineError';
-import Rating from './../pages/Rating';
-import {  defaultUserProfilePic } from './../../../public/images';
+import InLineError from './../messages/InLineError.jsx';
+import Rating from './../pages/BusinessProfile/Rating.jsx';
+import { defaultUserProfilePic } from './../../../public/images';
 
+// define proptypes for EditReviewForm component
 const propTypes = {
   editReview: PropTypes.func.isRequired,
   review: PropTypes.object.isRequired
-}
+};
 
+/**
+ * @class EditReviewForm
+ * @desc renders the EditReviewForm component
+ * @return {*} void
+ */
 class EditReviewForm extends Component {
+  /**
+   * constructor
+   * @desc constructor for the ContactForm component
+   * @return {*} void
+   */
   constructor() {
     super();
     this.state = {
@@ -23,6 +35,11 @@ class EditReviewForm extends Component {
     this.setRating = this.setRating.bind(this);
   }
 
+  /**
+   * componentDidMount
+   * @desc react componentDidMount lifecycle
+   * @return {Object} new state object
+   */
   componentDidMount() {
     this.setState({
       reviewUpdate: this.props.review.review,
@@ -30,8 +47,14 @@ class EditReviewForm extends Component {
     });
   }
 
-  submit(e) {
-    e.preventDefault();
+  /**
+   * onSubmit
+   * @desc handles submit of the contact form
+   * @param {Object} event DOM event
+   * @return {func} submit
+   */
+  submit(event) {
+    event.preventDefault();
     const { reviewUpdate, rating } = this.state;
     const error = validate({ reviewUpdate });
 
@@ -43,16 +66,33 @@ class EditReviewForm extends Component {
     }
   }
 
-  onChange(e) {
+  /**
+   * onChange
+   * @desc handles state change when value of input fields change
+   * @param {Object} event DOM event
+   * @return {func} new state object
+   */
+  onChange(event) {
     return this.setState({
-      [e.target.name]: e.target.value
+      [event.target.name]: event.target.value
     });
   }
 
+  /**
+   * setRating
+   * @desc edit the rating for a review
+   * @param {Integer} rating business rating
+   * @return {Object} new state object
+   */
   setRating(rating) {
     this.setState({ rating });
   }
 
+  /**
+   * render
+   * @desc renders the EditReviewForm component
+   * @return {Object} the EditReviewForm component
+   */
   render() {
     const { error } = this.state;
     const { review } = this.props;

@@ -3,21 +3,29 @@ import PropTypes from 'prop-types';
 import Pagination from 'rc-pagination';
 
 const propTypes = {
-  total: PropTypes.number.isRequired,
+  allBusinesses: PropTypes.number.isRequired,
   pageSize: PropTypes.number.isRequired,
-  onChange: PropTypes.func.isRequired
+  onChange: PropTypes.func.isRequired,
+  current: PropTypes.number
 };
 
-function Paginate({ total, pageSize, onChange, current }) {
+/**
+ * Paginate
+ * @param {Object} param
+ * @return {Object} pagination component
+ */
+function Paginate({
+  allBusinesses: total, pageSize, onChange, current
+}) {
   return (
     <div>
       <Pagination
-        showTotal={(total, range) => `${range[0]} - ${range[1]} of ${total} items`}
+        showTotal={(allBusinesses, range) => `${range[0]} - ${range[1]} of ${allBusinesses} items`}
         locale={{ items_per_page: 'Items' }}
         total={total}
         pageSize={pageSize}
-        onChange={onChange}
         current={current}
+        onChange={onChange}
       />
     </div>
   );

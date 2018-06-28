@@ -1,8 +1,19 @@
+// import required modules
 import React, { Component } from 'react';
 import { validate } from './../../utils';
-import InlineError from './../messages/InLineError';
+import InlineError from './../messages/InLineError.jsx';
 
+/**
+ * @class ContactForm
+ * @desc renders the ContactForm component
+ * @return {*} void
+ */
 class ContactForm extends Component {
+  /**
+   * constructor
+   * @desc constructor for the ContactForm component
+   * @return {*} void
+   */
   constructor() {
     super();
     this.state = {
@@ -12,19 +23,31 @@ class ContactForm extends Component {
         message: ''
       },
       errors: ''
-    }
+    };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
   }
 
-  onChange(e) {
+  /**
+   * onChange
+   * @desc handles state change when value of input fields change
+   * @param {Object} event DOM event
+   * @return {func} new state object
+   */
+  onChange(event) {
     return this.setState({
-      data: { ...this.state.data, [e.target.name]: e.target.value }
+      data: { ...this.state.data, [event.target.name]: event.target.value }
     });
   }
 
-  onSubmit(e) {
-    e.preventDefault();
+  /**
+   * onSubmit
+   * @desc handles submit of the contact form
+   * @param {Object} event DOM event
+   * @return {func} submit
+   */
+  onSubmit(event) {
+    event.preventDefault();
     const { name, email, message } = this.state.data;
     const errors = validate({ name, email, message });
     this.setState({ errors });
@@ -33,6 +56,11 @@ class ContactForm extends Component {
     }
   }
 
+  /**
+   * render
+   * @desc renders the ContactForm component
+   * @return {Object} the ContactForm component
+   */
   render() {
     const { data, errors } = this.state;
     return (
@@ -40,7 +68,7 @@ class ContactForm extends Component {
         <div className="form-row">
           <div className="col">
             <label htmlFor="name">Name</label>
-            <input 
+            <input
               type="text"
               className="form-control"
               placeholder="Name"
