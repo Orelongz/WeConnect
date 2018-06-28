@@ -107,9 +107,9 @@ class BusinessProfilePage extends Component {
    */
   handleEditReview(data, reviewId) {
     const { businessId } = this.props.match.params;
-    const { firstname, lastname } = this.props.User;
+    const { firstname, lastname, userImage } = this.props.User;
 
-    this.props.editReview(data, reviewId, firstname, lastname)
+    this.props.editReview(data, reviewId, firstname, lastname, userImage)
       .then(() => this.props.businessRating(businessId));
   }
 
