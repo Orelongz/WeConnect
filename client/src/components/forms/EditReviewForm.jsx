@@ -1,15 +1,15 @@
 // import required modules
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import StarRatings from 'react-star-ratings';
 import { validate } from './../../utils';
 import InLineError from './../messages/InLineError.jsx';
-import Rating from './../pages/BusinessProfile/Rating.jsx';
-import { defaultUserProfilePic } from './../../../public/images';
 
 // define proptypes for EditReviewForm component
 const propTypes = {
   editReview: PropTypes.func.isRequired,
-  review: PropTypes.object.isRequired
+  review: PropTypes.object.isRequired,
+  displayImage: PropTypes.string.isRequired
 };
 
 /**
@@ -27,7 +27,7 @@ class EditReviewForm extends Component {
     super();
     this.state = {
       reviewUpdate: '',
-      rating: null,
+      rating: 0,
       error: {}
     };
     this.onChange = this.onChange.bind(this);
@@ -94,9 +94,8 @@ class EditReviewForm extends Component {
    * @return {Object} the EditReviewForm component
    */
   render() {
-    const { error } = this.state;
-    const { review } = this.props;
-    const displayImage = review.User.userImage !== '' ? review.User.userImage : defaultUserProfilePic;
+    const { error, reviewUpdate, rating } = this.state;
+    const { review, displayImage } = this.props;
 
     return (
       <form className="media border-top pt-3 mt-3" onSubmit={this.submit}>
@@ -107,15 +106,25 @@ class EditReviewForm extends Component {
         <div className="media-body">
           <div className="d-flex justify-content-between pb-1">
             <h5>{review.User.firstname} {review.User.lastname}</h5>
-            <Rating setRating={this.setRating} rating={review.rating}/>
-            <button type="submit" className="btn btn-primary btn-sm pull-right">POST</button>
+            <StarRatings
+              name='rating'
+              starDimension="20px"
+              starSpacing="2px"
+              starRatedColor="gold"
+              starEmptyColor="gray"
+              starHoverColor="gold"
+              rating={rating}
+              changeRating={this.setRating}
+              numberOfStars={5}
+            />
+            <button type="submit" className="btn btn-primary btn-sm pull-right">Save</button>
           </div>
           <textarea
             className="form-control"
             id="reviewUpdate"
             name="reviewUpdate"
             onChange={this.onChange}
-            value={this.state.reviewUpdate}
+            value={reviewUpdate}
           />
           {error.reviewUpdate && <InLineError text={error.reviewUpdate} />}
         </div>

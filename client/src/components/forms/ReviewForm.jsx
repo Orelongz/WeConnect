@@ -1,9 +1,9 @@
 // import required modules
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import StarRatings from 'react-star-ratings';
 import { validate } from './../../utils';
 import InLineError from './../messages/InLineError.jsx';
-import Rating from './../pages/BusinessProfile/Rating.jsx';
 import { defaultUserProfilePic } from './../../../public/images';
 
 // define proptypes for ReviewForm component
@@ -27,7 +27,7 @@ class ReviewForm extends Component {
     super();
     this.state = {
       review: '',
-      rating: null,
+      rating: 0,
       error: {}
     };
     this.onChange = this.onChange.bind(this);
@@ -53,7 +53,7 @@ class ReviewForm extends Component {
 
     if (Object.keys(error).length === 0) {
       this.props.submit({ review, rating });
-      this.setState({ review: '' });
+      this.setState({ review: '', rating: 0 });
     }
   }
 
@@ -107,7 +107,17 @@ class ReviewForm extends Component {
           </div>
 
           <div className="pt-3">
-            <Rating setRating={this.setRating} />
+            <StarRatings
+              name='rating'
+              starDimension="20px"
+              starSpacing="2px"
+              starRatedColor="gold"
+              starEmptyColor="gray"
+              starHoverColor="gold"
+              rating={this.state.rating}
+              changeRating={this.setRating}
+              numberOfStars={5}
+            />
             <button type="submit" className="btn btn-primary btn-sm pull-right">POST</button>
           </div>
         </form>

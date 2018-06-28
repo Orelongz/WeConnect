@@ -76,13 +76,14 @@ const editedReview = review => ({
  * @param {String} reviewId
  * @param {String} firstname
  * @param {String} lastname
+ * @param {String} userImage
  * @return {*} void
  */
-const editReview = (credentials, reviewId, firstname, lastname) => dispatch => (
+const editReview = (credentials, reviewId, firstname, lastname, userImage) => dispatch => (
   api.review
     .editReview(credentials, reviewId)
     .then((review) => {
-      const User = { firstname, lastname };
+      const User = { firstname, lastname, userImage };
       dispatch(editedReview({ ...review, User }));
     })
 );

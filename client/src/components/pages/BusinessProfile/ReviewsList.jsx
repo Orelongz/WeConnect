@@ -1,7 +1,7 @@
 // import required modules
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import shortid from 'shortid';
+import StarRatings from 'react-star-ratings';
 import EditReviewForm from './../../forms/EditReviewForm.jsx';
 import { defaultUserProfilePic } from './../../../../public/images';
 
@@ -11,32 +11,6 @@ const propTypes = {
   editReview: PropTypes.func,
   deleteReview: PropTypes.func,
   User: PropTypes.object
-};
-
-
-/**
- * displayRating
- * @desc display average rating as stars
- * @param {integer} rating array of businesses
- * @return {Object} rendered businesses
- */
-const displayRating = (rating) => {
-  const stars = [];
-
-  for (let i = 1; i <= 5; i += 1) {
-    let starClass = 'fa fa-star-o';
-
-    if (rating >= i) {
-      starClass = 'fa fa-star checked';
-    }
-
-    stars.push(<span
-      className={starClass}
-      key={shortid.generate()}
-    ></span>);
-  }
-
-  return stars;
 };
 
 /**
@@ -100,6 +74,7 @@ class ReviewList extends Component {
           review={review}
           key={review.id}
           editReview={this.editReview}
+          displayImage={displayImage}
         />
       );
     }
@@ -115,7 +90,12 @@ class ReviewList extends Component {
         <div className="media-body">
           <div className="d-flex justify-content-between">
             <h5>{review.User.firstname} {review.User.lastname}</h5>
-            <div>{displayRating(review.rating)}</div>
+            <StarRatings
+              rating={review.rating}
+              starDimension="20px"
+              starSpacing=""
+              starRatedColor="gold"
+            />
             <div>
               {review.updatedAt.split('T')[0]}
             </div>
