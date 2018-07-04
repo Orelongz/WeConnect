@@ -146,8 +146,8 @@ const ownershipChanged = business => ({
 const changeOwnership = (credentials, businessId) => dispatch => (
   api.business
     .changeOwnership(credentials, businessId)
-    .then((data) => {
-      dispatch(ownershipChanged(data.business));
+    .then((business) => {
+      dispatch(ownershipChanged(business));
     })
 );
 
@@ -192,13 +192,13 @@ const userBusinessesFetched = businesses => ({
  * @desc dispatches userBusinessesFetched action
  * @return {*} void
  */
-const userBusinesses = () => (dispatch) => {
+const userBusinesses = () => dispatch => (
   api.business
     .userBusinesses()
     .then((businesses) => {
       dispatch(userBusinessesFetched(businesses));
-    });
-};
+    })
+);
 
 /**
  * gottenBusinessRating()
@@ -212,18 +212,18 @@ const gottenBusinessRating = rating => ({
 });
 
 /**
- * userBusinesses()
- * @desc dispatches userBusinessesFetched action
+ * businessRating()
+ * @desc dispatches gottenBusinessRating action
  * @param {String} businessId
  * @return {*} void
  */
-const businessRating = businessId => (dispatch) => {
+const businessRating = businessId => dispatch => (
   api.business
     .businessRating(businessId)
-    .then((rating) => {
-      dispatch(gottenBusinessRating(rating));
-    });
-};
+    .then((data) => {
+      dispatch(gottenBusinessRating(data.rating));
+    })
+);
 
 export {
   newBusiness,

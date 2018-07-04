@@ -55,7 +55,11 @@ class EditBusinessPage extends Component {
    */
   componentDidMount() {
     const { businessId } = this.props.match.params;
-    this.props.getBusiness(businessId);
+    this.props.getBusiness(businessId)
+      .then(() => {
+        // set documet title
+        document.title = `Edit ${this.props.businessDetails.businessName}`;
+      });
     this.props.allCategories();
   }
 

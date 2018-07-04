@@ -14,7 +14,7 @@ const propTypes = {
 
 /**
  * BusinessProfile
- * @desc display average rating as stars
+ * @desc display business profile
  * @param {Object} props
  * @return {Object} rendered businesses
  */

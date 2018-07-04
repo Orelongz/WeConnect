@@ -228,7 +228,10 @@ export default class BusinessController {
             if (business) {
               return res.status(200).json({
                 status: 'success',
-                message: 'Business transferred'
+                data: {
+                  message: 'Business transferred',
+                  business
+                }
               });
             }
           });

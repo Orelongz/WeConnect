@@ -57,7 +57,7 @@ export default {
       `${basePath}/businesses/change-ownership/${businessId}`,
       { ...credentials }
     )
-      .then(res => res.data.data),
+      .then(res => res.data.data.business),
 
     // api call to delete a business
     deleteBusiness: businessId => axios.delete(`${basePath}/businesses/${businessId}`)

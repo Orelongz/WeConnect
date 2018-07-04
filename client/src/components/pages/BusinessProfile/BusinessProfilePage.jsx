@@ -67,7 +67,11 @@ class BusinessProfilePage extends Component {
     this.props
       .getBusiness(businessId)
       .catch(() => this.props.history.push('/businesses'));
-    this.props.businessRating(businessId);
+    this.props.businessRating(businessId)
+      .then(() => {
+      // set documet title
+        document.title = `${this.props.businessDetails.businessName}`;
+      });
     this.props.getBusinessReviews(businessId);
   }
 

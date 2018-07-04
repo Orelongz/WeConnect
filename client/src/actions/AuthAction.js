@@ -25,12 +25,12 @@ const userLoggedIn = user => ({
  * @param {Object} credentials
  * @return {*} void
  */
-const signup = credentials => dispatch => (
+export const signup = credentials => dispatch => (
   api.user
     .signup(credentials)
     .then((user) => {
       const { token } = user;
-      localStorage.weconnectToken = token;
+      localStorage.setItem('weconnectToken', token);
       setAuthorizationToken(token);
       dispatch(userLoggedIn(user));
       return user;
@@ -43,12 +43,12 @@ const signup = credentials => dispatch => (
  * @param {Object} credentials
  * @return {*} void
  */
-const signin = credentials => dispatch => (
+export const signin = credentials => dispatch => (
   api.user
     .signin(credentials)
     .then((user) => {
       const { token } = user;
-      localStorage.weconnectToken = token;
+      localStorage.setItem('weconnectToken', token);
       setAuthorizationToken(token);
       dispatch(userLoggedIn(user));
       return user;
@@ -69,7 +69,7 @@ const userLoggedOut = () => ({
  * @desc dispatches logout action
  * @return {*} void
  */
-const logout = () => (dispatch) => {
+export const logout = () => (dispatch) => {
   localStorage.removeItem('weconnectToken');
   setAuthorizationToken();
   dispatch(userLoggedOut());
@@ -91,13 +91,13 @@ const userFetched = user => ({
  * @desc dispatches userFetched action
  * @return {*} void
  */
-const userDetails = () => (dispatch) => {
+export const userDetails = () => dispatch => (
   api.user
     .userDetails()
     .then((user) => {
       dispatch(userFetched(user));
-    });
-};
+    })
+);
 
 /**
  * editedUser()
@@ -116,22 +116,13 @@ const editedUser = user => ({
  * @param {Object} credentials
  * @return {*} void
  */
-const editUser = credentials => (dispatch) => {
+export const editUser = credentials => dispatch => (
   api.user
     .editUser(credentials)
     .then((user) => {
       const { token } = user;
-      localStorage.weconnectToken = token;
+      localStorage.setItem('weconnectToken', token);
       setAuthorizationToken(token);
       dispatch(editedUser(user));
-    });
-};
-
-export {
-  signup,
-  signin,
-  logout,
-  userDetails,
-  userLoggedIn,
-  editUser
-};
+    })
+);
