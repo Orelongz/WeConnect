@@ -33,7 +33,8 @@ const propTypes = {
  * @param {Object} location
  * @return {Object} rendered components
  */
-const App = ({ location }) => (
+export function App({ location }) {
+  return (
   <div className="bg-light holder">
     <NavBar />
     <Switch>
@@ -48,7 +49,8 @@ const App = ({ location }) => (
     </Switch>
     <Footer />
   </div>
-);
+  );
+}
 
 App.propTypes = propTypes;
 

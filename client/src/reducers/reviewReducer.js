@@ -29,7 +29,7 @@ function reviewReducer(state = initialState, action = {}) {
     case GET_BUSINESS_REVIEWS:
       return {
         ...state,
-        reviews: action.reviews
+        reviews: action.reviews,
       };
     case EDIT_REVIEW: {
       const newReviewList = state.reviews.map((eachReview) => {

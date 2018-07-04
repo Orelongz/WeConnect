@@ -41,6 +41,9 @@ class RegisterBusinessPage extends Component {
    * @return {func} allCategories
    */
   componentDidMount() {
+    // set documet title
+    document.title = 'Register new business';
+
     // api call to categories table
     this.props.allCategories();
   }

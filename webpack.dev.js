@@ -7,6 +7,7 @@ const port = process.env.PORT || 8000;
 module.exports = merge(common, {
   mode: 'development',
   entry: [
+    'react-hot-loader/patch',
     'webpack-hot-middleware/client'
   ],
   devtool: 'inline-source-map',

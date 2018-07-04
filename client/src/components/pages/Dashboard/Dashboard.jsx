@@ -94,7 +94,11 @@ class Dashboard extends Component {
    * @return {func} users businesses
    */
   componentDidMount() {
-    return this.props.userBusinesses();
+    this.props.userBusinesses()
+      .then(() => {
+        // set documet title
+        document.title = `${this.props.User.firstname}'s profile`;
+      });
   }
 
   /**

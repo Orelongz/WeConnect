@@ -133,7 +133,7 @@ class BusinessesPage extends Component {
    */
   componentDidMount() {
     // set documet title
-    document.title = 'Businesses';
+    document.title = 'All Businesses';
 
     // call action to retrieve all businesses
     this.props.allBusinesses()

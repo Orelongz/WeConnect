@@ -1,6 +1,5 @@
 import bcrypt from 'bcrypt';
 import {
-  notFound,
   generateToken,
   handleValidation,
   handleErrorMessage
