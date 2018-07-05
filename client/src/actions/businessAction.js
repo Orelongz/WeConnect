@@ -1,219 +1,191 @@
 import {
   REGISTER_BUSINESS,
+  REGISTER_BUSINESS_FAILED,
   GET_BUSINESS_DETAILS,
+  GET_BUSINESS_FAILED,
   GET_ALL_BUSINESSES,
   EDIT_BUSINESS,
+  EDIT_BUSINESS_FAILED,
   CHANGE_OWNERSHIP,
+  CHANGE_OWNERSHIP_FAILED,
   DELETE_BUSINESS,
+  DELETE_BUSINESS_FAILED,
   GET_USER_BUSINESSES,
+  GET_USER_BUSINESSES_FAILED,
   BUSINESS_RATING,
-  PAGINATE_BUSINESSES
+  IS_PAGE_LOADING,
+  IS_REQUEST_LOADING
 } from './../types/Types';
 import api from './../apiCalls/Api';
-
-/**
- * registeredBusiness()
- * @desc registeredBusiness action
- * @param {Object} business
- * @return {Object} registeredBusiness action
- */
-const registeredBusiness = business => ({
-  type: REGISTER_BUSINESS,
-  business
-});
+import {
+  isLoading,
+  successfulRequest,
+  failedRequest
+} from './helpers';
+import { handleErrorCatch } from './../utils';
 
 /**
  * newBusiness()
- * @desc dispatches registeredBusiness action
+ * @desc dispatches action to create a new business
  * @param {Object} credentials
  * @return {*} void
  */
-const newBusiness = credentials => dispatch => (
-  api.business
+const newBusiness = credentials => (dispatch) => {
+  dispatch(isLoading(IS_REQUEST_LOADING, true));
+
+  return api.business
     .newBusiness(credentials)
     .then((business) => {
-      dispatch(registeredBusiness(business));
+      dispatch(successfulRequest(REGISTER_BUSINESS, business));
+      dispatch(isLoading(IS_REQUEST_LOADING, false));
     })
-);
-
-/**
- * gottenBusiness()
- * @desc gottenBusiness action
- * @param {Object} business
- * @return {Object} gottenBusiness action
- */
-const gottenBusiness = business => ({
-  type: GET_BUSINESS_DETAILS,
-  business
-});
+    .catch((error) => {
+      dispatch(failedRequest(REGISTER_BUSINESS_FAILED, handleErrorCatch(error.response.data)));
+      dispatch(isLoading(IS_REQUEST_LOADING, false));
+    });
+};
 
 /**
  * getBusiness()
- * @desc dispatches gottenBusiness action
+ * @desc dispatches action to retrieve a business
  * @param {String} businessId
+ * @param {String} props
  * @return {*} void
  */
-const getBusiness = businessId => dispatch => (
-  api.business
+const getBusiness = (businessId, props) => (dispatch) => {
+  dispatch(isLoading(IS_PAGE_LOADING, true));
+
+  return api.business
     .getBusiness(businessId)
     .then((business) => {
-      dispatch(gottenBusiness(business));
+      // set documet title
+      document.title = business.businessName;
+      dispatch(successfulRequest(GET_BUSINESS_DETAILS, business));
+      dispatch(isLoading(IS_PAGE_LOADING, false));
     })
-);
-
-/**
- * retrievedBusinesses()
- * @desc retrievedBusinesses action
- * @param {Object} businesses
- * @return {Object} retrievedBusinesses action
- */
-const retrievedBusinesses = businesses => ({
-  type: GET_ALL_BUSINESSES,
-  businesses
-});
-
-/**
- * paginateBusiness()
- * @desc paginateBusiness action
- * @param {Object} paginate
- * @return {Object} paginateBusiness action
- */
-const paginateBusiness = paginate => ({
-  type: PAGINATE_BUSINESSES,
-  paginate
-});
+    .catch((error) => {
+      dispatch(failedRequest(GET_BUSINESS_FAILED, handleErrorCatch(error.response.data)));
+      dispatch(isLoading(IS_PAGE_LOADING, false));
+      props.history.push('/businesses');
+    });
+};
 
 /**
  * allBusinesses()
- * @desc dispatches retrievedBusinesses and paginateBusiness action
- * @param {String} searchTerm
+ * @desc dispatches action to retrieve all businesses
+ * @param {String} search
  * @param {String} page
  * @return {*} void
  */
-const allBusinesses = (searchTerm, page) => dispatch => (
-  api.business
-    .allBusinesses(searchTerm, page)
-    .then((data) => {
-      dispatch(retrievedBusinesses(data.businesses));
-      dispatch(paginateBusiness(data.paginate));
-    })
-);
+const allBusinesses = (search, page) => (dispatch) => {
+  dispatch(isLoading(IS_PAGE_LOADING, true));
 
-/**
- * editedBusiness()
- * @desc editedBusiness action
- * @param {Object} business
- * @return {Object} editedBusiness action
- */
-const editedBusiness = business => ({
-  type: EDIT_BUSINESS,
-  business
-});
+  return api.business
+    .allBusinesses(search, page)
+    .then((serverResponse) => {
+      // set documet title
+      document.title = 'All Businesses';
+      dispatch(successfulRequest(GET_ALL_BUSINESSES, serverResponse));
+      dispatch(isLoading(IS_PAGE_LOADING, false));
+    });
+};
 
 /**
  * editBusiness()
- * @desc dispatches editedBusiness action
+ * @desc dispatches action to edit a business
  * @param {Object} credentials
  * @param {String} businessId
+ * @param {String} props
  * @return {*} void
  */
-const editBusiness = (credentials, businessId) => dispatch => (
-  api.business
-    .editBusiness(credentials, businessId)
-    .then((business) => {
-      dispatch(editedBusiness(business));
-    })
-);
+const editBusiness = (credentials, businessId, props) => (dispatch) => {
+  dispatch(isLoading(IS_REQUEST_LOADING, true));
 
-/**
- * ownershipChanged()
- * @desc ownershipChanged action
- * @param {Object} business
- * @return {Object} ownershipChanged action
- */
-const ownershipChanged = business => ({
-  type: CHANGE_OWNERSHIP,
-  business
-});
+  return api.business
+    .editBusiness(credentials, businessId, props)
+    .then((business) => {
+      dispatch(successfulRequest(EDIT_BUSINESS, business));
+      dispatch(isLoading(IS_REQUEST_LOADING, false));
+      props.history.push(`/businesses/${business.businessId}`);
+    })
+    .catch((error) => {
+      dispatch(failedRequest(EDIT_BUSINESS_FAILED, handleErrorCatch(error.response.data)));
+      dispatch(isLoading(IS_REQUEST_LOADING, false));
+    });
+};
 
 /**
  * changeOwnership()
- * @desc dispatches ownershipChanged action
+ * @desc dispatches action to change ownership of a business
  * @param {Object} credentials
  * @param {String} businessId
+ * @param {String} props
  * @return {*} void
  */
-const changeOwnership = (credentials, businessId) => dispatch => (
-  api.business
+const changeOwnership = (credentials, businessId, props) => (dispatch) => {
+  dispatch(isLoading(IS_REQUEST_LOADING, true));
+
+  return api.business
     .changeOwnership(credentials, businessId)
     .then((business) => {
-      dispatch(ownershipChanged(business));
+      dispatch(successfulRequest(CHANGE_OWNERSHIP, business));
+      dispatch(isLoading(IS_REQUEST_LOADING, false));
+      props.history.push('/businesses');
     })
-);
-
-/**
- * deletedBusiness()
- * @desc deletedBusiness action
- * @param {String} businessId
- * @return {Object} deletedBusiness action
- */
-const deletedBusiness = businessId => ({
-  type: DELETE_BUSINESS,
-  businessId
-});
+    .catch((error) => {
+      dispatch(failedRequest(CHANGE_OWNERSHIP_FAILED, handleErrorCatch(error.response.data)));
+      dispatch(isLoading(IS_REQUEST_LOADING, false));
+    });
+};
 
 /**
  * deleteBusiness()
- * @desc dispatches deletedBusiness action
+ * @desc dispatches action to delete a business
  * @param {String} businessId
+ * @param {String} props
  * @return {*} void
  */
-const deleteBusiness = businessId => dispatch => (
-  api.business
+const deleteBusiness = (businessId, props) => (dispatch) => {
+  dispatch(isLoading(IS_REQUEST_LOADING, true));
+
+  return api.business
     .deleteBusiness(businessId)
     .then(() => {
-      dispatch(deletedBusiness(businessId));
+      dispatch(successfulRequest(DELETE_BUSINESS, businessId));
+      dispatch(isLoading(IS_REQUEST_LOADING, false));
     })
-);
-
-/**
- * userBusinessesFetched()
- * @desc userBusinessesFetched action
- * @param {Object} businesses
- * @return {Object} userBusinessesFetched action
- */
-const userBusinessesFetched = businesses => ({
-  type: GET_USER_BUSINESSES,
-  businesses
-});
+    .catch((error) => {
+      dispatch(failedRequest(DELETE_BUSINESS_FAILED, handleErrorCatch(error.response.data)));
+      dispatch(isLoading(IS_REQUEST_LOADING, false));
+      props.history.push('/businesses');
+    });
+};
 
 /**
  * userBusinesses()
- * @desc dispatches userBusinessesFetched action
+ * @desc dispatches action to retrieve a users's business
+ * @param {String} props
  * @return {*} void
  */
-const userBusinesses = () => dispatch => (
-  api.business
+const userBusinesses = props => (dispatch) => {
+  dispatch(isLoading(IS_PAGE_LOADING, true));
+
+  return api.business
     .userBusinesses()
     .then((businesses) => {
-      dispatch(userBusinessesFetched(businesses));
+      dispatch(successfulRequest(GET_USER_BUSINESSES, businesses));
+      dispatch(isLoading(IS_PAGE_LOADING, false));
     })
-);
-
-/**
- * gottenBusinessRating()
- * @desc gottenBusinessRating action
- * @param {Object} rating
- * @return {Object} gottenBusinessRating action
- */
-const gottenBusinessRating = rating => ({
-  type: BUSINESS_RATING,
-  rating
-});
+    .catch((error) => {
+      dispatch(failedRequest(GET_USER_BUSINESSES_FAILED, handleErrorCatch(error.response.data)));
+      dispatch(isLoading(IS_PAGE_LOADING, false));
+      props.history.push('/businesses');
+    });
+};
 
 /**
  * businessRating()
- * @desc dispatches gottenBusinessRating action
+ * @desc dispatches action to get rating for a business
  * @param {String} businessId
  * @return {*} void
  */
@@ -221,7 +193,7 @@ const businessRating = businessId => dispatch => (
   api.business
     .businessRating(businessId)
     .then((data) => {
-      dispatch(gottenBusinessRating(data.rating));
+      dispatch(successfulRequest(BUSINESS_RATING, data.rating));
     })
 );
 

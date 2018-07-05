@@ -1,7 +1,15 @@
 /* eslint no-undef: "off" */
 import * as actions from './../../src/actions/AuthAction';
 import * as types from './../../src/types/Types';
-import * as userData from './../mockData/userData';
+import {
+  signUpResponse,
+  signUpUser,
+  userUpdate,
+  userReponseFail,
+  signinResponse,
+  signinUser,
+  userDetails
+} from './../mockData/userData';
 
 describe('Auth actions tests', () => {
   beforeEach(() => moxios.install());
@@ -11,17 +19,60 @@ describe('Auth actions tests', () => {
     it('should register a new user', (done) => {
       moxios.stubRequest('/api/v1/auth/signup', {
         status: 201,
-        response: userData.signUpResponse
+        response: signUpResponse
       });
 
-      const { user } = userData.signUpResponse.data;
-      const expectedActions = [{
-        type: types.USER_SIGNED_IN,
-        user
-      }];
+      const { user } = signUpResponse.data;
+      const expectedActions = [
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: true
+        },
+        {
+          type: types.USER_SIGNED_IN,
+          credentials: user
+        },
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: false
+        },
+      ];
       const store = mockStore({});
 
-      return store.dispatch(actions.signup(userData.signUpUser))
+      return store.dispatch(actions.signup(signUpUser, props))
+        .then(() => {
+          expect(store.getActions()).to.deep.equal(expectedActions);
+          done();
+        });
+    });
+
+    it('should not register a new user', (done) => {
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+
+        request.respondWith({
+          status: 400,
+          response: userReponseFail
+        });
+      });
+
+      const expectedActions = [
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: true
+        },
+        {
+          type: types.SIGN_IN_FAILED,
+          error: userReponseFail.error[0]
+        },
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: false
+        },
+      ];
+      const store = mockStore({});
+
+      return store.dispatch(actions.signup(signUpUser, props))
         .then(() => {
           expect(store.getActions()).to.deep.equal(expectedActions);
           done();
@@ -30,20 +81,64 @@ describe('Auth actions tests', () => {
   });
 
   describe('signin action', () => {
-    it('should register a new user', (done) => {
+    it('should sigin an existing user', (done) => {
       moxios.stubRequest('/api/v1/auth/login', {
         status: 200,
-        response: userData.signinResponse
+        response: signinResponse
       });
 
-      const { user } = userData.signinResponse.data;
-      const expectedActions = [{
-        type: types.USER_SIGNED_IN,
-        user
-      }];
+      const { user } = signinResponse.data;
+      const expectedActions = [
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: true
+        },
+        {
+          type: types.USER_SIGNED_IN,
+          credentials: user
+        },
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: false
+        },
+      ];
       const store = mockStore({});
 
-      return store.dispatch(actions.signin(userData.signinUser))
+      return store.dispatch(actions.signin(signinUser, props))
+        .then(() => {
+          // return of async actions
+          expect(store.getActions()).to.deep.equal(expectedActions);
+          done();
+        });
+    });
+
+    it('should not sign user', (done) => {
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+
+        request.respondWith({
+          status: 400,
+          response: userReponseFail
+        });
+      });
+
+      const expectedActions = [
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: true
+        },
+        {
+          type: types.SIGN_IN_FAILED,
+          error: userReponseFail.error[0]
+        },
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: false
+        },
+      ];
+      const store = mockStore({});
+
+      return store.dispatch(actions.signin(signinUser, props))
         .then(() => {
           // return of async actions
           expect(store.getActions()).to.deep.equal(expectedActions);
@@ -55,7 +150,8 @@ describe('Auth actions tests', () => {
   describe('logout action', () => {
     it('should logout a signed in', () => {
       const expectedActions = [{
-        type: types.USER_LOGGED_OUT
+        type: types.USER_LOGGED_OUT,
+        credentials: {}
       }];
       const store = mockStore({});
 
@@ -68,13 +164,13 @@ describe('Auth actions tests', () => {
     it('should retrieve the details of a user', (done) => {
       moxios.stubRequest('/api/v1/user', {
         status: 200,
-        response: userData.userDetails
+        response: userDetails
       });
 
-      const { user } = userData.userDetails.data;
+      const { user } = userDetails.data;
       const expectedActions = [{
         type: types.FETCH_USER_DETAILS,
-        user
+        credentials: user
       }];
       const store = mockStore({});
 
@@ -91,17 +187,61 @@ describe('Auth actions tests', () => {
     it('should update the details of a user', (done) => {
       moxios.stubRequest('/api/v1/user', {
         status: 200,
-        response: userData.signinResponse
+        response: signinResponse
       });
 
-      const { user } = userData.signinResponse.data;
-      const expectedActions = [{
-        type: types.EDITTED_USER_DETAIL,
-        user
-      }];
+      const { user } = signinResponse.data;
+      const expectedActions = [
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: true
+        },
+        {
+          type: types.EDIT_USER_DETAIL,
+          credentials: user
+        },
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: false
+        },
+      ];
       const store = mockStore({});
 
-      return store.dispatch(actions.editUser(userData.userUpdate))
+      return store.dispatch(actions.editUser(userUpdate))
+        .then(() => {
+          // return of async actions
+          expect(store.getActions()).to.deep.equal(expectedActions);
+          done();
+        });
+    });
+
+    it('should not update the details of a user', (done) => {
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+
+        request.respondWith({
+          status: 400,
+          response: userReponseFail
+        });
+      });
+
+      const expectedActions = [
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: true
+        },
+        {
+          type: types.EDIT_USER_DETAIL_FAILED,
+          error: userReponseFail.error[0]
+        },
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: false
+        },
+      ];
+      const store = mockStore({});
+
+      return store.dispatch(actions.editUser(userUpdate))
         .then(() => {
           // return of async actions
           expect(store.getActions()).to.deep.equal(expectedActions);

@@ -1,8 +1,10 @@
 import {
   USER_SIGNED_IN,
+  SIGN_IN_FAILED,
   USER_LOGGED_OUT,
   FETCH_USER_DETAILS,
-  EDITTED_USER_DETAIL
+  EDIT_USER_DETAIL,
+  EDIT_USER_DETAIL_FAILED
 } from './../types/Types';
 
 /**
@@ -15,13 +17,14 @@ import {
 function userReducer(state = {}, action = {}) {
   switch (action.type) {
     case USER_SIGNED_IN:
-      return { ...state, ...action.user };
-    case FETCH_USER_DETAILS:
-      return { ...state, ...action.user };
-    case EDITTED_USER_DETAIL:
-      return { ...state, ...action.user };
     case USER_LOGGED_OUT:
-      return {};
+      return action.credentials;
+    case EDIT_USER_DETAIL:
+    case FETCH_USER_DETAILS:
+      return { ...state, ...action.credentials };
+    case SIGN_IN_FAILED:
+    case EDIT_USER_DETAIL_FAILED:
+      return { error: action.error };
     default:
       return state;
   }

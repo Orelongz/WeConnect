@@ -3,17 +3,15 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import alertify from 'alertifyjs';
 import SignUpForm from './../../forms/SignUpForm.jsx';
 import { signup } from './../../../actions/AuthAction';
-import { handleErrorCatch } from './../../../utils';
+import InfoMessage from './../../messages/InfoMessage.jsx';
 
 // define proptypes for SignUpPage component
 const propTypes = {
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired
-  }).isRequired,
-  signup: PropTypes.func.isRequired
+  signup: PropTypes.func.isRequired,
+  isRequestLoading: PropTypes.bool.isRequired,
+  error: PropTypes.string
 };
 
 /**
@@ -39,17 +37,7 @@ class SignUpPage extends Component {
    * @return {func} signup
    */
   submit(data) {
-    return this.props
-      .signup(data)
-      .then((user) => {
-        // alert the user a welcome message
-        alertify.success(`Welcome to WeConnect, ${user.firstname}`);
-        this.props.history.push('/businesses');
-      })
-      .catch((err) => {
-        // alert the user the error that occurred
-        alertify.error(handleErrorCatch(err.response.data));
-      });
+    return this.props.signup(data, this.props);
   }
 
   /**
@@ -58,14 +46,17 @@ class SignUpPage extends Component {
    * @return {Object} the SignUpPage component
    */
   render() {
+    const { isRequestLoading, error } = this.props;
+
     return (
       <div className="pb-main">
+        {!isRequestLoading && error && <InfoMessage text={error} type="danger" />}
         <div className="container mt-5">
           <div className="row justify-content-center">
             <div className="card col-xs-10 col-sm-8 col-md-6 col-lg-4">
               <div className="container">
                 <h2 className="text-center my-4">Create your account</h2>
-                <SignUpForm submit={this.submit}/>
+                <SignUpForm submit={this.submit} isLoading={isRequestLoading}/>
                 <div className="d-inline-block pull-right small pt-2">
                   <p>Already a member? <Link to='/signin'>Sign in</Link></p>
                 </div>
@@ -80,4 +71,16 @@ class SignUpPage extends Component {
 
 SignUpPage.propTypes = propTypes;
 
-export default connect(null, { signup })(SignUpPage);
+/**
+ * mapStateToProps
+ * @param {Object} state redux state
+ * @return {Object} SignUpPage props
+ */
+function mapStateToProps(state) {
+  return {
+    isRequestLoading: state.loadingReducer.isRequestLoading,
+    error: state.userReducer.error
+  };
+}
+
+export default connect(mapStateToProps, { signup })(SignUpPage);

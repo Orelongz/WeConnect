@@ -56,3 +56,8 @@ export const userUpdate = {
   email: 'jessie@me.com',
   userImage: ''
 };
+
+export const userReponseFail = {
+  status: 'fail',
+  error: ['Some error why auth failed']
+};

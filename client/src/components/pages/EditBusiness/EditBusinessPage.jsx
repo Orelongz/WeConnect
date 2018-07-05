@@ -72,14 +72,7 @@ class EditBusinessPage extends Component {
   handleEdit(data) {
     const { businessId } = this.props.match.params;
     return this.props
-      .editBusiness(data, businessId)
-      .then(() => {
-        this.props.history.push(`/businesses/${businessId}`);
-      })
-      .catch((err) => {
-        // alert the user the error that occurred
-        alertify.error(handleErrorCatch(err.response.data));
-      });
+      .editBusiness(data, businessId, this.props);
   }
 
   /**
@@ -91,12 +84,7 @@ class EditBusinessPage extends Component {
   businessTransfer(data) {
     const { businessId } = this.props.match.params;
     return this.props
-      .changeOwnership(data, businessId)
-      .then(() => this.props.history.push('/businesses'))
-      .catch((err) => {
-        // alert the user the error that occurred
-        alertify.error(handleErrorCatch(err.response.data));
-      });
+      .changeOwnership(data, businessId, this.props);
   }
 
   /**

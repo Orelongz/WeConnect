@@ -7,7 +7,8 @@ import InLineError from './../messages/InLineError.jsx';
 
 // define proptypes for SignUpForm component
 const propTypes = {
-  submit: PropTypes.func.isRequired
+  submit: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired
 };
 
 /**
@@ -60,8 +61,7 @@ class SignUpForm extends Component {
     const errors = validate(this.state.data);
     this.setState({ errors });
     if (Object.keys(errors).length === 0) {
-      return this.props
-        .submit(this.state.data);
+      return this.props.submit(this.state.data);
     }
   }
 
@@ -71,6 +71,7 @@ class SignUpForm extends Component {
    * @return {Object} the SignUpForm component
    */
   render() {
+    const { isLoading } = this.props;
     const { data, errors } = this.state;
 
     return (
@@ -146,7 +147,7 @@ class SignUpForm extends Component {
         </div>
 
         <p className="text-center small">By clicking Join Now, you agree to WeConnect <Link to="#">User Agreement</Link> and <Link to="#">Privacy Policy</Link></p>
-        <button className="btn btn-primary w-100"><i className="fa fa-user-plus" aria-hidden="true"></i>&nbsp;Join Now</button>
+        <button disabled={isLoading} className="btn btn-primary w-100"><i className="fa fa-user-plus" aria-hidden="true"></i>&nbsp;Join Now</button>
       </form>
     );
   }

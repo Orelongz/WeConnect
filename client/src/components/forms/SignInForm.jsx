@@ -6,7 +6,8 @@ import InLineError from './../messages/InLineError.jsx';
 
 // define proptypes for SignInForm component
 const propTypes = {
-  submit: PropTypes.func.isRequired
+  submit: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired
 };
 
 /**
@@ -66,6 +67,7 @@ class SignInForm extends Component {
    * @return {Object} the SignInForm component
    */
   render() {
+    const { isLoading } = this.props;
     const { data, errors } = this.state;
 
     return (
@@ -96,7 +98,7 @@ class SignInForm extends Component {
           />
           {errors.password && <InLineError text={errors.password} />}
         </div>
-        <button className="btn btn-primary w-100"><i className="fa fa-sign-in" aria-hidden="true"></i>&nbsp;Sign In</button>
+        <button disabled={isLoading} className="btn btn-primary w-100"><i className="fa fa-sign-in" aria-hidden="true"></i>&nbsp;Sign In</button>
       </form>
     );
   }

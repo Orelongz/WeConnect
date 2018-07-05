@@ -11,9 +11,14 @@ export const reviewResponse = {
       rating: 4,
       businessId: '',
       userId: '',
-      reviewId: ''
+      reviewId: 3
     }
   }
+};
+
+export const reviewResponseFail = {
+  status: 'fail',
+  error: 'Some message about failure'
 };
 
 export const businessReviews = {
@@ -25,7 +30,7 @@ export const businessReviews = {
         rating: 4,
         businessId: '',
         userId: '',
-        reviewId: ''
+        reviewId: 3
       }
     ]
   }

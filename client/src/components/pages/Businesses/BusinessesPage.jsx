@@ -3,16 +3,21 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+// import queryString from 'query-string';
 import SearchBar from './../../forms/SearchBar.jsx';
 import { allBusinesses } from './../../../actions/businessAction';
-import { defaultBusinessProfilePic } from './../../../../public/images';
-import Paginate from './../../../utils/paginate.jsx';
+import {
+  defaultBusinessProfilePic,
+  pageSpinner
+} from './../../../../public/images';
+import Paginate from '../../../components/common/paginate.jsx';
 
 // define proptypes for BusinessesPage component
 const propTypes = {
   allBusinesses: PropTypes.func.isRequired,
   businesses: PropTypes.array.isRequired,
-  paginate: PropTypes.object.isRequired
+  paginate: PropTypes.object.isRequired,
+  isLoading: PropTypes.bool.isRequired
 };
 
 /**
@@ -78,11 +83,7 @@ class BusinessesPage extends Component {
   constructor() {
     super();
     this.state = {
-      currentPage: 1,
-      searchTerm: '',
-      pageSize: 0,
-      count: 0,
-      limit: 0
+      search: ''
     };
     this.handleSearch = this.handleSearch.bind(this);
     this.onChange = this.onChange.bind(this);
@@ -96,34 +97,27 @@ class BusinessesPage extends Component {
    */
   onChange(page) {
     // get the searchTerm from the components state
-    const { searchTerm } = this.state;
+    const { search } = this.state;
     const generatePage = `page=${page}`;
 
-    if (searchTerm !== '') {
+    if (search) {
       // call api to fetch businesses by searchTerm and page number
-      this.props.allBusinesses(searchTerm, generatePage);
+      this.props.allBusinesses(search, generatePage);
     } else {
       // call api to fetch businesses just by the page number
       this.props.allBusinesses(null, generatePage);
     }
-
-    // set currentPage to value of page
-    this.setState({ currentPage: page });
   }
 
   /**
    * handleSearch
    * @desc handles business search
-   * @param {String} searchTerm the page number for businesses
+   * @param {String} search
    * @return {Object} new state object
    */
-  handleSearch(searchTerm) {
-    this.setState({ searchTerm, currentPage: 1 });
-    this.props.allBusinesses(searchTerm)
-      .then(() => {
-        const { count, limit, pageSize } = this.props.paginate;
-        this.setState({ count, limit, pageSize });
-      });
+  handleSearch(search) {
+    this.setState({ search });
+    this.props.allBusinesses(search);
   }
 
   /**
@@ -132,15 +126,7 @@ class BusinessesPage extends Component {
    * @return {Object} new state object
    */
   componentDidMount() {
-    // set documet title
-    document.title = 'All Businesses';
-
-    // call action to retrieve all businesses
-    this.props.allBusinesses()
-      .then(() => {
-        const { count, limit, pageSize } = this.props.paginate;
-        this.setState({ count, limit, pageSize });
-      });
+    this.props.allBusinesses();
   }
 
   /**
@@ -149,31 +135,43 @@ class BusinessesPage extends Component {
    * @return {Object} the BusinessesPage component
    */
   render() {
+    const { isLoading, paginate } = this.props;
     const {
-      currentPage, pageSize, count, limit
-    } = this.state;
+      currentPage, count, limit
+    } = paginate;
 
     return (
       <Fragment>
         <SearchBar handleSearch={this.handleSearch} />
-        <main className="pb-main">
-          <div className="container">
-            {displayBusinesses(this.props.businesses)}
+        {
+          isLoading ?
+          (
+            <div className="loading">
+              <img src={pageSpinner} alt="isLoading" />
+              <p>Loading...</p>
+            </div>
+          ) :
+          (
+            <main className="pb-main">
+              <div className="container">
+                {displayBusinesses(this.props.businesses)}
 
-            {/* only show pagination bar if businesses is greater than set limit */}
-            {
-              count > limit &&
-              <div className="d-flex justify-content-center mt-5">
-                <Paginate
-                  total={count}
-                  pageSize={pageSize}
-                  current={currentPage}
-                  onChange={this.onChange}
-                />
+                {/* only show pagination bar if businesses is greater than set limit */}
+                {
+                  count > limit &&
+                  <div className="d-flex justify-content-center mt-5">
+                    <Paginate
+                      count={count}
+                      pageSize={limit}
+                      current={currentPage}
+                      onChange={this.onChange}
+                    />
+                  </div>
+                }
               </div>
-            }
-          </div>
-        </main>
+            </main>
+          )
+        }
       </Fragment>
     );
   }
@@ -189,7 +187,8 @@ BusinessesPage.propTypes = propTypes;
 function mapStateToProps(state) {
   return {
     businesses: state.businessReducer.businesses,
-    paginate: state.businessReducer.paginate
+    paginate: state.businessReducer.paginate,
+    isLoading: state.loadingReducer.isPageLoading
   };
 }
 

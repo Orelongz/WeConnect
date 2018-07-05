@@ -7,6 +7,7 @@ import feedBack3 from './feedback_3.png';
 import happyFace from './happy_face.jpg';
 import marketPlace from './market_place.jpg';
 import searchImage from './search_image.png';
+import pageSpinner from './page spinner.gif';
 import defaultBusinessProfilePic from './default_business_profile_pic.png';
 
 // export all images to needed files
@@ -19,5 +20,6 @@ export {
   happyFace,
   marketPlace,
   searchImage,
-  defaultBusinessProfilePic
+  defaultBusinessProfilePic,
+  pageSpinner
 };

@@ -9,7 +9,8 @@ import { defaultBusinessProfilePic } from './../../../../public/images';
 const propTypes = {
   handleBusinessDelete: PropTypes.func.isRequired,
   businessDetails: PropTypes.object.isRequired,
-  User: PropTypes.object
+  User: PropTypes.object,
+  isLoading: PropTypes.bool.isRequired
 };
 
 /**
@@ -18,7 +19,9 @@ const propTypes = {
  * @param {Object} props
  * @return {Object} rendered businesses
  */
-function BusinessProfile({ businessDetails, User, handleBusinessDelete }) {
+function BusinessProfile({
+  businessDetails, User, handleBusinessDelete, isLoading
+}) {
   const {
     businessName, businessImage, category, address, city, state: businessState,
     phoneNumber, postalAddress, startTime, closeTime, about, id: businessId,
@@ -85,7 +88,7 @@ function BusinessProfile({ businessDetails, User, handleBusinessDelete }) {
               (ownerId === User.id) &&
               <div>
                 <Link to={`/businesses/${businessId}/edit`} className="btn btn-primary">Edit</Link>
-                <button onClick={handleBusinessDelete} className="btn btn-danger pull-right">Delete</button>
+                <button disabled={isLoading} onClick={handleBusinessDelete} className="btn btn-danger pull-right">Delete</button>
               </div>
             }
           </div>

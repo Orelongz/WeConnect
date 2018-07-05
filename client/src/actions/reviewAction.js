@@ -1,21 +1,20 @@
 import {
   ADD_REVIEW,
+  ADD_REVIEW_FAILED,
   GET_BUSINESS_REVIEWS,
   EDIT_REVIEW,
-  DELETE_REVIEW
+  EDIT_REVIEW_FAILED,
+  DELETE_REVIEW,
+  DELETE_REVIEW_FAILED,
+  IS_REQUEST_LOADING
 } from './../types/Types';
 import api from './../apiCalls/Api';
-
-/**
- * addedReview()
- * @desc addedReview action
- * @param {Object} review
- * @return {Object} addedReview action
- */
-const addedReview = review => ({
-  type: ADD_REVIEW,
-  review
-});
+import {
+  isLoading,
+  successfulRequest,
+  failedRequest
+} from './helpers';
+import { handleErrorCatch } from './../utils';
 
 /**
  * addReview()
@@ -25,24 +24,20 @@ const addedReview = review => ({
  * @param {Object} User
  * @return {*} void
  */
-const addReview = (credentials, businessId, User) => dispatch => (
-  api.review
+const addReview = (credentials, businessId, User) => (dispatch) => {
+  dispatch(isLoading(IS_REQUEST_LOADING, true));
+
+  return api.review
     .addReview(credentials, businessId)
     .then((review) => {
-      dispatch(addedReview({ ...review, User }));
+      dispatch(successfulRequest(ADD_REVIEW, { ...review, User }));
+      dispatch(isLoading(IS_REQUEST_LOADING, false));
     })
-);
-
-/**
- * businessReviews()
- * @desc businessReviews action
- * @param {Object} reviews
- * @return {Object} businessReviews action
- */
-const businessReviews = reviews => ({
-  type: GET_BUSINESS_REVIEWS,
-  reviews
-});
+    .catch((error) => {
+      dispatch(failedRequest(ADD_REVIEW_FAILED, handleErrorCatch(error.response.data)));
+      dispatch(isLoading(IS_REQUEST_LOADING, false));
+    });
+};
 
 /**
  * getBusinessReviews()
@@ -54,20 +49,9 @@ const getBusinessReviews = businessId => dispatch => (
   api.review
     .getBusinessReviews(businessId)
     .then((reviews) => {
-      dispatch(businessReviews(reviews));
+      dispatch(successfulRequest(GET_BUSINESS_REVIEWS, reviews));
     })
 );
-
-/**
- * editedReview()
- * @desc editedReview action
- * @param {Object} review
- * @return {Object} editedReview action
- */
-const editedReview = review => ({
-  type: EDIT_REVIEW,
-  review
-});
 
 /**
  * addReview()
@@ -79,25 +63,21 @@ const editedReview = review => ({
  * @param {String} userImage
  * @return {*} void
  */
-const editReview = (credentials, reviewId, firstname, lastname, userImage) => dispatch => (
-  api.review
+const editReview = (credentials, reviewId, firstname, lastname, userImage) => (dispatch) => {
+  dispatch(isLoading(IS_REQUEST_LOADING, true));
+
+  return api.review
     .editReview(credentials, reviewId)
     .then((review) => {
       const User = { firstname, lastname, userImage };
-      dispatch(editedReview({ ...review, User }));
+      dispatch(successfulRequest(EDIT_REVIEW, { ...review, User }));
+      dispatch(isLoading(IS_REQUEST_LOADING, false));
     })
-);
-
-/**
- * deletedReview()
- * @desc deletedReview action
- * @param {Object} reviewId
- * @return {Object} deletedReview action
- */
-const deletedReview = reviewId => ({
-  type: DELETE_REVIEW,
-  reviewId
-});
+    .catch((error) => {
+      dispatch(failedRequest(EDIT_REVIEW_FAILED, handleErrorCatch(error.response.data)));
+      dispatch(isLoading(IS_REQUEST_LOADING, false));
+    });
+};
 
 /**
  * deleteReview()
@@ -105,13 +85,20 @@ const deletedReview = reviewId => ({
  * @param {String} reviewId
  * @return {*} void
  */
-const deleteReview = reviewId => dispatch => (
-  api.review
+const deleteReview = reviewId => (dispatch) => {
+  dispatch(isLoading(IS_REQUEST_LOADING, true));
+
+  return api.review
     .deleteReview(reviewId)
     .then(() => {
-      dispatch(deletedReview(reviewId));
+      dispatch(successfulRequest(DELETE_REVIEW, reviewId));
+      dispatch(isLoading(IS_REQUEST_LOADING, false));
     })
-);
+    .catch((error) => {
+      dispatch(failedRequest(DELETE_REVIEW_FAILED, handleErrorCatch(error.response.data)));
+      dispatch(isLoading(IS_REQUEST_LOADING, false));
+    });
+};
 
 export {
   addReview,

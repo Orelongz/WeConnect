@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+/* eslint no-undef: "off" */
 import reducer from './../../src/reducers/categoryReducer';
 import * as types from './../../src/types/Types';
 import * as categoriesData from './../mockData/categoriesData';
@@ -11,9 +11,9 @@ describe('user reducer', () => {
   });
 
   it('should handle GET_ALL_CATEGORIES', () => {
-    expect(reducer({}, {
+    expect(reducer([], {
       type: types.GET_ALL_CATEGORIES,
-      categories
+      credentials: categories
     })).to.deep.equal(categories);
   });
 });

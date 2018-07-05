@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Pagination from 'rc-pagination';
 
 const propTypes = {
-  allBusinesses: PropTypes.number.isRequired,
+  count: PropTypes.number.isRequired,
   pageSize: PropTypes.number.isRequired,
   onChange: PropTypes.func.isRequired,
   current: PropTypes.number
@@ -15,14 +15,14 @@ const propTypes = {
  * @return {Object} pagination component
  */
 function Paginate({
-  allBusinesses: total, pageSize, onChange, current
+  count, pageSize, onChange, current
 }) {
   return (
     <div>
       <Pagination
-        showTotal={(allBusinesses, range) => `${range[0]} - ${range[1]} of ${allBusinesses} items`}
+        showTotal={(total, range) => `${range[0]} - ${range[1]} of ${total} items`}
         locale={{ items_per_page: 'Items' }}
-        total={total}
+        total={count}
         pageSize={pageSize}
         current={current}
         onChange={onChange}

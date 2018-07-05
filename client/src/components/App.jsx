@@ -33,7 +33,7 @@ const propTypes = {
  * @param {Object} location
  * @return {Object} rendered components
  */
-export function App({ location }) {
+function App({ location }) {
   return (
   <div className="bg-light holder">
     <NavBar />

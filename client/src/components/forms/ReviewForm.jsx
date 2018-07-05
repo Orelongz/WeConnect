@@ -28,7 +28,7 @@ class ReviewForm extends Component {
     this.state = {
       review: '',
       rating: 0,
-      error: {}
+      error: ''
     };
     this.onChange = this.onChange.bind(this);
     this.setRating = this.setRating.bind(this);
@@ -44,14 +44,12 @@ class ReviewForm extends Component {
   submit(event) {
     event.preventDefault();
     const { review, rating } = this.state;
-    const error = validate({ review });
 
-    if (rating === null) {
-      error.rating = 'Rate the business';
-    }
-    this.setState({ error });
-
-    if (Object.keys(error).length === 0) {
+    if (!rating || !review) {
+      this.setState({
+        error: 'Kindly make sure you write a review and rate the business'
+      });
+    } else {
       this.props.submit({ review, rating });
       this.setState({ review: '', rating: 0 });
     }
@@ -102,8 +100,7 @@ class ReviewForm extends Component {
               onChange={this.onChange}
               value={this.state.review}
             />
-            {error.review && <InLineError text={error.review} />}
-            {error.rating && <InLineError text={error.rating} />}
+            {error && <InLineError text={error} />}
           </div>
 
           <div className="pt-3">

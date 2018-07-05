@@ -15,6 +15,7 @@ import {
   deleteReview
 } from './../../../actions/reviewAction';
 import ReviewsDiv from './ReviewsDiv.jsx';
+import { pageSpinner } from './../../../../public/images';
 
 // define proptypes for BusinessProfilePage component
 const propTypes = {
@@ -33,9 +34,9 @@ const propTypes = {
   User: PropTypes.object,
   businessReviews: PropTypes.array.isRequired,
   businessDetails: PropTypes.object.isRequired,
-  history: PropTypes.shape({
-    push: PropTypes.func.isRequired
-  }).isRequired
+  isRequestLoading: PropTypes.bool.isRequired,
+  isPageLoading: PropTypes.bool.isRequired,
+  error: PropTypes.string
 };
 
 /**
@@ -64,14 +65,8 @@ class BusinessProfilePage extends Component {
    */
   componentDidMount() {
     const { businessId } = this.props.match.params;
-    this.props
-      .getBusiness(businessId)
-      .catch(() => this.props.history.push('/businesses'));
-    this.props.businessRating(businessId)
-      .then(() => {
-      // set documet title
-        document.title = `${this.props.businessDetails.businessName}`;
-      });
+    this.props.getBusiness(businessId, this.props);
+    this.props.businessRating(businessId);
     this.props.getBusinessReviews(businessId);
   }
 
@@ -82,9 +77,7 @@ class BusinessProfilePage extends Component {
    */
   handleBusinessDelete() {
     const { businessId } = this.props.match.params;
-    return this.props
-      .deleteBusiness(businessId)
-      .then(() => this.props.history.push('/businesses'));
+    this.props.deleteBusiness(businessId, this.props);
   }
 
   /**
@@ -136,35 +129,49 @@ class BusinessProfilePage extends Component {
    * @return {Object} the BusinessesPage component
    */
   render() {
-    const { User, businessReviews, businessDetails } = this.props;
+    const {
+      User, businessReviews, businessDetails, isRequestLoading, isPageLoading, error 
+    } = this.props;
 
     return (
       <main className="pb-main">
-        <div className="container">
-          <div className="row">
-            {
-              businessDetails &&
-              <BusinessProfile
-                businessDetails={businessDetails}
-                User={User}
-                handleBusinessDelete={this.handleBusinessDelete}
-              />
-            }
-            <div className="col-md-12 col-lg-4"></div>
-            <div className="col-md-12 col-lg-8">
-              {
-                (businessReviews.length > 0 || !!User.id) &&
-                <ReviewsDiv
-                  postReview={this.postReview}
-                  businessReviews={businessReviews}
-                  User={User}
-                  handleEditReview={this.handleEditReview}
-                  handleDeleteReview={this.handleDeleteReview}
-                />
-              }
+        {
+          isPageLoading ?
+          (
+            <div className="loading">
+              <img src={pageSpinner} alt="isLoading" />
+              <p>Loading...</p>
             </div>
-          </div>
-        </div>
+          ) :
+          (
+            <div className="container">
+              <div className="row">
+                {
+                  businessDetails &&
+                  <BusinessProfile
+                    businessDetails={businessDetails}
+                    User={User}
+                    handleBusinessDelete={this.handleBusinessDelete}
+                    isLoading={isRequestLoading}
+                  />
+                }
+                <div className="col-md-12 col-lg-4"></div>
+                <div className="col-md-12 col-lg-8">
+                  {
+                    (businessReviews.length > 0 || !!User.id) &&
+                    <ReviewsDiv
+                      postReview={this.postReview}
+                      businessReviews={businessReviews}
+                      User={User}
+                      handleEditReview={this.handleEditReview}
+                      handleDeleteReview={this.handleDeleteReview}
+                    />
+                  }
+                </div>
+              </div>
+            </div>
+          )
+        }
       </main>
     );
   }
@@ -179,7 +186,10 @@ function mapStateToProps(state) {
   return {
     businessDetails: state.businessReducer.business,
     User: state.userReducer,
-    businessReviews: state.reviewReducer.reviews
+    businessReviews: state.reviewReducer.reviews,
+    isRequestLoading: state.loadingReducer.isRequestLoading,
+    isPageLoading: state.loadingReducer.isPageLoading,
+    error: state.userReducer.error
   };
 }
 

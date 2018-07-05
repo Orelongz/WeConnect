@@ -42,7 +42,7 @@ export default {
       .then(res => res.data.data.business),
 
     // api call to retrieve all businesses
-    allBusinesses: (searchTerm, page) => axios.get(`${basePath}/businesses?${searchTerm}&${page}`)
+    allBusinesses: (search, page) => axios.get(`${basePath}/businesses?${search}&${page}`)
       .then(res => (res.data.data)),
 
     // api call to edit a business detail
@@ -65,7 +65,7 @@ export default {
 
     // api call to get all businesses created by a user
     userBusinesses: () => axios.get(`${basePath}/businesses/user`)
-      .then(res => res.data.data.businesses),
+      .then(res => res.data.data),
 
     // api call to get the average rating of a business
     businessRating: businessId => axios.get(`${basePath}/businesses/${businessId}/rating`)
