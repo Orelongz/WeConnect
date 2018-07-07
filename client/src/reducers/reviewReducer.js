@@ -1,14 +1,16 @@
 import {
   ADD_REVIEW,
+  ADD_REVIEW_FAILED,
   GET_BUSINESS_REVIEWS,
-  // GET_REVIEW,
   EDIT_REVIEW,
-  DELETE_REVIEW
+  EDIT_REVIEW_FAILED,
+  DELETE_REVIEW,
+  DELETE_REVIEW_FAILED
 } from './../types/Types';
 
 const initialState = {
-  review: {},
-  reviews: []
+  reviews: [],
+  error: null
 };
 
 /**
@@ -23,29 +25,37 @@ function reviewReducer(state = initialState, action = {}) {
     case ADD_REVIEW:
       return {
         ...state,
-        review: action.review,
-        reviews: [...state.reviews, action.review]
+        error: null,
+        reviews: [action.credentials, ...state.reviews]
+      };
+    case ADD_REVIEW_FAILED:
+    case EDIT_REVIEW_FAILED:
+    case DELETE_REVIEW_FAILED:
+      return {
+        ...state,
+        error: action.error
       };
     case GET_BUSINESS_REVIEWS:
       return {
         ...state,
-        reviews: action.reviews,
+        reviews: action.credentials,
       };
     case EDIT_REVIEW: {
       const newReviewList = state.reviews.map((eachReview) => {
-        if (eachReview.id === action.review.id) return action.review;
+        if (eachReview.id === action.credentials.id) return action.credentials;
         return eachReview;
       });
       return {
         ...state,
+        error: null,
         reviews: newReviewList
       };
     }
     case DELETE_REVIEW:
       return {
         ...state,
-        review: {},
-        reviews: state.reviews.filter(review => review.id !== action.reviewId)
+        error: null,
+        reviews: state.reviews.filter(review => review.id !== action.credentials)
       };
     default:
       return state;

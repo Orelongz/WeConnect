@@ -1,128 +1,118 @@
 // import required modules
 import {
   USER_SIGNED_IN,
+  SIGN_IN_FAILED,
   USER_LOGGED_OUT,
   FETCH_USER_DETAILS,
-  EDITTED_USER_DETAIL
+  EDIT_USER_DETAIL,
+  EDIT_USER_DETAIL_FAILED,
+  IS_REQUEST_LOADING
 } from './../types/Types';
 import setAuthorizationToken from './../utils/setAuthorizationToken';
 import api from './../apiCalls/Api';
-
-/**
- * userLoggedIn()
- * @desc userLoggedIn action
- * @param {Object} user
- * @return {Object} login action
- */
-const userLoggedIn = user => ({
-  type: USER_SIGNED_IN,
-  user
-});
+import {
+  isLoading,
+  successfulRequest,
+  failedRequest
+} from './helpers';
+import { handleErrorCatch } from './../utils';
 
 /**
  * signup()
- * @desc dispatches signup action
+ * @desc signs up the user
  * @param {Object} credentials
+ * @param {Object} props
  * @return {*} void
  */
-export const signup = credentials => dispatch => (
-  api.user
+export const signup = (credentials, props) => (dispatch) => {
+  dispatch(isLoading(IS_REQUEST_LOADING, true));
+
+  return api.user
     .signup(credentials)
     .then((user) => {
       const { token } = user;
       localStorage.setItem('weconnectToken', token);
       setAuthorizationToken(token);
-      dispatch(userLoggedIn(user));
-      return user;
+      dispatch(successfulRequest(USER_SIGNED_IN, user));
+      dispatch(isLoading(IS_REQUEST_LOADING, false));
+      props.history.push('/businesses');
     })
-);
+    .catch((error) => {
+      dispatch(failedRequest(SIGN_IN_FAILED, handleErrorCatch(error.response.data)));
+      dispatch(isLoading(IS_REQUEST_LOADING, false));
+    });
+};
 
 /**
  * signin()
- * @desc dispatches signin action
+ * @desc signs the user into the app
  * @param {Object} credentials
+ * @param {Object} props
  * @return {*} void
  */
-export const signin = credentials => dispatch => (
-  api.user
+export const signin = (credentials, props) => (dispatch) => {
+  dispatch(isLoading(IS_REQUEST_LOADING, true));
+
+  return api.user
     .signin(credentials)
     .then((user) => {
       const { token } = user;
       localStorage.setItem('weconnectToken', token);
       setAuthorizationToken(token);
-      dispatch(userLoggedIn(user));
-      return user;
+      dispatch(successfulRequest(USER_SIGNED_IN, user));
+      dispatch(isLoading(IS_REQUEST_LOADING, false));
+      props.history.push('/businesses');
     })
-);
-
-/**
- * userLoggedOut()
- * @desc userLoggedOut action
- * @return {Object} logout action
- */
-const userLoggedOut = () => ({
-  type: USER_LOGGED_OUT
-});
+    .catch((error) => {
+      dispatch(failedRequest(SIGN_IN_FAILED, handleErrorCatch(error.response.data)));
+      dispatch(isLoading(IS_REQUEST_LOADING, false));
+    });
+};
 
 /**
  * logout()
- * @desc dispatches logout action
+ * @desc logs out users
  * @return {*} void
  */
 export const logout = () => (dispatch) => {
   localStorage.removeItem('weconnectToken');
   setAuthorizationToken();
-  dispatch(userLoggedOut());
+  return dispatch(successfulRequest(USER_LOGGED_OUT, {}));
 };
 
 /**
- * userFetched()
- * @desc userFetched action
- * @param {Object} user
- * @return {Object} userFetched action
- */
-const userFetched = user => ({
-  type: FETCH_USER_DETAILS,
-  user
-});
-
-/**
  * userDetails()
- * @desc dispatches userFetched action
+ * @desc fetches details of a signed in user
  * @return {*} void
  */
 export const userDetails = () => dispatch => (
   api.user
     .userDetails()
     .then((user) => {
-      dispatch(userFetched(user));
+      dispatch(successfulRequest(FETCH_USER_DETAILS, user));
     })
 );
 
 /**
- * editedUser()
- * @desc editedUser action
- * @param {Object} user
- * @return {Object} editedUser action
- */
-const editedUser = user => ({
-  type: EDITTED_USER_DETAIL,
-  user
-});
-
-/**
- * userDetails()
- * @desc dispatches editedUser action
+ * editUser()
+ * @desc edits details about a signed in user
  * @param {Object} credentials
  * @return {*} void
  */
-export const editUser = credentials => dispatch => (
-  api.user
+export const editUser = credentials => (dispatch) => {
+  dispatch(isLoading(IS_REQUEST_LOADING, true));
+
+  return api.user
     .editUser(credentials)
     .then((user) => {
       const { token } = user;
       localStorage.setItem('weconnectToken', token);
       setAuthorizationToken(token);
-      dispatch(editedUser(user));
+      dispatch(successfulRequest(EDIT_USER_DETAIL, user));
+      dispatch(isLoading(IS_REQUEST_LOADING, false));
     })
-);
+    .catch((error) => {
+      dispatch(failedRequest(EDIT_USER_DETAIL_FAILED, handleErrorCatch(error.response.data)));
+      dispatch(isLoading(IS_REQUEST_LOADING, false));
+    });
+};

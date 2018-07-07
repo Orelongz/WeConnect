@@ -121,3 +121,8 @@ export const businessUpdate = {
     }
   }
 };
+
+export const businessReponseFail = {
+  status: 'fail',
+  error: 'Some error why business failed'
+};

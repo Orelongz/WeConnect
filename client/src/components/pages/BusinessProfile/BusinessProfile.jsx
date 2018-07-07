@@ -7,9 +7,10 @@ import { defaultBusinessProfilePic } from './../../../../public/images';
 
 // define proptypes for BusinessProfile component
 const propTypes = {
-  handleBusinessDelete: PropTypes.func.isRequired,
+  handleDeleteBusiness: PropTypes.func.isRequired,
   businessDetails: PropTypes.object.isRequired,
-  User: PropTypes.object
+  User: PropTypes.object,
+  isLoading: PropTypes.bool.isRequired
 };
 
 /**
@@ -18,13 +19,15 @@ const propTypes = {
  * @param {Object} props
  * @return {Object} rendered businesses
  */
-function BusinessProfile({ businessDetails, User, handleBusinessDelete }) {
+function BusinessProfile({
+  businessDetails, User, handleDeleteBusiness, isLoading
+}) {
   const {
     businessName, businessImage, category, address, city, state: businessState,
     phoneNumber, postalAddress, startTime, closeTime, about, id: businessId,
     userId: ownerId, rating
   } = businessDetails;
-  const displayImage = (businessImage === '' || businessImage === null) ? defaultBusinessProfilePic : businessImage;
+  const displayBusinessImage = businessImage || defaultBusinessProfilePic;
 
   return (
     <Fragment>
@@ -73,19 +76,19 @@ function BusinessProfile({ businessDetails, User, handleBusinessDelete }) {
 
       <div className="col-md-12 col-lg-8 mt-4">
         <div className="card">
-          <img src={displayImage} alt={businessName} className="card-img-top business-pic" />
+          <img src={displayBusinessImage} alt={businessName} className="card-img-top business-pic" />
           <div className="card-body">
             <div>
               <h1>About {businessName}</h1>
-              <article className="text-justify">
+              <div className="text-justify display-linebreak mb-3">
                 {about}
-              </article>
+              </div>
             </div>
             {
               (ownerId === User.id) &&
               <div>
                 <Link to={`/businesses/${businessId}/edit`} className="btn btn-primary">Edit</Link>
-                <button onClick={handleBusinessDelete} className="btn btn-danger pull-right">Delete</button>
+                <button disabled={isLoading} onClick={handleDeleteBusiness} className="btn btn-danger pull-right">Delete</button>
               </div>
             }
           </div>

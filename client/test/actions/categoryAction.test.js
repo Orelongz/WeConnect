@@ -17,7 +17,7 @@ describe('category actions tests', () => {
 
       const expectedActions = [{
         type: types.GET_ALL_CATEGORIES,
-        categories
+        credentials: categories
       }];
       const store = mockStore({});
 

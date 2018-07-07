@@ -1,19 +1,25 @@
 import {
   REGISTER_BUSINESS,
+  REGISTER_BUSINESS_FAILED,
   GET_BUSINESS_DETAILS,
+  GET_BUSINESS_FAILED,
   GET_ALL_BUSINESSES,
   EDIT_BUSINESS,
+  EDIT_BUSINESS_FAILED,
   CHANGE_OWNERSHIP,
+  CHANGE_OWNERSHIP_FAILED,
   DELETE_BUSINESS,
+  DELETE_BUSINESS_FAILED,
   GET_USER_BUSINESSES,
+  GET_USER_BUSINESSES_FAILED,
   BUSINESS_RATING,
-  PAGINATE_BUSINESSES
 } from './../types/Types';
 
 const initialState = {
   businesses: [],
   business: {},
-  paginate: {}
+  paginate: {},
+  error: null
 };
 /**
  * businessReducer()
@@ -27,48 +33,53 @@ function businessReducer(state = initialState, action = {}) {
     case REGISTER_BUSINESS:
       return {
         ...state,
-        business: action.business,
-        businesses: [...state.businesses, action.business]
+        business: action.credentials,
+        businesses: [action.credentials, ...state.businesses]
       };
     case EDIT_BUSINESS:
     case CHANGE_OWNERSHIP: {
       const newBusinessList = state.businesses.map((eachBusiness) => {
-        if (eachBusiness.id === action.business.id) return action.business;
+        if (eachBusiness.id === action.credentials.id) return action.credentials;
         return eachBusiness;
       });
 
       return {
         ...state,
+        business: action.credentials,
         businesses: newBusinessList
       };
     }
     case GET_BUSINESS_DETAILS:
       return {
         ...state,
-        business: action.business
+        business: action.credentials,
+        error: null
       };
+    case GET_USER_BUSINESSES:
     case GET_ALL_BUSINESSES:
-      return { ...state, businesses: action.businesses };
+      return {
+        ...state,
+        businesses: action.credentials.businesses,
+        paginate: action.credentials.paginate
+      };
     case DELETE_BUSINESS:
       return {
         ...state,
         business: {},
-        businesses: state.businesses.filter(business => business.id !== action.businessId)
-      };
-    case GET_USER_BUSINESSES:
-      return {
-        ...state,
-        businesses: action.businesses
+        businesses: state.businesses.filter(business => business.id !== action.credentials)
       };
     case BUSINESS_RATING:
       return {
         ...state,
-        business: { ...state.business, ...action.rating }
+        business: { ...state.business, rating: action.credentials }
       };
-    case PAGINATE_BUSINESSES:
-      return {
-        ...state, paginate: action.paginate
-      };
+    case DELETE_BUSINESS_FAILED:
+    case GET_BUSINESS_FAILED:
+    case EDIT_BUSINESS_FAILED:
+    case CHANGE_OWNERSHIP_FAILED:
+    case GET_USER_BUSINESSES_FAILED:
+    case REGISTER_BUSINESS_FAILED:
+      return { error: action.error };
     default:
       return state;
   }

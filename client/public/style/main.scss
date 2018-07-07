@@ -86,3 +86,16 @@
     }
   }
 }
+
+.loading {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  img {
+    max-width: 50px;
+  }
+}
+
+.display-linebreak {
+  white-space: pre-line;
+}

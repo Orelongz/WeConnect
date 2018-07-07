@@ -5,12 +5,12 @@ import { GET_ALL_CATEGORIES } from './../types/Types';
  * @desc reducer for category
  * @param {Object} state
  * @param {Object} action
- * @return {Object} business
+ * @return {Object} category redux state
  */
 function categoryReducer(state = [], action = {}) {
   switch (action.type) {
     case GET_ALL_CATEGORIES:
-      return action.categories;
+      return action.credentials;
     default:
       return state;
   }

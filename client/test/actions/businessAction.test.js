@@ -1,7 +1,15 @@
 /* eslint no-undef: "off" */
 import * as actions from './../../src/actions/businessAction';
 import * as types from './../../src/types/Types';
-import * as businessData from './../mockData/businessData';
+import {
+  businessObject,
+  credentials,
+  businessReponseFail,
+  allBusinesses,
+  businessUpdate,
+  updateCredentials,
+  businessRating
+} from './../mockData/businessData';
 
 let theBusinessId;
 
@@ -13,18 +21,64 @@ describe('Business actions tests', () => {
     it('should register a new business', (done) => {
       moxios.stubRequest('/api/v1/businesses', {
         status: 201,
-        response: businessData.businessObject
+        response: businessObject
       });
 
-      const { business } = businessData.businessObject.data;
+      const { business } = businessObject.data;
       theBusinessId = business.businessId;
-      const expectedActions = [{
-        type: types.REGISTER_BUSINESS,
-        business
-      }];
+      const expectedActions = [
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: true
+        },
+        {
+          type: types.REGISTER_BUSINESS,
+          credentials: business
+        },
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: false
+        },
+      ];
       const store = mockStore({});
 
-      return store.dispatch(actions.newBusiness(businessData.credentials))
+      return store.dispatch(actions.newBusiness(credentials, props))
+        .then(() => {
+          // return of async actions
+          expect(store.getActions()).to.deep.equal(expectedActions);
+          done();
+        });
+    });
+
+    it('should not register a new business', (done) => {
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+
+        request.respondWith({
+          status: 400,
+          response: businessReponseFail
+        });
+      });
+
+      const { business } = businessObject.data;
+      theBusinessId = business.businessId;
+      const expectedActions = [
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: true
+        },
+        {
+          type: types.REGISTER_BUSINESS_FAILED,
+          error: businessReponseFail.error
+        },
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: false
+        },
+      ];
+      const store = mockStore({});
+
+      return store.dispatch(actions.newBusiness(credentials, props))
         .then(() => {
           // return of async actions
           expect(store.getActions()).to.deep.equal(expectedActions);
@@ -40,20 +94,24 @@ describe('Business actions tests', () => {
 
         request.respondWith({
           status: 200,
-          response: businessData.allBusinesses
+          response: allBusinesses
         });
       });
 
-      const { businesses, paginate } = businessData.allBusinesses.data;
+      const { data: businessesResponse } = allBusinesses;
       const expectedActions = [
         {
-          type: types.GET_ALL_BUSINESSES,
-          businesses
+          type: types.IS_PAGE_LOADING,
+          status: true
         },
         {
-          type: types.PAGINATE_BUSINESSES,
-          paginate
-        }
+          type: types.GET_ALL_BUSINESSES,
+          credentials: businessesResponse
+        },
+        {
+          type: types.IS_PAGE_LOADING,
+          status: false
+        },
       ];
       const store = mockStore({ businesses: [] });
 
@@ -73,18 +131,62 @@ describe('Business actions tests', () => {
 
         request.respondWith({
           status: 200,
-          response: businessData.allBusinesses
+          response: allBusinesses
         });
       });
 
-      const { businesses } = businessData.allBusinesses.data;
-      const expectedActions = [{
-        type: types.GET_USER_BUSINESSES,
-        businesses
-      }];
+      const { data: businessesResponse } = allBusinesses;
+      const expectedActions = [
+        {
+          type: types.IS_PAGE_LOADING,
+          status: true
+        },
+        {
+          type: types.GET_USER_BUSINESSES,
+          credentials: businessesResponse
+        },
+        {
+          type: types.IS_PAGE_LOADING,
+          status: false
+        },
+      ];
       const store = mockStore({});
 
       return store.dispatch(actions.userBusinesses())
+        .then(() => {
+          // return of async actions
+          expect(store.getActions()).to.deep.equal(expectedActions);
+          done();
+        });
+    });
+
+    it('should not retrieve businesses', (done) => {
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+
+        request.respondWith({
+          status: 400,
+          response: businessReponseFail
+        });
+      });
+
+      const expectedActions = [
+        {
+          type: types.IS_PAGE_LOADING,
+          status: true
+        },
+        {
+          type: types.GET_USER_BUSINESSES_FAILED,
+          error: businessReponseFail.error
+        },
+        {
+          type: types.IS_PAGE_LOADING,
+          status: false
+        },
+      ];
+      const store = mockStore({});
+
+      return store.dispatch(actions.userBusinesses(props))
         .then(() => {
           // return of async actions
           expect(store.getActions()).to.deep.equal(expectedActions);
@@ -97,17 +199,61 @@ describe('Business actions tests', () => {
     it('should retrieve the details of an existing business', (done) => {
       moxios.stubRequest(`/api/v1/businesses/${theBusinessId}`, {
         status: 200,
-        response: businessData.businessObject
+        response: businessObject
       });
 
-      const { business } = businessData.businessObject.data;
-      const expectedActions = [{
-        type: types.GET_BUSINESS_DETAILS,
-        business
-      }];
+      const { business } = businessObject.data;
+      const expectedActions = [
+        {
+          type: types.IS_PAGE_LOADING,
+          status: true
+        },
+        {
+          type: types.GET_BUSINESS_DETAILS,
+          credentials: business
+        },
+        {
+          type: types.IS_PAGE_LOADING,
+          status: false
+        },
+      ];
       const store = mockStore({});
 
-      return store.dispatch(actions.getBusiness(theBusinessId))
+      return store.dispatch(actions.getBusiness(theBusinessId, props))
+        .then(() => {
+          // return of async actions
+          expect(store.getActions()).to.deep.equal(expectedActions);
+          done();
+        });
+    });
+
+    it('should not retrieve the details of the business', (done) => {
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+
+        request.respondWith({
+          status: 400,
+          response: businessReponseFail
+        });
+      });
+
+      const expectedActions = [
+        {
+          type: types.IS_PAGE_LOADING,
+          status: true
+        },
+        {
+          type: types.GET_BUSINESS_FAILED,
+          error: businessReponseFail.error
+        },
+        {
+          type: types.IS_PAGE_LOADING,
+          status: false
+        },
+      ];
+      const store = mockStore({});
+
+      return store.dispatch(actions.getBusiness(theBusinessId, props))
         .then(() => {
           // return of async actions
           expect(store.getActions()).to.deep.equal(expectedActions);
@@ -122,18 +268,61 @@ describe('Business actions tests', () => {
         const request = moxios.requests.mostRecent();
         request.respondWith({
           status: 200,
-          response: businessData.businessUpdate
+          response: businessUpdate
         });
       });
 
-      const { business } = businessData.businessUpdate.data;
-      const expectedActions = [{
-        type: types.EDIT_BUSINESS,
-        business
-      }];
+      const { business } = businessUpdate.data;
+      const expectedActions = [
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: true
+        },
+        {
+          type: types.EDIT_BUSINESS,
+          credentials: business
+        },
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: false
+        },
+      ];
       const store = mockStore({});
 
-      return store.dispatch(actions.editBusiness(businessData.updateCredentials, theBusinessId))
+      return store.dispatch(actions.editBusiness(updateCredentials, theBusinessId, props))
+        .then(() => {
+          // return of async actions
+          expect(store.getActions()).to.deep.equal(expectedActions);
+          done();
+        });
+    });
+
+    it('should not update the details of the business business', (done) => {
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.respondWith({
+          status: 400,
+          response: businessReponseFail
+        });
+      });
+
+      const expectedActions = [
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: true
+        },
+        {
+          type: types.EDIT_BUSINESS_FAILED,
+          error: businessReponseFail.error
+        },
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: false
+        },
+      ];
+      const store = mockStore({});
+
+      return store.dispatch(actions.editBusiness(updateCredentials, theBusinessId))
         .then(() => {
           // return of async actions
           expect(store.getActions()).to.deep.equal(expectedActions);
@@ -144,7 +333,7 @@ describe('Business actions tests', () => {
 
   describe('change business ownership action', () => {
     it('should change the ownership of an existing business', (done) => {
-      const { business } = businessData.businessObject.data;
+      const { business } = businessObject.data;
       moxios.wait(() => {
         const request = moxios.requests.mostRecent();
         request.respondWith({
@@ -159,13 +348,56 @@ describe('Business actions tests', () => {
         });
       });
 
-      const expectedActions = [{
-        type: types.CHANGE_OWNERSHIP,
-        business
-      }];
+      const expectedActions = [
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: true
+        },
+        {
+          type: types.CHANGE_OWNERSHIP,
+          credentials: business
+        },
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: false
+        },
+      ];
       const store = mockStore({});
 
-      return store.dispatch(actions.changeOwnership(businessData.credentials, theBusinessId))
+      return store.dispatch(actions.changeOwnership(credentials, theBusinessId, props))
+        .then(() => {
+          // return of async actions
+          expect(store.getActions()).to.deep.equal(expectedActions);
+          done();
+        });
+    });
+
+    it('should not change the ownership of an existing business', (done) => {
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+        request.respondWith({
+          status: 400,
+          response: businessReponseFail
+        });
+      });
+
+      const expectedActions = [
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: true
+        },
+        {
+          type: types.CHANGE_OWNERSHIP_FAILED,
+          error: businessReponseFail.error
+        },
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: false
+        },
+      ];
+      const store = mockStore({});
+
+      return store.dispatch(actions.changeOwnership(credentials, theBusinessId, props))
         .then(() => {
           // return of async actions
           expect(store.getActions()).to.deep.equal(expectedActions);
@@ -188,13 +420,57 @@ describe('Business actions tests', () => {
         });
       });
 
-      const expectedActions = [{
-        type: types.DELETE_BUSINESS,
-        businessId: theBusinessId
-      }];
+      const expectedActions = [
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: true
+        },
+        {
+          type: types.DELETE_BUSINESS,
+          credentials: theBusinessId
+        },
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: false
+        },
+      ];
       const store = mockStore({});
 
-      return store.dispatch(actions.deleteBusiness(theBusinessId))
+      return store.dispatch(actions.deleteBusiness(theBusinessId, props))
+        .then(() => {
+          // return of async actions
+          expect(store.getActions()).to.deep.equal(expectedActions);
+          done();
+        });
+    });
+
+    it('should not delete the business', (done) => {
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+
+        request.respondWith({
+          status: 400,
+          response: businessReponseFail
+        });
+      });
+
+      const expectedActions = [
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: true
+        },
+        {
+          type: types.DELETE_BUSINESS_FAILED,
+          error: businessReponseFail.error
+        },
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: false
+        },
+      ];
+      const store = mockStore({});
+
+      return store.dispatch(actions.deleteBusiness(theBusinessId, props))
         .then(() => {
           // return of async actions
           expect(store.getActions()).to.deep.equal(expectedActions);
@@ -210,14 +486,14 @@ describe('Business actions tests', () => {
 
         request.respondWith({
           status: 200,
-          response: businessData.businessRating
+          response: businessRating
         });
       });
 
-      const { rating } = businessData.businessRating.data;
+      const { rating } = businessRating.data;
       const expectedActions = [{
         type: types.BUSINESS_RATING,
-        rating
+        credentials: rating
       }];
       const store = mockStore({});
 

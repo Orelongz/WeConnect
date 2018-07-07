@@ -11,7 +11,10 @@ const mockStore = configureMockStore(middlewares);
 // React 16 Enzyme adapter
 configure({ adapter: new Adapter() });
 
+const props = { history: [] };
+
 // Make Enzyme functions available in all test files without importing
+global.props = props;
 global.shallow = shallow;
 global.render = render;
 global.mount = mount;

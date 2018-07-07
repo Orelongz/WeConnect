@@ -14,7 +14,7 @@ const propTypes = {
  * @return {Object} rendered error component
  */
 function InlineError({ text }) {
-  return (<p className="small text-white bg-info px-2">{text}</p>);
+  return (<p className="small text-white bg-info px-2 mb-0">{text}</p>);
 }
 
 InlineError.propTypes = propTypes;
