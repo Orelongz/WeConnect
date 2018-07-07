@@ -16,6 +16,9 @@ function validate(inputObject) {
     if (key === 'email' && !validator.isEmail(value)) {
       errors[key] = 'Email is not valid';
     }
+    if (key === 'confirmPassword' && inputObject.password !== value) {
+      errors[key] = 'Passwords do not match';
+    }
   });
   return errors;
 }

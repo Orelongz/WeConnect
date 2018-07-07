@@ -230,7 +230,7 @@ export default class BusinessController {
                 status: 'success',
                 data: {
                   message: 'Business transferred',
-                  business
+                  business: business[1]
                 }
               });
             }

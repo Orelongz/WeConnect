@@ -23,7 +23,7 @@ function UserBusinesses({ businesses, deleteBusiness }) {
         businessImage, businessName, category, phoneNumber, id: businessId
       } = eachBusiness;
       const businessLink = `/businesses/${businessId}`;
-      const displayImage = (businessImage === '' || businessImage === null) ? defaultBusinessProfilePic : businessImage;
+      const displayImage = businessImage || defaultBusinessProfilePic;
       return (
         <div key={businessId} className="col-xs-12 col-sm-6 col-lg-4 mt-4">
           <div className="card" >

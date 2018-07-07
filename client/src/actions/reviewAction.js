@@ -58,18 +58,15 @@ const getBusinessReviews = businessId => dispatch => (
  * @desc dispatches editedReview action
  * @param {Object} credentials
  * @param {String} reviewId
- * @param {String} firstname
- * @param {String} lastname
- * @param {String} userImage
+ * @param {Object} User
  * @return {*} void
  */
-const editReview = (credentials, reviewId, firstname, lastname, userImage) => (dispatch) => {
+const editReview = (credentials, reviewId, User) => (dispatch) => {
   dispatch(isLoading(IS_REQUEST_LOADING, true));
 
   return api.review
     .editReview(credentials, reviewId)
     .then((review) => {
-      const User = { firstname, lastname, userImage };
       dispatch(successfulRequest(EDIT_REVIEW, { ...review, User }));
       dispatch(isLoading(IS_REQUEST_LOADING, false));
     })

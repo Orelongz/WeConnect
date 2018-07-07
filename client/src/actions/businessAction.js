@@ -28,9 +28,10 @@ import { handleErrorCatch } from './../utils';
  * newBusiness()
  * @desc dispatches action to create a new business
  * @param {Object} credentials
+ * @param {Object} props
  * @return {*} void
  */
-const newBusiness = credentials => (dispatch) => {
+const newBusiness = (credentials, props) => (dispatch) => {
   dispatch(isLoading(IS_REQUEST_LOADING, true));
 
   return api.business
@@ -38,6 +39,7 @@ const newBusiness = credentials => (dispatch) => {
     .then((business) => {
       dispatch(successfulRequest(REGISTER_BUSINESS, business));
       dispatch(isLoading(IS_REQUEST_LOADING, false));
+      props.history.push(`/businesses/${business.id}`);
     })
     .catch((error) => {
       dispatch(failedRequest(REGISTER_BUSINESS_FAILED, handleErrorCatch(error.response.data)));
@@ -106,7 +108,7 @@ const editBusiness = (credentials, businessId, props) => (dispatch) => {
     .then((business) => {
       dispatch(successfulRequest(EDIT_BUSINESS, business));
       dispatch(isLoading(IS_REQUEST_LOADING, false));
-      props.history.push(`/businesses/${business.businessId}`);
+      props.history.push(`/businesses/${business.id}`);
     })
     .catch((error) => {
       dispatch(failedRequest(EDIT_BUSINESS_FAILED, handleErrorCatch(error.response.data)));
@@ -153,6 +155,7 @@ const deleteBusiness = (businessId, props) => (dispatch) => {
     .then(() => {
       dispatch(successfulRequest(DELETE_BUSINESS, businessId));
       dispatch(isLoading(IS_REQUEST_LOADING, false));
+      props.history.push('/businesses');
     })
     .catch((error) => {
       dispatch(failedRequest(DELETE_BUSINESS_FAILED, handleErrorCatch(error.response.data)));

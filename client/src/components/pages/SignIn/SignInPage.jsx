@@ -6,12 +6,14 @@ import { connect } from 'react-redux';
 import SignInForm from './../../forms/SignInForm.jsx';
 import { signin } from './../../../actions/AuthAction';
 import InfoMessage from './../../messages/InfoMessage.jsx';
+import { validate } from './../../../utils';
+
 
 // define proptypes for SignInPage component
 const propTypes = {
   signin: PropTypes.func.isRequired,
   isRequestLoading: PropTypes.bool.isRequired,
-  error: PropTypes.string
+  serverError: PropTypes.string
 };
 
 /**
@@ -27,17 +29,42 @@ class SignInPage extends Component {
    */
   constructor() {
     super();
-    this.submit = this.submit.bind(this);
+    this.state = {
+      data: {
+        email: '',
+        password: ''
+      },
+      errors: {}
+    };
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   /**
-   * submit
-   * @desc handles submitting of the SignInForm
-   * @param {Object} data user credentials collected from the SignInForm
-   * @return {func} signin
+   * onChange
+   * @desc handles state change when value of input fields change
+   * @param {Object} event DOM event
+   * @return {Object} new state object
    */
-  submit(data) {
-    return this.props.signin(data, this.props);
+  onChange(event) {
+    return this.setState({
+      data: { ...this.state.data, [event.target.name]: event.target.value }
+    });
+  }
+
+  /**
+   * onSubmit
+   * @desc handles submit of the signin form
+   * @param {Object} event DOM event
+   * @return {func} submit
+   */
+  onSubmit(event) {
+    event.preventDefault();
+    const errors = validate(this.state.data);
+    this.setState({ errors });
+    if (Object.keys(errors).length === 0) {
+      return this.props.signin(this.state.data, this.props);
+    }
   }
 
   /**
@@ -46,17 +73,24 @@ class SignInPage extends Component {
    * @return {Object} the SignInPage component
    */
   render() {
-    const { isRequestLoading, error } = this.props;
+    const { isRequestLoading, serverError } = this.props;
+    const { errors, data } = this.state;
 
     return (
       <div className="pb-main">
-        {!isRequestLoading && error && <InfoMessage text={error} type="danger" />}
+        {!isRequestLoading && serverError && <InfoMessage text={serverError} type="danger" />}
         <div className="container mt-5">
           <div className="row justify-content-center">
             <div className="card col-xs-10 col-sm-8 col-md-6 col-lg-4">
               <div className="container">
                 <h2 className="text-center my-4">Signin</h2>
-                <SignInForm submit={this.submit} isLoading={isRequestLoading}/>
+                <SignInForm
+                  isLoading={isRequestLoading}
+                  onSubmit={this.onSubmit}
+                  onChange={this.onChange}
+                  errors={errors}
+                  data={data}
+                />
                 <div className="d-flex justify-content-between small pt-2">
                   <p className="d-inline-block">Not a member? <Link to='/signup'>Sign up </Link></p>
                   <p className="d-inline-block"><Link to='/'>Forgot Password?</Link></p>
@@ -80,7 +114,7 @@ SignInPage.propTypes = propTypes;
 function mapStateToProps(state) {
   return {
     isRequestLoading: state.loadingReducer.isRequestLoading,
-    error: state.userReducer.error
+    serverError: state.userReducer.error
   };
 }
 

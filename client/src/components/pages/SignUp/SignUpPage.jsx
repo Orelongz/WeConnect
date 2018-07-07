@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { validate } from './../../../utils';
 import SignUpForm from './../../forms/SignUpForm.jsx';
 import { signup } from './../../../actions/AuthAction';
 import InfoMessage from './../../messages/InfoMessage.jsx';
@@ -11,7 +12,7 @@ import InfoMessage from './../../messages/InfoMessage.jsx';
 const propTypes = {
   signup: PropTypes.func.isRequired,
   isRequestLoading: PropTypes.bool.isRequired,
-  error: PropTypes.string
+  serverError: PropTypes.string
 };
 
 /**
@@ -27,17 +28,45 @@ class SignUpPage extends Component {
    */
   constructor() {
     super();
-    this.submit = this.submit.bind(this);
+    this.state = {
+      data: {
+        firstname: '',
+        lastname: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+      },
+      errors: {}
+    };
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
 
   /**
-   * submit
-   * @desc handles submitting of the SignUpForm
-   * @param {Object} data user credentials collected from the SignUpForm
-   * @return {func} signup
+   * onChange
+   * @desc handles state change when value of input fields change
+   * @param {Object} event DOM event
+   * @return {Object} new state object
    */
-  submit(data) {
-    return this.props.signup(data, this.props);
+  onChange(event) {
+    return this.setState({
+      data: { ...this.state.data, [event.target.name]: event.target.value }
+    });
+  }
+
+  /**
+   * onSubmit
+   * @desc handles submit of the signup form
+   * @param {Object} event DOM event
+   * @return {func} submit
+   */
+  onSubmit(event) {
+    event.preventDefault();
+    const errors = validate(this.state.data);
+    this.setState({ errors });
+    if (Object.keys(errors).length === 0) {
+      return this.props.signup(this.state.data, this.props);
+    }
   }
 
   /**
@@ -46,17 +75,24 @@ class SignUpPage extends Component {
    * @return {Object} the SignUpPage component
    */
   render() {
-    const { isRequestLoading, error } = this.props;
+    const { isRequestLoading, serverError } = this.props;
+    const { data, errors } = this.state;
 
     return (
       <div className="pb-main">
-        {!isRequestLoading && error && <InfoMessage text={error} type="danger" />}
+        {!isRequestLoading && serverError && <InfoMessage text={serverError} type="danger" />}
         <div className="container mt-5">
           <div className="row justify-content-center">
             <div className="card col-xs-10 col-sm-8 col-md-6 col-lg-4">
               <div className="container">
                 <h2 className="text-center my-4">Create your account</h2>
-                <SignUpForm submit={this.submit} isLoading={isRequestLoading}/>
+                <SignUpForm
+                  isLoading={isRequestLoading}
+                  onSubmit={this.onSubmit}
+                  onChange={this.onChange}
+                  errors={errors}
+                  data={data}
+                />
                 <div className="d-inline-block pull-right small pt-2">
                   <p>Already a member? <Link to='/signin'>Sign in</Link></p>
                 </div>
@@ -79,7 +115,7 @@ SignUpPage.propTypes = propTypes;
 function mapStateToProps(state) {
   return {
     isRequestLoading: state.loadingReducer.isRequestLoading,
-    error: state.userReducer.error
+    serverError: state.userReducer.error
   };
 }
 

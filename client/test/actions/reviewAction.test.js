@@ -110,7 +110,6 @@ describe('Review actions tests', () => {
     it('should update a business review', (done) => {
       const { reviewResponse, reviewObject } = reviewData;
       const { review } = reviewResponse.data;
-      const { firstname, lastname, userImage } = user;
       moxios.stubRequest(`/api/v1/reviews/${reviewId}`, {
         status: 201,
         response: reviewResponse
@@ -123,7 +122,7 @@ describe('Review actions tests', () => {
         },
         {
           type: types.EDIT_REVIEW,
-          credentials: { ...review, User: { firstname, lastname, userImage } }
+          credentials: { ...review, User: user }
         },
         {
           type: types.IS_REQUEST_LOADING,
@@ -132,9 +131,7 @@ describe('Review actions tests', () => {
       ];
       const store = mockStore({});
 
-      return store
-        .dispatch(actions
-          .editReview(reviewObject, reviewId, firstname, lastname, userImage))
+      return store.dispatch(actions.editReview(reviewObject, reviewId, user))
         .then(() => {
           // return of async actions
           expect(store.getActions()).to.deep.equal(expectedActions);

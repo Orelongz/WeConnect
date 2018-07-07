@@ -42,7 +42,7 @@ describe('Business actions tests', () => {
       ];
       const store = mockStore({});
 
-      return store.dispatch(actions.newBusiness(credentials))
+      return store.dispatch(actions.newBusiness(credentials, props))
         .then(() => {
           // return of async actions
           expect(store.getActions()).to.deep.equal(expectedActions);
@@ -78,7 +78,7 @@ describe('Business actions tests', () => {
       ];
       const store = mockStore({});
 
-      return store.dispatch(actions.newBusiness(credentials))
+      return store.dispatch(actions.newBusiness(credentials, props))
         .then(() => {
           // return of async actions
           expect(store.getActions()).to.deep.equal(expectedActions);

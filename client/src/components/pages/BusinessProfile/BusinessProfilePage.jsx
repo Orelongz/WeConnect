@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import BusinessProfile from './BusinessProfile.jsx';
 import {
   getBusiness,
   deleteBusiness,
@@ -14,8 +13,13 @@ import {
   editReview,
   deleteReview
 } from './../../../actions/reviewAction';
-import ReviewsDiv from './ReviewsDiv.jsx';
-import { pageSpinner } from './../../../../public/images';
+import BusinessProfile from './BusinessProfile.jsx';
+import ReviewsContainer from './ReviewsContainer.jsx';
+import {
+  pageSpinner,
+  defaultUserProfilePic
+} from './../../../../public/images';
+import InfoMessage from './../../messages/InfoMessage.jsx';
 
 // define proptypes for BusinessProfilePage component
 const propTypes = {
@@ -36,7 +40,7 @@ const propTypes = {
   businessDetails: PropTypes.object.isRequired,
   isRequestLoading: PropTypes.bool.isRequired,
   isPageLoading: PropTypes.bool.isRequired,
-  error: PropTypes.string
+  displayError: PropTypes.string
 };
 
 /**
@@ -52,9 +56,23 @@ class BusinessProfilePage extends Component {
    */
   constructor() {
     super();
-    this.handleBusinessDelete = this.handleBusinessDelete.bind(this);
-    this.postReview = this.postReview.bind(this);
-    this.handleEditReview = this.handleEditReview.bind(this);
+    this.state = {
+      data: {
+        review: '',
+        rating: 0
+      },
+      update: {
+        review: '',
+        rating: 0
+      },
+      reviewFormError: '',
+      editing: ''
+    };
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.toggleEditing = this.toggleEditing.bind(this);
+    this.changeRating = this.changeRating.bind(this);
+    this.handleDeleteBusiness = this.handleDeleteBusiness.bind(this);
     this.handleDeleteReview = this.handleDeleteReview.bind(this);
   }
 
@@ -71,47 +89,17 @@ class BusinessProfilePage extends Component {
   }
 
   /**
-   * handleBusinessDelete
+   * handleDeleteBusiness
    * @desc handles the deletion of a business
    * @return {*} void
    */
-  handleBusinessDelete() {
+  handleDeleteBusiness() {
     const { businessId } = this.props.match.params;
     this.props.deleteBusiness(businessId, this.props);
   }
 
   /**
-   * postReview
-   * @desc handles the posting of a review
-   * @param {Object} data review object
-   * @return {*} void
-   */
-  postReview(data) {
-    const { businessId } = this.props.match.params;
-    const { User } = this.props;
-
-    return this.props
-      .addReview(data, businessId, User)
-      .then(() => this.props.businessRating(businessId));
-  }
-
-  /**
-   * postReview
-   * @desc handles the editing of a review
-   * @param {Object} data review object
-   * @param {String} reviewId
-   * @return {*} void
-   */
-  handleEditReview(data, reviewId) {
-    const { businessId } = this.props.match.params;
-    const { firstname, lastname, userImage } = this.props.User;
-
-    this.props.editReview(data, reviewId, firstname, lastname, userImage)
-      .then(() => this.props.businessRating(businessId));
-  }
-
-  /**
-   * postReview
+   * handleDeleteReview
    * @desc handles the deletion of a review
    * @param {String} reviewId
    * @return {*} void
@@ -124,14 +112,102 @@ class BusinessProfilePage extends Component {
   }
 
   /**
+   * onSubmit
+   * @desc handles creaton and editing of a review
+   * @param {Object} event DOM event
+   * @return {func} submit
+   */
+  onSubmit(event) {
+    event.preventDefault();
+    const { data, update, editing: reviewId } = this.state;
+
+    if ((data.rating && data.review) || (update.rating && update.review)) {
+      this.setState({ reviewFormError: '' });
+      const { businessId } = this.props.match.params;
+      const { User } = this.props;
+
+      if (!reviewId) {
+        this.props.addReview(data, businessId, User)
+          .then(() => this.props.businessRating(businessId));
+        this.setState({ data: { review: '', rating: 0 } });
+      } else {
+        this.props.editReview(update, reviewId, User)
+          .then(() => this.props.businessRating(businessId));
+        this.setState({ editing: '', data: { review: '', rating: 0 } });
+      }
+    } else {
+      this.setState({
+        reviewFormError: 'Kindly make sure you write a review and rate the business'
+      });
+    }
+  }
+
+  /**
+   * onChange
+   * @desc handles state change when value of input fields change
+   * @param {Object} event DOM event
+   * @return {func} new state object
+   */
+  onChange(event) {
+    const { editing: reviewId } = this.state;
+    if (!reviewId) {
+      this.setState({
+        data: { ...this.state.data, [event.target.name]: event.target.value }
+      });
+    } else {
+      this.setState({
+        update: { ...this.state.update, [event.target.name]: event.target.value }
+      });
+    }
+  }
+
+  /**
+   * changeRating
+   * @desc sets the rating for a review
+   * @param {Integer} rating business rating
+   * @return {Object} new state object
+   */
+  changeRating(rating) {
+    const { editing: reviewId } = this.state;
+    if (!reviewId) {
+      this.setState({ data: { ...this.state.data, rating } });
+    } else {
+      this.setState({ update: { ...this.state.update, rating } });
+    }
+  }
+
+  /**
+   * toggleEditing
+   * @desc switching between reviews to display and edit
+   * @param {Object} review
+   * @return {Object} a new state
+   */
+  toggleEditing(review) {
+    if (review) {
+      this.setState({
+        update: { review: review.review, rating: review.rating },
+        reviewFormError: '',
+        editing: review.id
+      });
+    } else {
+      this.setState({ editing: '', reviewFormError: '' });
+    }
+  }
+
+  /**
    * render
    * @desc renders the BusinessesPage component
    * @return {Object} the BusinessesPage component
    */
   render() {
     const {
-      User, businessReviews, businessDetails, isRequestLoading, isPageLoading, error 
+      User, businessReviews, businessDetails, isRequestLoading,
+      isPageLoading, displayError
     } = this.props;
+    const {
+      data, update, reviewFormError, editing
+    } = this.state;
+    const displayUserImage = User.userImage || defaultUserProfilePic;
 
     return (
       <main className="pb-main">
@@ -145,13 +221,14 @@ class BusinessProfilePage extends Component {
           ) :
           (
             <div className="container">
+              {displayError && <InfoMessage text={displayError} type="danger" />}
               <div className="row">
                 {
                   businessDetails &&
                   <BusinessProfile
                     businessDetails={businessDetails}
                     User={User}
-                    handleBusinessDelete={this.handleBusinessDelete}
+                    handleDeleteBusiness={this.handleDeleteBusiness}
                     isLoading={isRequestLoading}
                   />
                 }
@@ -159,12 +236,21 @@ class BusinessProfilePage extends Component {
                 <div className="col-md-12 col-lg-8">
                   {
                     (businessReviews.length > 0 || !!User.id) &&
-                    <ReviewsDiv
-                      postReview={this.postReview}
-                      businessReviews={businessReviews}
+                    <ReviewsContainer
                       User={User}
+                      onSubmit={this.onSubmit}
+                      businessReviews={businessReviews}
+                      toggleEditing={this.toggleEditing}
                       handleEditReview={this.handleEditReview}
                       handleDeleteReview={this.handleDeleteReview}
+                      displayUserImage={displayUserImage}
+                      reviewFormError={reviewFormError}
+                      changeRating={this.changeRating}
+                      isLoading={isRequestLoading}
+                      onChange={this.onChange}
+                      editing={editing}
+                      data={data}
+                      update={update}
                     />
                   }
                 </div>
@@ -189,7 +275,7 @@ function mapStateToProps(state) {
     businessReviews: state.reviewReducer.reviews,
     isRequestLoading: state.loadingReducer.isRequestLoading,
     isPageLoading: state.loadingReducer.isPageLoading,
-    error: state.userReducer.error
+    displayError: state.businessReducer.error
   };
 }
 

@@ -11,13 +11,15 @@ import {
   pageSpinner
 } from './../../../../public/images';
 import Paginate from '../../../components/common/paginate.jsx';
+import InfoMessage from './../../messages/InfoMessage.jsx';
 
 // define proptypes for BusinessesPage component
 const propTypes = {
   allBusinesses: PropTypes.func.isRequired,
   businesses: PropTypes.array.isRequired,
   paginate: PropTypes.object.isRequired,
-  isLoading: PropTypes.bool.isRequired
+  isLoading: PropTypes.bool.isRequired,
+  displayError: PropTypes.string
 };
 
 /**
@@ -41,7 +43,7 @@ const displayBusinesses = (businesses) => {
               businessImage, businessName, category, phoneNumber, id: businessId
             } = eachBusiness;
             const businessLink = `/businesses/${businessId}`;
-            const displayImage = businessImage === '' || businessImage === null ? defaultBusinessProfilePic : businessImage;
+            const displayImage = businessImage || defaultBusinessProfilePic;
 
             return (
               <div key={businessId} className="col-xs-12 col-sm-6 col-lg-4 mt-4">
@@ -83,19 +85,21 @@ class BusinessesPage extends Component {
   constructor() {
     super();
     this.state = {
-      search: ''
+      search: '',
+      value: 'name'
     };
-    this.handleSearch = this.handleSearch.bind(this);
     this.onChange = this.onChange.bind(this);
+    this.onPageChange = this.onPageChange.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
 
   /**
-   * onChange
+   * onPageChange
    * @desc handles change in businesses page
    * @param {Number} page the page number for businesses
    * @return {Object} new state object
    */
-  onChange(page) {
+  onPageChange(page) {
     // get the searchTerm from the components state
     const { search } = this.state;
     const generatePage = `page=${page}`;
@@ -112,12 +116,15 @@ class BusinessesPage extends Component {
   /**
    * handleSearch
    * @desc handles business search
-   * @param {String} search
+   * @param {Object} event DOM event
    * @return {Object} new state object
    */
-  handleSearch(search) {
-    this.setState({ search });
-    this.props.allBusinesses(search);
+  handleSearch(event) {
+    event.preventDefault();
+    const { value, search } = this.state;
+    if (search.trim() !== '') {
+      this.props.allBusinesses(`${value}=${search}`);
+    }
   }
 
   /**
@@ -130,19 +137,36 @@ class BusinessesPage extends Component {
   }
 
   /**
+   * onChange
+   * @desc handles state change when value of input fields change
+   * @param {Object} event DOM event
+   * @return {Object} new state object
+   */
+  onChange(event) {
+    return this.setState({
+      ...this.state, [event.target.name]: event.target.value
+    });
+  }
+
+  /**
    * render
    * @desc renders the BusinessesPage component
    * @return {Object} the BusinessesPage component
    */
   render() {
-    const { isLoading, paginate } = this.props;
     const {
-      currentPage, count, limit
-    } = paginate;
+      isLoading, paginate, displayError, businesses
+    } = this.props;
+    const { currentPage, count, limit } = paginate;
+    const data = this.state;
 
     return (
       <Fragment>
-        <SearchBar handleSearch={this.handleSearch} />
+        <SearchBar
+          handleSearch={this.handleSearch}
+          onChange={this.onChange}
+          data={data}
+        />
         {
           isLoading ?
           (
@@ -153,8 +177,9 @@ class BusinessesPage extends Component {
           ) :
           (
             <main className="pb-main">
+              {displayError && <InfoMessage text={displayError} type="danger" />}
               <div className="container">
-                {displayBusinesses(this.props.businesses)}
+                {displayBusinesses(businesses)}
 
                 {/* only show pagination bar if businesses is greater than set limit */}
                 {
@@ -164,7 +189,7 @@ class BusinessesPage extends Component {
                       count={count}
                       pageSize={limit}
                       current={currentPage}
-                      onChange={this.onChange}
+                      onChange={this.onPageChange}
                     />
                   </div>
                 }
@@ -186,9 +211,10 @@ BusinessesPage.propTypes = propTypes;
  */
 function mapStateToProps(state) {
   return {
+    isLoading: state.loadingReducer.isPageLoading,
     businesses: state.businessReducer.businesses,
     paginate: state.businessReducer.paginate,
-    isLoading: state.loadingReducer.isPageLoading
+    displayError: state.businessReducer.error
   };
 }
 

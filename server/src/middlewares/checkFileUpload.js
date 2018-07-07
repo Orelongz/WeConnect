@@ -37,14 +37,14 @@ function uploadBusinessImage(req, res, next) {
       });
     } else if (req.file) {
       cloudinary.v2.uploader.upload(req.file.path, (error, result) => {
-        if (error) {
-          next();
+        if (error || !result) {
+          return next();
         }
         req.body.businessImage = result.secure_url;
-        next();
+        return next();
       });
     } else {
-      next();
+      return next();
     }
   });
 }
