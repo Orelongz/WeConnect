@@ -6,7 +6,9 @@ import {
   FETCH_USER_DETAILS,
   EDIT_USER_DETAIL,
   EDIT_USER_DETAIL_FAILED,
-  IS_REQUEST_LOADING
+  IS_REQUEST_LOADING,
+  VERIFY_ACCOUNT,
+  VERIFY_ACCOUNT_FAILED
 } from './../types/Types';
 import setAuthorizationToken from './../utils/setAuthorizationToken';
 import api from './../apiCalls/Api';
@@ -35,7 +37,7 @@ export const signup = (credentials, props) => (dispatch) => {
       setAuthorizationToken(token);
       dispatch(successfulRequest(USER_SIGNED_IN, user));
       dispatch(isLoading(IS_REQUEST_LOADING, false));
-      props.history.push('/businesses');
+      props.history.push('/dashboard');
     })
     .catch((error) => {
       dispatch(failedRequest(SIGN_IN_FAILED, handleErrorCatch(error.response.data)));
@@ -113,6 +115,30 @@ export const editUser = credentials => (dispatch) => {
     })
     .catch((error) => {
       dispatch(failedRequest(EDIT_USER_DETAIL_FAILED, handleErrorCatch(error.response.data)));
+      dispatch(isLoading(IS_REQUEST_LOADING, false));
+    });
+};
+
+/**
+ * verifyAccount()
+ * @desc verifies user account
+ * @param {Object} credentials
+ * @return {*} void
+ */
+export const verifyAccount = credentials => (dispatch) => {
+  dispatch(isLoading(IS_REQUEST_LOADING, true));
+
+  return api.user
+    .verifyAccount(credentials)
+    .then((user) => {
+      const { token } = user;
+      localStorage.setItem('weconnectToken', token);
+      setAuthorizationToken(token);
+      dispatch(successfulRequest(VERIFY_ACCOUNT, user));
+      dispatch(isLoading(IS_REQUEST_LOADING, false));
+    })
+    .catch((error) => {
+      dispatch(failedRequest(VERIFY_ACCOUNT_FAILED, handleErrorCatch(error.response.data)));
       dispatch(isLoading(IS_REQUEST_LOADING, false));
     });
 };

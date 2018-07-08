@@ -1,9 +1,11 @@
 import bcrypt from 'bcrypt';
+import shortId from 'shortid';
 import {
   generateToken,
   handleValidation,
   handleErrorMessage
 } from './../helpers';
+import { confirmationEmail } from './../helpers/mailMessages';
 import db from './../models';
 
 const { User } = db;
@@ -31,18 +33,20 @@ export default class UserController {
     if (validationFailed) return validationFailed;
 
     const hashedPassword = bcrypt.hashSync(password, 10);
+    const verificationToken = shortId.generate();
 
     return User.create({
-      firstname, lastname, email: email.toLowerCase(), hashedPassword
+      firstname, lastname, email: email.toLowerCase(), hashedPassword, verificationToken
     })
       .then((user) => {
-        const { id } = user;
+        const { id, isConfirmed } = user;
         const token = generateToken({ id, email });
+        confirmationEmail(user);
         return res.status(201).json({
           status: 'success',
           data: {
             user: {
-              firstname, lastname, email, id, token
+              firstname, lastname, email, id, token, isConfirmed
             }
           }
         });
@@ -71,7 +75,7 @@ export default class UserController {
       .then((user) => {
         if (user) {
           const {
-            hashedPassword, firstname, lastname, id, userImage
+            hashedPassword, firstname, lastname, id, userImage, isConfirmed
           } = user;
           if (user && bcrypt.compareSync(password, hashedPassword)) {
             const token = generateToken({ id, email });
@@ -79,7 +83,7 @@ export default class UserController {
               status: 'success',
               data: {
                 user: {
-                  firstname, lastname, email, id, userImage, token
+                  firstname, lastname, email, id, userImage, token, isConfirmed
                 }
               }
             });
@@ -107,11 +111,10 @@ export default class UserController {
     const { id } = req.decoded;
 
     return User.findOne({
-      where: {
-        id
-      }
+      where: { id }
     })
       .then((user) => {
+        const { isConfirmed } = user;
         const token = generateToken({ id, email });
         return user
           .update({
@@ -121,7 +124,7 @@ export default class UserController {
             status: 'success',
             data: {
               user: {
-                firstname, lastname, email, id, userImage, token
+                firstname, lastname, email, id, userImage, token, isConfirmed
               }
             }
           }));
@@ -146,17 +149,55 @@ export default class UserController {
     })
       .then((user) => {
         const {
-          firstname, lastname, email, userImage
+          firstname, lastname, email, userImage, isConfirmed
         } = user;
         return res.status(200).json({
           status: 'success',
           data: {
             user: {
-              firstname, lastname, email, userImage, id
+              firstname, lastname, email, userImage, id, isConfirmed
             }
           }
         });
       })
       .catch(error => handleErrorMessage(res, error));
+  }
+
+  /**
+   * verifyAccount()
+   * @desc gets the details of a user
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @return {Object} message, user
+   */
+  static verifyAccount(req, res) {
+    const { verificationToken } = req.body;
+
+    return User.findOne({
+      where: { verificationToken }
+    })
+      .then((user) => {
+        const {
+          firstname, lastname, email, id, userImage
+        } = user;
+        if (!user.isConfirmed) {
+          const token = generateToken({ id, email });
+          return user.update({ isConfirmed: true })
+            .then(() => res.status(200).json({
+              status: 'success',
+              user: {
+                isConfirmed: true, firstname, lastname, email, id, userImage, token
+              }
+            }));
+        }
+        return res.status(200).json({
+          status: 'success',
+          message: 'Account already verified'
+        });
+      })
+      .catch(() => res.status(200).json({
+        status: 'fail',
+        error: 'Verification not successful'
+      }));
   }
 }

@@ -2,8 +2,9 @@
 import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
-import UserBusinesses from './UserBusinesses.jsx';
 import UserDetails from './UserDetails.jsx';
+import UserBusinesses from './UserBusinesses.jsx';
+import VerifyEmailMessage from '../../messages/VerifyEmailMessage.jsx';
 import {
   userBusinesses,
   deleteBusiness
@@ -18,7 +19,8 @@ const propTypes = {
   deleteBusiness: PropTypes.func.isRequired,
   editUser: PropTypes.func.isRequired,
   User: PropTypes.object.isRequired,
-  businesses: PropTypes.array
+  businesses: PropTypes.array,
+  isConfirmed: PropTypes.bool
 };
 
 /**
@@ -179,10 +181,12 @@ class Dashboard extends Component {
    */
   render() {
     const { User } = this.props;
-    const displayImage = User.userImage || defaultUserProfilePic;
+    const { userImage, isConfirmed } = User;
+    const displayImage = userImage || defaultUserProfilePic;
 
     return (
       <Fragment>
+        {!isConfirmed && <VerifyEmailMessage />}
         <section className="header d-flex justify-content-center">
           <div className="text-white text-center mt-4">
             <img
@@ -197,8 +201,19 @@ class Dashboard extends Component {
         <main style={{ paddingBottom: '42px' }}>
           <div className="row">
             <div className="col-3 sticky-top tab text-center">
-              <div className="d-block tablink py-3" name="details" onClick={() => this.setTab('details')}>Details</div>
-              <div className="d-block tablink py-3" name="myBusinesses" onClick={() => this.setTab('myBusinesses')}>Businesses</div>
+              <div
+                className="d-block tablink py-3"
+                name="details"
+                onClick={() => this.setTab('details')}
+              >
+                Details
+              </div>
+              <div className="d-block tablink py-3"
+                name="myBusinesses"
+                onClick={() => this.setTab('myBusinesses')}
+              >
+                Businesses
+              </div>
             </div>
             <div className="col-9 pt-5">
               <div className="container">

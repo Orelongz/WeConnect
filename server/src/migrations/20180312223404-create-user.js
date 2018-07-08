@@ -28,6 +28,14 @@ module.exports = {
       type: Sequelize.STRING,
       allowNull: false
     },
+    isConfirmed: {
+      type: Sequelize.BOOLEAN,
+      defaultValue: false
+    },
+    verificationToken: {
+      type: Sequelize.STRING,
+      defaultValue: ''
+    },
     createdAt: {
       allowNull: false,
       type: Sequelize.DATE

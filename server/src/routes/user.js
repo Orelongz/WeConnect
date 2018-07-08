@@ -8,7 +8,8 @@ const {
   signup,
   login,
   updateUserDetails,
-  getUserDetails
+  getUserDetails,
+  verifyAccount
 } = UserController;
 
 router.get('/', (req, res) => res.status(200).json({
@@ -19,6 +20,12 @@ router.get('/', (req, res) => res.status(200).json({
 router.post(
   '/auth/signup',
   signup
+);
+
+// Verifies a users account by email
+router.put(
+  '/auth/verify',
+  verifyAccount
 );
 
 // Login a user

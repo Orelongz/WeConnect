@@ -24,7 +24,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         is: {
-          args: /^[a-z]+$/i,
+          isAlpha: true,
           msg: 'Category must be letters'
         }
       }
@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         is: {
-          args: /^[a-z]+$/i,
+          isAlpha: true,
           msg: 'City must be letters'
         }
       }
@@ -48,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         is: {
-          args: /^[a-z]+$/i,
+          isAlpha: true,
           msg: 'State must be letters'
         }
       }
