@@ -13,6 +13,7 @@ import BusinessesPage from './pages/Businesses/BusinessesPage.jsx';
 import RegisterOrEditPage from './pages/RegisterOrEditBusiness/RegisterOrEditPage.jsx';
 import BusinessProfilePage from './pages/BusinessProfile/BusinessProfilePage.jsx';
 import Dashboard from './pages/Dashboard/Dashboard.jsx';
+import VerifyEmail from './pages/VerifyEmail.jsx';
 
 /**
  * App
@@ -32,6 +33,7 @@ function App() {
       <Route path='/businesses/:businessId' exact component={BusinessProfilePage} />
       <UserRoute path='/businesses/:businessId/edit' exact component={RegisterOrEditPage} />
       <UserRoute path='/dashboard' exact component={Dashboard} />
+      <Route path='/verify/:verificationToken' exact component={VerifyEmail} />
     </Switch>
     <Footer />
   </div>

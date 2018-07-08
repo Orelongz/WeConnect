@@ -27,7 +27,14 @@ export default {
       `${basePath}/user`,
       credentials
     )
-      .then(res => res.data.data.user)
+      .then(res => res.data.data.user),
+
+    // api call to edit a user detail
+    verifyAccount: credentials => axios.put(
+      `${basePath}/auth/verify`,
+      credentials
+    )
+      .then(res => res.data.user)
   },
   business: {
     // api call to create a new business

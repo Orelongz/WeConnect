@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         is: {
-          args: /^[a-z]+$/i,
+          isAlpha: true,
           msg: 'Firstname must be letters'
         }
       }
@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       validate: {
         is: {
-          args: /^[a-z]+$/i,
+          isAlpha: true,
           msg: 'Lastname must be letters'
         }
       }
@@ -48,6 +48,14 @@ module.exports = (sequelize, DataTypes) => {
     hashedPassword: {
       type: DataTypes.STRING,
       allowNull: false
+    },
+    isConfirmed: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false
+    },
+    verificationToken: {
+      type: DataTypes.STRING,
+      defaultValue: ''
     }
   });
     // associations can be defined here

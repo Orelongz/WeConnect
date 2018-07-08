@@ -4,7 +4,9 @@ import {
   USER_LOGGED_OUT,
   FETCH_USER_DETAILS,
   EDIT_USER_DETAIL,
-  EDIT_USER_DETAIL_FAILED
+  EDIT_USER_DETAIL_FAILED,
+  VERIFY_ACCOUNT,
+  VERIFY_ACCOUNT_FAILED
 } from './../types/Types';
 
 /**
@@ -21,9 +23,11 @@ function userReducer(state = {}, action = {}) {
       return action.credentials;
     case EDIT_USER_DETAIL:
     case FETCH_USER_DETAILS:
+    case VERIFY_ACCOUNT:
       return { ...state, ...action.credentials };
     case SIGN_IN_FAILED:
     case EDIT_USER_DETAIL_FAILED:
+    case VERIFY_ACCOUNT_FAILED:
       return { error: action.error };
     default:
       return state;

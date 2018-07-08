@@ -79,7 +79,7 @@ function businessReducer(state = initialState, action = {}) {
     case CHANGE_OWNERSHIP_FAILED:
     case GET_USER_BUSINESSES_FAILED:
     case REGISTER_BUSINESS_FAILED:
-      return { error: action.error };
+      return { ...initialState, error: action.error };
     default:
       return state;
   }
