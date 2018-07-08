@@ -142,3 +142,17 @@ export const verifyAccount = credentials => (dispatch) => {
       dispatch(isLoading(IS_REQUEST_LOADING, false));
     });
 };
+
+/**
+ * contactUs()
+ * @desc sends enquiry about to the site maintainer
+ * @param {Object} credentials
+ * @return {*} void
+ */
+export const contactUs = credentials => (dispatch) => {
+  dispatch(isLoading(IS_REQUEST_LOADING, true));
+
+  return api.user
+    .contactUs(credentials)
+    .then(() => dispatch(isLoading(IS_REQUEST_LOADING, false)));
+};

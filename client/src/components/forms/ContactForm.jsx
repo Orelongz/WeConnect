@@ -6,8 +6,9 @@ import InlineError from './../messages/InLineError.jsx';
 const propTypes = {
   onChange: PropTypes.func.isRequired,
   onSubmit: PropTypes.func.isRequired,
-  errors: PropTypes.object,
-  data: PropTypes.object
+  isLoading: PropTypes.bool.isRequired,
+  errors: PropTypes.object.isRequired,
+  data: PropTypes.object.isRequired
 };
 
 /**
@@ -16,7 +17,7 @@ const propTypes = {
  * @return {*} void
  */
 function ContactForm({
-  errors, onChange, onSubmit, data
+  errors, onChange, onSubmit, data, isLoading
 }) {
   return (
     <form onSubmit={onSubmit}>
@@ -59,7 +60,7 @@ function ContactForm({
         />
         {errors.message && <InlineError text={errors.message} />}
       </div>
-      <button type="submit" className="btn btn-primary">Send</button>
+      <button disabled={isLoading} type="submit" className="btn btn-primary">Send</button>
     </form>
   );
 }

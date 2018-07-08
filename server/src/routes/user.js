@@ -9,7 +9,8 @@ const {
   login,
   updateUserDetails,
   getUserDetails,
-  verifyAccount
+  verifyAccount,
+  contactUs
 } = UserController;
 
 router.get('/', (req, res) => res.status(200).json({
@@ -26,6 +27,12 @@ router.post(
 router.put(
   '/auth/verify',
   verifyAccount
+);
+
+// To send enquires to admin
+router.post(
+  '/contactUs',
+  contactUs
 );
 
 // Login a user

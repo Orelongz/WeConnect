@@ -1,8 +1,10 @@
 // import required modules
 import React, { Component } from 'react';
-// import { connect } from 'react-redux';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import { validate } from './../../../utils';
 import ContactForm from './../../forms/ContactForm.jsx';
+import { contactUs } from './../../../actions/AuthAction';
 import {
   searchImage,
   happyFace,
@@ -11,6 +13,11 @@ import {
   feedBack2,
   feedBack3
 } from './../../../../public/images';
+
+const propTypes = {
+  contactUs: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired
+};
 
 /**
  * HomePage
@@ -61,7 +68,8 @@ class HomePage extends Component {
     const errors = validate({ name, email, message });
     this.setState({ errors });
     if (Object.keys(errors).length === 0) {
-      alert(`Dear ${name}, ${email}, ${message}, your message has been sent`);
+      this.props.contactUs({ name, email, message });
+      alert(`Dear ${name}, your message has been sent`);
       this.setState({
         data: { name: '', email: '', message: '' }
       });
@@ -75,6 +83,8 @@ class HomePage extends Component {
    */
   render() {
     const { data, errors } = this.state;
+    const { isLoading } = this.props;
+
     return (
       <div>
         <main className="pb-main">
@@ -163,6 +173,7 @@ class HomePage extends Component {
                         data={data}
                         onChange={this.onChange}
                         onSubmit={this.onSubmit}
+                        isLoading={isLoading}
                       />
                     </div>
                     </div>
@@ -194,4 +205,19 @@ class HomePage extends Component {
   }
 }
 
-export default HomePage;
+HomePage.propTypes = propTypes;
+
+/**
+ * mapStateToProps
+ * @param {Object} state redux state
+ * @return {Object} BusinessesPage props
+ */
+function mapStateToProps(state) {
+  return {
+    isLoading: state.loadingReducer.isRequestLoading
+  };
+}
+
+export default connect(mapStateToProps, {
+  contactUs
+})(HomePage);
