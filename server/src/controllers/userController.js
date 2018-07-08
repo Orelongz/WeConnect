@@ -5,7 +5,10 @@ import {
   handleValidation,
   handleErrorMessage
 } from './../helpers';
-import { confirmationEmail } from './../helpers/mailMessages';
+import {
+  confirmationEmail,
+  contactUsMails
+} from './../helpers/mailMessages';
 import db from './../models';
 
 const { User } = db;
@@ -199,5 +202,27 @@ export default class UserController {
         status: 'fail',
         error: 'Verification not successful'
       }));
+  }
+
+  /**
+   * contactUs()
+   * @desc gets the details of a user
+   * @param {Object} req request object
+   * @param {Object} res response object
+   * @return {Object} mails
+   */
+  static contactUs(req, res) {
+    const { name, email, message } = req.body;
+
+    const validationFailed = handleValidation(res, {
+      name, email, message
+    });
+    if (validationFailed) return validationFailed;
+
+    contactUsMails({ email, name, message });
+    res.status(200).json({
+      status: 'success',
+      message: 'Message delivered'
+    });
   }
 }

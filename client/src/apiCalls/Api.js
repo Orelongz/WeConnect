@@ -29,12 +29,18 @@ export default {
     )
       .then(res => res.data.data.user),
 
-    // api call to edit a user detail
+    // api call to verify
     verifyAccount: credentials => axios.put(
       `${basePath}/auth/verify`,
       credentials
     )
-      .then(res => res.data.user)
+      .then(res => res.data.user),
+
+    // api call contact admin
+    contactUs: credentials => axios.post(
+      `${basePath}/contactUs`,
+      credentials
+    )
   },
   business: {
     // api call to create a new business
