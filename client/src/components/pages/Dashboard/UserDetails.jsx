@@ -1,7 +1,7 @@
 // import required modules
 import React from 'react';
 import PropTypes from 'prop-types';
-import InlineError from './../../messages/InLineError.jsx';
+import InlineError from '../../messages/InLineError';
 
 // define proptypes for UserDetails component
 const propTypes = {

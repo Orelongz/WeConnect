@@ -6,17 +6,17 @@ import * as businessData from './../mockData/businessData';
 const {
   businessObject,
   allBusinesses,
-  businessUpdate,
   businessRating,
   businessReponseFail
 } = businessData;
 
-let initialState = {
+const defaultState = {
   businesses: [],
   business: {},
   paginate: {},
   error: null
 };
+let initialState = defaultState;
 let state;
 
 describe('user reducer', () => {
@@ -44,7 +44,7 @@ describe('user reducer', () => {
   });
 
   it('should handle REGISTER_BUSINESS_FAILED', () => {
-    state = { error: businessReponseFail.error };
+    state = { ...defaultState, error: businessReponseFail.error };
 
     expect(reducer(initialState, {
       type: types.REGISTER_BUSINESS_FAILED,
@@ -167,7 +167,7 @@ describe('user reducer', () => {
   });
 
   it('should handle DELETE_BUSINESS_FAILED', () => {
-    state = { error: businessReponseFail.error };
+    state = { ...defaultState, error: businessReponseFail.error };
 
     expect(reducer(initialState, {
       type: types.DELETE_BUSINESS_FAILED,
@@ -178,7 +178,7 @@ describe('user reducer', () => {
   });
 
   it('should handle GET_BUSINESS_FAILED', () => {
-    state = { error: businessReponseFail.error };
+    state = { ...defaultState, error: businessReponseFail.error };
 
 
     expect(reducer(initialState, {
@@ -190,7 +190,7 @@ describe('user reducer', () => {
   });
 
   it('should handle GET_USER_BUSINESSES_FAILED', () => {
-    state = { error: businessReponseFail.error };
+    state = { ...defaultState, error: businessReponseFail.error };
 
 
     expect(reducer(initialState, {

@@ -7,7 +7,7 @@ import {
   EDIT_USER_DETAIL_FAILED,
   VERIFY_ACCOUNT,
   VERIFY_ACCOUNT_FAILED
-} from './../types/Types';
+} from '../types/Types';
 
 /**
  * userReducer()

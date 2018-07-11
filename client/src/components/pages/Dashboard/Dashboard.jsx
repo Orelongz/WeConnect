@@ -186,7 +186,7 @@ class Dashboard extends Component {
 
     return (
       <Fragment>
-        {!isConfirmed && <VerifyEmailMessage />}
+        {!isConfirmed && <VerifyEmailMessage name={User.firstname} />}
         <section className="header d-flex justify-content-center">
           <div className="text-white text-center mt-4">
             <img

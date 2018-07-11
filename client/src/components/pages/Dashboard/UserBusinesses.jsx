@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { defaultBusinessProfilePic } from './../../../../public/images';
+import { defaultBusinessProfilePic } from '../../../../public/images';
 
 // define proptypes for UserBusinesses component
 const propTypes = {

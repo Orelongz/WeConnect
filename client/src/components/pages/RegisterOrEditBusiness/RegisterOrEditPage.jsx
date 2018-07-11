@@ -200,14 +200,14 @@ class RegisterOrEditPage extends Component {
                 <h2 className="text-center">{Header}</h2>
                 {
                   categories && <BusinessForm
+                    displayPreview={this.displayPreview}
+                    history={this.props.history}
                     onSubmit={this.onSubmit}
                     onChange={this.onChange}
                     categories={categories}
                     FormAction={FormAction}
-                    displayPreview={this.displayPreview}
                     errors={errors}
                     data={data}
-                    history={this.props.history}
                   />
                 }
                 {

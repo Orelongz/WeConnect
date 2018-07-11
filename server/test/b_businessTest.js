@@ -565,7 +565,7 @@ describe('Given that a user sends a ', () => {
             'success'
           );
           assert.equal(
-            res.body.message,
+            res.body.data.message,
             'Business transferred',
             'Business ownership transferred'
           );

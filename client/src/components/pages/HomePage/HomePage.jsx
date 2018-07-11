@@ -13,6 +13,7 @@ import {
   feedBack2,
   feedBack3
 } from './../../../../public/images';
+import InfoMessage from './../../messages/InfoMessage.jsx';
 
 const propTypes = {
   contactUs: PropTypes.func.isRequired,
@@ -38,6 +39,7 @@ class HomePage extends Component {
         email: '',
         message: ''
       },
+      messageSent: false,
       errors: {}
     };
     this.onChange = this.onChange.bind(this);
@@ -69,9 +71,9 @@ class HomePage extends Component {
     this.setState({ errors });
     if (Object.keys(errors).length === 0) {
       this.props.contactUs({ name, email, message });
-      alert(`Dear ${name}, your message has been sent`);
       this.setState({
-        data: { name: '', email: '', message: '' }
+        data: { name: '', email: '', message: '' },
+        messageSent: true
       });
     }
   }
@@ -82,12 +84,13 @@ class HomePage extends Component {
    * @return {Object} the Homepage component
    */
   render() {
-    const { data, errors } = this.state;
+    const { data, errors, messageSent } = this.state;
     const { isLoading } = this.props;
 
     return (
       <div>
         <main className="pb-main">
+          { messageSent && <InfoMessage text="Thank you for contacting us. We sure would get back to you soon." type="info"/>}
           <div className="container">
             <div className="row">
               <div className="col-md-12 col-lg-2"></div>

@@ -33,6 +33,7 @@ function BusinessForm({
     <form onSubmit={onSubmit} className="row mt-5">
       <div className="col-sm-12 col-md-4">
         {displayPreview()}
+        <label htmlFor="businessImage">Add business image</label>
         <input
           type="file"
           className="w-100"

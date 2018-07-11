@@ -23,8 +23,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        is: {
-          isAlpha: true,
+        isAlpha: {
+          args: true,
           msg: 'Category must be letters'
         }
       }
@@ -37,8 +37,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        is: {
-          isAlpha: true,
+        isAlpha: {
+          args: true,
           msg: 'City must be letters'
         }
       }
@@ -47,8 +47,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        is: {
-          isAlpha: true,
+        isAlpha: {
+          args: true,
           msg: 'State must be letters'
         }
       }

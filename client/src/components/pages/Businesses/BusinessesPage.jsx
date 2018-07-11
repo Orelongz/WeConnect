@@ -28,19 +28,21 @@ const propTypes = {
  * @param {Object} businesses array of businesses
  * @return {Object} rendered businesses
  */
-const displayBusinesses = (businesses) => {
-  if (businesses.length === 0) {
-    return (<h1 className="text-center">No Businesses Yet</h1>);
+const displayBusinesses = (businesses, { search }) => {
+  if (search && businesses.length === 0) {
+    return (<h1 className="text-center mt-5">No Businesses matching your search</h1>);
+  } else if (businesses.length === 0) {
+    return (<h1 className="text-center mt-5">No Businesses Yet</h1>);
   }
 
   return (
     <Fragment>
-      <h1 className="text-center">Businesses</h1>
+      <h2 className="text-center">Businesses</h2>
       <div className="row">
         {
           businesses.map((eachBusiness) => {
             const {
-              businessImage, businessName, category, phoneNumber, id: businessId
+              businessImage, businessName, category, phoneNumber, id: businessId, about
             } = eachBusiness;
             const businessLink = `/businesses/${businessId}`;
             const displayImage = businessImage || defaultBusinessProfilePic;
@@ -52,12 +54,17 @@ const displayBusinesses = (businesses) => {
                     <img src={displayImage} alt={businessName} className="card-img-top catalog-profile-pic" />
                   </Link>
                   <div className="card-body">
-                    <h5 className="card-title">{businessName}</h5>
-                    <div className="card-text small">
-                      <p className="mb-0">Category: {category}</p>
-                      <p className="mb-0">Tel: {phoneNumber}</p>
+                    <h5 className="card-title text-uppercase text-center font-weight-bold">
+                      {businessName}
+                    </h5>
+                    <div className="card-text small d-flex justify-content-between">
+                      <p className="mb-0"><strong>Phone No:</strong> {phoneNumber}</p>
+                      <p className="mb-0"><strong>Category:</strong> {category}</p>
                     </div>
-                    <Link to={businessLink} className="btn btn-primary btn-sm">
+                    <div className="small text-capitalize my-2">
+                      {about.substring(0, 100)}...
+                    </div>
+                    <Link to={businessLink} className="w-100 btn btn-primary btn-sm">
                       View
                     </Link>
                   </div>
@@ -179,7 +186,7 @@ class BusinessesPage extends Component {
             <main className="pb-main">
               {displayError && <InfoMessage text={displayError} type="danger" />}
               <div className="container">
-                {displayBusinesses(businesses)}
+                {displayBusinesses(businesses, data)}
 
                 {/* only show pagination bar if businesses is greater than set limit */}
                 {
