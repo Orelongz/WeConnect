@@ -50,7 +50,7 @@ class VerifyEmail extends Component {
                 Hello {User.firstname}
               </h1>
               <h3>Please wait, while we are verify your account</h3>
-              <img src="pageSpinner" alt="loading bar"/>
+              <img src={pageSpinner} alt="loading bar"/>
             </div>
           }
           {
