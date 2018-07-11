@@ -183,22 +183,16 @@ export default class UserController {
         const {
           firstname, lastname, email, id, userImage
         } = user;
-        if (!user.isConfirmed) {
-          const token = generateToken({ id, email });
-          return user.update({ isConfirmed: true })
-            .then(() => res.status(200).json({
-              status: 'success',
-              user: {
-                isConfirmed: true, firstname, lastname, email, id, userImage, token
-              }
-            }));
-        }
-        return res.status(200).json({
-          status: 'success',
-          message: 'Account already verified'
-        });
+        const token = generateToken({ id, email });
+        return user.update({ isConfirmed: true })
+          .then(() => res.status(200).json({
+            status: 'success',
+            user: {
+              isConfirmed: true, firstname, lastname, email, id, userImage, token
+            }
+          }));
       })
-      .catch(() => res.status(200).json({
+      .catch(() => res.status(400).json({
         status: 'fail',
         error: 'Verification not successful'
       }));

@@ -10,8 +10,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        is: {
-          isAlpha: true,
+        isAlpha: {
+          args: true,
           msg: 'Firstname must be letters'
         }
       }
@@ -20,8 +20,8 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        is: {
-          isAlpha: true,
+        isAlpha: {
+          argsisAlpha: true,
           msg: 'Lastname must be letters'
         }
       }

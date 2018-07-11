@@ -33,7 +33,7 @@ function BusinessProfile({
     <Fragment>
       <div className="col-md-12 col-lg-4 mt-4">
         <div className="card">
-          <div className="card-header font-weight-bold bg-secondary text-white">
+          <div className="card-header font-weight-bold bg-secondary text-white text-uppercase text-center lead">
             {businessName}
           </div>
           <ul className="list-group list-group-flush">
@@ -79,7 +79,7 @@ function BusinessProfile({
           <img src={displayBusinessImage} alt={businessName} className="card-img-top business-pic" />
           <div className="card-body">
             <div>
-              <h1>About {businessName}</h1>
+              <h1 className="text-center text-justify">About {businessName}</h1>
               <div className="text-justify display-linebreak mb-3">
                 {about}
               </div>
@@ -87,8 +87,8 @@ function BusinessProfile({
             {
               (ownerId === User.id) &&
               <div>
-                <Link to={`/businesses/${businessId}/edit`} className="btn btn-primary">Edit</Link>
-                <button disabled={isLoading} onClick={handleDeleteBusiness} className="btn btn-danger pull-right">Delete</button>
+                <button disabled={isLoading} onClick={handleDeleteBusiness} className="btn btn-danger">Delete</button>
+                <Link to={`/businesses/${businessId}/edit`} className="btn btn-primary pull-right">Edit</Link>
               </div>
             }
           </div>

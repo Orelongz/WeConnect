@@ -15,14 +15,14 @@ import {
   BUSINESS_RATING,
   IS_PAGE_LOADING,
   IS_REQUEST_LOADING
-} from './../types/Types';
-import api from './../apiCalls/Api';
+} from '../types/Types';
+import api from '../apiCalls/Api';
 import {
   isLoading,
   successfulRequest,
   failedRequest
 } from './helpers';
-import { handleErrorCatch } from './../utils';
+import { handleErrorCatch } from '../utils';
 
 /**
  * newBusiness()

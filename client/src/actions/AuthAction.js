@@ -9,15 +9,15 @@ import {
   IS_REQUEST_LOADING,
   VERIFY_ACCOUNT,
   VERIFY_ACCOUNT_FAILED
-} from './../types/Types';
-import setAuthorizationToken from './../utils/setAuthorizationToken';
-import api from './../apiCalls/Api';
+} from '../types/Types';
+import setAuthorizationToken from '../utils/setAuthorizationToken';
+import api from '../apiCalls/Api';
 import {
   isLoading,
   successfulRequest,
   failedRequest
 } from './helpers';
-import { handleErrorCatch } from './../utils';
+import { handleErrorCatch } from '../utils';
 
 /**
  * signup()
