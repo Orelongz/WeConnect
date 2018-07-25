@@ -3,7 +3,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import StarRatings from 'react-star-ratings';
 import EditReviewForm from './../../forms/EditReviewForm.jsx';
-import { defaultUserProfilePic } from './../../../../public/images';
+
 // define proptypes for Rating component
 const propTypes = {
   handleDeleteReview: PropTypes.func.isRequired,
@@ -35,7 +35,7 @@ function ReviewList({
       {
         businessReviews.length > 0 ? (
           businessReviews.map((review) => {
-            const displayImage = review.User.userImage || defaultUserProfilePic;
+            const displayImage = review.User.userImage || '/images/default_user_profile_pic.jpg';
 
             if (editing === review.id) {
               return (

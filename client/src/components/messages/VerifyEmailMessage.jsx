@@ -12,7 +12,7 @@ const propTypes = {
  */
 export default function VerifyEmailMessage({ name }) {
   return (
-    <div className="text-center bg-info text-white lead">
+    <div className="text-center bg-info text-white lead py-2">
        Welcome {name}.
        Kindly check your email for the link to verify your account
     </div>

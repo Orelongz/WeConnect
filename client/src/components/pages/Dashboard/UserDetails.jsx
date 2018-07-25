@@ -1,7 +1,8 @@
 // import required modules
 import React from 'react';
 import PropTypes from 'prop-types';
-import InlineError from '../../messages/InLineError';
+import EditUserDetails from './../../forms/EditUserDetails.jsx';
+import InlineError from '../../messages/InLineError.jsx';
 
 // define proptypes for UserDetails component
 const propTypes = {
@@ -12,6 +13,7 @@ const propTypes = {
   data: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
   isEditing: PropTypes.bool.isRequired,
+  displayImage: PropTypes.string.isRequired
 };
 
 /**
@@ -21,73 +23,39 @@ const propTypes = {
  */
 function UserDetails({
   User, data, isEditing, errors, onSubmit,
-  onChange, toggleEditStatus
+  onChange, toggleEditStatus, displayImage
 }) {
   const { firstname, lastname, email } = User;
   if (isEditing) {
     return (
-      <form onSubmit={onSubmit}>
-        <div className="row">
-          <label className="col-3">Firstname</label>
-          <input
-            className="form-control col-9"
-            type="text"
-            name="firstname"
-            value={data.firstname}
-            onChange={onChange}
-          />
-          {errors.firstname && <InlineError text={errors.firstname} />}
-        </div>
-        <div className="row">
-          <label className="col-3">Lastname</label>
-          <input
-            className="form-control col-9"
-            type="text"
-            name="lastname"
-            value={data.lastname}
-            onChange={onChange}
-          />
-          {errors.lastname && <InlineError text={errors.lastname} />}
-        </div>
-        <div className="row">
-          <label className="col-3">Email</label>
-          <input
-            className="form-control col-9"
-            type="text"
-            name="email"
-            value={data.email}
-            onChange={onChange}
-          />
-          {errors.email && <InlineError text={errors.email} />}
-        </div>
-        <div>
-          <input
-            type="file"
-            id="userImage"
-            name="userImage"
-            onChange={onChange}
-            accept="image/*"
-          />
-        </div>
-        <button className="btn btn-primary pull-right">Save</button>
-    </form>
+      <EditUserDetails
+        toggleEditStatus={toggleEditStatus}
+        displayImage={displayImage}
+        onChange={onChange}
+        onSubmit={onSubmit}
+        errors={errors}
+        data={data}
+      />
     );
   }
   return (
-    <div>
-      <div className="row">
-        <label className="col-3">Firstname</label>
-        <div className="col-9">{firstname}</div>
+    <div className="row">
+      <div className="d-flex justify-content-center align-content-center col-sm-12 col-md-6">
+        <div style={{ width: '300px', height: '300px' }}>
+          <img src={displayImage} alt="" className="w-100 h-100 rounded-circle" />
+        </div>
       </div>
-      <div className="row">
-        <label className="col-3">Lastname</label>
-        <div className="col-9">{lastname}</div>
+      <div className="col-sm-12 col-md-6">
+        <div className="form-group">
+          <label>Name</label>
+          <h3>{firstname} {lastname}</h3>
+        </div>
+        <div className="form-group">
+          <label>Email</label>
+          <h3>{email}</h3>
+        </div>
+        <button onClick={toggleEditStatus} className="btn btn-primary">Edit</button>
       </div>
-      <div className="row">
-        <label className="col-3">Email</label>
-        <div className="col-9">{email}</div>
-      </div>
-      <button onClick={toggleEditStatus} className="btn btn-primary pull-right">Edit</button>
     </div>
   );
 }

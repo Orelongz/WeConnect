@@ -1,7 +1,8 @@
 // import required modules
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { Route, Link } from 'react-router-dom';
 import UserDetails from './UserDetails.jsx';
 import UserBusinesses from './UserBusinesses.jsx';
 import VerifyEmailMessage from '../../messages/VerifyEmailMessage.jsx';
@@ -11,7 +12,6 @@ import {
 } from './../../../actions/businessAction';
 import { editUser } from './../../../actions/AuthAction';
 import { validate } from './../../../utils';
-import { defaultUserProfilePic } from './../../../../public/images';
 
 // define proptypes for Dashboard component
 const propTypes = {
@@ -20,7 +20,8 @@ const propTypes = {
   editUser: PropTypes.func.isRequired,
   User: PropTypes.object.isRequired,
   businesses: PropTypes.array,
-  isConfirmed: PropTypes.bool
+  isConfirmed: PropTypes.bool,
+  match: PropTypes.object.isRequired
 };
 
 /**
@@ -39,48 +40,12 @@ class Dashboard extends Component {
     this.state = {
       data: { userImage: '' },
       isEditing: false,
-      tab: 'details',
       errors: {}
     };
     this.toggleEditStatus = this.toggleEditStatus.bind(this);
     this.deleteBusiness = this.deleteBusiness.bind(this);
-    this.tabChange = this.tabChange.bind(this);
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
-  }
-
-  /**
-   * tabChange
-   * @desc handles tabchanges in the component
-   * @return {Object} react component
-   */
-  tabChange() {
-    const { User } = this.props;
-    const {
-      tab, errors, data, isEditing
-    } = this.state;
-    if (tab === 'details') {
-      return (
-        <UserDetails
-          toggleEditStatus={this.toggleEditStatus}
-          isEditing={isEditing}
-          onSubmit={this.onSubmit}
-          onChange={this.onChange}
-          errors={errors}
-          data={data}
-          User={User}
-        />
-      );
-    } else if (tab === 'myBusinesses') {
-      return (
-        <div className="row">
-          <UserBusinesses
-            businesses={this.props.businesses}
-            deleteBusiness={this.deleteBusiness}
-          />
-        </div>
-      );
-    }
   }
 
   /**
@@ -101,16 +66,6 @@ class Dashboard extends Component {
   componentDidMount() {
     document.title = `${this.props.User.firstname}'s profile`;
     this.props.userBusinesses(this.props);
-  }
-
-  /**
-   * setTab
-   * @desc sets tab name in the component state
-   * @param {String} str
-   * @return {Object} new state object
-   */
-  setTab(str) {
-    this.setState({ tab: str });
   }
 
   /**
@@ -143,9 +98,17 @@ class Dashboard extends Component {
    */
   toggleEditStatus() {
     const { id, ...rest } = this.props.User;
-    this.setState({
-      isEditing: true,
-      data: { ...this.state.data, ...rest }
+    if (this.state.isEditing) {
+      return this.setState({
+        isEditing: !this.state.isEditing
+      });
+    }
+    return this.setState({
+      isEditing: !this.state.isEditing,
+      imagePreview: rest.userImage,
+      data: {
+        ...this.state.data, ...rest
+      }
     });
   }
 
@@ -157,15 +120,15 @@ class Dashboard extends Component {
    */
   onSubmit(event) {
     event.preventDefault();
-    const { userImage, ...requiredDetails } = this.state.data;
+    const userCredentials = this.state.data;
+    const { userImage, isConfirmed, ...requiredDetails } = userCredentials;
     const errors = validate(requiredDetails);
     this.setState({ errors });
 
     if (Object.keys(errors).length === 0) {
       const userObject = new FormData();
-      const { imagePreview, ...rest } = this.state.data;
 
-      Object.entries(rest).forEach(([key, value]) => {
+      Object.entries(userCredentials).forEach(([key, value]) => {
         userObject.append(key, value);
       });
 
@@ -180,49 +143,61 @@ class Dashboard extends Component {
    * @return {Object} the Dashboard component
    */
   render() {
-    const { User } = this.props;
+    const { User, match } = this.props;
     const { userImage, isConfirmed } = User;
-    const displayImage = userImage || defaultUserProfilePic;
-
+    const displayImage = userImage || '/images/default_user_profile_pic.jpg';
+    const {
+      errors, data, isEditing
+    } = this.state;
     return (
-      <Fragment>
-        {!isConfirmed && <VerifyEmailMessage name={User.firstname} />}
-        <section className="header d-flex justify-content-center">
-          <div className="text-white text-center mt-4">
-            <img
-              src={displayImage}
-              alt="profile pic"
-              className="rounded-circle img-thumbnail"
-              style={{ height: '150px', width: '150px' }}
-            />
-            <h1>{User.firstname} {User.lastname}</h1>
-          </div>
-        </section>
-        <main style={{ paddingBottom: '42px' }}>
-          <div className="row">
-            <div className="col-3 sticky-top tab text-center">
-              <div
-                className="d-block tablink py-3"
-                name="details"
-                onClick={() => this.setTab('details')}
-              >
-                Details
-              </div>
-              <div className="d-block tablink py-3"
-                name="myBusinesses"
-                onClick={() => this.setTab('myBusinesses')}
-              >
-                Businesses
-              </div>
+      <main className="pb-main">
+        <div className="container">
+          <ul className="nav nav-tabs justify-content-center">
+            <li className="nav-item">
+              <Link className="nav-link" to={match.url}><h3>Profile</h3></Link>
+            </li>
+            <li className="nav-item">
+              <Link className="nav-link" to={`${match.url}/businesses`}><h3>My Businesses</h3></Link>
+            </li>
+          </ul>
+
+          {!isConfirmed && <VerifyEmailMessage name={User.firstname} />}
+
+          <div className="card my-5 py-5">
+            <div className="container">
+
+              <Route
+                path={`${match.url}/businesses`}
+                render={() => (
+                  <UserBusinesses
+                    businesses={this.props.businesses}
+                    deleteBusiness={this.deleteBusiness}
+                  />
+                )}
+              />
+
+              <Route
+                exact
+                path={match.url}
+                render={() => (
+                  <UserDetails
+                    toggleEditStatus={this.toggleEditStatus}
+                    displayImage={displayImage}
+                    onSubmit={this.onSubmit}
+                    onChange={this.onChange}
+                    isEditing={isEditing}
+                    errors={errors}
+                    data={data}
+                    User={User}
+                  />
+                )}
+              />
+
             </div>
-            <div className="col-9 pt-5">
-              <div className="container">
-                {this.tabChange()}
-              </div>
-            </div>
           </div>
-        </main>
-      </Fragment>
+        </div>
+      </main>
+
     );
   }
 }

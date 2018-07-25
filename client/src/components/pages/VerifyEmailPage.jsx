@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { verifyAccount } from '../../actions/AuthAction';
-import { pageSpinner } from './../../../public/images';
 
 const propTypes = {
   verifyAccount: PropTypes.func.isRequired,
@@ -50,7 +49,7 @@ class VerifyEmail extends Component {
                 Hello {User.firstname}
               </h1>
               <h3>Please wait, while we are verify your account</h3>
-              <img src={pageSpinner} alt="loading bar"/>
+              <img src="/images/page spinner.gif" alt="loading bar"/>
             </div>
           }
           {

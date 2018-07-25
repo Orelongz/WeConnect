@@ -1,3 +1,172 @@
+body {
+  font-family: 'Mate', serif;
+}
 
-// import all defined styles
-@import 'main';
+header {
+  font-family: 'Heebo', sans-serif;
+}
+
+footer {
+  background-color: #0d102b;
+  text-align: center;
+}
+
+
+#about {
+  background: #e6e6e6;
+  padding: 75px 0;
+}
+
+#address {
+  background-color: #1d2252;
+  color: #fff;
+  padding: 30px 0;
+}
+
+#contact {
+  background: url('https://images.unsplash.com/photo-1524861646941-b897e7f18230?ixlib=rb-0.3.5&s=9b7b55ade458d883eb0ea196b1528419&auto=format&fit=crop&w=1950&q=80') no-repeat fixed center;
+}
+
+#feedback {
+  padding: 75px 0;
+}
+
+
+.about-icon {
+  background-color: #fff;
+  border-radius: 50%;
+  height: 75px;
+  margin: 0 auto;
+  width: 75px;
+}
+
+.business-pic {
+  height: 400px;
+}
+
+.catalog-profile-pic {
+  height: 15rem;
+  transition: all .5s ease-in-out;
+  
+  &:hover {
+    -ms-transform: scale(1.2);
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2);
+  }
+}
+  
+.checked {
+  color: orange;
+}
+
+.custom-nav {
+  background-color: rgb(235, 235, 235);
+}
+
+.display-linebreak {
+  white-space: pre-line;
+}
+
+.fill-page {
+  height: 75vh;
+}
+
+.footer {
+  bottom:0;
+  left:0;
+  position:absolute;
+  width:100%;
+}
+
+.header {
+  background: url("https://cdn.stocksnap.io/img-thumbs/960w/KVKWC9GKDL.jpg") no-repeat;
+  background-size: cover;
+  background-position: 50% 55%;
+  height: 60vh;
+}
+
+.header-title {
+  color: #dd3545;
+  font-family: 'Montserrat';
+  font-weight: 900;
+}
+
+.header-title-text {
+  font-size: 22px;
+  margin: 0 auto;
+  width: 65%;
+}
+
+.holder {
+  min-height:100vh;
+  position:relative;
+}
+
+.loading {
+  left: 50%;
+  position: absolute;
+  top: 50%;
+
+  img {
+    max-width: 50px;
+  }
+}
+
+.login-img {
+  background: url('https://images.pexels.com/photos/917475/pexels-photo-917475.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.nav-link {
+  color: #1d2252;
+  font-weight: bold;
+  transition: 0.5s;
+}
+
+.nav-link:hover {
+  color: red;
+}
+
+.overflow {
+  overflow: hidden;
+}
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 30px 0;
+}
+
+.pb-home {
+  padding-bottom: 70px;
+}
+
+.pb-main {
+  padding-bottom: 180px;
+}
+
+.small-profile-pic {
+  height: 70px;
+  width: 70px;
+}
+
+.social {
+  border-radius: 50%;
+  padding: 10px;
+  
+  &:hover {
+    background-color: #dd3545;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+}
+
+.sticky-top {
+  border-bottom: 5px solid #dd3545;
+}
+
+.userForms {
+  background: #4258d0;
+  background: linear-gradient(to top right,#262c63, #4258d0, #c94fc1);
+  height: 90vh;
+}

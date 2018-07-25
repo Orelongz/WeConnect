@@ -3,7 +3,6 @@ import React from 'react';
 import { hot } from 'react-hot-loader';
 import { Switch, Route } from 'react-router-dom';
 import UserRoute from './common/UserRoute.jsx';
-import GuestRoute from './common/GuestRoute.jsx';
 import NavBar from './common/NavBar.jsx';
 import Footer from './common/Footer.jsx';
 import HomePage from './pages/HomePage/HomePage.jsx';
@@ -27,14 +26,14 @@ function App() {
     <NavBar />
     <Switch>
       <Route path='/' exact component={HomePage} />
-      <GuestRoute path='/signup' exact component={SignUpPage} />
-      <GuestRoute path='/signin' exact component={SignInPage} />
+      <Route path='/signup' component={SignUpPage} />
+      <Route path='/signin' component={SignInPage} />
       <Route path='/businesses' exact component={BusinessesPage} />
-      <UserRoute path='/businesses/new' exact component={RegisterOrEditPage} />
+      <UserRoute path='/businesses/new' component={RegisterOrEditPage} />
       <Route path='/businesses/:businessId' exact component={BusinessProfilePage} />
-      <UserRoute path='/businesses/:businessId/edit' exact component={RegisterOrEditPage} />
-      <UserRoute path='/dashboard' exact component={Dashboard} />
-      <Route path='/verify/:verificationToken' exact component={VerifyEmailPage} />
+      <UserRoute path='/businesses/:businessId/edit' component={RegisterOrEditPage} />
+      <UserRoute path='/dashboard' component={Dashboard} />
+      <Route path='/verify/:verificationToken' component={VerifyEmailPage} />
       <Route path='*' component={ErrorPage} />
     </Switch>
     <Footer />

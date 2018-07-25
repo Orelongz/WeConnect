@@ -1,6 +1,6 @@
 // import required modules
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { validate } from './../../../utils';
@@ -12,7 +12,8 @@ import InfoMessage from './../../messages/InfoMessage.jsx';
 const propTypes = {
   signup: PropTypes.func.isRequired,
   isRequestLoading: PropTypes.bool.isRequired,
-  serverError: PropTypes.string
+  serverError: PropTypes.string,
+  userId: PropTypes.string
 };
 
 /**
@@ -75,32 +76,48 @@ class SignUpPage extends Component {
    * @return {Object} the SignUpPage component
    */
   render() {
-    const { isRequestLoading, serverError } = this.props;
+    const {
+      isRequestLoading, serverError, userId
+    } = this.props;
     const { data, errors } = this.state;
 
+    if (userId) {
+      return <Redirect to="/" />;
+    }
+
     return (
-      <div className="pb-main">
-        {!isRequestLoading && serverError && <InfoMessage text={serverError} type="danger" />}
-        <div className="container mt-5">
-          <div className="row justify-content-center">
-            <div className="card col-xs-10 col-sm-8 col-md-6 col-lg-4">
-              <div className="container">
-                <h2 className="text-center my-4">Create your account</h2>
-                <SignUpForm
-                  isLoading={isRequestLoading}
-                  onSubmit={this.onSubmit}
-                  onChange={this.onChange}
-                  errors={errors}
-                  data={data}
-                />
-                <div className="d-inline-block pull-right small pt-2">
-                  <p>Already a member? <Link to='/signin'>Sign in</Link></p>
+      <main className="pb-main userForms">
+        <div className="h-100 d-flex justify-content-center">
+          <div
+            className="card col-md-8 align-self-center mt-5"
+            style={{ minHeight: '85%', height: '100%' }}
+          >
+            <div className="row h-100">
+              <div className="col-md-6 login-img"></div>
+              <div className="col-md-6 d-flex">
+                <div className="container align-self-center">
+                  <h2 className="text-center">Sign Up</h2>
+                  {
+                    !isRequestLoading && serverError &&
+                    <InfoMessage text={serverError} type="danger" />
+                  }
+                  <SignUpForm
+                    isLoading={isRequestLoading}
+                    onSubmit={this.onSubmit}
+                    onChange={this.onChange}
+                    errors={errors}
+                    data={data}
+                  />
+                  <div className="d-flex justify-content-between small pt-2">
+                    <p className="d-inline-block">Already a member? <Link to='/signin'>Sign In </Link></p>
+                    <p className="d-inline-block"><Link to="#">Forgot Password?</Link></p>
+                  </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </main>
     );
   }
 }
@@ -115,7 +132,8 @@ SignUpPage.propTypes = propTypes;
 function mapStateToProps(state) {
   return {
     isRequestLoading: state.loadingReducer.isRequestLoading,
-    serverError: state.userReducer.error
+    serverError: state.userReducer.error,
+    userId: state.userReducer.id
   };
 }
 

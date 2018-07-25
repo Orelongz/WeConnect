@@ -5,14 +5,6 @@ import PropTypes from 'prop-types';
 import { validate } from './../../../utils';
 import ContactForm from './../../forms/ContactForm.jsx';
 import { contactUs } from './../../../actions/AuthAction';
-import {
-  searchImage,
-  happyFace,
-  contactImage,
-  feedBack1,
-  feedBack2,
-  feedBack3
-} from './../../../../public/images';
 import InfoMessage from './../../messages/InfoMessage.jsx';
 
 const propTypes = {
@@ -89,119 +81,166 @@ class HomePage extends Component {
 
     return (
       <div>
-        <main className="pb-main">
-          { messageSent && <InfoMessage text="Thank you for contacting us. We sure would get back to you soon." type="info"/>}
-          <div className="container">
-            <div className="row">
-              <div className="col-md-12 col-lg-2"></div>
-              <div className="col-md-12 col-lg-8 text-center">
-
-                <section id="about" className="mt-4 border-bottom pb-4">
-                  <h3 className="text-center pt-3">About Us</h3>
-                  <article className="lead">WeConnect, we are all about giving people easy access to businesses and services just in one click</article>
-                  <div className="row">
-                    <div className="col-sm-12 col-md-4 mt-3">
-                      <div className="card">
-                        <img className="compact-pic p-3" src={searchImage} alt="view a business"/>
-                        <div className="card-body">
-                          <p className="card-text">View/ Register a business</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-sm-12 col-md-4 mt-3">
-                      <div className="card">
-                        <img className="compact-pic" src={contactImage} alt="contact the business" />
-                        <div className="card-body">
-                          <p className="card-text">Get in touch with a business</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div className="col-sm-12 col-md-4 mt-3">
-                      <div className="card">
-                        <img className="compact-pic" src={happyFace} alt="customer satisfaction" />
-                        <div className="card-body">
-                          <p className="card-text">Happy customer/ business owner</p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </section>
-
-                <section id="feedback" className="mt-4 border-bottom">
-                  <h3 className="text-center pt-3">What Our People Think</h3>
-                  <article className="lead">With our sole aim of making business owners and customers happy, here are a few comments from business owners on the site</article>
-                  <div id="carouselExampleSlidesOnly" className="carousel slide" data-ride="carousel">
-                    <div className="carousel-inner mt-3 h200">
-
-                      <div className="media carousel-item active">
-                        <img className="img-thumbnail small-profile-pic align-self-center" src={feedBack1} alt="business owner" />
-                        <blockquote className="media-body blockquote text-center">
-                          <p className="mb-0">I joined a few days back and already seeing results in my resturant</p>
-                          <footer className="blockquote-footer">Favor</footer>
-                        </blockquote>
-                      </div>
-
-                      <div className="media carousel-item">
-                        <img className="img-thumbnail small-profile-pic align-self-center" src={feedBack2} alt="business owner" />
-                        <blockquote className="media-body blockquote text-center">
-                          <p className="mb-0">Thanks a lot guys. On joining weconnect my business went from being relatively unknown to getting orders in other states of the country.</p>
-                          <footer className="blockquote-footer">Joshua</footer>
-                        </blockquote>
-                      </div>
-
-                      <div className="media carousel-item">
-                        <img className="img-thumbnail small-profile-pic align-self-center" src={feedBack3} alt="business owner" />
-                        <blockquote className="media-body blockquote text-center">
-                          <p className="mb-0">WeConnect offered me a wonderful platform to showcase my business.</p>
-                          <footer className="blockquote-footer">Levi</footer>
-                        </blockquote>
-                      </div>
-
-                    </div>
-                  </div>
-                </section>
-
-              </div>
-              <div className="col-md-12 col-lg-2"></div>
-            </div>
-
-            <section id="contact" className="mt-4">
-              <div className="container">
-                <div className="row">
-                  <div className="col-xs-12 col-md-6 col-lg-7">
-                    <div className="container card mt-5 py-3">
-                      <h3 className="text-center">Contact Us</h3>
-                      <ContactForm
-                        errors={errors}
-                        data={data}
-                        onChange={this.onChange}
-                        onSubmit={this.onSubmit}
-                        isLoading={isLoading}
-                      />
-                    </div>
-                    </div>
-
-                  <div className="col-xs-12 col-md-6 col-lg-5">
-                    <div className="container card mt-5 py-3">
-                      <div id="address">
-                        <h3 className="text-center">Our Address</h3>
-                        <div className="mt-4">
-                          <i className="fa fa-home fa-2x" aria-hidden="true"></i>&nbsp; 345, heart closed, Kenturky Road, Nigeria
-                        </div>
-                        <div className="mt-3">
-                          <i className="fa fa-envelope-o fa-lg" aria-hidden="true"></i>&nbsp; weconnect@domain.com
-                        </div>
-                        <div className="mt-3">
-                          <i className="fa fa-mobile fa-2x" aria-hidden="true"></i>&nbsp; +234-999-403-98
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
+        <main className="pb-home">
+          <section className="header d-flex justify-content-center">
+            <div className="col-sm-12 col-md-8 col-lg-6 align-self-center text-white">
+              <div className="jumbotron" style={{ backgroundColor: 'rgba(255, 255, 255, 0.7)' }}>
+                <div className="text-center" style={{ color: '#1d2252' }}>
+                  <h1>Welcome to WeConnect</h1>
+                  <p>The wonderful platform that connects businesses with individuals</p>
                 </div>
               </div>
-            </section>
-          </div>
+            </div>
+          </section>
+
+          { messageSent && <InfoMessage text="Thank you for contacting us. We sure would get back to you soon." type="info"/>}
+
+          <section id="about" className="text-center">
+            <div className="container">
+              <h2 className="header-title">About WeConnect</h2>
+              <article className="lead header-title-text">At WeConnect, we are all about giving people easy access to businesses and services just in one click</article>
+              <div className="row mt-3 text-white">
+                <div className="col-sm-12 col-md-6 col-lg-3 py-4 mt-3" style={{ backgroundColor: '#1d2252' }}>
+                  <div className="p-3 about-icon">
+                    <img src="https://image.flaticon.com/icons/svg/483/483342.svg" alt="signup/signin" />
+                  </div>
+                  <div>
+                    <h6 className="mt-4 font-weight-bold" style={{ color: '#dd3545' }} >Signup /Signin</h6>
+                    <p>
+                      Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                    </p>
+                  </div>
+                </div>
+                <div className="col-sm-12 col-md-6 col-lg-3 py-4 mt-3" style={{ backgroundColor: '#dd3545' }}>
+                  <div className="p-3 about-icon">
+                    <img src="https://image.flaticon.com/icons/svg/622/622666.svg" alt="contact the business" />
+                  </div>
+                  <div>
+                    <h6 className="mt-4 font-weight-bold" style={{ color: '#1d2252' }}>View/ Register business</h6>
+                    <p>
+                      Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                    </p>
+                  </div>
+                </div>
+                <div className="col-sm-12 col-md-6 col-lg-3 py-4 mt-3" style={{ backgroundColor: '#1d2252' }}>
+                  <div className="p-3 about-icon">
+                    <img src="https://image.flaticon.com/icons/svg/76/76910.svg" alt="contact the business" />
+                  </div>
+                  <div>
+                    <h6 className="mt-4 font-weight-bold" style={{ color: '#dd3545' }}>Get in touch</h6>
+                    <p>
+                      Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                    </p>
+                  </div>
+                </div>
+                <div className="col-sm-12 col-md-6 col-lg-3 py-4 mt-3" style={{ backgroundColor: '#dd3545' }}>
+                  <div className="p-3 about-icon">
+                    <img src="https://image.flaticon.com/icons/svg/90/90583.svg" alt="contact the business" />
+                  </div>
+                  <div>
+                    <h6 className="mt-4 font-weight-bold" style={{ color: '#1d2252' }}>Happy customer</h6>
+                    <p>
+                      Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="feedback">
+            <div className="container">
+              <h2 className="header-title text-center">What People Say</h2>
+              <article className="lead header-title-text text-center">With our sole aim of making business owners and customers happy, here are a few comments from business owners on the site</article>
+              <div className="row text-center">
+                <div className="col-sm-12 col-md-4 mt-3">
+                  <div className="d-flex">
+                    <img className="small-profile-pic rounded-circle" src="/images/feedback_1.jpg" alt="business owner" />
+                    <div className="ml-2 align-items-center d-flex">
+                      <p><strong>Favor</strong> ---- <i>Resturant owner</i></p>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="mb-0">I joined a few days back and already seeing results in my resturant</p>
+                  </div>
+                </div>
+
+                <div className="col-sm-12 col-md-4 mt-3">
+                  <div className="d-flex">
+                    <img className="small-profile-pic rounded-circle" src="/images/feedback_2.jpg" alt="business owner" />
+                    <div className="ml-2 align-items-center d-flex">
+                      <p><strong>Joshua</strong> ---- <i>Resturant owner</i></p>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="mb-0">Thanks a lot guys. On joining weconnect my business went from being relatively unknown to getting orders in other states of the country.</p>
+                    <footer className="div-footer"></footer>
+                  </div>
+                </div>
+
+                <div className="col-sm-12 col-md-4 mt-3">
+                  <div className="d-flex">
+                    <img className="small-profile-pic rounded-circle" src="/images/feedback_3.png" alt="business owner" />
+                    <div className="ml-2 align-items-center d-flex">
+                      <p><strong>Levi</strong> ---- <i>Resturant owner</i></p>
+                    </div>
+                  </div>
+                  <div>
+                    <p className="mb-0">WeConnect offered me a wonderful platform to showcase my business.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="contact">
+            <div className="overlay">
+              <div className="container">
+                <h2 className="text-center header-title text-white">Contact Us</h2>
+                <div className="row justify-content-center">
+                <ContactForm
+                  errors={errors}
+                  data={data}
+                  onChange={this.onChange}
+                  onSubmit={this.onSubmit}
+                  isLoading={isLoading}
+                />
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section id="address" className="text-center">
+            <div className="container">
+              <div className="row">
+                <div className="col-sm-12 col-md-4">
+                  <div className="w-50 mx-auto">
+                    <div>
+                      <i className="fa fa-map-marker fa-2x" aria-hidden="true"></i>
+                    </div>
+                    <p className="mt-3 mb-0">345, Gbajabiamila way, Ikorodu Road, Lagos, Nigeria</p>
+                  </div>
+                </div>
+                <div className="col-sm-12 col-md-4">
+                  <div className="w-50 mx-auto">
+                    <div>
+                      <i className="fa fa-envelope-o fa-2x" aria-hidden="true"></i>
+                    </div>
+                    <p className="mt-3 mb-0">weconnect@domain.com</p>
+                    <p className="mb-0">orelongz@gmail.con</p>
+                  </div>
+                </div>
+                <div className="col-sm-12 col-md-4">
+                  <div className="w-50 mx-auto">
+                    <div>
+                      <i className="fa fa-mobile fa-3x" aria-hidden="true"></i>
+                    </div>
+                    <p className="mt-3 mb-0"> +234-999-403-98</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
         </main>
       </div>
     );

@@ -26,18 +26,18 @@ function ErrorPage({ isAuthenticated }) {
         <ul className="nav justify-content-center">
           <li>
             {isAuthenticated ?
-            <Link to='/dashboard' className="nav-link btn btn-lg btn-outline-info mx-1">Dashboard</Link> :
-            <Link to='/signin' className="nav-link btn btn-lg btn-outline-info mx-1">Signin</Link>
+            <Link to='/dashboard' className="nav-link btn btn-lg btn-outline-dark mx-1">Dashboard</Link> :
+            <Link to='/signin' className="nav-link btn btn-lg btn-outline-dark mx-1">Signin</Link>
             }
           </li>
           <li className="nav-item">
-            <Link to='/businesses' className="nav-link btn btn-lg btn-outline-info mx-1">Businesses</Link>
+            <Link to='/businesses' className="nav-link btn btn-lg btn-outline-dark mx-1">Businesses</Link>
           </li>
           <li className="nav-item">
             {isAuthenticated ? (
-              <Link to='/businesses/new' className="nav-link btn btn-lg btn-outline-info mx-1">Register Business</Link>
+              <Link to='/businesses/new' className="nav-link btn btn-lg btn-outline-dark mx-1">Register Business</Link>
             ) : (
-              <Link to='/signup' className="nav-link btn btn-lg btn-outline-info mx-1">Signup</Link>
+              <Link to='/signup' className="nav-link btn btn-lg btn-outline-dark mx-1">Signup</Link>
             )}
           </li>
         </ul>

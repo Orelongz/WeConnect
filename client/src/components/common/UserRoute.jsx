@@ -2,12 +2,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Route, Redirect } from 'react-router-dom';
-import { connect } from 'react-redux';
 
 // define proptypes for UserRoute
 const propTypes = {
-  component: PropTypes.func.isRequired,
-  isAuthenticated: PropTypes.bool.isRequired
+  component: PropTypes.func.isRequired
 };
 
 /**
@@ -16,30 +14,22 @@ const propTypes = {
  * @param {Object} props
  * @return {Object} authenticated route components
  */
-const UserRoute = ({ isAuthenticated, component: Component, ...rest }) => (
-  <Route
-    {...rest}
-    render={props =>
-      (isAuthenticated ? (
-        <Component {...props} />
-      ) : (
-        <Redirect to='/signin' />
-      ))
-    }
-  />
-);
+const UserRoute = ({ component: Component, ...rest }) => {
+  const token = localStorage.getItem('weconnectToken');
+  return (
+    <Route
+      {...rest}
+      render={props =>
+        (token ? (
+          <Component {...props} />
+        ) : (
+          <Redirect to='/signin' />
+        ))
+      }
+    />
+  );
+};
 
 UserRoute.propTypes = propTypes;
 
-/**
- * mapStateToProps
- * @param {Object} state redux state
- * @return {Object} UserRoute props
- */
-function mapStateToProps(state) {
-  return {
-    isAuthenticated: !!state.userReducer.id
-  };
-}
-
-export default connect(mapStateToProps)(UserRoute);
+export default (UserRoute);

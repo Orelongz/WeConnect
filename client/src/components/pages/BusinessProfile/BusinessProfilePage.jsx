@@ -15,10 +15,6 @@ import {
 } from './../../../actions/reviewAction';
 import BusinessProfile from './BusinessProfile.jsx';
 import ReviewsContainer from './ReviewsContainer.jsx';
-import {
-  pageSpinner,
-  defaultUserProfilePic
-} from './../../../../public/images';
 import InfoMessage from './../../messages/InfoMessage.jsx';
 
 // define proptypes for BusinessProfilePage component
@@ -207,7 +203,7 @@ class BusinessProfilePage extends Component {
     const {
       data, update, reviewFormError, editing
     } = this.state;
-    const displayUserImage = User.userImage || defaultUserProfilePic;
+    const displayUserImage = User.userImage || '/images/default_user_profile_pic.jpg';
 
     return (
       <main className="pb-main">
@@ -215,7 +211,7 @@ class BusinessProfilePage extends Component {
           isPageLoading ?
           (
             <div className="loading">
-              <img src={pageSpinner} alt="isLoading" />
+              <img src="/images/page spinner.gif" alt="isLoading" />
               <p>Loading...</p>
             </div>
           ) :

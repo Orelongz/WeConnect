@@ -2,7 +2,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { defaultBusinessProfilePic } from '../../../../public/images';
 
 // define proptypes for UserBusinesses component
 const propTypes = {
@@ -20,23 +19,28 @@ function UserBusinesses({ businesses, deleteBusiness }) {
   return (
     businesses.map((eachBusiness) => {
       const {
-        businessImage, businessName, category, phoneNumber, id: businessId
+        businessImage, businessName, category, phoneNumber, id: businessId, about
       } = eachBusiness;
       const businessLink = `/businesses/${businessId}`;
-      const displayImage = businessImage || defaultBusinessProfilePic;
+      const displayImage = businessImage || '/images/default_business_profile_pic.png';
       return (
-        <div key={businessId} className="col-xs-12 col-sm-6 col-lg-4 mt-4">
+        <div key={businessId} className="col-xs-12 col-md-6 col-lg-4 mt-4">
           <div className="card" >
             <Link to={businessLink} className="overflow">
               <img src={displayImage} alt={businessName} className="card-img-top catalog-profile-pic"/>
             </Link>
             <div className="card-body">
-              <h5 className="card-title">{businessName}</h5>
-              <div className="card-text small">
-                <p className="mb-0">Category: {category}</p>
-                <p className="mb-0">Tel: {phoneNumber}</p>
+              <h5 className="card-title text-uppercase text-center font-weight-bold">
+                {businessName}
+              </h5>
+              <div className="card-text small d-flex justify-content-between">
+                <p className="mb-0"><strong>Phone No:</strong> {phoneNumber}</p>
+                <p className="mb-0"><strong>Category:</strong> {category}</p>
               </div>
-              <div className="d-flex justify-content-between">
+              <div className="small text-capitalize my-2">
+                {about.substring(0, 250)}...
+              </div>
+              <div className="d-flex justify-content-between w-100">
                 <Link to={businessLink} className="btn btn-sm btn-success">View</Link>
                 <Link to={`/businesses/${businessId}/edit`} className="btn btn-sm btn-primary">Edit</Link>
                 <button onClick={() => deleteBusiness(businessId)} className="btn btn-sm btn-danger">Delete</button>

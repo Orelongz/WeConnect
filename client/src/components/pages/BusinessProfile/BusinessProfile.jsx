@@ -3,7 +3,6 @@ import React, { Fragment } from 'react';
 import StarRatings from 'react-star-ratings';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { defaultBusinessProfilePic } from './../../../../public/images';
 
 // define proptypes for BusinessProfile component
 const propTypes = {
@@ -27,7 +26,7 @@ function BusinessProfile({
     phoneNumber, postalAddress, startTime, closeTime, about, id: businessId,
     userId: ownerId, rating
   } = businessDetails;
-  const displayBusinessImage = businessImage || defaultBusinessProfilePic;
+  const displayBusinessImage = businessImage || '/images/default_business_profile_pic.png';
 
   return (
     <Fragment>

@@ -6,10 +6,6 @@ import { Link } from 'react-router-dom';
 // import queryString from 'query-string';
 import SearchBar from './../../forms/SearchBar.jsx';
 import { allBusinesses } from './../../../actions/businessAction';
-import {
-  defaultBusinessProfilePic,
-  pageSpinner
-} from './../../../../public/images';
 import Paginate from '../../../components/common/paginate.jsx';
 import InfoMessage from './../../messages/InfoMessage.jsx';
 
@@ -37,7 +33,7 @@ const displayBusinesses = (businesses, { search }) => {
 
   return (
     <Fragment>
-      <h2 className="text-center">Businesses</h2>
+      <h2 className="text-center mt-5">Businesses</h2>
       <div className="row">
         {
           businesses.map((eachBusiness) => {
@@ -45,7 +41,7 @@ const displayBusinesses = (businesses, { search }) => {
               businessImage, businessName, category, phoneNumber, id: businessId, about
             } = eachBusiness;
             const businessLink = `/businesses/${businessId}`;
-            const displayImage = businessImage || defaultBusinessProfilePic;
+            const displayImage = businessImage || '/images/default_business_profile_pic.png';
 
             return (
               <div key={businessId} className="col-xs-12 col-sm-6 col-lg-4 mt-4">
@@ -62,7 +58,7 @@ const displayBusinesses = (businesses, { search }) => {
                       <p className="mb-0"><strong>Category:</strong> {category}</p>
                     </div>
                     <div className="small text-capitalize my-2">
-                      {about.substring(0, 100)}...
+                      {about.substring(0, 50)}...
                     </div>
                     <Link to={businessLink} className="w-100 btn btn-primary btn-sm">
                       View
@@ -98,6 +94,7 @@ class BusinessesPage extends Component {
     this.onChange = this.onChange.bind(this);
     this.onPageChange = this.onPageChange.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.fetchBusinesses = this.fetchBusinesses.bind(this);
   }
 
   /**
@@ -140,6 +137,15 @@ class BusinessesPage extends Component {
    * @return {Object} new state object
    */
   componentDidMount() {
+    this.fetchBusinesses();
+  }
+
+  /**
+   * fetchBusinesses
+   * @desc react componentDidMount lifecycle
+   * @return {Object} new state object
+   */
+  fetchBusinesses() {
     this.props.allBusinesses();
   }
 
@@ -169,22 +175,25 @@ class BusinessesPage extends Component {
 
     return (
       <Fragment>
-        <SearchBar
-          handleSearch={this.handleSearch}
-          onChange={this.onChange}
-          data={data}
-        />
         {
           isLoading ?
           (
             <div className="loading">
-              <img src={pageSpinner} alt="isLoading" />
+              <img src="/images/page spinner.gif" alt="isLoading" />
               <p>Loading...</p>
             </div>
           ) :
           (
             <main className="pb-main">
+              <SearchBar
+                handleSearch={this.handleSearch}
+                reset={this.fetchBusinesses}
+                onChange={this.onChange}
+                data={data}
+              />
+
               {displayError && <InfoMessage text={displayError} type="danger" />}
+
               <div className="container">
                 {displayBusinesses(businesses, data)}
 
