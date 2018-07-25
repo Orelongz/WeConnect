@@ -12,6 +12,7 @@ import {
   changeOwnership
 } from './../../../actions/businessAction';
 import BusinessTransferForm from './../../forms/BusinessTransferForm.jsx';
+import InfoMessage from '../../messages/InfoMessage.jsx';
 
 // define proptypes for RegisterOrEditPage component
 const propTypes = {
@@ -28,7 +29,8 @@ const propTypes = {
     }).isRequired
   }).isRequired,
   businessDetails: PropTypes.object,
-  history: PropTypes.object.isRequired
+  history: PropTypes.object.isRequired,
+  serverError: PropTypes.string
 };
 
 /**
@@ -185,19 +187,24 @@ class RegisterOrEditPage extends Component {
    * @return {Object} the RegisterBusinessesPage component
    */
   render() {
-    const { categories } = this.props;
+    const { categories, serverError } = this.props;
     const { businessId } = this.props.match.params;
     const { errors, data } = this.state;
-    const Header = businessId ? `Edit ${data.businessName}` : 'Register your new business';
+    const header = businessId ? `Edit ${data.businessName}` : 'Business Registration Form';
+    const subHeader = businessId ? `Edit ${data.businessName}` : 'Register your business on weconnect';
+    const ImageHeader = businessId ? 'Change business image' : 'Add business image(optional)';
     const FormAction = businessId ? 'Save' : 'Register';
 
     return (
-      <main className="pb-main">
-        <div className="container mt-5">
+      <main className="pb-main mt-5">
+        <div className="container">
           <div className="row justify-content-center">
-            <div className="card py-3 col-xs-12 col-sm-10">
-              <div className="container">
-                <h2 className="text-center">{Header}</h2>
+            <div className="card py-3 col-md-8">
+              <div className="text-center">
+                <h2>{header}</h2>
+                <p>{subHeader} by filling the form below.</p>
+              </div>
+                {serverError && <InfoMessage text={serverError} type="danger" />}
                 {
                   categories && <BusinessForm
                     displayPreview={this.displayPreview}
@@ -206,6 +213,7 @@ class RegisterOrEditPage extends Component {
                     onChange={this.onChange}
                     categories={categories}
                     FormAction={FormAction}
+                    ImageHeader={ImageHeader}
                     errors={errors}
                     data={data}
                   />
@@ -221,7 +229,6 @@ class RegisterOrEditPage extends Component {
               </div>
             </div>
           </div>
-        </div>
       </main>
     );
   }
@@ -239,6 +246,7 @@ function mapStateToProps(state) {
   return {
     categories: state.categoryReducer,
     businessDetails: state.businessReducer.business,
+    serverError: state.businessReducer.error
   };
 }
 

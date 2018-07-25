@@ -20,47 +20,44 @@ function ContactForm({
   errors, onChange, onSubmit, data, isLoading
 }) {
   return (
-    <form onSubmit={onSubmit}>
-      <div className="form-row">
-        <div className="col">
-          <label htmlFor="name">Name</label>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="Name"
-            name="name"
-            value={data.name}
-            onChange={onChange}
-          />
-          {errors.name && <InlineError text={errors.name} />}
-        </div>
-        <div className="col">
-          <label htmlFor="email">Email</label>
-          <input
-            type="text"
-            className="form-control"
-            placeholder="email@domain.com"
-            name="email"
-            value={data.email}
-            onChange={onChange}
-          />
-          {errors.email && <InlineError text={errors.email} />}
-        </div>
-      </div>
-      <div className="form-group">
-        <label htmlFor="name">Message</label>
-        <textarea
+
+    <form
+      className="col-sm-12 col-md-8 col-lg-6 text-center"
+      onSubmit={onSubmit}
+    >
+      <div>
+        <input
           type="text"
-          className="form-control"
-          placeholder="Message"
-          name="message"
-          rows="4"
-          value={data.message}
+          className="form-control mt-3"
+          placeholder="*Name"
+          name="name"
+          value={data.name}
           onChange={onChange}
         />
-        {errors.message && <InlineError text={errors.message} />}
+        {errors.name && <InlineError text={errors.name} />}
       </div>
-      <button disabled={isLoading} type="submit" className="btn btn-primary">Send</button>
+      <div>
+        <input
+          type="text"
+          className="form-control mt-3"
+          placeholder="*email@domain.com"
+          name="email"
+          value={data.email}
+          onChange={onChange}
+        />
+        {errors.email && <InlineError text={errors.email} />}
+      </div>
+      <textarea
+        type="text"
+        className="form-control mt-3"
+        placeholder="*Message"
+        rows="7"
+        name="message"
+        value={data.message}
+        onChange={onChange}
+      />
+      {errors.message && <InlineError text={errors.message} />}
+      <button disabled={isLoading} type="submit" className="btn btn-danger w-100 py-2 mt-3">Send</button>
     </form>
   );
 }

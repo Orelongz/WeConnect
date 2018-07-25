@@ -21,6 +21,7 @@ function SignInForm({
   isLoading, errors, onSubmit, onChange, data
 }) {
   return (
+
     <form onSubmit={onSubmit}>
       <div className="form-group">
         <label htmlFor="email">Email</label>
@@ -48,8 +49,10 @@ function SignInForm({
         />
         {errors.password && <InLineError text={errors.password} />}
       </div>
-      <button disabled={isLoading} className="btn btn-primary w-100">
-        <i className="fa fa-sign-in" aria-hidden="true"></i>&nbsp;Sign In
+      <button
+        disabled={isLoading}
+        className="btn btn-primary w-100">
+          <i className="fa fa-sign-in" aria-hidden="true"></i>&nbsp;Sign In
       </button>
     </form>
   );

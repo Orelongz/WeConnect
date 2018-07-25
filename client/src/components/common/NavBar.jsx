@@ -19,44 +19,50 @@ const propTypes = {
  */
 function NavBar({ isAuthenticated, userLogout }) {
   return (
-    <header>
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-        <Link to='/' className="navbar-brand">WeConnect</Link>
-        <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarNavDropdown">
-          <ul className="navbar-nav ml-auto">
+    <header className="sticky-top">
+      <nav className="navbar navbar-expand-lg custom-nav">
+        <div className="container">
+          <Link to='/' className="navbar-brand">
+            <h2>WeConnect</h2>
+          </Link>
 
-            {/* render dashboard link if authenticated */}
-            {isAuthenticated ? (
-              <li>
-                <Link to='/dashboard' className="nav-link">Dashboard</Link>
+          <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+            <span className="navbar-toggler-icon"></span>
+          </button>
+          <div className="collapse navbar-collapse" id="navbarNavDropdown">
+
+            <ul className="navbar-nav ml-auto">
+
+              {/* render dashboard link if authenticated */}
+              {isAuthenticated ? (
+                <li>
+                  <Link to='/dashboard' className="nav-link">Dashboard</Link>
+                </li>
+              ) : null}
+              <li className="nav-item">
+                <Link to='/businesses' className="nav-link">Businesses</Link>
               </li>
-            ) : null}
-            <li className="nav-item">
-              <Link to='/businesses' className="nav-link">Businesses</Link>
-            </li>
-            <li className="nav-item">
+              <li className="nav-item">
 
-              {/* render 'register business' link if authenticated */}
-              {isAuthenticated ? (
-                <Link to='/businesses/new' className="nav-link">Register Business</Link>
-              ) : (
-                <Link to='/signup' className="nav-link">Signup</Link>
-              )}
+                {/* render 'register business' link if authenticated */}
+                {isAuthenticated ? (
+                  <Link to='/businesses/new' className="nav-link">Register Business</Link>
+                ) : (
+                  <Link to='/signup' className="nav-link">Signup</Link>
+                )}
 
-            </li>
-            <li className="nav-item">
+              </li>
+              <li className="nav-item">
 
-              {/* render logout link if authenticated */}
-              {isAuthenticated ? (
-                <Link to="/" className="nav-link" onClick={() => userLogout()}>Logout</Link>
-              ) : (
-                <Link to='/signin' className="nav-link">Signin</Link>
-              )}
-            </li>
-          </ul>
+                {/* render logout link if authenticated */}
+                {isAuthenticated ? (
+                  <Link to="/" className="nav-link" onClick={() => userLogout()}>Logout</Link>
+                ) : (
+                  <Link to='/signin' className="nav-link">Signin</Link>
+                )}
+              </li>
+            </ul>
+          </div>
         </div>
       </nav>
     </header>
