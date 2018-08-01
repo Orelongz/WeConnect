@@ -53,7 +53,14 @@ function ReviewForm({
             changeRating={changeRating}
             numberOfStars={5}
           />
-          <button disabled={isLoading} type="submit" className="btn btn-primary btn-sm pull-right">POST</button>
+          <button
+            disabled={isLoading}
+            type="submit"
+            id="postReview"
+            className="btn btn-primary btn-sm pull-right"
+          >
+            POST
+          </button>
         </div>
       </form>
     </div>

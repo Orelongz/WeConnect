@@ -22,7 +22,7 @@ const propTypes = {
  * @desc renders the SignInPage component
  * @return {*} void
  */
-class SignInPage extends Component {
+export class SignInPage extends Component {
   /**
    * constructor
    * @desc constructor for the SignInPage component

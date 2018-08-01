@@ -87,7 +87,7 @@ function BusinessProfile({
               (ownerId === User.id) &&
               <div>
                 <button disabled={isLoading} onClick={handleDeleteBusiness} className="btn btn-danger">Delete</button>
-                <Link to={`/businesses/${businessId}/edit`} className="btn btn-primary pull-right">Edit</Link>
+                <Link to={`/businesses/${businessId}/edit`} id="editBusiness" className="btn btn-primary pull-right">Edit</Link>
               </div>
             }
           </div>

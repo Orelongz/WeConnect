@@ -51,7 +51,7 @@ function SignUpForm({
             {errors.lastname && <InLineError text={errors.lastname} />}
           </div>
         </div>
-      </div>              
+      </div>
 
       <div className="form-group">
         <label htmlFor="email">Email</label>
@@ -82,7 +82,7 @@ function SignUpForm({
             />
             {errors.password && <InLineError text={errors.password} />}
           </div>
-    
+
           <div className="col-md-6">
             <input
               type="password"

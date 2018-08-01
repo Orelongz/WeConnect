@@ -20,7 +20,6 @@ const propTypes = {
   editUser: PropTypes.func.isRequired,
   User: PropTypes.object.isRequired,
   businesses: PropTypes.array,
-  isConfirmed: PropTypes.bool,
   match: PropTypes.object.isRequired
 };
 
@@ -29,7 +28,7 @@ const propTypes = {
  * @desc renders the Dashboard of the app
  * @return {void}
  */
-class Dashboard extends Component {
+export class Dashboard extends Component {
   /**
    * constructor
    * @desc constructor for the Dashboard component
@@ -163,38 +162,32 @@ class Dashboard extends Component {
 
           {!isConfirmed && <VerifyEmailMessage name={User.firstname} />}
 
-          <div className="card my-5 py-5">
-            <div className="container">
-
-              <Route
-                path={`${match.url}/businesses`}
-                render={() => (
-                  <UserBusinesses
-                    businesses={this.props.businesses}
-                    deleteBusiness={this.deleteBusiness}
-                  />
-                )}
+          <Route
+            path={`${match.url}/businesses`}
+            render={() => (
+              <UserBusinesses
+                businesses={this.props.businesses}
+                deleteBusiness={this.deleteBusiness}
               />
+            )}
+          />
 
-              <Route
-                exact
-                path={match.url}
-                render={() => (
-                  <UserDetails
-                    toggleEditStatus={this.toggleEditStatus}
-                    displayImage={displayImage}
-                    onSubmit={this.onSubmit}
-                    onChange={this.onChange}
-                    isEditing={isEditing}
-                    errors={errors}
-                    data={data}
-                    User={User}
-                  />
-                )}
+          <Route
+            exact
+            path={match.url}
+            render={() => (
+              <UserDetails
+                toggleEditStatus={this.toggleEditStatus}
+                displayImage={displayImage}
+                onSubmit={this.onSubmit}
+                onChange={this.onChange}
+                isEditing={isEditing}
+                errors={errors}
+                data={data}
+                User={User}
               />
-
-            </div>
-          </div>
+            )}
+          />
         </div>
       </main>
 

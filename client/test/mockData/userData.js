@@ -2,7 +2,8 @@ export const signUpUser = {
   firstname: 'Chima',
   lastname: 'Dauda',
   email: 'chima.dauda@gmail.com',
-  password: 'chimauda'
+  password: 'chimauda',
+  confirmPassword: 'chimauda'
 };
 
 export const signUpResponse = {
@@ -32,7 +33,8 @@ export const signinResponse = {
       email: 'chima.dauda@gmail.com',
       id: '',
       token: '',
-      userImage: ''
+      userImage: '',
+      isConfirmed: false
     }
   }
 };

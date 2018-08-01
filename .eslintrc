@@ -12,7 +12,8 @@
     "node": true,
     "es6": true,
     "mocha": true,
-    "browser": true
+    "browser": true,
+    "jest": true
   },
   "rules": {
     "import/extensions": 0,

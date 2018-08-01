@@ -3,7 +3,6 @@ import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-// import queryString from 'query-string';
 import SearchBar from './../../forms/SearchBar.jsx';
 import { allBusinesses } from './../../../actions/businessAction';
 import Paginate from '../../../components/common/paginate.jsx';
@@ -79,7 +78,7 @@ const displayBusinesses = (businesses, { search }) => {
  * @desc renders the BusinessesPage component
  * @return {*} void
  */
-class BusinessesPage extends Component {
+export class BusinessesPage extends Component {
   /**
    * constructor
    * @desc constructor for the BusinessesPage component

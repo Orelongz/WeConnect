@@ -21,7 +21,7 @@ const propTypes = {
  * @desc renders the SignUpPage of the app
  * @return {void}
  */
-class SignUpPage extends Component {
+export class SignUpPage extends Component {
   /**
    * constructor
    * @desc constructor for the SignUpPage component

@@ -55,7 +55,7 @@ function SearchBar({
               <option value="location">By location</option>
               <option value="category">By category</option>
             </select>
-            <button className="btn btn-primary" type="submit">Search</button>
+            <button className="btn btn-primary" id="searchBusinesses" type="submit">Search</button>
             <span onClick={reset} className="btn btn-danger">Reset</span>
           </form>
         </div>

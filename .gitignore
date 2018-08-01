@@ -4,6 +4,9 @@ node_modules/
 .vscode/
 coverage/
 dist/
+reports/
+bin/
+selenium-debug.log
 npm-debug.log
 debug.log
 .env

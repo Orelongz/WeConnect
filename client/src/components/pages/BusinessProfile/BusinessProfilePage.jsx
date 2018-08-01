@@ -44,7 +44,7 @@ const propTypes = {
  * @desc renders the BusinessProfilePage component
  * @return {*} void
  */
-class BusinessProfilePage extends Component {
+export class BusinessProfilePage extends Component {
   /**
    * constructor
    * @desc constructor for the BusinessProfilePage component

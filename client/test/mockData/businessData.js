@@ -1,35 +1,37 @@
 export const credentials = {
+  businessName: 'a new business',
   businessImage: '',
-  postalAddress: '',
-  businessName: '',
-  category: '',
-  address: '',
-  city: '',
-  state: '',
-  phoneNumber: '',
-  about: '',
-  startTime: '',
-  closeTime: ''
+  category: 'IT',
+  address: 'some address',
+  city: 'yaba',
+  state: 'Lagos',
+  phoneNumber: '00876578987',
+  postalAddress: 'dkjhdh',
+  startTime: '9am',
+  closeTime: '5pm',
+  about: 'd,hjdfjds\r\njhdkhjd\r\ndjdkh'
 };
 
 export const businessObject = {
   status: 'success',
   data: {
     business: {
-      businessId: '1be7ded6-4b9d-4d28-93e5-7305a30ef581',
-      userId: '',
+      id: '4af144cc-6964-423f-b5c0-1793ae2a4361',
+      businessName: 'a new business',
       businessImage: '',
-      postalAddress: '',
-      categoryId: '',
-      businessName: '',
-      category: '',
-      address: '',
-      city: '',
-      state: '',
-      phoneNumber: '',
-      about: '',
-      startTime: '',
-      closeTime: ''
+      category: 'IT',
+      address: 'some address',
+      city: 'yaba',
+      state: 'Lagos',
+      phoneNumber: '00876578987',
+      postalAddress: 'dkjhdh',
+      startTime: '9am',
+      closeTime: '5pm',
+      about: 'd,hjdfjds\r\njhdkhjd\r\ndjdkh',
+      createdAt: '2018-07-11T12:30:07.416Z',
+      updatedAt: '2018-07-11T12:30:07.416Z',
+      userId: '1bf0f6f9-e308-4afa-93b9-d5da9326b981',
+      categoryId: '4dc63e2c-4416-4d6c-a292-0a3c68e59f17'
     }
   }
 };
@@ -39,36 +41,40 @@ export const allBusinesses = {
   data: {
     businesses: [
       {
-        businessId: '1be7ded6-4b9d-4d28-93e5-7305a30ef581',
-        userId: '',
+        id: '4af144cc-6964-423f-b5c0-1793ae2a4361',
+        businessName: 'a new business',
         businessImage: '',
-        postalAddress: '',
-        categoryId: '',
-        businessName: '',
-        category: '',
-        address: '',
-        city: '',
-        state: '',
-        phoneNumber: '',
-        about: '',
-        startTime: '',
-        closeTime: ''
+        category: 'IT',
+        address: 'some address',
+        city: 'yaba',
+        state: 'Lagos',
+        phoneNumber: '00876578987',
+        postalAddress: 'dkjhdh',
+        startTime: '9am',
+        closeTime: '5pm',
+        about: 'd,hjdfjds\r\njhdkhjd\r\ndjdkh',
+        createdAt: '2018-07-11T12:30:07.416Z',
+        updatedAt: '2018-07-11T12:30:07.416Z',
+        userId: '1bf0f6f9-e308-4afa-93b9-d5da9326b981',
+        categoryId: '4dc63e2c-4416-4d6c-a292-0a3c68e59f17'
       },
       {
-        businessId: 'bd3c6cd6-09d5-4aeb-bc03-7a9ee3f88dcb',
-        userId: '',
+        id: 'bb29b00b-7800-4ba0-a2c6-06039a33519a',
+        businessName: 'ddkjdhjjfdd',
         businessImage: '',
+        category: 'IT',
+        address: 'dkjdhf',
+        city: 'dljhdjfh',
+        state: 'Nasarawa',
+        phoneNumber: '0976987678',
         postalAddress: '',
-        categoryId: '',
-        businessName: '',
-        category: '',
-        address: '',
-        city: '',
-        state: '',
-        phoneNumber: '',
-        about: '',
-        startTime: '',
-        closeTime: ''
+        startTime: '9am',
+        closeTime: '5pm',
+        about: 'd,jfhjhdf\r\nkdjh',
+        createdAt: '2018-07-11T12:31:21.804Z',
+        updatedAt: '2018-07-11T12:31:21.804Z',
+        userId: '1bf0f6f9-e308-4afa-93b9-d5da9326b981',
+        categoryId: '4dc63e2c-4416-4d6c-a292-0a3c68e59f17'
       }
     ],
     paginate: {
@@ -87,37 +93,40 @@ export const businessRating = {
 };
 
 export const updateCredentials = {
-  businessImage: '',
-  postalAddress: '',
   businessName: 'updated business',
-  category: '',
-  address: '',
-  city: '',
-  state: '',
-  phoneNumber: '',
-  about: '',
-  startTime: '',
-  closeTime: ''
+  businessImage: '',
+  category: 'IT',
+  address: 'some address',
+  city: 'yaba',
+  state: 'Lagos',
+  phoneNumber: '00876578987',
+  postalAddress: 'dkjhdh',
+  startTime: '9am',
+  closeTime: '5pm',
+  about: 'd,hjdfjds\r\njhdkhjd\r\ndjdkh',
+  createdAt: '2018-07-11T12:30:07.416Z'
 };
 
 export const businessUpdate = {
   status: 'success',
   data: {
     business: {
-      businessId: '1be7ded6-4b9d-4d28-93e5-7305a30ef581',
-      userId: '',
-      businessImage: '',
-      postalAddress: '',
-      categoryId: '',
+      id: '4af144cc-6964-423f-b5c0-1793ae2a4361',
       businessName: 'updated business',
-      category: '',
-      address: '',
-      city: '',
-      state: '',
-      phoneNumber: '',
-      about: '',
-      startTime: '',
-      closeTime: ''
+      businessImage: '',
+      category: 'IT',
+      address: 'some address',
+      city: 'yaba',
+      state: 'Lagos',
+      phoneNumber: '00876578987',
+      postalAddress: 'dkjhdh',
+      startTime: '9am',
+      closeTime: '5pm',
+      about: 'd,hjdfjds\r\njhdkhjd\r\ndjdkh',
+      createdAt: '2018-07-11T12:30:07.416Z',
+      updatedAt: '2018-07-11T12:30:07.416Z',
+      userId: '1bf0f6f9-e308-4afa-93b9-d5da9326b981',
+      categoryId: '4dc63e2c-4416-4d6c-a292-0a3c68e59f17'
     }
   }
 };
