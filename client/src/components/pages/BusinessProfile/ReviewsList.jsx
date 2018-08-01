@@ -79,6 +79,7 @@ function ReviewList({
                       User.id === review.userId ? (
                         <Fragment>
                           <div
+                            id="editReview"
                             data-toggle="tooltip"
                             data-placement="top"
                             title="Edit"
@@ -87,6 +88,7 @@ function ReviewList({
                             <i className="fa fa-pencil-square-o text-primary"></i>
                           </div>
                           <div
+                            id="deleteReview"
                             data-toggle="tooltip"
                             data-placement="top"
                             title="Delete"

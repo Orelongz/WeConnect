@@ -85,6 +85,7 @@
     "html-webpack-plugin": "^3.2.0",
     "jest": "^23.2.0",
     "mocha": "^5.0.2",
+    "nightwatch": "^0.9.21",
     "node-sass": "^4.8.3",
     "nodemon": "^1.17.4",
     "nyc": "^11.4.1",
@@ -106,7 +107,9 @@
     "test:client": "jest --coverage",
     "coverage": "nyc report --reporter=text-lcov | coveralls",
     "report-coverage": "cat ./coverage/lcov.info | coveralls",
-    "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test"
+    "coveralls": "nyc --reporter=lcov --reporter=text-lcov npm test",
+    "nightwatch": "npm run test-migrate && ./node_modules/.bin/nightwatch",
+    "nightwatch:run": "cross-env NODE_ENV=test babel-node app.js"
   },
   "jest": {
     "setupTestFrameworkScriptFile": "./client/test/helpers.js",

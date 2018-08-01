@@ -38,7 +38,7 @@ const propTypes = {
  * @desc this components is used to register and edit a business
  * @return {*} void
  */
-class RegisterOrEditPage extends Component {
+export class RegisterOrEditPage extends Component {
   /**
    * constructor
    * @desc constructor for the BusinessesPage component
@@ -61,24 +61,39 @@ class RegisterOrEditPage extends Component {
         about: '',
         imagePreview: ''
       },
-      errors: {}
+      errors: {},
+      transferData: {
+        email: '',
+        error: {}
+      }
     };
     this.onChange = this.onChange.bind(this);
     this.onSubmit = this.onSubmit.bind(this);
     this.displayPreview = this.displayPreview.bind(this);
     this.businessTransfer = this.businessTransfer.bind(this);
+    this.handleTransferChange = this.handleTransferChange.bind(this);
   }
 
   /**
    * businessTransfer
    * @desc handles business transfer to another user
-   * @param {Object} data details submitted through BusinessTransferForm
+   * @param {Object} event DOM event
    * @return {func} changeOwnership
    */
-  businessTransfer(data) {
+  businessTransfer(event) {
+    event.preventDefault();
     const { businessId } = this.props.match.params;
-    return this.props
-      .changeOwnership(data, businessId, this.props);
+    const { email } = this.state.transferData;
+    const error = validate({ email });
+
+    this.setState({
+      transferData: { ...this.state.transferData, error }
+    });
+
+    if (Object.keys(error).length === 0) {
+      return this.props
+        .changeOwnership(email, businessId, this.props);
+    }
   }
 
   /**
@@ -116,7 +131,10 @@ class RegisterOrEditPage extends Component {
   onChange(event) {
     if (event.target.name !== 'businessImage') {
       this.setState({
-        data: { ...this.state.data, [event.target.name]: event.target.value }
+        data: {
+          ...this.state.data,
+          [event.target.name]: event.target.value
+        }
       });
     } else {
       const value = event.target.files[0];
@@ -128,6 +146,21 @@ class RegisterOrEditPage extends Component {
       };
       reader.readAsDataURL(value);
     }
+  }
+
+  /**
+   * handleTransferChange
+   * @desc handles state change when value of input fields change
+   * @param {Object} event DOM event
+   * @return {func} new state object
+   */
+  handleTransferChange(event) {
+    this.setState({
+      transferData: {
+        ...this.state.transferData,
+        [event.target.name]: event.target.value
+      }
+    });
   }
 
   /**
@@ -189,7 +222,7 @@ class RegisterOrEditPage extends Component {
   render() {
     const { categories, serverError } = this.props;
     const { businessId } = this.props.match.params;
-    const { errors, data } = this.state;
+    const { errors, data, transferData } = this.state;
     const header = businessId ? `Edit ${data.businessName}` : 'Business Registration Form';
     const subHeader = businessId ? `Edit ${data.businessName}` : 'Register your business on weconnect';
     const ImageHeader = businessId ? 'Change business image' : 'Add business image(optional)';
@@ -223,7 +256,11 @@ class RegisterOrEditPage extends Component {
                   <Fragment>
                     <hr />
                     <h4 className="text-center">Transfer Business</h4>
-                    <BusinessTransferForm submit={this.businessTransfer} />
+                    <BusinessTransferForm
+                      onSubmit={this.businessTransfer}
+                      onChange={this.handleTransferChange}
+                      transferData={transferData}
+                    />
                   </Fragment>
                 }
               </div>

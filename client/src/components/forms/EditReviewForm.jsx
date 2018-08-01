@@ -47,7 +47,14 @@ function EditReviewForm({
             numberOfStars={5}
           />
           <span onClick={() => toggleEditing()} className="btn btn-danger btn-sm pull-right">Cancel</span>
-          <button disabled={isLoading} type="submit" className="btn btn-primary btn-sm pull-right">Save</button>
+          <button
+            id="saveReview"
+            disabled={isLoading}
+            type="submit"
+            className="btn btn-primary btn-sm pull-right"
+          >
+            Save
+          </button>
         </div>
         <textarea
           className="form-control"

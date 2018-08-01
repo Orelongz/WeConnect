@@ -8,7 +8,6 @@ const propTypes = {
   onSubmit: PropTypes.func.isRequired,
   onChange: PropTypes.func.isRequired,
   toggleEditStatus: PropTypes.func.isRequired,
-  // isLoading: PropTypes.bool.isRequired,
   data: PropTypes.object.isRequired,
   errors: PropTypes.object.isRequired,
   displayImage: PropTypes.string.isRequired,
@@ -85,7 +84,7 @@ function EditUserDetails({
 
         <div>
           <button onClick={toggleEditStatus} className="btn btn-danger">Cancel</button>
-          <button className="btn btn-primary pull-right">Save</button>
+          <button className="btn btn-primary pull-right" id="saveUserDetails">Save</button>
         </div>
       </div>
     </form>

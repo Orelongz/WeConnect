@@ -17,7 +17,7 @@ const propTypes = {
  * @desc renders the homepage of the app
  * @return {*} void
  */
-class HomePage extends Component {
+export class HomePage extends Component {
   /**
    * constructor
    * @desc constructor for the ContactForm component

@@ -17,39 +17,46 @@ const propTypes = {
  */
 function UserBusinesses({ businesses, deleteBusiness }) {
   return (
-    businesses.map((eachBusiness) => {
-      const {
-        businessImage, businessName, category, phoneNumber, id: businessId, about
-      } = eachBusiness;
-      const businessLink = `/businesses/${businessId}`;
-      const displayImage = businessImage || '/images/default_business_profile_pic.png';
-      return (
-        <div key={businessId} className="col-xs-12 col-md-6 col-lg-4 mt-4">
-          <div className="card" >
-            <Link to={businessLink} className="overflow">
-              <img src={displayImage} alt={businessName} className="card-img-top catalog-profile-pic"/>
-            </Link>
-            <div className="card-body">
-              <h5 className="card-title text-uppercase text-center font-weight-bold">
-                {businessName}
-              </h5>
-              <div className="card-text small d-flex justify-content-between">
-                <p className="mb-0"><strong>Phone No:</strong> {phoneNumber}</p>
-                <p className="mb-0"><strong>Category:</strong> {category}</p>
+    <div className="card my-5 py-5">
+      <div className="container">
+        {
+          businesses.length === 0 ? <h1 className="text-center">You have no businesses at the moment</h1> :
+          businesses.map((eachBusiness) => {
+            const {
+              businessImage, businessName, category, phoneNumber, id: businessId, about
+            } = eachBusiness;
+            const businessLink = `/businesses/${businessId}`;
+            const displayImage = businessImage || '/images/default_business_profile_pic.png';
+            return (
+              <div key={businessId} className="col-xs-12 col-md-6 col-lg-4 mt-4">
+                <div className="card" >
+                  <Link to={businessLink} className="overflow">
+                    <img src={displayImage} alt={businessName} className="card-img-top catalog-profile-pic"/>
+                  </Link>
+                  <div className="card-body">
+                    <h5 className="card-title text-uppercase text-center font-weight-bold">
+                      {businessName}
+                    </h5>
+                    <div className="card-text small d-flex justify-content-between">
+                      <p className="mb-0"><strong>Phone No:</strong> {phoneNumber}</p>
+                      <p className="mb-0"><strong>Category:</strong> {category}</p>
+                    </div>
+                    <div className="small text-capitalize my-2">
+                      {about.substring(0, 250)}...
+                    </div>
+                    <div className="d-flex justify-content-between w-100">
+                      <Link to={businessLink} className="btn btn-sm btn-success">View</Link>
+                      <Link to={`/businesses/${businessId}/edit`} className="btn btn-sm btn-primary">Edit</Link>
+                      <button onClick={() => deleteBusiness(businessId)} className="btn btn-sm btn-danger">Delete</button>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="small text-capitalize my-2">
-                {about.substring(0, 250)}...
-              </div>
-              <div className="d-flex justify-content-between w-100">
-                <Link to={businessLink} className="btn btn-sm btn-success">View</Link>
-                <Link to={`/businesses/${businessId}/edit`} className="btn btn-sm btn-primary">Edit</Link>
-                <button onClick={() => deleteBusiness(businessId)} className="btn btn-sm btn-danger">Delete</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-    })
+            );
+          })
+        }
+      </div>
+    </div>
   );
 }
 

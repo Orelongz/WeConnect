@@ -17,7 +17,7 @@ const propTypes = {
  * @param {Object} props
  * @return {Object} rendered Navbar component
  */
-function NavBar({ isAuthenticated, userLogout }) {
+export function NavBar({ isAuthenticated, userLogout }) {
   return (
     <header className="sticky-top">
       <nav className="navbar navbar-expand-lg custom-nav">
@@ -48,7 +48,7 @@ function NavBar({ isAuthenticated, userLogout }) {
                 {isAuthenticated ? (
                   <Link to='/businesses/new' className="nav-link">Register Business</Link>
                 ) : (
-                  <Link to='/signup' className="nav-link">Signup</Link>
+                  <Link to='/signup' id="signup" className="nav-link">Signup</Link>
                 )}
 
               </li>
@@ -56,9 +56,9 @@ function NavBar({ isAuthenticated, userLogout }) {
 
                 {/* render logout link if authenticated */}
                 {isAuthenticated ? (
-                  <Link to="/" className="nav-link" onClick={() => userLogout()}>Logout</Link>
+                  <Link to="/" className="nav-link" id="logout" onClick={() => userLogout()}>Logout</Link>
                 ) : (
-                  <Link to='/signin' className="nav-link">Signin</Link>
+                  <Link to='/signin' id="signin" className="nav-link">Signin</Link>
                 )}
               </li>
             </ul>
