@@ -12,8 +12,8 @@ const setup = () => {
     onChange: jest.fn(),
     onSubmit: jest.fn(),
     data: {},
-    isLoading: true || false,
-    editing: jest.fn().getMockName()
+    isLoading: false,
+    editing: ''
   };
   return shallow(<ReviewForm {...props} />);
 };

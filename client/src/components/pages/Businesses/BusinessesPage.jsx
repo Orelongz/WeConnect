@@ -224,13 +224,11 @@ BusinessesPage.propTypes = propTypes;
  * @param {Object} state redux state
  * @return {Object} BusinessesPage props
  */
-function mapStateToProps(state) {
-  return {
-    isLoading: state.loadingReducer.isPageLoading,
-    businesses: state.businessReducer.businesses,
-    paginate: state.businessReducer.paginate,
-    displayError: state.businessReducer.error
-  };
-}
+const mapStateToProps = state => ({
+  isLoading: state.loadingReducer.isPageLoading,
+  businesses: state.businessReducer.businesses,
+  paginate: state.businessReducer.paginate,
+  displayError: state.businessReducer.error
+});
 
 export default connect(mapStateToProps, { allBusinesses })(BusinessesPage);

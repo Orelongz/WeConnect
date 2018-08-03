@@ -16,11 +16,9 @@ let state;
 
 describe('review reducer', () => {
   it('should return the initial state', () => {
+    expect(reducer(undefined, undefined)).to.deep.equal(initialState);
+
     state = initialState;
-
-    expect(reducer(initialState, {})).to.deep.equal(state);
-
-    initialState = state;
   });
 
   it('should handle ADD_REVIEW', () => {

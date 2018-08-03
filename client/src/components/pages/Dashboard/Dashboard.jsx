@@ -202,12 +202,10 @@ Dashboard.propTypes = propTypes;
  * @param {Object} state redux state
  * @return {Object} BusinessesPage props
  */
-function mapStateToProps(state) {
-  return {
-    businesses: state.businessReducer.businesses,
-    User: state.userReducer
-  };
-}
+const mapStateToProps = state => ({
+  businesses: state.businessReducer.businesses,
+  User: state.userReducer
+});
 
 export default connect(mapStateToProps, {
   userBusinesses,

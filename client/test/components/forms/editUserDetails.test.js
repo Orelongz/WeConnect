@@ -8,7 +8,11 @@ const setup = () => {
     displayImage: jest.fn().getMockName(),
     onChange: jest.fn(),
     onSubmit: jest.fn(),
-    errors: {},
+    errors: {
+      firstname: 'required',
+      lastname: 'required',
+      email: 'required'
+    },
     data: {},
     toggleEditStatus: jest.fn()
   };

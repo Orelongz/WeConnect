@@ -112,6 +112,15 @@ describe('RegisterOrEditPage component', () => {
       action.onSubmit({ preventDefault: () => 1 });
       jestExpect(submit).toBeCalled();
     });
+
+    // it('should call the displayPreview method', () => {
+    //   const wrapper = setup();
+    //   const action = wrapper.instance();
+    //   action.state.data = { imagePreview: 'imageUrl' };
+    //   const preview = jest.spyOn(wrapper.instance(), 'displayPreview');
+    //   action.preview();
+    //   jestExpect(preview).toBeCalled();
+    // });
   });
 
   describe('Connected RegisterOrEditPage component', () => {

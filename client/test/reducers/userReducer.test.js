@@ -9,11 +9,7 @@ let initialState = {};
 let state;
 describe('user reducer', () => {
   it('should return the initial state', () => {
-    state = initialState;
-
-    expect(reducer(initialState, {})).to.deep.equal(state);
-
-    initialState = state;
+    expect(reducer(undefined, undefined)).to.deep.equal(initialState);
   });
 
   it('should handle USER_SIGNED_IN', () => {

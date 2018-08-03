@@ -31,7 +31,8 @@ export const businessObject = {
       createdAt: '2018-07-11T12:30:07.416Z',
       updatedAt: '2018-07-11T12:30:07.416Z',
       userId: '1bf0f6f9-e308-4afa-93b9-d5da9326b981',
-      categoryId: '4dc63e2c-4416-4d6c-a292-0a3c68e59f17'
+      categoryId: '4dc63e2c-4416-4d6c-a292-0a3c68e59f17',
+      rating: 4
     }
   }
 };

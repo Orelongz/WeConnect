@@ -7,7 +7,8 @@ const {
   businessObject,
   allBusinesses,
   businessRating,
-  businessReponseFail
+  businessReponseFail,
+  businessUpdate
 } = businessData;
 
 const defaultState = {
@@ -21,11 +22,9 @@ let state;
 
 describe('user reducer', () => {
   it('should return the initial state', () => {
+    expect(reducer(undefined, undefined)).to.deep.equal(initialState);
+
     state = initialState;
-
-    expect(reducer(initialState, {})).to.deep.equal(state);
-
-    initialState = state;
   });
 
   it('should handle REGISTER_BUSINESS', () => {
@@ -69,39 +68,35 @@ describe('user reducer', () => {
     initialState = state;
   });
 
-  // it('should handle EDIT_BUSINESS', () => {
-  //   state = {
-  //     ...initialState,
-  //     business: businessObject.data.business,
-  //     businesses: allBusinesses.data
-  //   };
-  //   console.log(state)
-  //   console.log(reducer(initialState, {
-  //     type: types.EDIT_REVIEW,
-  //     business: businessUpdate.data.business
-  //   }))
+  it('should handle EDIT_BUSINESS', () => {
+    state = {
+      ...initialState,
+      business: {},
+      businesses: allBusinesses.data.businesses
+    };
 
-  //   expect(reducer(initialState, {
-  //     type: types.EDIT_REVIEW,
-  //     business: businessUpdate.data.business
-  //   })).to.deep.equal(state);
+    expect(reducer(initialState, {
+      type: types.EDIT_REVIEW,
+      credentials: businessUpdate.data.business
+    })).to.deep.equal(state);
 
-  //   initialState = state;
-  // });
+    initialState = state;
+  });
 
-  // it('should handle CHANGE_OWNERSHIP', () => {
-  //   state = {
-  //     ...initialState,
-  //     business: businessObject.data.business
-  //   };
+  it('should handle CHANGE_OWNERSHIP', () => {
+    state = {
+      ...initialState,
+      business: {},
+      businesses: allBusinesses.data.businesses
+    };
 
-  //   expect(reducer(initialState, {
-  //     type: types.EDIT_REVIEW,
-  //     business: businessObject.data.business
-  //   })).to.deep.equal(state);
+    expect(reducer(initialState, {
+      type: types.EDIT_REVIEW,
+      credentials: businessUpdate.data.business
+    })).to.deep.equal(state);
 
-  //   initialState = state;
-  // });
+    initialState = state;
+  });
 
   it('should handle GET_BUSINESS_DETAILS', () => {
     state = {

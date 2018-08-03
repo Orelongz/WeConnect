@@ -264,16 +264,14 @@ export class BusinessProfilePage extends Component {
  * @param {Object} state redux state
  * @return {Object} BusinessesPage props
  */
-function mapStateToProps(state) {
-  return {
-    businessDetails: state.businessReducer.business,
-    User: state.userReducer,
-    businessReviews: state.reviewReducer.reviews,
-    isRequestLoading: state.loadingReducer.isRequestLoading,
-    isPageLoading: state.loadingReducer.isPageLoading,
-    displayError: state.businessReducer.error
-  };
-}
+const mapStateToProps = state => ({
+  businessDetails: state.businessReducer.business,
+  User: state.userReducer,
+  businessReviews: state.reviewReducer.reviews,
+  isRequestLoading: state.loadingReducer.isRequestLoading,
+  isPageLoading: state.loadingReducer.isPageLoading,
+  displayError: state.businessReducer.error
+});
 
 BusinessProfilePage.propTypes = propTypes;
 

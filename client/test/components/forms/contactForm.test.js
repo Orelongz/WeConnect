@@ -5,7 +5,11 @@ import ContactForm from './../../../src/components/forms/ContactForm.jsx';
 let props;
 const setup = () => {
   props = {
-    errors: {},
+    errors: {
+      name: 'required',
+      email: 'required',
+      message: 'required'
+    },
     onChange: jest.fn(),
     onSubmit: jest.fn(),
     data: {},

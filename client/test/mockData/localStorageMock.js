@@ -13,16 +13,6 @@ class LocalStorageMock {
   }
 
   /**
-   * getItem
-   * @desc retrieve item from local storage
-   * @param {String} key
-   * @return {*} void
-   */
-  getItem(key) {
-    return this.store[key] || null;
-  }
-
-  /**
    * setItem
    * @desc sets a local storage key to a value
    * @param {String} key
