@@ -60,6 +60,9 @@ describe('BusinessesPage component', () => {
       const wrapper = setup();
       const action = wrapper.instance();
       const handleSearch = jest.spyOn(wrapper.instance(), 'handleSearch');
+      action.state = {
+        value: 'name', search: 'business'
+      };
       action.handleSearch({ preventDefault: () => 1 });
       jestExpect(handleSearch).toBeCalled();
     });
@@ -70,6 +73,11 @@ describe('BusinessesPage component', () => {
       const pageChange = jest.spyOn(wrapper.instance(), 'onPageChange');
       action.onPageChange(2);
       jestExpect(pageChange).toBeCalled();
+
+      action.state = {
+        value: 'name', search: 'business'
+      };
+      action.onPageChange(2);
     });
   });
 

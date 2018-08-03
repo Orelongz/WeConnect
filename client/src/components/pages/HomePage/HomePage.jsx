@@ -254,11 +254,9 @@ HomePage.propTypes = propTypes;
  * @param {Object} state redux state
  * @return {Object} BusinessesPage props
  */
-function mapStateToProps(state) {
-  return {
-    isLoading: state.loadingReducer.isRequestLoading
-  };
-}
+const mapStateToProps = state => ({
+  isLoading: state.loadingReducer.isRequestLoading
+});
 
 export default connect(mapStateToProps, {
   contactUs

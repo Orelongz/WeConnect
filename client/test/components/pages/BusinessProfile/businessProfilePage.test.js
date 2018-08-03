@@ -77,7 +77,7 @@ describe('BusinessProfilePage component', () => {
       action.toggleEditing(businessReviews.data.reviews[0]);
       jestExpect(toggleEditing).toBeCalled();
       expect(action.state.editing).to.eql('4dd7ec66-ce1b-4b3a-beae-03e53f32b4bf');
-      
+
       action.changeRating(3);
       expect(action.state.update.rating).to.eql(3);
     });
@@ -116,6 +116,42 @@ describe('BusinessProfilePage component', () => {
       const wrapper = setup();
       const action = wrapper.instance();
       const submit = jest.spyOn(wrapper.instance(), 'onSubmit');
+      action.state = {
+        data: {
+          rating: 0, review: ''
+        },
+        update: {},
+        editing: ''
+      };
+      action.onSubmit({ preventDefault: () => 1 });
+      jestExpect(submit).toBeCalled();
+
+      action.state = {
+        data: {
+          rating: 3, review: 'a review'
+        },
+        update: {},
+        editing: ''
+      };
+      action.onSubmit({ preventDefault: () => 1 });
+      jestExpect(submit).toBeCalled();
+
+      action.state = {
+        data: {},
+        update: {
+          rating: 0, review: ''
+        }
+      };
+      action.onSubmit({ preventDefault: () => 1 });
+      jestExpect(submit).toBeCalled();
+
+      action.state = {
+        data: {},
+        update: {
+          rating: 4, review: 'a review'
+        },
+        editing: 'businessId'
+      };
       action.onSubmit({ preventDefault: () => 1 });
       jestExpect(submit).toBeCalled();
     });

@@ -20,7 +20,7 @@ describe('BusinessProfile component', () => {
     const wrapper = setup();
     expect(wrapper.find('div').length).to.eql(9);
     expect(wrapper.find('ul').length).to.eql(1);
-    expect(wrapper.find('li').length).to.eql(5);
+    expect(wrapper.find('li').length).to.eql(6);
     expect(wrapper.find('img').length).to.eql(1);
   });
 });

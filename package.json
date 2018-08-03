@@ -99,7 +99,7 @@
   "scripts": {
     "start:dev": "nodemon app.js --exec babel-node",
     "start": "babel-node app.js",
-    "lint": "eslint --fix server/ client/src/ app.js",
+    "lint": "eslint --fix server/ client/ app.js",
     "dev-migrate": "sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all",
     "test-migrate": "sequelize db:migrate:undo:all --env test && sequelize db:migrate --env test && sequelize db:seed:all --env test",
     "prod-migrate": "sequelize db:migrate:undo:all --env production && sequelize db:migrate --env production && sequelize db:seed:all --env production",

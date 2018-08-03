@@ -7,7 +7,13 @@ const setup = () => {
   props = {
     isLoading: true || false,
     data: {},
-    errors: {},
+    errors: {
+      firstname: 'required',
+      lastname: 'required',
+      email: 'required',
+      password: 'required',
+      confirmPassword: 'required'
+    },
     onChange: jest.fn(),
     onSubmit: jest.fn()
   };

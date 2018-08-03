@@ -46,7 +46,7 @@ function EditReviewForm({
             changeRating={changeRating}
             numberOfStars={5}
           />
-          <span onClick={() => toggleEditing()} className="btn btn-danger btn-sm pull-right">Cancel</span>
+          <span onClick={toggleEditing} className="btn btn-danger btn-sm pull-right">Cancel</span>
           <button
             id="saveReview"
             disabled={isLoading}

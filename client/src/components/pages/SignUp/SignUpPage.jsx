@@ -129,12 +129,10 @@ SignUpPage.propTypes = propTypes;
  * @param {Object} state redux state
  * @return {Object} SignUpPage props
  */
-function mapStateToProps(state) {
-  return {
-    isRequestLoading: state.loadingReducer.isRequestLoading,
-    serverError: state.userReducer.error,
-    userId: state.userReducer.id
-  };
-}
+const mapStateToProps = state => ({
+  isRequestLoading: state.loadingReducer.isRequestLoading,
+  serverError: state.userReducer.error,
+  userId: state.userReducer.id
+});
 
 export default connect(mapStateToProps, { signup })(SignUpPage);

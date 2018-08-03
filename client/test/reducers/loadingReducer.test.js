@@ -1,4 +1,4 @@
-import { expect } from 'chai';
+/* eslint no-undef: "off" */
 import reducer from './../../src/reducers/loadingReducer';
 import * as types from './../../src/types/Types';
 
@@ -9,11 +9,9 @@ let initialState = {
 let state;
 describe('user reducer', () => {
   it('should return the initial state', () => {
+    expect(reducer(undefined, undefined)).to.deep.equal(initialState);
+
     state = initialState;
-
-    expect(reducer(initialState, {})).to.deep.equal(state);
-
-    initialState = state;
   });
 
   it('should handle IS_PAGE_LOADING when it is false', () => {

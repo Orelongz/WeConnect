@@ -2,12 +2,17 @@
 import React from 'react';
 import SignupForm from './../../../src/components/forms/SignUpForm.jsx';
 
-let props;
 const setup = () => {
   props = {
-    isLoading: true || false,
+    isLoading: false,
     data: {},
-    errors: {},
+    errors: {
+      firstname: 'required',
+      lastname: 'required',
+      email: 'required',
+      password: 'required',
+      confirmPassword: 'required'
+    },
     onChange: jest.fn(),
     onSubmit: jest.fn()
   };

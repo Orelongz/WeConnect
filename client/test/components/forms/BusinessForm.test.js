@@ -9,7 +9,13 @@ const setup = () => {
     onChange: jest.fn(),
     onSubmit: jest.fn(),
     data: {},
-    errors: {},
+    errors: {
+      businessName: 'required',
+      address: 'required',
+      city: 'required',
+      phoneNumber: 'required',
+      about: 'required'
+    },
     categories: [],
     FormAction: jest.fn().getMockName(),
     history: {},

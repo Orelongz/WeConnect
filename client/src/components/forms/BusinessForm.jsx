@@ -189,7 +189,7 @@ function BusinessForm({
       </div>
 
       <div>
-        <button onClick={() => history.goBack()} className="btn btn-danger">Cancel</button>
+        <button onClick={history.goBack} className="btn btn-danger">Cancel</button>
         <button type="submit" className="btn btn-primary pull-right">{FormAction}</button>
       </div>
     </form>

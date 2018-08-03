@@ -5,7 +5,7 @@ import connectedHomePage, { HomePage } from './../../../../src/components/pages/
 let props;
 const setup = () => {
   props = {
-    contactUs: jest.fn(),
+    contactUs: jest.fn(() => Promise.resolve()),
     isLoading: false
   };
   return shallow(<HomePage { ...props } />);
@@ -71,6 +71,15 @@ describe('HomePage component', () => {
       const wrapper = setup();
       const action = wrapper.instance();
       const submit = jest.spyOn(wrapper.instance(), 'onSubmit');
+      action.state.data = {
+        name: '', email: '', message: ''
+      };
+      action.onSubmit({ preventDefault: () => 1 });
+      jestExpect(submit).toBeCalled();
+
+      action.state.data = {
+        name: 'name', email: 'mail@mail.com', message: 'some message'
+      };
       action.onSubmit({ preventDefault: () => 1 });
       jestExpect(submit).toBeCalled();
     });

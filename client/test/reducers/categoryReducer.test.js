@@ -7,7 +7,7 @@ const { categories } = categoriesData;
 
 describe('user reducer', () => {
   it('should return the initial state', () => {
-    expect(reducer([], {})).to.deep.equal([]);
+    expect(reducer(undefined, undefined)).to.deep.equal([]);
   });
 
   it('should handle GET_ALL_CATEGORIES', () => {

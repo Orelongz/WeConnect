@@ -5,10 +5,19 @@ import connectedNavBar, { NavBar } from './../../../src/components/common/NavBar
 let props;
 const setup = () => {
   props = {
-    isAuthenticated: true || false,
-    userLogout: jest.fn()
+    isAuthenticated: true,
+    userLogout: jest.fn(() => Promise.resolve())
   };
   return shallow(<NavBar { ...props } />);
+};
+
+let props2;
+const setup2 = () => {
+  props2 = {
+    isAuthenticated: false,
+    userLogout: jest.fn(() => Promise.resolve())
+  };
+  return shallow(<NavBar { ...props2 } />);
 };
 
 describe('NavBar component', () => {
@@ -25,13 +34,17 @@ describe('NavBar component', () => {
       expect(wrapper.find('li').length).to.eql(4);
     });
 
-    // it('should signin user when form is submitted', () => {
-    //   const wrapper = setup();
-    //   const action = wrapper.instance();
-    //   const logout = jest.spyOn(wrapper.instance(), 'onClick');
-    //   action.onClick();
-    //   expect(logout).toBeCalled();
-    // });
+    it('should render the NavBar component successfully', () => {
+      const wrapper = setup2();
+      expect(wrapper.find('header').length).to.eql(1);
+      expect(wrapper.find('nav').length).to.eql(1);
+      expect(wrapper.find('div').length).to.eql(2);
+      expect(wrapper.find('Link').length).to.eql(4);
+      expect(wrapper.find('button').length).to.eql(1);
+      expect(wrapper.find('span').length).to.eql(1);
+      expect(wrapper.find('ul').length).to.eql(1);
+      expect(wrapper.find('li').length).to.eql(3);
+    });
   });
 
   describe('Connected NavBar component', () => {

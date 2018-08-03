@@ -249,4 +249,107 @@ describe('Auth actions tests', () => {
         });
     });
   });
+
+  describe('verify user account', () => {
+    it('should verify a users account', (done) => {
+      moxios.stubRequest('/api/v1/auth/verify', {
+        status: 200,
+        response: {
+          status: 'success',
+          user: signUpResponse.data.user
+        }
+      });
+
+      const expectedActions = [
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: true
+        },
+        {
+          type: types.VERIFY_ACCOUNT,
+          credentials: signUpResponse.data.user
+        },
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: false
+        },
+      ];
+      const store = mockStore({});
+
+      return store.dispatch(actions.verifyAccount(signinResponse))
+        .then(() => {
+          // return of async actions
+          expect(store.getActions()).to.deep.equal(expectedActions);
+          done();
+        });
+    });
+
+    it('should not verify a users account', (done) => {
+      moxios.wait(() => {
+        const request = moxios.requests.mostRecent();
+
+        request.respondWith({
+          status: 400,
+          response: {
+            status: 'fail',
+            error: 'Verification not successful'
+          }
+        });
+      });
+
+      const expectedActions = [
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: true
+        },
+        {
+          type: types.VERIFY_ACCOUNT_FAILED,
+          error: 'Verification not successful'
+        },
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: false
+        },
+      ];
+      const store = mockStore({});
+
+      return store.dispatch(actions.verifyAccount(signinResponse))
+        .then(() => {
+          // return of async actions
+          expect(store.getActions()).to.deep.equal(expectedActions);
+          done();
+        });
+    });
+  });
+
+  describe('contact us action', () => {
+    it('should send the message inputted by user', (done) => {
+      moxios.stubRequest('/api/v1/contactUs', {
+        status: 200,
+        response: {
+          status: 'success',
+          message: 'Message delivered'
+        }
+      });
+
+      const expectedActions = [
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: true
+        },
+        {
+          type: types.IS_REQUEST_LOADING,
+          status: false
+        },
+      ];
+      const store = mockStore({});
+
+      return store.dispatch(actions.contactUs({ email: 'mail@domain.com' }))
+        .then(() => {
+          // return of async actions
+          expect(store.getActions()).to.deep.equal(expectedActions);
+          done();
+        });
+    });
+  });
 });

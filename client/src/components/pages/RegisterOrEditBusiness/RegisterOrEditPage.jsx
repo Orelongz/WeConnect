@@ -279,13 +279,11 @@ RegisterOrEditPage.propTypes = propTypes;
  * @param {state} state redux state
  * @return {Object} props
  */
-function mapStateToProps(state) {
-  return {
-    categories: state.categoryReducer,
-    businessDetails: state.businessReducer.business,
-    serverError: state.businessReducer.error
-  };
-}
+const mapStateToProps = state => ({
+  categories: state.categoryReducer,
+  businessDetails: state.businessReducer.business,
+  serverError: state.businessReducer.error
+});
 
 export default connect(mapStateToProps, {
   allCategories,

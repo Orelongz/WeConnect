@@ -8,7 +8,8 @@ const setup = () => {
     onChange: jest.fn(),
     onSubmit: jest.fn(),
     transferData: {
-      email: '', error: {}
+      email: '',
+      error: { email: 'required' }
     }
   };
   return shallow(<BusinessTransferForm {...props} />);

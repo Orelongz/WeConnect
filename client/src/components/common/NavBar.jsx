@@ -56,7 +56,7 @@ export function NavBar({ isAuthenticated, userLogout }) {
 
                 {/* render logout link if authenticated */}
                 {isAuthenticated ? (
-                  <Link to="/" className="nav-link" id="logout" onClick={() => userLogout()}>Logout</Link>
+                  <Link to="/" className="nav-link" id="logout" onClick={userLogout}>Logout</Link>
                 ) : (
                   <Link to='/signin' id="signin" className="nav-link">Signin</Link>
                 )}
@@ -76,10 +76,8 @@ NavBar.propTypes = propTypes;
  * @param {Object} state redux state
  * @return {Object} NavBar props
  */
-function mapStateToProps(state) {
-  return {
-    isAuthenticated: !!state.userReducer.id
-  };
-}
+const mapStateToProps = state => ({
+  isAuthenticated: !!state.userReducer.id
+});
 
 export default connect(mapStateToProps, { userLogout: logout })(NavBar);

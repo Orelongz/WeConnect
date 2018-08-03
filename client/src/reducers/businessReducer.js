@@ -36,8 +36,8 @@ function businessReducer(state = initialState, action = {}) {
         business: action.credentials,
         businesses: [action.credentials, ...state.businesses]
       };
-    case EDIT_BUSINESS:
-    case CHANGE_OWNERSHIP: {
+    case CHANGE_OWNERSHIP:
+    case EDIT_BUSINESS: {
       const newBusinessList = state.businesses.map((eachBusiness) => {
         if (eachBusiness.id === action.credentials.id) return action.credentials;
         return eachBusiness;
