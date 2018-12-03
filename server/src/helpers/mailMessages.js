@@ -11,7 +11,6 @@ const from = '"WeConnect" <info@weconnect.com>';
 function setup() {
   return nodemailer.createTransport({
     secure: false,
-    // host: process.env.EMAIL_HOST,
     service: 'gmail',
     port: process.env.EMAIL_PORT,
     auth: {
@@ -46,10 +45,16 @@ export function confirmationEmail(user) {
           the platform that brings businesses and individuals together
         </p>
         <p>
-          Kindly verify your account by clicking on
+          Kindly note that the application is a dummy project. However, if you would still like to verify your account,
+          please do so by clicking on
           <button style="padding: 10px 20px; background-color: steelblue">
             <a style="color: white; text-decoration: none" href="${process.env.HOST_APP}/verify/${user.verificationToken}">VERIFY</a>
           </button>
+        </p>
+        <p>
+          You can reach out to the developer at
+          <a href="mailto:longe.pelumi@yahoo.com" target="_top">longe.pelumi@yahoo.com</a>.
+          Thank you.
         </p>
       </div>
     </div>
@@ -76,8 +81,13 @@ export function contactUsMails(mailObject) {
       <div style="width: 80%; margin: 20px auto">
         <h2>Hello ${mailObject.name},</h2>
         <p>
-          We apprieciate you taking time to send us a message and be sure that
-          one of our agents would get back to you as soon as possible.
+          We apprieciate you taking time to send us a message, however, this weconnect platform
+          is actually a dummy project.
+        </p>
+        <p>
+          You can reach out to the developer at
+          <a href="mailto:longe.pelumi@yahoo.com" target="_top">longe.pelumi@yahoo.com</a>.
+          Thank you.
         </p>
       </div>
     </div>
@@ -93,7 +103,7 @@ export function contactUsMails(mailObject) {
       <div style="width: 80%; margin: 20px auto">
         Dear Admin,
         <p>
-          A new enquiry was just made by <b>${mailObject.name}</b> on weconnect
+          A new enquiry was just made by <b>${mailObject.name}</b> with an email address <b>${mailObject.email}</b> on weconnect
         </p>
         <b>Message:</b>
         <p>${mailObject.message}</p>

@@ -1,8 +1,8 @@
 import chai from 'chai';
 import chaiHttp from 'chai-http';
-import app from './../../app';
-import db from './../src/models';
-import { userData } from './../mockData/serveMockData';
+import app from '../app';
+import db from '../src/models';
+import { userData } from '../mockData/serveMockData';
 
 const { User } = db;
 const { assert, should } = chai;

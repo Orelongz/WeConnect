@@ -7,11 +7,9 @@ import jwt from 'jsonwebtoken';
 import 'bootstrap';
 import 'rc-pagination/assets/index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import 'alertifyjs/build/css/alertify.min.css';
-import 'alertifyjs/build/css/themes/default.min.css';
 import store from './store/store';
 import App from './components/App.jsx';
-import './../public/style/index.scss';
+import './../../public/style/index.scss';
 import { userDetails, logout } from './actions/AuthAction';
 import setAuthorizationToken from './utils/setAuthorizationToken';
 

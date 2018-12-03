@@ -1,6 +1,5 @@
 // import required modules
 import React from 'react';
-import { hot } from 'react-hot-loader';
 import { Switch, Route } from 'react-router-dom';
 import UserRoute from './common/UserRoute.jsx';
 import NavBar from './common/NavBar.jsx';
@@ -41,4 +40,4 @@ function App() {
   );
 }
 
-export default hot(module)(App);
+export default App;
