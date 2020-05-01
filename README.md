@@ -56,18 +56,22 @@ You can get the app running locally in the following way:
 # Clone the Repo
 git clone https://github.com/Orelongz/WeConnect.git
 
+# Version
+> Make sure you are running node 8.11.1 and npm 5.6.0 (you might want to use nvm)
+
 # Install dependencies
-npm install
+> npm install
+> Create `.env` file from the `.env.sample` file using the appropriate values
 
 # Run tests
-> Create the database needed
+> Create the database needed as set in the .env file with the specified user having appropriate rights
 > npm run test-migrate
 > npm run test
 
 # Run the application
 > Create the database needed
 > npm run dev-migrate
-> npm run start
+> npm run start:dev
 ```
 The server and app would be live at `http://localhost:8000`,
 Swagger API documentation at `http://localhost:8000/api-docs/`

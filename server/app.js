@@ -2,6 +2,7 @@ import express from 'express';
 import bodyParser from 'body-parser';
 import swaggerUi from 'swagger-ui-express';
 import cors from 'cors';
+import path from 'path';
 import userRoute from './src/routes/user';
 import businessRoute from './src/routes/business';
 import reviewRoute from './src/routes/review';
@@ -28,6 +29,10 @@ app.use('/api/v1/reviews', reviewRoute);
 app.use('/api/v1/*', (req, res) => res.status(404).json({
   message: 'Route not available'
 }));
+
+app.get('/*', (request, response) => {
+  response.sendFile(path.join(__dirname, '../public/index.html'));
+});
 
 app.listen(port);
 
